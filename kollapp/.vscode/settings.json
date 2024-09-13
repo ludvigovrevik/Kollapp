@@ -1,0 +1,15 @@
+{
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "[java]": {
+        "editor.tabSize": 2
+    },
+    "java.test.config": [
+        {
+            "name": "kollapp.app testing",
+            "vmArgs": ["--add-opens", "app/app=ALL-UNNAMED", "--add-exports", "javafx.graphics/com.sun.javafx.application=ALL-UNNAMED"]
+        }
+    ],
+    "java.test.defaultConfig": "kollapp.app testing",
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.debug.settings.onBuildFailureProceed": true
+}
