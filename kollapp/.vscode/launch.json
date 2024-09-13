@@ -14,10 +14,9 @@
             "type": "java",
             "name": "Launch kollapp.??? - single module, single package",
             "request": "launch",
-            "mainClass": "?/?.?",
-            "vmArgs": "--add-opens app/app=ALL-UNNAMED --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED",
-            "projectName": "kollapp.?"
-            
+            "mainClass": "app.KollApp",
+            "vmArgs": "--add-opens app=ALL-UNNAMED --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED",
+            "projectName": "kollapp"
         }
     ]
 }
