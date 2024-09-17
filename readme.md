@@ -47,3 +47,8 @@ All required dependencies for the project are listed in the `pom.xml` file. Some
    ```bash
    mvn javafx:run
    ```
+3. **Run JUnit tests using `Maven`:**:
+
+   ```bash
+   mvn test
+   ```
