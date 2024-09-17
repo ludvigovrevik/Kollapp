@@ -9,16 +9,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="392.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.KollAppController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="427.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.KollAppController">
    <children>
        <ListView fx:id="taskListView" layoutX="12.0" layoutY="39.0" prefHeight="232.0" prefWidth="375.0" />
       <Button fx:id="Test" layoutX="329.0" layoutY="281.0" mnemonicParsing="false" onAction="#handleAddTask" prefHeight="57.0" prefWidth="57.0" text="+">
          <font>
             <Font size="16.0" />
          </font></Button>
-      <Button layoutX="16.0" layoutY="352.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="85.0" text="To-do" />
-      <Button layoutX="298.0" layoutY="352.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="87.0" text="Kostnader" />
-      <Button layoutX="202.0" layoutY="352.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="85.0" text="Kalender" />
+      <Button layoutX="16.0" layoutY="387.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="85.0" text="To-do" />
+      <Button layoutX="298.0" layoutY="387.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="87.0" text="Kostnader" />
+      <Button layoutX="203.0" layoutY="388.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="85.0" text="Kalender" />
       <TextField fx:id="taskInputField" layoutX="12.0" layoutY="280.0" prefHeight="59.0" prefWidth="307.0" />
       <MenuBar layoutX="-2.0" prefHeight="28.0" prefWidth="401.0">
         <menus>
@@ -34,5 +34,6 @@
           </Menu>
         </menus>
       </MenuBar>
+      <Button layoutX="329.0" layoutY="348.0" mnemonicParsing="false" onAction="#handleRemoveTask" prefHeight="26.0" prefWidth="56.0" text="-" />
    </children>
 </AnchorPane>
