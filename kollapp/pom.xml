@@ -78,7 +78,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
         		<artifactId>maven-surefire-plugin</artifactId>
-		        <version>3.9.9</version>
+		        <version>3.1.2</version>
                 <configuration>
                     <argLine>
                     --add-opens app/app=ALL-UNNAMED --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
