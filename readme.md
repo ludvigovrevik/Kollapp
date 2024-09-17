@@ -6,6 +6,7 @@ This repository is for developing **KollApp**, a Java application created as par
 
 **KollApp** is designed to help roommates in a shared flat manage and share household tasks more efficiently. The application provides an overview of shared responsibilities such as house cleaning, unloading the dishwasher, grocery shopping, and other communal tasks. It aims to improve communication and coordination among flatmates, ensuring that chores are evenly distributed and completed on time.
 
+## **You can read more about purpose [here](docs/purpose.md).**
 ## Repository Structure
 
 - **Main Application Code**:  

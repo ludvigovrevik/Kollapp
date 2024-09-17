@@ -1,6 +1,6 @@
 # Brukerhistorie 1: Organisering av fellesoppgaver
 
-Jakob flytter inn i et nytt kollektiv og er ønsker en appen til å fordele og organisere fellesoppgaver
+Jakob flytter inn i et nytt kollektiv og ønsker en app som kan brukes til å fordele og organisere fellesoppgaver
 slik at de enkelt kan holde styr på hvem som er ansvarlig for hvilke oppgaver, og når de skal utføres.
 
 ### Viktig å kunne se:
