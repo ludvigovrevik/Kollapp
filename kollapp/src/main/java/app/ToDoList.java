@@ -1,15 +1,23 @@
 package app;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class ToDoList {
 
     private ObservableList<Task> tasks;
+    private static final String SAVE_STATE_FILE = "save_state.txt";
 
     // Constructor
     public ToDoList() {
         tasks = FXCollections.observableArrayList();
+        loadTasksFromFile();
     }
 
     /**
@@ -23,6 +31,7 @@ public class ToDoList {
             throw new IllegalArgumentException("Task cannot be null.");
         }
         tasks.add(newTask);
+        saveTasksToFile();
     }
 
     /**
@@ -36,6 +45,31 @@ public class ToDoList {
             throw new IndexOutOfBoundsException("Index is out of range.");
         }
         tasks.remove(index);
+        saveTasksToFile();
+    }
+
+    private void saveTasksToFile() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(SAVE_STATE_FILE))) {
+            for (Task task : tasks) {
+                writer.write(task.toString());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadTasksFromFile() {
+        try (Scanner scanner = new Scanner(new File(SAVE_STATE_FILE))){
+            while (scanner.hasNext()) {
+                String taskDescription = scanner.nextLine();
+                Task task = new Task(taskDescription);
+                tasks.add(task);
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
