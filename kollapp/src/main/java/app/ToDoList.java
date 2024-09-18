@@ -64,11 +64,9 @@ public class ToDoList {
         try (Scanner scanner = new Scanner(new File(SAVE_STATE_FILE))){
             while (scanner.hasNext()) {
                 String taskDescription = scanner.nextLine();
-                LocalDate dateTime = LocalDate.of(2024, 9, 18);
-                Task task = new Task(taskDescription, dateTime);
+                Task task = new Task(taskDescription);
                 tasks.add(task);
             }
-            
         } catch (Exception e) {
             e.printStackTrace();
         }
