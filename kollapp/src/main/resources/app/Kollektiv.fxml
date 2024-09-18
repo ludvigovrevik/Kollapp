@@ -18,6 +18,7 @@
       <TextField fx:id="taskInputField" layoutX="12.0" layoutY="280.0" prefHeight="59.0" prefWidth="307.0" />
       <MenuBar layoutX="-2.0" prefHeight="28.0" prefWidth="401.0" />
       <Button layoutX="330.0" layoutY="347.0" mnemonicParsing="false" onAction="#handleRemoveTask" prefHeight="26.0" prefWidth="56.0" text="-" />
-      <DatePicker fx:id="datePicker" layoutX="14.0" layoutY="348.0" prefHeight="27.0" prefWidth="175.0" />
+      <DatePicker fx:id="datePicker" layoutX="13.0" layoutY="348.0" />
+      <Button layoutX="209.0" layoutY="348.0" mnemonicParsing="false" onAction="#handleRemoveTask" prefHeight="26.0" prefWidth="109.0" text="Endre" />
    </children>
 </AnchorPane>
