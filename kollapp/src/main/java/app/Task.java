@@ -1,6 +1,7 @@
 package app;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 
 public class Task {
@@ -42,6 +43,7 @@ public class Task {
         if (dateTime == null) {
             return "• " + description; 
         }
-        return "• " + description + "   " + dateTime.toString();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
+        return "• " + description + "   " + dateTime.format(formatter);
     }
 }
