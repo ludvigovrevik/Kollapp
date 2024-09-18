@@ -1,28 +1,25 @@
-# Brukerhistorie 1: Organisering av fellesoppgaver
+# User Story 1: Organizing Shared Tasks
+Jakob is moving into a new shared house and wants an app that can be used to distribute and organize shared tasks so that it's easy to keep track of who is responsible for which tasks, and when they need to be done.
 
-Jakob flytter inn i et nytt kollektiv og ønsker en app som kan brukes til å fordele og organisere fellesoppgaver
-slik at de enkelt kan holde styr på hvem som er ansvarlig for hvilke oppgaver, og når de skal utføres.
+### Important to see:
+- An overview of the shared tasks (e.g., taking out the trash, cleaning common areas).
+- Deadlines for the various tasks so that no tasks are forgotten.
+- Who is responsible for which tasks.
 
-### Viktig å kunne se:
-- En oversikt over fellesoppgavene (f.eks. ta ut søppel, rydde fellesarealer).
-- Frister for de ulike oppgavene, så ingen oppgaver blir glemt.
-- Hvem som har ansvar for hvilke oppgaver
+### Important to do:
+- Assign tasks to specific residents, including deadlines and priority (for example, "Take out the trash" by 6 PM on Tuesday).
+- See who has completed their tasks and which tasks are still outstanding.
+- Change the priority or reassign tasks if someone cannot complete their task on time.
 
-### Viktig å kunne gjøre:
-- Tilordne oppgaver til spesifikke beboere, inkludert frister og prioritet (for eksempel "Ut med søppelet" før kl. 18 på tirsdag).
-- Se hvem som har fullført sine oppgaver og hvilke oppgaver som fortsatt er utestående.
-- Endre prioriteten eller fordele oppgaver på nytt, dersom noen ikke kan utføre sin oppgave i tide.
 
-# Brukerhistorie 2: Innkjøp og felles kalender
+# User Story 2: Shopping and Shared Calendar
+Emil is also moving into a shared house and wants an app to keep track of shared purchases and plan social activities, so that duplicate purchases can be avoided, and it's easy to plan group dinners or meetings.
 
-Emil skal også flytte inn i et kollektiv og ønsker en app til å holde oversikt over felles innkjøp og planlegge sosiale aktiviteter,  
-slik at man kan unngå dobbeltkjøp av varer og enkelt planlegge felles middager eller møter.
+### Important to see:
+- An overview of who has purchased necessary shared items (like toilet paper and cleaning supplies), so that duplicate purchases are avoided.
+- A shared calendar with planned social activities, like dinners or group meetings.
 
-### Viktig å kunne se:
-- En oversikt over hvem som har kjøpt inn nødvendige fellesvarer (som toalettpapir og vaskemiddel), slik at vi unngår dobbeltkjøp.
-- En felles kalender med planlagte sosiale aktiviteter, som middager eller fellesmøter.
-
-### Viktig å kunne gjøre:
-- Registrere innkjøp av fellesvarer, slik at det er lett å se hvem som har kjøpt hva, og når det ble kjøpt.
-- Legge til og redigere arrangementer i den felles kalenderen, for eksempel fellesmiddager, slik at alle er oppdatert på hva som skjer.
-- Invitere beboerne til arrangementer og få bekreftelser på deltakelse.
+### Important to do:
+- Register purchases of shared items so that it's easy to see who bought what, and when it was bought.
+- Add and edit events in the shared calendar, like group dinners, so everyone is updated on what’s happening.
+- Invite housemates to events and get confirmations on participation.
