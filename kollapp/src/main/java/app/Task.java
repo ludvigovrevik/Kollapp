@@ -6,7 +6,6 @@ import java.time.format.DateTimeFormatter;
 /**
  * Represents a task in the to-do list.
  */
-
 public class Task {
     private String description;
     private boolean isCompleted;
@@ -19,7 +18,7 @@ public class Task {
      * @param dateTime The date specified with the task.
      */
     public Task(String description, LocalDate dateTime) {
-        this.description = description;
+        this.description = description.trim();
         this.dateTime = dateTime;
         this.isCompleted = false;
     }
@@ -29,7 +28,6 @@ public class Task {
      * 
      * @param description The description of the task.
      */
-
     public Task(String description) {
         this.description = description;
         this.isCompleted = false;
@@ -45,11 +43,18 @@ public class Task {
     }
 
     /**
-     * Sets the description of the task.
+     * Gets the date of the task.
      * 
+     * @return The date of the task.
+     */
+    public LocalDate getDateTime() {
+        return dateTime;
+    }
+
+    /**
+     * Sets the description of the task.
      * @param description The description of the task.
      */
-
     public void setDescription(String description) {
         this.description = description;
     }
@@ -59,7 +64,6 @@ public class Task {
      * 
      * @return The isCompleted status of the task.
      */
-
     public boolean isCompleted() {
         return isCompleted;
     }
@@ -69,7 +73,6 @@ public class Task {
      * 
      * @param completed The isCompleted status of the task.
      */
-
     public void setCompleted(boolean completed) {
         isCompleted = completed;
     }
@@ -79,12 +82,13 @@ public class Task {
      * 
      *  return text representation of the task with the date if it exists.
      */
-
     @Override
     public String toString() {
+        // If the date is not set, return the description only
         if (dateTime == null) {
             return description; 
         }
+        // Format the date in MMM dd, yyyy format
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
         return description + "   " + dateTime.format(formatter);
     }

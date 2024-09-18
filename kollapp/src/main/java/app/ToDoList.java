@@ -13,7 +13,6 @@ import javafx.collections.ObservableList;
 /**
  * Represents a to-do list that contains tasks.
  */
-
 public class ToDoList {
 
     private ObservableList<Task> tasks;
@@ -58,11 +57,10 @@ public class ToDoList {
     /**
      * Saves the tasks in the to-do list to a file.
      */
-
-    private void saveTasksToFile() {
+    public void saveTasksToFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(SAVE_STATE_FILE))) {
             for (Task task : tasks) {
-                writer.write(task.toString());
+                writer.write(task.getDescription() + "|" + (task.getDateTime() != null ? task.getDateTime().toString() : "null"));
                 writer.newLine();
             }
         } catch (IOException e) {
@@ -73,12 +71,18 @@ public class ToDoList {
     /**
      * Loads tasks from a file into the to-do list.
      */
-
     private void loadTasksFromFile() {
         try (Scanner scanner = new Scanner(new File(SAVE_STATE_FILE))){
+            // Read each line from the file and create a task object
             while (scanner.hasNext()) {
-                String taskDescription = scanner.nextLine();
-                Task task = new Task(taskDescription);
+                String line  = scanner.nextLine();
+                String[] parts = line.split("\\|");
+
+                String taskDescription = parts[0];
+
+                LocalDate dateTime = "null".equals(parts[1]) ? null : LocalDate.parse(parts[1]);
+
+                Task task = new Task(taskDescription, dateTime);
                 tasks.add(task);
             }
         } catch (Exception e) {
@@ -106,6 +110,7 @@ public class ToDoList {
      * @return An unmodifiable list of tasks.
      */
     public ObservableList<Task> getTasks() {
-        return tasks; // You might return an unmodifiable list depending on your needs
+        // Return an unmodifiable list to prevent external modification
+        return tasks;
     }
 }
