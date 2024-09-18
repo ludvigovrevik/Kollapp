@@ -10,12 +10,18 @@ import java.util.Scanner;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * Represents a to-do list that contains tasks.
+ */
+
 public class ToDoList {
 
     private ObservableList<Task> tasks;
     private static final String SAVE_STATE_FILE = "save_state.txt";
 
-    // Constructor
+    /**
+     * Constructs a new to-do list and loads tasks from a file.
+     */
     public ToDoList() {
         tasks = FXCollections.observableArrayList();
         loadTasksFromFile();
@@ -49,6 +55,10 @@ public class ToDoList {
         saveTasksToFile();
     }
 
+    /**
+     * Saves the tasks in the to-do list to a file.
+     */
+
     private void saveTasksToFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(SAVE_STATE_FILE))) {
             for (Task task : tasks) {
@@ -59,6 +69,10 @@ public class ToDoList {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Loads tasks from a file into the to-do list.
+     */
 
     private void loadTasksFromFile() {
         try (Scanner scanner = new Scanner(new File(SAVE_STATE_FILE))){
