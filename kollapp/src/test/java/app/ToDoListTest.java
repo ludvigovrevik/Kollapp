@@ -5,14 +5,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.AfterEach;
-
 class ToDoListTest {
 
     private ToDoList toDoList;
     private Task task;
-
-    //filler-date
 
     @BeforeEach
     void setUp() {
