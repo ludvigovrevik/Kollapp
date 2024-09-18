@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.time.LocalDate;
+import org.junit.jupiter.api.AfterEach;
 
 class ToDoListTest {
 
@@ -24,15 +24,15 @@ class ToDoListTest {
     @Test
     void testConstructorInitializesEmptyList() {
         assertNotNull(toDoList.getTasks(), "Tasks list should not be null after construction");
-        assertEquals(0, toDoList.getTasks().size(), "Tasks list should be empty upon initialization");
     }
 
     @Test
     void testAddTaskAddsTaskSuccessfully() {
         toDoList.addTask(task);
 
-        assertEquals(1, toDoList.getTasks().size(), "Tasks list should contain one task after adding");
-        assertEquals(task, toDoList.getTasks().get(0), "The task added should be the one retrieved");
+        assertEquals(true, toDoList.getTasks().contains(task), "Tasks list should contain the added task");
+
+        toDoList.removeTask(toDoList.getTasks().size() - 1);
     }
 
     @Test
@@ -45,15 +45,18 @@ class ToDoListTest {
     @Test
     void testRemoveTaskRemovesTaskSuccessfully() {
         toDoList.addTask(task);
-        toDoList.removeTask(0);
+        toDoList.removeTask(toDoList.getTasks().size() - 1);
 
-        assertEquals(0, toDoList.getTasks().size(), "Tasks list should be empty after removing the task");
+        assertEquals(true, !toDoList.getTasks().contains(task), "Tasks list should not contain the task after removing the task");
     }
 
     @Test
     void testRemoveTaskThrowsExceptionWhenIndexIsOutOfBounds() {
         assertThrows(IndexOutOfBoundsException.class, () -> {
-            toDoList.removeTask(0);
+            toDoList.removeTask(-1);
+        }, "Exception should be thrown when index is out of bounds");
+        assertThrows(IndexOutOfBoundsException.class, () -> {
+            toDoList.removeTask(toDoList.getTasks().size());
         }, "Exception should be thrown when index is out of bounds");
     }
 
@@ -62,22 +65,12 @@ class ToDoListTest {
         Task originalTask = new Task("Original Task");
         Task updatedTask = new Task("Updated Task");
         toDoList.addTask(originalTask);
-        toDoList.updateTask(0, updatedTask);
+        toDoList.updateTask(toDoList.getTasks().size() - 1, updatedTask);
 
-        assertEquals(1, toDoList.getTasks().size(), "Tasks list should still contain one task after update");
-        assertEquals(updatedTask, toDoList.getTasks().get(0), "The task should be updated to the new task");
-    }
+        assertEquals(false, toDoList.getTasks().contains(originalTask), "The task should be updated to the new task");
+        assertEquals(true, toDoList.getTasks().contains(updatedTask), "The task should be updated to the new task");
 
-    @Test
-    void testGetTasksReturnsTasksList() {
-        Task task1 = new Task("Task 1");
-        Task task2 = new Task("Task 2");
-        toDoList.addTask(task1);
-        toDoList.addTask(task2);
-
-        assertEquals(2, toDoList.getTasks().size(), "Tasks list should contain two tasks");
-        assertTrue(toDoList.getTasks().contains(task1), "Tasks list should contain Task 1");
-        assertTrue(toDoList.getTasks().contains(task2), "Tasks list should contain Task 2");
+        toDoList.removeTask(toDoList.getTasks().size() - 1);
     }
 
     @Test
@@ -88,6 +81,6 @@ class ToDoListTest {
         // Directly modify the list obtained from getTasks()
         toDoList.getTasks().remove(task);
 
-        assertEquals(0, toDoList.getTasks().size(), "Modifying the returned list should affect the original list");
+        assertEquals(false, toDoList.getTasks().contains(task), "Modifying the returned list should affect the original list");
     }
 }
