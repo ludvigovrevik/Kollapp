@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 import javafx.collections.FXCollections;
@@ -63,7 +64,8 @@ public class ToDoList {
         try (Scanner scanner = new Scanner(new File(SAVE_STATE_FILE))){
             while (scanner.hasNext()) {
                 String taskDescription = scanner.nextLine();
-                Task task = new Task(taskDescription);
+                LocalDate dateTime = LocalDate.of(2024, 9, 18);
+                Task task = new Task(taskDescription, dateTime);
                 tasks.add(task);
             }
             

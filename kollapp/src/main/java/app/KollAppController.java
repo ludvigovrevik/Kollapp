@@ -1,6 +1,9 @@
 package app;
 
+import java.time.LocalDate;
+
 import javafx.fxml.FXML;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
@@ -11,6 +14,9 @@ public class KollAppController {
 
     @FXML
     private TextField taskInputField;
+
+    @FXML 
+    private DatePicker datePicker;
 
     private ToDoList toDoList;
 
@@ -25,10 +31,16 @@ public class KollAppController {
     public void handleAddTask() {
         if (!taskInputField.getText().isEmpty()) {
             String taskDescription = taskInputField.getText();
-            Task newTask = new Task(taskDescription);
+            LocalDate dateTime = datePicker.getValue();
+            Task newTask = new Task(taskDescription, dateTime);
+
             toDoList.addTask(newTask);
 
+
             taskInputField.clear();
+            // TODO:clear datePicker
+            datePicker.setValue(null);
+
         }
     }
 

@@ -5,15 +5,21 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDate;
+
 class ToDoListTest {
 
     private ToDoList toDoList;
     private Task task;
 
+    //filler-date
+    LocalDate dateTime = LocalDate.of(2024, 9, 18);
+
     @BeforeEach
     void setUp() {
+        
         toDoList = new ToDoList();
-        task = new Task("Test Task");
+        task = new Task("Test Task", this.dateTime);
     }
 
     @Test
@@ -54,8 +60,8 @@ class ToDoListTest {
 
     @Test
     void testUpdateTaskUpdatesTaskSuccessfully() {
-        Task originalTask = new Task("Original Task");
-        Task updatedTask = new Task("Updated Task");
+        Task originalTask = new Task("Original Task", this.dateTime);
+        Task updatedTask = new Task("Updated Task", this.dateTime);
         toDoList.addTask(originalTask);
         toDoList.updateTask(0, updatedTask);
 
@@ -65,8 +71,8 @@ class ToDoListTest {
 
     @Test
     void testGetTasksReturnsTasksList() {
-        Task task1 = new Task("Task 1");
-        Task task2 = new Task("Task 2");
+        Task task1 = new Task("Task 1", this.dateTime);
+        Task task2 = new Task("Task 2", this.dateTime);
         toDoList.addTask(task1);
         toDoList.addTask(task2);
 
@@ -77,7 +83,7 @@ class ToDoListTest {
 
     @Test
     void testGetTasksModificationAffectsOriginalList() {
-        Task task = new Task("Task");
+        Task task = new Task("Task", this.dateTime);
         toDoList.addTask(task);
 
         // Directly modify the list obtained from getTasks()
