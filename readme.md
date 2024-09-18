@@ -1,5 +1,8 @@
 # Project: KollApp
 
+## Eclipse Che
+[Press here to open this project in Eclipse Che](https://che.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2024/gr2409/gr2409/-/tree/master?new)
+
 ## Purpose
 
 This repository is for developing **KollApp**, a Java application created as part of the course **Informatikk Prosjektarbeid I - IT1901**.

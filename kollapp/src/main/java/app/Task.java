@@ -45,9 +45,9 @@ public class Task {
     @Override
     public String toString() {
         if (dateTime == null) {
-            return "• " + description; 
+            return description; 
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
-        return "• " + description + "   " + dateTime.format(formatter);
+        return description + "   " + dateTime.format(formatter);
     }
 }

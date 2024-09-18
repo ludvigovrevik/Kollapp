@@ -73,7 +73,6 @@ public class ToDoList {
                 Task task = new Task(taskDescription, dateTime);
                 tasks.add(task);
             }
-            
         } catch (Exception e) {
             e.printStackTrace();
         }
