@@ -11,7 +11,7 @@ public class Task {
 
     // Constructor
     public Task(String description, LocalDate dateTime) {
-        this.description = description;
+        this.description = description.trim();
         this.dateTime = dateTime;
         this.isCompleted = false;
     }
@@ -24,6 +24,10 @@ public class Task {
     // Getters and Setters
     public String getDescription() {
         return description;
+    }
+
+    public LocalDate getDateTime() {
+        return dateTime;
     }
 
     public void setDescription(String description) {

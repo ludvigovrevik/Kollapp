@@ -37,6 +37,6 @@
       </MenuBar>
       <Button layoutX="330.0" layoutY="347.0" mnemonicParsing="false" onAction="#handleRemoveTask" prefHeight="26.0" prefWidth="56.0" text="-" />
       <DatePicker fx:id="datePicker" layoutX="13.0" layoutY="348.0" />
-      <Button layoutX="209.0" layoutY="348.0" mnemonicParsing="false" onAction="#handleEditTask" prefHeight="26.0" prefWidth="109.0" text="Endre" />
+      <Button layoutX="209.0" layoutY="348.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="109.0" text="Endre" />
    </children>
 </AnchorPane>
