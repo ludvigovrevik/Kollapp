@@ -38,9 +38,7 @@ public class KollAppController {
 
 
             taskInputField.clear();
-            // TODO:clear datePicker
             datePicker.setValue(null);
-
         }
     }
 

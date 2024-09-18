@@ -7,12 +7,11 @@ import org.junit.jupiter.api.Test;
 
 class TaskTest {
     // filler-date
-    private LocalDate dateTime = LocalDate.of(2024, 9, 18);
-
+    
     @Test
     void testTaskInitialization() {
         String description = "Complete the report";
-        Task task = new Task(description, this.dateTime);
+        Task task = new Task(description);
 
         Assertions.assertEquals(description, task.getDescription(), "Description should match the input");
         Assertions.assertFalse(task.isCompleted(), "New task should not be completed");
@@ -20,7 +19,7 @@ class TaskTest {
 
     @Test
     void testSetDescription() {
-        Task task = new Task("Initial Description", this.dateTime);
+        Task task = new Task("Initial Description");
         String newDescription = "Updated Description";
         task.setDescription(newDescription);
 
@@ -29,7 +28,7 @@ class TaskTest {
 
     @Test
     void testSetCompleted() {
-        Task task = new Task("Complete unit tests", this.dateTime);
+        Task task = new Task("Complete unit tests");
         task.setCompleted(true);
 
         Assertions.assertTrue(task.isCompleted(), "Task should be marked as completed");
