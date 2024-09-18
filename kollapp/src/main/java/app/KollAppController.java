@@ -31,4 +31,16 @@ public class KollAppController {
             taskInputField.clear();
         }
     }
+
+    @FXML
+    public void handleRemoveTask() {
+        int selectedIndex = taskListView.getSelectionModel().getSelectedIndex();
+    
+    // Skjekker om en task er selected
+    if (selectedIndex >= 0) {
+        toDoList.removeTask(selectedIndex);
+    } else {
+        System.out.println("Ingen oppgave var markert");
+    }
+    }
 }
