@@ -1,4 +1,4 @@
-# AI Tools Used in the Group Assignement 1
+# AI Tools Used in the Group Assignment 1
 
 ## 1. ChatGPT
 Description: ChatGPT is a large language model developed by OpenAI, designed to assist in natural language processing tasks, generate text, and provide insights based on user inputs.
