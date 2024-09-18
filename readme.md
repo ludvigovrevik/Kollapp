@@ -1,6 +1,6 @@
 # Project: KollApp
 
-##Eclipse Che
+## Eclipse Che
 [Press here to open this project in Eclipse Che](https://che.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2024/gr2409/gr2409/-/tree/master?new)
 
 ## Purpose
