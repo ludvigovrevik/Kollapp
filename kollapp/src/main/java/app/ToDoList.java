@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 import javafx.collections.FXCollections;
@@ -66,7 +67,6 @@ public class ToDoList {
                 Task task = new Task(taskDescription);
                 tasks.add(task);
             }
-            
         } catch (Exception e) {
             e.printStackTrace();
         }

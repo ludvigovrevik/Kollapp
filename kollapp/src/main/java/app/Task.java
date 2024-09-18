@@ -1,10 +1,21 @@
 package app;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+
 public class Task {
     private String description;
     private boolean isCompleted;
+    private LocalDate dateTime;
 
     // Constructor
+    public Task(String description, LocalDate dateTime) {
+        this.description = description;
+        this.dateTime = dateTime;
+        this.isCompleted = false;
+    }
+
     public Task(String description) {
         this.description = description;
         this.isCompleted = false;
@@ -29,6 +40,10 @@ public class Task {
 
     @Override
     public String toString() {
-        return "• " + description;
+        if (dateTime == null) {
+            return description; 
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
+        return description + "   " + dateTime.format(formatter);
     }
 }
