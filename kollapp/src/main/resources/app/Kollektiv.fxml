@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="427.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.KollAppController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="427.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.KollAppController">
    <children>
        <ListView fx:id="taskListView" layoutX="12.0" layoutY="39.0" prefHeight="232.0" prefWidth="375.0" />
       <Button fx:id="Test" layoutX="329.0" layoutY="281.0" mnemonicParsing="false" onAction="#handleAddTask" prefHeight="57.0" prefWidth="57.0" text="+">
@@ -35,7 +35,8 @@
           </Menu>
         </menus>
       </MenuBar>
-      <Button layoutX="329.0" layoutY="348.0" mnemonicParsing="false" onAction="#handleRemoveTask" prefHeight="26.0" prefWidth="56.0" text="-" />
-      <DatePicker layoutX="134.0" layoutY="349.0" fx:id="datePicker" />
+      <Button layoutX="330.0" layoutY="347.0" mnemonicParsing="false" onAction="#handleRemoveTask" prefHeight="26.0" prefWidth="56.0" text="-" />
+      <DatePicker fx:id="datePicker" layoutX="13.0" layoutY="348.0" />
+      <Button layoutX="209.0" layoutY="348.0" mnemonicParsing="false" onAction="#handleRemoveTask" prefHeight="26.0" prefWidth="109.0" text="Endre" />
    </children>
 </AnchorPane>
