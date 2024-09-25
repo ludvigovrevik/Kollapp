@@ -1,4 +1,7 @@
-module app {
+module ui {
+    requires core;
+    requires javafx.controls;
+    requires javafx.fxml;
 
-    opens app to javafx.graphics, javafx.fxml;
+    opens KollApp to javafx.graphics, javafx.fxml;
 }

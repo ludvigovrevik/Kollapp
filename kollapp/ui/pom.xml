@@ -2,7 +2,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>gr2409</groupId>
-    <artifactId>kollapp</artifactId>
+    <artifactId>modules-ui</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>
@@ -81,7 +81,7 @@
 		        <version>3.1.2</version>
                 <configuration>
                     <argLine>
-                    --add-opens app/app=ALL-UNNAMED --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
+                    --add-opens ui/ui=ALL-UNNAMED --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
                     </argLine>
                 </configuration>
 	        </plugin>
@@ -93,7 +93,7 @@
                 <!-- Default configuration for running -->
                 <!-- Usage: mvn javafx:run -->
                 <configuration>
-                    <mainClass>app.KollApp</mainClass>
+                    <mainClass>ui/ui.ui</mainClass>
                 </configuration>
             </plugin>
         </plugins>
