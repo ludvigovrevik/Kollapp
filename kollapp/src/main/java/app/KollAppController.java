@@ -97,9 +97,9 @@ public class KollAppController {
             });
             
             // Add elements to the grid
-            taskGridView.add(taskLabel, 0, i);
-            taskGridView.add(dateLabel, 1, i);
-            taskGridView.add(checkBox, 2, i);
+            taskGridView.add(checkBox, 0, i);
+            taskGridView.add(taskLabel, 1, i);
+            taskGridView.add(dateLabel, 2, i);
         }
     } 
 
