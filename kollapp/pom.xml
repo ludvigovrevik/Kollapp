@@ -93,9 +93,9 @@
                 <version>0.0.8</version>
                 <!-- Default configuration for running -->
                 <!-- Usage: mvn javafx:run -->
-                <configuration>
-                    <mainClass>app.KollApp</mainClass>
-                </configuration>
+                <!-- <configuration>
+                    <mainClass>ui.KollApp</mainClass>
+                </configuration> -->
             </plugin>
         </plugins>
     </build>

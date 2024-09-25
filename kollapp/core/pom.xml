@@ -2,14 +2,15 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>gr2409</groupId>
-    <artifactId>modules-core</artifactId>
+    <artifactId>core</artifactId>
+    <packaging>jar</packaging>
     <version>0.0.1-SNAPSHOT</version>
 
     <parent>
         <groupId>gr2409</groupId>
         <artifactId>kollapp</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>..</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <!-- <properties>
@@ -19,6 +20,12 @@
     </properties> -->
 
     <dependencies>
+    
+        <dependency>
+            <groupId>gr2409</groupId>
+            <artifactId>ui</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <!-- junit testing with jupiter -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
