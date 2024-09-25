@@ -14,7 +14,6 @@ import javafx.collections.ObservableList;
  * Represents a to-do list that contains tasks.
  */
 public class ToDoList {
-
     private ObservableList<Task> tasks;
     private static final String SAVE_STATE_FILE = "save_state.txt";
 
