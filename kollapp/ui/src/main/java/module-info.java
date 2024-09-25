@@ -3,5 +3,5 @@ module ui {
     requires javafx.controls;
     requires javafx.fxml;
 
-    opens KollApp to javafx.graphics, javafx.fxml;
+    opens ui to javafx.graphics, javafx.fxml;
 }

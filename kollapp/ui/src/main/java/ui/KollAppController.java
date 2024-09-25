@@ -1,4 +1,4 @@
-package app;
+package ui;
 
 import java.time.LocalDate;
 
@@ -8,6 +8,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.util.StringConverter;
+
+import core.Task;
+import core.ToDoList;
 
 /**
  * Controller class for the KollApp application.
