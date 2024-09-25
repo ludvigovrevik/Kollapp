@@ -9,7 +9,7 @@
         <groupId>gr2409</groupId>
         <artifactId>kollapp</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../pom.xm</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <dependencies>
@@ -104,7 +104,7 @@
                 <!-- Default configuration for running -->
                 <!-- Usage: mvn javafx:run -->
                 <configuration>
-                    <mainClass>ui/ui.ui</mainClass>
+                    <mainClass>ui.KollApp</mainClass>
                 </configuration>
             </plugin>
         </plugins>
