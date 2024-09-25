@@ -1,12 +1,17 @@
 package app;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldListCell;
+import javafx.scene.layout.GridPane;
 import javafx.util.StringConverter;
 
 /**
@@ -15,7 +20,7 @@ import javafx.util.StringConverter;
 public class KollAppController {
 
     @FXML
-    private ListView<Task> taskListView;
+    private GridPane taskGridView;
 
     @FXML
     private TextField taskInputField;
@@ -33,45 +38,9 @@ public class KollAppController {
     public void initialize() {
     toDoList = new ToDoList();
 
-    taskListView.setItems(toDoList.getTasks());
-    taskListView.setEditable(true);
-    
-    // Set up the ListView to display the tasks with a bullet point and date (if available)
-    taskListView.setCellFactory(TextFieldListCell.forListView(new StringConverter<Task>() {
-
-        // toString() returns the text that is displayed in the ListView
-        @Override
-        public String toString(Task task) {
-            String datePart = (task.getDateTime() != null ? "  |  " + task.getDateTime().toString() : "");
-            return "• " + task.getDescription() + datePart;
-        }
-    
-        // Method is called when the user has finished editing the task description. 
-        // It updates the task object with the new description and saves the updated task list to the file.
-        @Override
-        public Task fromString(String string) {
-            
-            // Method inspired by this solution from Stack Overflow:
-            // https://stackoverflow.com/questions/13264017/getting-selected-element-from-listview
-            Task selectedTask = taskListView.getSelectionModel().getSelectedItem();
-            if (selectedTask != null) {
-                String newDescription = string.trim();
-                if (newDescription.startsWith("• ")) {
-                    newDescription = newDescription.substring(2).trim();
-                }
-
-                // Remove any part of the string that looks like a date after the description
-                int dateIndex = newDescription.indexOf("|");
-                if (dateIndex != -1) {
-                    newDescription = newDescription.substring(0, dateIndex).trim();
-                }
-
-                selectedTask.setDescription(newDescription);
-                toDoList.saveTasksToFile();
-                }
-                return selectedTask;
-            }
-        }));
+        
+        updateGrid();
+        
     }
 
     /**
@@ -88,26 +57,58 @@ public class KollAppController {
             Task newTask = new Task(taskDescription, dateTime);
             
             toDoList.addTask(newTask);
-
             taskInputField.clear();
             datePicker.setValue(null);
+
+            // update grid 
+            updateGrid();
         }
     }
+
+    @FXML
+    public void updateGrid() {
+        // Clear grid view before retrieving tasks
+        taskGridView.getChildren().clear();
+        ObservableList<Task> tasks = toDoList.getTasks();
+        
+        // Iterate through all tasks
+        for (int i = 0; i < tasks.size(); i++) {
+            Task currentTask = tasks.get(i);
+            String taskDescription = currentTask.getDescription();
+            
+            // check if date is empty
+            Label dateLabel = new Label(""); 
+            if (currentTask.getDateTime() != null) {
+                LocalDate dateTime = currentTask.getDateTime();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
+                dateLabel.setText(dateTime.format(formatter));
+            }
+            Label taskLabel = new Label(taskDescription);
+            
+            CheckBox checkBox = new CheckBox();
+            
+            // Add event listener to the CheckBox
+            checkBox.setOnAction(event -> {
+                if (checkBox.isSelected()) {
+                    // Remove the task when checkbox is selected
+                    toDoList.removeTask(currentTask);
+                    updateGrid();  // Refresh the grid
+                }
+            });
+            
+            // Add elements to the grid
+            taskGridView.add(taskLabel, 0, i);
+            taskGridView.add(dateLabel, 1, i);
+            taskGridView.add(checkBox, 2, i);
+        }
+    } 
+
+
 
     /**
      * Handles the action of removing a task.
      * This method is called when the "-" button from the UI is clicked.
      * It removes the selected task from the to-do list.
      */
-    @FXML
-    public void handleRemoveTask() {
-        int selectedIndex = taskListView.getSelectionModel().getSelectedIndex();
     
-        // Check if a task is selected before removing it.
-        if (selectedIndex >= 0) {
-            toDoList.removeTask(selectedIndex);
-        } else {
-            System.out.println("No task selected.");
-        }
-    }
 }
