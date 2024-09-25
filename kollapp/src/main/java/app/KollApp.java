@@ -15,7 +15,7 @@ public class KollApp extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Kollektiv.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("LoginScreen.fxml"));
         stage.setTitle("KollApp");
         Parent parent = fxmlLoader.load();
         stage.setScene(new Scene(parent));

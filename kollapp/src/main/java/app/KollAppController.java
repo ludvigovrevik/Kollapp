@@ -110,4 +110,9 @@ public class KollAppController {
             System.out.println("No task selected.");
         }
     }
+
+    // TODO implement setUser method
+    public void setUser(User user) {
+        // TODO
+    }
 }
