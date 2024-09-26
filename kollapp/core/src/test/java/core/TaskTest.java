@@ -1,6 +1,4 @@
-package app;
-
-import java.time.LocalDate;
+package core;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
