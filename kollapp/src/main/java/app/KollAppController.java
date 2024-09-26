@@ -113,6 +113,5 @@ public class KollAppController {
 
     // TODO implement setUser method
     public void setUser(User user) {
-        // TODO
     }
 }
