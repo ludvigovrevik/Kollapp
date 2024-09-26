@@ -52,6 +52,13 @@ public class ToDoList {
         tasks.remove(index);
         saveTasksToFile();
     }
+    public void removeTask(Task task) {
+        if (!tasks.contains(task)) {
+            throw new IndexOutOfBoundsException("Index is out of range.");
+        }
+        tasks.remove(task);
+        saveTasksToFile();
+    }
 
     /**
      * Saves the tasks in the to-do list to a file.
