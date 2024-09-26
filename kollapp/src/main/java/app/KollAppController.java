@@ -111,4 +111,15 @@ public class KollAppController {
      * It removes the selected task from the to-do list.
      */
     
+        // Check if a task is selected before removing it.
+        if (selectedIndex >= 0) {
+            toDoList.removeTask(selectedIndex);
+        } else {
+            System.out.println("No task selected.");
+        }
+    }
+
+    // TODO implement setUser method
+    public void setUser(User user) {
+    }
 }
