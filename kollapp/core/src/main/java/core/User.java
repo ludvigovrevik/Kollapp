@@ -1,4 +1,4 @@
-package app;
+package core;
 
 public class User {
     private String username;

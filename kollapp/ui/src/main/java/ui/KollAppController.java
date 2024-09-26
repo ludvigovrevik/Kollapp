@@ -8,14 +8,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.GridPane;
-import javafx.util.StringConverter;
 
 import core.Task;
 import core.ToDoList;
+import core.User;
 
 /**
  * Controller class for the KollApp application.
@@ -106,23 +104,10 @@ public class KollAppController {
         }
     } 
 
-
-
-    /**
-     * Handles the action of removing a task.
-     * This method is called when the "-" button from the UI is clicked.
-     * It removes the selected task from the to-do list.
-     */
-    
-        // Check if a task is selected before removing it.
-        if (selectedIndex >= 0) {
-            toDoList.removeTask(selectedIndex);
-        } else {
-            System.out.println("No task selected.");
-        }
-    }
-
     // TODO implement setUser method
     public void setUser(User user) {
+        System.out.println("User set: " + user.getUsername());
     }
+
 }
+
