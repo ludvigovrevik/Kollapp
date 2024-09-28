@@ -7,16 +7,18 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.LoginController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.RegisterController">
    <children>
-      <PasswordField layoutX="262.0" layoutY="300.0" prefHeight="26.0" prefWidth="241.0" />
-      <TextField layoutX="261.0" layoutY="180.0" prefHeight="26.0" prefWidth="242.0" />
+      <TextField fx:id="usernameField" layoutX="262.0" layoutY="180.0" prefHeight="26.0" prefWidth="242.0" />
+      <PasswordField fx:id="passwordField" layoutX="262.0" layoutY="239.0" prefHeight="26.0" prefWidth="242.0" />
+      <PasswordField fx:id="confirmPasswordField" layoutX="262.0" layoutY="300.0" prefHeight="26.0" prefWidth="242.0" />
       <Label layoutX="262.0" layoutY="220.0" text="Type password" />
       <Label layoutX="262.0" layoutY="282.0" text="Retype Password" />
-      <Button layoutX="394.0" layoutY="344.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="109.0" text="Back" />
-      <Button layoutX="262.0" layoutY="344.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="110.0" text="Register" />
-      <PasswordField layoutX="262.0" layoutY="239.0" prefHeight="26.0" prefWidth="242.0" />
+      <Button onAction="#navigateToLoginScreen" layoutX="394.0" layoutY="344.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="109.0" text="Back" />
+      <Button onAction="#registerUser" layoutX="262.0" layoutY="344.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="110.0" text="Register" />
       <Label layoutX="260.0" layoutY="162.0" text="Username" />
+      <Label fx:id="errorMessage" layoutX="260.0" layoutY="390.0" style="-fx-font-size: 16; -fx-text-fill: red;">
+      </Label>
       <Label layoutX="313.0" layoutY="105.0" prefHeight="42.0" prefWidth="141.0" text="Register">
          <font>
             <Font name="SansSerif Bold" size="33.0" />

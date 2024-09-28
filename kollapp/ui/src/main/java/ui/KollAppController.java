@@ -2,6 +2,7 @@ package ui;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -14,6 +15,7 @@ import javafx.scene.layout.GridPane;
 import core.Task;
 import core.ToDoList;
 import core.User;
+import persistence.UserHandler;
 
 /**
  * Controller class for the KollApp application.
@@ -37,11 +39,8 @@ public class KollAppController {
      * It creates a new to-do list and sets up the ListView to display the tasks.
      */
     public void initialize() {
-    toDoList = new ToDoList();
-
-        
+        toDoList = new ToDoList();
         updateGrid();
-        
     }
 
     /**
@@ -70,7 +69,7 @@ public class KollAppController {
     public void updateGrid() {
         // Clear grid view before retrieving tasks
         taskGridView.getChildren().clear();
-        ObservableList<Task> tasks = toDoList.getTasks();
+        List<Task> tasks = toDoList.getTasks();
         
         // Iterate through all tasks
         for (int i = 0; i < tasks.size(); i++) {
@@ -106,7 +105,7 @@ public class KollAppController {
 
     // TODO implement setUser method
     public void setUser(User user) {
-        System.out.println("User set: " + user.getUsername());
+        
     }
 
 }
