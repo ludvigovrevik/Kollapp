@@ -35,8 +35,7 @@ public class LoginController {
 
                     KollAppController controller = fxmlLoader.getController();
 
-                    // TODO pass the user to the controller
-                    controller.setUser(user); // TODO implement setUser method
+                    controller.loadToDoList(user);
 
                     Scene scene = new Scene(parent);
                     Stage stage = (Stage) usernameField.getScene().getWindow();

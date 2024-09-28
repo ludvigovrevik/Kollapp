@@ -15,6 +15,7 @@ import javafx.scene.layout.GridPane;
 import core.Task;
 import core.ToDoList;
 import core.User;
+import persistence.ToDoListHandler;
 import persistence.UserHandler;
 
 /**
@@ -33,15 +34,7 @@ public class KollAppController {
 
     private ToDoList toDoList;
 
-    /**
-     * Initializes the controller class.
-     * This method is called automatically after the FXML file has been loaded.
-     * It creates a new to-do list and sets up the ListView to display the tasks.
-     */
-    public void initialize() {
-        toDoList = new ToDoList();
-        updateGrid();
-    }
+    private User user;
 
     /**
      * Handles the action of adding a new task.
@@ -59,7 +52,7 @@ public class KollAppController {
             toDoList.addTask(newTask);
             taskInputField.clear();
             datePicker.setValue(null);
-
+            ToDoListHandler.updateToDoList(user, toDoList);
             // update grid 
             updateGrid();
         }
@@ -101,11 +94,14 @@ public class KollAppController {
             taskGridView.add(taskLabel, 1, i);
             taskGridView.add(dateLabel, 2, i);
         }
-    } 
+    }
 
     // TODO implement setUser method
-    public void setUser(User user) {
-        
+    public void loadToDoList(User user) {
+        this.toDoList = ToDoListHandler.loadToDoList(user);
+        System.out.println(toDoList);
+        this.user = user;
+        updateGrid();
     }
 
 }

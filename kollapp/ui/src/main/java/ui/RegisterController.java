@@ -12,11 +12,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import persistence.ToDoListHandler;
 import persistence.UserHandler;
 import core.User;
 
 public class RegisterController {
-    
+
     @FXML
     private TextField usernameField;
 
@@ -53,6 +54,7 @@ public class RegisterController {
         if (!UserHandler.userExists(username) && UserHandler.confirmNewValidUser(username, password, confirmPassword)) {
             User user = new User(username, password);
             UserHandler.saveUser(user);
+            ToDoListHandler.assignToDoList(user);
             System.out.println("User registered successfully");
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Kollektiv.fxml"));
