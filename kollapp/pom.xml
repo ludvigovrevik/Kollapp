@@ -55,7 +55,6 @@
                 <version>${junit.version}</version>
                 <scope>test</scope>
             </dependency>
-
             <!-- TestFX dependencies -->
             <dependency>
                 <groupId>org.testfx</groupId>
@@ -77,6 +76,8 @@
                 <version>${hamcrest.version}</version>
                 <scope>test</scope>
             </dependency>
+
+            
         </dependencies>
     </dependencyManagement>
 
