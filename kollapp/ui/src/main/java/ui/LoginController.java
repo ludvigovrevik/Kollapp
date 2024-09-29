@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -23,31 +24,42 @@ public class LoginController {
     private PasswordField passwordField;
 
     @FXML
+    private Label loginErrorMessage;
+
+    @FXML
     private void handleLoginButtonAction() throws Exception {
         String username = usernameField.getText();
         String password = passwordField.getText();
+
         if (UserHandler.userExists(username)) {
             User user = UserHandler.loadUser(username, password);
+
             if (user != null) {
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Kollektiv.fxml"));
-                    Parent parent = fxmlLoader.load();
-
-                    KollAppController controller = fxmlLoader.getController();
-
-                    controller.loadToDoList(user);
-
-                    Scene scene = new Scene(parent);
-                    Stage stage = (Stage) usernameField.getScene().getWindow();
-                    stage.setScene(scene);
-                    stage.show();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                loadKollektivScene(user);
+            } else {
+                loginErrorMessage.setText("Incorrect password. Please try again.");
             }
         } else {
-            System.out.println("No such user exists.");
+            loginErrorMessage.setText("No such user exists.");
+        }
+    }
+
+    private void loadKollektivScene(User user) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Kollektiv.fxml"));
+            Parent parent = fxmlLoader.load();
+
+            KollAppController controller = fxmlLoader.getController();
+            controller.innitializeToDoList(user); 
+
+            Scene scene = new Scene(parent);
+            Stage stage = (Stage) usernameField.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            loginErrorMessage.setText("Failed to load the next scene.");
         }
     }
 

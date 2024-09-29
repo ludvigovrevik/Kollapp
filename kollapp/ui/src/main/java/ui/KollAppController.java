@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
@@ -16,7 +15,6 @@ import core.Task;
 import core.ToDoList;
 import core.User;
 import persistence.ToDoListHandler;
-import persistence.UserHandler;
 
 /**
  * Controller class for the KollApp application.
@@ -58,6 +56,7 @@ public class KollAppController {
         }
     }
 
+
     @FXML
     public void updateGrid() {
         // Clear grid view before retrieving tasks
@@ -85,6 +84,7 @@ public class KollAppController {
                 if (checkBox.isSelected()) {
                     // Remove the task when checkbox is selected
                     toDoList.removeTask(currentTask);
+                    ToDoListHandler.updateToDoList(user, toDoList);
                     updateGrid();  // Refresh the grid
                 }
             });
@@ -96,10 +96,8 @@ public class KollAppController {
         }
     }
 
-    // TODO implement setUser method
-    public void loadToDoList(User user) {
+    public void innitializeToDoList(User user) {
         this.toDoList = ToDoListHandler.loadToDoList(user);
-        System.out.println(toDoList);
         this.user = user;
         updateGrid();
     }
