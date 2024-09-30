@@ -16,7 +16,7 @@
       <Button onAction="#handleLoginButtonAction" layoutX="262.0" layoutY="344.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="110.0" text="Login" />
       <Button onAction="#handleRegisterButtonAction" layoutX="394.0" layoutY="344.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="109.0" text="Register" />
       <Label fx:id="loginErrorMessage" layoutX="260.0" layoutY="390.0" style="-fx-font-size: 16; -fx-text-fill: red;"></Label>
-      <Label layoutX="337.0" layoutY="168.0" prefHeight="42.0" prefWidth="90.0" text="Login"/>
+      <Label layoutX="337.0" layoutY="168.0" prefHeight="42.0" prefWidth="90.0" text="Login">
          <font>
             <Font name="SansSerif Bold" size="33.0" />
          </font>
