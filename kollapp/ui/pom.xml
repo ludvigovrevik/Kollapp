@@ -21,6 +21,13 @@
             <version>${project.version}</version>
         </dependency>
 
+        <!-- Dependency on persistence module -->
+        <dependency>
+            <groupId>gr2409</groupId>
+            <artifactId>persistence</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <!-- JavaFX dependencies -->
         <dependency>
             <groupId>org.openjfx</groupId>

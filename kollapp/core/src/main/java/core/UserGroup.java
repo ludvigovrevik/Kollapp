@@ -3,52 +3,62 @@ package core;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserGroup {
-    private List<User> users;
 
-    /**
-     * Constructs a new UserGroup with an empty list of users.
-     */
+public class UserGroup implements java.io.Serializable {
+    private String groupName;
+    private List<String> users = new ArrayList<>();
+    private ToDoList toDoList = new ToDoList();
+    
+
+    // Default constructor required for Jackson
     public UserGroup() {
-        this.users = new ArrayList<>(); 
     }
 
-    /**
-     * Retrieves the list of users in the user group.
-     *
-     * @return a list of User objects representing the users in the group.
-     */
-    public List<User> getUsers() {
+    public UserGroup(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+    
+    public List<String> getUsers() {
         return users;
     }
 
-    /**
-     * Checks if the specified user is part of the user group.
-     *
-     * @param user the user to check for membership in the group
-     * @return true if the user is part of the group, false otherwise
-     * @throws IllegalArgumentException if the user is null
-     */
-    public void addUser(User user) {
-        if (user == null) {
-            throw new IllegalArgumentException("User cannot be null");
-        }
-        users.add(user);
+    public ToDoList getToDoList() {
+        return toDoList;
+    }
+    
+    public int getNumberOfUsers() {
+        return users.size();
     }
 
-    /**
-     * Removes a user from the user group.
-     *
-     * @param user the user to be removed
-     * @throws IllegalArgumentException if the user is null or does not exist in the group
-     */
-    public void removeUser(User user) {
-        if (user == null) {
-            throw new IllegalArgumentException("User cannot be null");
+    public void addUser(String username) {
+        if (users.contains(username)) {
+            throw new IllegalArgumentException("User already exists in the group.");
         }
-        if (!users.contains(user)) {
-            throw new IllegalArgumentException("User does not exist");
-        }
-        users.remove(user);
+        users.add(username);
     }
+
+    public void removeUser(String username) {
+        if (!users.contains(username)) {
+            throw new IllegalArgumentException("User does not exist in the group.");
+        }
+        users.remove(username);
+    }
+
+    public void setToDoList(ToDoList toDoList) {
+        this.toDoList = toDoList;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public boolean containsUser(String username) {
+        return users.contains(username);
+    }
+
+   
 }
