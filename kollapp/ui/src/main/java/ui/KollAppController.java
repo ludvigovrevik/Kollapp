@@ -1,16 +1,20 @@
 package ui;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-
+import javafx.stage.Stage;
 import core.Task;
 import core.ToDoList;
 import core.User;
@@ -33,6 +37,7 @@ public class KollAppController {
     private ToDoList toDoList;
 
     private User user;
+
 
     /**
      * Handles the action of adding a new task.
@@ -94,6 +99,48 @@ public class KollAppController {
             taskGridView.add(taskLabel, 1, i);
             taskGridView.add(dateLabel, 2, i);
         }
+    }
+    
+    @FXML
+    public void OpenNewGroupWindow() {
+        System.out.println("OpprettKollektiv opened");
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("OpprettKollektiv.fxml"));
+            Parent root = fxmlLoader.load();
+
+            RegisterGroupController controller = fxmlLoader.getController();
+            controller.setUser(this.user);
+            // Create a new stage for the popup window
+            Stage stage = new Stage();
+            stage.setTitle("Opprett Kollektiv");
+            stage.setScene(new Scene(root));
+
+            // Show the new window
+            stage.show();
+    } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void OpenJoinGroupWindow() {
+        System.out.println("JoinKollektiv opened");
+        
+        try {
+        // Load the FXML file
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("JoinKollektiv.fxml"));
+        Parent root = fxmlLoader.load();
+
+        // Create a new stage for the popup window
+        Stage stage = new Stage();
+        stage.setTitle("Create Kollektiv");
+        stage.setScene(new Scene(root));
+
+        // Show the new window
+        stage.show();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
     }
 
     public void innitializeToDoList(User user) {
