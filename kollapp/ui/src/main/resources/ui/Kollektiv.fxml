@@ -68,7 +68,7 @@
                         <Font name="Microsoft Sans Serif" size="21.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #b891ff;" text="Kollektiv 3">
+                  <Label fx:id="completedLabel" alignment="CENTER" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #b891ff;" text="Completed">
                      <font>
                         <Font name="Microsoft Sans Serif" size="21.0" />
                      </font>
