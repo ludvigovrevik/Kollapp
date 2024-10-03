@@ -82,17 +82,19 @@ public class KollAppController {
             // Add event listener to the CheckBox
             checkBox.setOnAction(event -> {
                 if (checkBox.isSelected()) {
-                    // Remove the task when checkbox is selected
-                    toDoList.removeTask(currentTask);
+                    currentTask.setCompleted(true); // Set the task as completed when checkbox is selected
+                    //toDoList.removeTask(currentTask); // Remove the task when checkbox is selected
                     ToDoListHandler.updateToDoList(user, toDoList);
                     updateGrid();  // Refresh the grid
                 }
             });
+            if (!currentTask.isCompleted()) {
+                // Add elements to the grid
+                taskGridView.add(checkBox, 0, i);
+                taskGridView.add(taskLabel, 1, i);
+                taskGridView.add(dateLabel, 2, i);
+            }
             
-            // Add elements to the grid
-            taskGridView.add(checkBox, 0, i);
-            taskGridView.add(taskLabel, 1, i);
-            taskGridView.add(dateLabel, 2, i);
         }
     }
 
