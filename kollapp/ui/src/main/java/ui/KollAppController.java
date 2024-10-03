@@ -7,6 +7,7 @@ import java.util.List;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
@@ -39,6 +40,7 @@ public class KollAppController {
 
     private User user;
 
+
     @FXML
     private Label completedLabel;
 
@@ -51,13 +53,16 @@ public class KollAppController {
         completedLabel.setStyle("-fx-cursor: hand;");
     }
 
+    // Handle the click event on the label Completed
     @FXML
     private void handleLabelClick(MouseEvent event) {
         try {
             // Load the new FXML file
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CompletedTasks.fxml"));
             Pane newView = loader.load();
-
+            CompletedTasksController controller = loader.getController();
+            controller.initializeToDoList(toDoList);
+            controller.initializeUser(user);
             // Get the current stage (window)
             Stage stage = (Stage) completedLabel.getScene().getWindow();
 
