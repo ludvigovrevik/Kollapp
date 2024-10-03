@@ -3,6 +3,7 @@ package ui;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.fxml.FXML;
@@ -24,18 +25,23 @@ import persistence.GroupHandler;
 import persistence.ToDoListHandler;
 
 public class AddUserToGroupController {
+    private List<String> groupNames = new ArrayList<>();
 
-    public void initUserGroupList(UserGroup userGroup) {
-        
-    }
+    // TODO: Textfield
+
+    // 
 
     @FXML
     ListView<UserGroup> listViewOfGroups;
 
     @FXML
     public void addUserToGroup() {
-        
-        GroupHandler.assignUserToGroup(null, null);
+        // get selected groupNames
+        // get username of text field
+        // check if it is a valid user
+
+        // for each selected groupname: assign user
+            GroupHandler.assignUserToGroup(user, groupName);
         System.out.println("Added user to group");
     }
 
