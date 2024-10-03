@@ -4,53 +4,57 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import core.Task;
+import core.ToDoList;
+import core.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-
-import core.Task;
-import core.ToDoList;
-import core.User;
+import javafx.stage.Stage;
 import persistence.ToDoListHandler;
 
-import java.io.IOException;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-
-/**
- * Controller class for the KollApp application.
- */
-public class KollAppController {
-
+public class AddNewTaskController {
     @FXML
-    private GridPane taskGridView;
+    private ComboBox<String> Priority;
 
     @FXML
     private TextField taskInputField;
 
-    @FXML 
+    @FXML
     private DatePicker datePicker;
+
+    @FXML
+    private GridPane taskGridView;
 
     private ToDoList toDoList;
 
     private User user;
 
-    
-    /**
-     * Handles the action of adding a new task.
-     * This method is called when the user clicks the "+" button from the UI.
-     * It retrieves the task description and date from the input fields and creates a new Task object.
-     * The new task is then added to the to-do list, and clears the input fields.
-     */
+    private KollAppController kollAppController;
+
     @FXML
-    public void handleAddTask() {
+    private Button handleAddTask;
+
+    @FXML
+    public void initializeTaskWindow(User user, ToDoList toDoList, KollAppController kollAppController) {
+        this.toDoList = toDoList;
+        this.user = user;
+        this.kollAppController = kollAppController;
+        // Initialize the ComboBox with some items
+        Priority.getItems().addAll("High Priority", "Medium Priority", "Low Priority");
+    }
+
+    @FXML
+    public void handleAddTask(ActionEvent event) {
         if (!taskInputField.getText().isEmpty()) {
             String taskDescription = taskInputField.getText();
             LocalDate dateTime = datePicker.getValue();
@@ -60,11 +64,12 @@ public class KollAppController {
             taskInputField.clear();
             datePicker.setValue(null);
             ToDoListHandler.updateToDoList(user, toDoList);
-            // update grid 
-            updateGrid();
+            // update grid
+            kollAppController.updateGrid();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.close();
         }
     }
-
 
     @FXML
     public void updateGrid() {
@@ -103,39 +108,6 @@ public class KollAppController {
             taskGridView.add(taskLabel, 1, i);
             taskGridView.add(dateLabel, 2, i);
         }
-    }
-
-    public void innitializeToDoList(User user) {
-        this.toDoList = ToDoListHandler.loadToDoList(user);
-        this.user = user;
-        updateGrid();
-    }
-
-    @FXML
-    public void showDialog() {
-        try{
-            // Load the FXML file
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddNewTask.fxml"));
-            Parent root = fxmlLoader.load();
-
-            AddNewTaskController controller = fxmlLoader.getController();
-            controller.initializeTaskWindow(user, toDoList, this);
-
-            // Create a new stage for the dialog
-            Stage stage = new Stage();
-            stage.setTitle("Add New Task");
-
-            // Set the scene for the FXML dialog file
-            stage.setScene(new Scene(root));
-
-            // Set the stage as modal, so it blocks user input to other windows
-            stage.initModality(Modality.APPLICATION_MODAL);
-
-            stage.showAndWait();
- 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }        
     }
 
 
