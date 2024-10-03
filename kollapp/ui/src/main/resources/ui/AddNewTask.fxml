@@ -45,8 +45,8 @@
             <DatePicker fx:id="Deadline" layoutX="148.0" layoutY="248.0" prefHeight="25.0" prefWidth="194.0" />
             <Label layoutX="31.0" layoutY="252.0" text="Deadline" />
             <ComboBox fx:id="Categories" layoutX="386.0" layoutY="248.0" prefHeight="25.0" prefWidth="183.0" promptText="Categories" />
-            <JFXButton buttonType="RAISED" layoutX="492.0" layoutY="319.0" onAction="#cancel" prefHeight="25.0" prefWidth="78.0" style="-fx-background-color: F2F2F2;" text="Cancel" />
-            <JFXButton buttonType="RAISED" layoutX="394.0" layoutY="319.0" onAction="#ok" prefHeight="25.0" prefWidth="78.0" style="-fx-background-color: D1E4F9;" text="OK" />
+            <!-- <JFXButton buttonType="RAISED" layoutX="492.0" layoutY="319.0" onAction="#cancel" prefHeight="25.0" prefWidth="78.0" style="-fx-background-color: F2F2F2;" text="Cancel" />
+            <JFXButton buttonType="RAISED" layoutX="394.0" layoutY="319.0" onAction="#ok" prefHeight="25.0" prefWidth="78.0" style="-fx-background-color: D1E4F9;" text="OK" /> -->
          </children>
       </Pane>
    </center>

@@ -13,10 +13,10 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.KollAppController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.KollAppController">
    <children>
        
-      <Button fx:id="Test" layoutX="639.0" layoutY="409.0" mnemonicParsing="false" onAction="#handleAddTask" prefHeight="78.0" prefWidth="81.0" style="-fx-background-color: #9df084; -fx-background-radius: 50%;" text="+" textFill="#096800">
+      <Button layoutX="639.0" layoutY="409.0" mnemonicParsing="false" onAction="#handleAddTask" prefHeight="78.0" prefWidth="81.0" style="-fx-background-color: #9df084; -fx-background-radius: 50%;" text="+" textFill="#096800">
          <font>
             <Font size="36.0" />
          </font></Button>
