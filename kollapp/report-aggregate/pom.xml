@@ -1,0 +1,66 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>gr2409</groupId>
+        <artifactId>kollapp</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>report-aggregate</artifactId>
+    <name>Report Aggregation Module</name>
+
+    <dependencies>
+        <!-- Depend on the other submodules -->
+        <dependency>
+            <groupId>gr2409</groupId>
+            <artifactId>core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>gr2409</groupId>
+            <artifactId>persistence</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>gr2409</groupId>
+            <artifactId>ui</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.10</version>
+                <executions>
+                    <execution>
+                        <id>report-aggregate</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report-aggregate</goal>
+                        </goals>
+                        <configuration>
+                            <dataFiles>
+                                <file>${project.parent.basedir}/core/target/jacoco.exec</file>
+                                <file>${project.parent.basedir}/persistence/target/jacoco.exec</file>
+                                <file>${project.parent.basedir}/ui/target/jacoco.exec</file>
+                            </dataFiles>
+                            <sourceDirectories>
+                                <directory>${project.parent.basedir}/core/src/main/java</directory>
+                                <directory>${project.parent.basedir}/persistence/src/main/java</directory>
+                                <directory>${project.parent.basedir}/ui/src/main/java</directory>
+                            </sourceDirectories>
+                            <outputDirectory>${project.build.directory}/site/jacoco-aggregate</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
