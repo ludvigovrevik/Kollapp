@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -70,6 +72,8 @@
                   </Label>
                </children>
             </VBox>
+            <ButtonBar layoutX="60.0" layoutY="375.0" prefHeight="37.0" prefWidth="68.0" />
+          <Button onAction="#handleViewTasksButtonAction" layoutX="30.0" layoutY="396.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="141.0" text="View Tasks" />
          </children>
       </Pane>
       <Separator layoutX="344.0" layoutY="67.0" orientation="VERTICAL" prefHeight="437.0" prefWidth="6.0" />

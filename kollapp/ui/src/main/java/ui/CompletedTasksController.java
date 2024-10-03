@@ -1,15 +1,21 @@
 package ui;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import persistence.ToDoListHandler;
 import core.Task;
 import core.ToDoList;
@@ -81,6 +87,25 @@ public class CompletedTasksController {
                 taskGridView.add(dateLabel, 2, i);
             }
             
+        }
+    }
+
+    @FXML
+    public void handleViewTasksButtonAction(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Kollektiv.fxml"));
+            Parent parent = fxmlLoader.load();
+
+            KollAppController controller = fxmlLoader.getController();
+            controller.innitializeToDoList(user); 
+
+            Scene scene = new Scene(parent);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
     
