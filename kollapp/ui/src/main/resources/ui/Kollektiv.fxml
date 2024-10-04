@@ -75,8 +75,8 @@
                   </Label>
                </children>
             </VBox>
-            <Button layoutX="45.0" layoutY="469.0" mnemonicParsing="false" onAction = "#OpenNewGroupWindow" text="Opprett Kollektiv" />
-            <Button layoutX="46.0" layoutY="434.0" mnemonicParsing="false" onAction = "#OpenJoinGroupWindow" text="Bli med Kollektiv" />
+            <Button layoutX="45.0" layoutY="469.0" mnemonicParsing="false" onAction = "#OpenNewGroupWindow" text="Create Group" />
+            <Button layoutX="46.0" layoutY="434.0" mnemonicParsing="false" onAction = "#OpenAddUserToGroupWindow" text="Add user to group" />
          </children>
       </Pane>
       <Separator layoutX="344.0" layoutY="67.0" orientation="VERTICAL" prefHeight="308.0" prefWidth="8.0" />

@@ -123,17 +123,21 @@ public class KollAppController {
     }
 
     @FXML
-    public void OpenJoinGroupWindow() {
-        System.out.println("JoinKollektiv opened");
+    public void OpenAddUserToGroupWindow() {
+        System.out.println("Add user to group window opened");
         
         try {
         // Load the FXML file
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("JoinKollektiv.fxml"));
         Parent root = fxmlLoader.load();
 
+        // Initialize The addToUserGroup
+        AddUserToGroupController controller = fxmlLoader.getController();
+        controller.initializeAddToUserGroup(this.user);
+        
         // Create a new stage for the popup window
         Stage stage = new Stage();
-        stage.setTitle("Create Kollektiv");
+        stage.setTitle("Add user to group");
         stage.setScene(new Scene(root));
 
         // Show the new window
