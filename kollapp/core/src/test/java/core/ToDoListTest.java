@@ -4,6 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+import java.util.List;
 
 class ToDoListTest {
 
@@ -15,6 +18,21 @@ class ToDoListTest {
         
         toDoList = new ToDoList();
         task = new Task("Test Task");
+    }
+
+    // Testing with mockito. Mainly to check if mockito is working.
+    @Test
+    public void testAddTask() {
+        // Arrange
+        Task mockTask = mock(Task.class); // Create a mock Task object
+
+        // Act
+        toDoList.addTask(mockTask);
+
+        // Assert
+        List<Task> tasks = toDoList.getTasks();
+        assertEquals(1, tasks.size()); // Check if the task was added
+        assertEquals(mockTask, tasks.get(0)); // Verify that the added task is the mockTask
     }
 
     @Test
