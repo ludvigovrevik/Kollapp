@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -13,23 +12,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.KollAppController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.CompletedTasksController">
    <children>
-      <Button fx:id="Test" layoutX="639.0" layoutY="409.0" mnemonicParsing="false" onAction="#handleAddTask" prefHeight="78.0" prefWidth="81.0" style="-fx-background-color: #9df084; -fx-background-radius: 50%;" text="+" textFill="#096800">
-         <font>
-            <Font size="36.0" />
-         </font>
-      </Button>
-      <TextField fx:id="taskInputField" layoutX="331.0" layoutY="405.0" prefHeight="45.0" prefWidth="244.0" />
-      <DatePicker fx:id="datePicker" layoutX="334.0" layoutY="480.0" />
-      <GridPane fx:id="taskGridView" layoutX="315.0" layoutY="67.0" prefHeight="273.0" prefWidth="307.0">
-         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="181.5321044921875" minWidth="10.0" prefWidth="40.542022705078125" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="252.26705932617188" minWidth="10.0" prefWidth="151.95797729492188" />
+      <GridPane fx:id="taskGridView" layoutX="315.0" layoutY="67.0" prefHeight="437.0" prefWidth="310.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="181.5321044921875" minWidth="10.0" prefWidth="40.542022705078125" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="252.26705932617188" minWidth="10.0" prefWidth="151.95797729492188" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="212.61550903320312" minWidth="9.16107177734375" prefWidth="114.76141357421875" />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -40,10 +34,13 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-         </rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
       </GridPane>
-      <Separator layoutX="591.0" layoutY="67.0" orientation="VERTICAL" prefHeight="307.0" prefWidth="5.0" />
-      <Separator layoutX="491.0" layoutY="69.0" orientation="VERTICAL" prefHeight="304.0" prefWidth="8.0" />
+      <Separator layoutX="591.0" layoutY="67.0" orientation="VERTICAL" prefHeight="437.0" prefWidth="6.0" />
+      <Separator layoutX="491.0" layoutY="69.0" orientation="VERTICAL" prefHeight="437.0" prefWidth="6.0" />
       <Label layoutX="354.0" layoutY="28.0" text="Task">
          <font>
             <Font name="Microsoft Sans Serif" size="25.0" />
@@ -68,19 +65,17 @@
                         <Font name="Microsoft Sans Serif" size="21.0" />
                      </font>
                   </Label>
-                  <Label fx:id="completedLabel" alignment="CENTER" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #b891ff;" text="Completed">
+                  <Label alignment="CENTER" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #b891ff;" text="Completed">
                      <font>
                         <Font name="Microsoft Sans Serif" size="21.0" />
                      </font>
                   </Label>
                </children>
             </VBox>
-            <Button layoutX="45.0" layoutY="469.0" mnemonicParsing="false" onAction = "#OpenRegisterGroupWindow" text="Create Group" />
-            <Button layoutX="46.0" layoutY="434.0" mnemonicParsing="false" onAction = "#OpenAddUserToGroupWindow" text="Add user to group" />
+            <ButtonBar layoutX="60.0" layoutY="375.0" prefHeight="37.0" prefWidth="68.0" />
+          <Button onAction="#handleViewTasksButtonAction" layoutX="30.0" layoutY="396.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="141.0" text="View Tasks" />
          </children>
       </Pane>
-      <Separator layoutX="344.0" layoutY="67.0" orientation="VERTICAL" prefHeight="308.0" prefWidth="8.0" />
-      <Label layoutX="334.0" layoutY="385.0" text="New task " />
-      <Label layoutX="335.0" layoutY="460.0" text="Due-Date" />
+      <Separator layoutX="344.0" layoutY="67.0" orientation="VERTICAL" prefHeight="437.0" prefWidth="6.0" />
    </children>
 </AnchorPane>

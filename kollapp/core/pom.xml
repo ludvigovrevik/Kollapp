@@ -57,6 +57,12 @@
             <artifactId>junit-jupiter-params</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- Mockito -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <!-- Version will be inherited from the parent POM -->
+        </dependency>
     </dependencies>
     <build>
         <!-- Inherits plugins from parent -->

@@ -13,7 +13,9 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import core.Task;
 import core.ToDoList;
@@ -39,6 +41,38 @@ public class KollAppController {
     private User user;
 
 
+    @FXML
+    private Label completedLabel;
+
+    @FXML
+    public void initialize() {
+        // Set the label to act like a button
+        completedLabel.setOnMouseClicked(this::handleLabelClick);
+
+        // Change the cursor to hand when hovering over the label
+        completedLabel.setStyle("-fx-cursor: hand;");
+    }
+
+    // Handle the click event on the label Completed
+    @FXML
+    private void handleLabelClick(MouseEvent event) {
+        try {
+            // Load the new FXML file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CompletedTasks.fxml"));
+            Pane newView = loader.load();
+            CompletedTasksController controller = loader.getController();
+            controller.initializeToDoList(toDoList);
+            controller.initializeUser(user);
+            // Get the current stage (window)
+            Stage stage = (Stage) completedLabel.getScene().getWindow();
+
+            // Set the new scene
+            Scene newScene = new Scene(newView);
+            stage.setScene(newScene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * Handles the action of adding a new task.
      * This method is called when the user clicks the "+" button from the UI.
@@ -87,17 +121,19 @@ public class KollAppController {
             // Add event listener to the CheckBox
             checkBox.setOnAction(event -> {
                 if (checkBox.isSelected()) {
-                    // Remove the task when checkbox is selected
-                    toDoList.removeTask(currentTask);
+                    currentTask.setCompleted(true); // Set the task as completed when checkbox is selected
+                    //toDoList.removeTask(currentTask); // Remove the task when checkbox is selected
                     ToDoListHandler.updateToDoList(user, toDoList);
                     updateGrid();  // Refresh the grid
                 }
             });
+            if (!currentTask.isCompleted()) {
+                // Add elements to the grid
+                taskGridView.add(checkBox, 0, i);
+                taskGridView.add(taskLabel, 1, i);
+                taskGridView.add(dateLabel, 2, i);
+            }
             
-            // Add elements to the grid
-            taskGridView.add(checkBox, 0, i);
-            taskGridView.add(taskLabel, 1, i);
-            taskGridView.add(dateLabel, 2, i);
         }
     }
     
