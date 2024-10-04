@@ -25,6 +25,9 @@ public class RegisterGroupController {
     @FXML
     TextField groupNameField;
 
+    @FXML
+    Label errorLabel;
+
     User user;
 
     public void setUser(User user) {
@@ -33,21 +36,24 @@ public class RegisterGroupController {
 
     @FXML
     public void createGroup() {
-        // Get text from input field
-        String groupName = groupNameField.getText();
-        if (!groupName.isEmpty()) {
-            if (this.user != null) {
-                GroupHandler.saveGroup(this.user, groupName);
-            } else {
-                System.out.println("No user found in createGroup"); // add a label instead here
+        try {
+            // Get text from input field
+            String groupName = groupNameField.getText();
+
+            if (groupName == null || groupName.isEmpty()) {
+                errorLabel.setText("Group Name cannot be empty");
+                return;
+            } else if (this.user == null) {
+                errorLabel.setText("User not found. Please log in.");
+                return;
             }
-
-        } else {
-            System.out.println("Group Name empty");
+            // Attempt to save the group
+            GroupHandler.saveGroup(this.user, groupName);
+        } catch (Exception e) {
+            // Handle any unexpected exceptions
+            errorLabel.setText("Failed to create group. Please try again.");
+            e.printStackTrace();
         }
-        // Creates grouphandler and creates new group
-
-        System.out.println("Group created");
-    }
+}
 
 }

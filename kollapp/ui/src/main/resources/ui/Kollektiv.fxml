@@ -75,7 +75,7 @@
                   </Label>
                </children>
             </VBox>
-            <Button layoutX="45.0" layoutY="469.0" mnemonicParsing="false" onAction = "#OpenNewGroupWindow" text="Create Group" />
+            <Button layoutX="45.0" layoutY="469.0" mnemonicParsing="false" onAction = "#OpenRegisterGroupWindow" text="Create Group" />
             <Button layoutX="46.0" layoutY="434.0" mnemonicParsing="false" onAction = "#OpenAddUserToGroupWindow" text="Add user to group" />
          </children>
       </Pane>
