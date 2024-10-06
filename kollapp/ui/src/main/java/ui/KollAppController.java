@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,6 +22,13 @@ import core.Task;
 import core.ToDoList;
 import core.User;
 import persistence.ToDoListHandler;
+
+import java.io.IOException;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /**
  * Controller class for the KollApp application.
@@ -185,6 +193,34 @@ public class KollAppController {
         this.user = user;
         updateGrid();
     }
+
+    @FXML
+    public void showDialog() {
+        try{
+            // Load the FXML file
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddNewTask.fxml"));
+            Parent root = fxmlLoader.load();
+
+            AddNewTaskController controller = fxmlLoader.getController();
+            controller.initializeTaskWindow(user, toDoList, this);
+
+            // Create a new stage for the dialog
+            Stage stage = new Stage();
+            stage.setTitle("Add New Task");
+
+            // Set the scene for the FXML dialog file
+            stage.setScene(new Scene(root));
+
+            // Set the stage as modal, so it blocks user input to other windows
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+            stage.showAndWait();
+ 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }        
+    }
+
 
 }
 

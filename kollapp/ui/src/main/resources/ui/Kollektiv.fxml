@@ -13,15 +13,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.KollAppController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.KollAppController">
    <children>
-      <Button fx:id="Test" layoutX="639.0" layoutY="409.0" mnemonicParsing="false" onAction="#handleAddTask" prefHeight="78.0" prefWidth="81.0" style="-fx-background-color: #9df084; -fx-background-radius: 50%;" text="+" textFill="#096800">
+       
+      <Button layoutX="639.0" layoutY="409.0" mnemonicParsing="false" onAction="#showDialog" prefHeight="78.0" prefWidth="81.0" style="-fx-background-color: #9df084; -fx-background-radius: 50%;" text="+" textFill="#096800">
          <font>
             <Font size="36.0" />
-         </font>
-      </Button>
-      <TextField fx:id="taskInputField" layoutX="331.0" layoutY="405.0" prefHeight="45.0" prefWidth="244.0" />
-      <DatePicker fx:id="datePicker" layoutX="334.0" layoutY="480.0" />
+         </font></Button>
       <GridPane fx:id="taskGridView" layoutX="315.0" layoutY="67.0" prefHeight="273.0" prefWidth="307.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="181.5321044921875" minWidth="10.0" prefWidth="40.542022705078125" />
@@ -80,7 +78,5 @@
          </children>
       </Pane>
       <Separator layoutX="344.0" layoutY="67.0" orientation="VERTICAL" prefHeight="308.0" prefWidth="8.0" />
-      <Label layoutX="334.0" layoutY="385.0" text="New task " />
-      <Label layoutX="335.0" layoutY="460.0" text="Due-Date" />
    </children>
 </AnchorPane>
