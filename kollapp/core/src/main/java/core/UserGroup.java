@@ -35,7 +35,8 @@ public class UserGroup implements java.io.Serializable {
     
     @JsonProperty 
     public int getNumberOfUsers() {
-        return numberOfUsers;
+        this.numberOfUsers = users.size();
+        return users.size();
     }
 
     public void addUser(String username) {
