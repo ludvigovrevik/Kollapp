@@ -24,15 +24,15 @@ class ToDoListTest {
     @Test
     public void testAddTask() {
         // Arrange
-        Task mockTask = mock(Task.class); // Create a mock Task object
+       // Task mockTask = mock(Task.class); // Create a mock Task object
 
         // Act
-        toDoList.addTask(mockTask);
+        toDoList.addTask(task);
 
         // Assert
         List<Task> tasks = toDoList.getTasks();
         assertEquals(1, tasks.size()); // Check if the task was added
-        assertEquals(mockTask, tasks.get(0)); // Verify that the added task is the mockTask
+        assertEquals(task, tasks.get(0)); // Verify that the added task is the mockTask
     }
 
     @Test

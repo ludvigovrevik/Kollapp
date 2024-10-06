@@ -1,10 +1,12 @@
 package persistence;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 import core.ToDoList;
 import core.User;
@@ -84,4 +86,26 @@ public class UserHandler {
         File file = new File(USER_PATH + username + ".json");
         return file.exists(); 
     }
+
+    public static Optional<User> getUser(String username) {
+        File file = new File(USER_PATH + username + ".json");
+        try {
+            User user = mapper.readValue(file, User.class);
+            return Optional.of(user);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+    public static void updateUser(User user) {
+        File file = new File(USER_PATH + user.getUsername() + ".json");
+        try {
+            mapper.writeValue(file, user);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to update user file for user: " + user.getUsername());
+        }
+    }
+
 }

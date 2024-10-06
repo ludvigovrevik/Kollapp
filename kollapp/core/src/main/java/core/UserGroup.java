@@ -3,11 +3,14 @@ package core;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class UserGroup implements java.io.Serializable {
     private String groupName;
     private List<String> users = new ArrayList<>();
     private ToDoList toDoList = new ToDoList();
+    private int numberOfUsers;
     
 
     // Default constructor required for Jackson
@@ -30,8 +33,9 @@ public class UserGroup implements java.io.Serializable {
         return toDoList;
     }
     
+    @JsonProperty 
     public int getNumberOfUsers() {
-        return users.size();
+        return numberOfUsers;
     }
 
     public void addUser(String username) {
@@ -54,6 +58,11 @@ public class UserGroup implements java.io.Serializable {
 
     public void setGroupName(String groupName) {
         this.groupName = groupName;
+    }
+
+    @JsonIgnore
+    public void setNumberOfUsers(int numberOfUsers) {
+        this.numberOfUsers = numberOfUsers;
     }
 
     public boolean containsUser(String username) {
