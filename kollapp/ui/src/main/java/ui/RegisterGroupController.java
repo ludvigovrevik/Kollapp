@@ -14,12 +14,14 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import core.Task;
 import core.ToDoList;
 import core.User;
 import persistence.GroupHandler;
 import persistence.ToDoListHandler;
+import persistence.UserHandler;
 
 public class RegisterGroupController {
     @FXML
@@ -47,8 +49,15 @@ public class RegisterGroupController {
                 errorLabel.setText("User not found. Please log in.");
                 return;
             }
-            // Attempt to save the group
-            GroupHandler.saveGroup(this.user, groupName);
+            // Attempt to create the group
+            System.out.println("before: " + this.user.getUserGroups().toString());
+            GroupHandler.createGroup(this.user, groupName);
+            System.out.println("after: " + this.user.getUserGroups().toString());
+            UserHandler.updateUser(user);
+            // testing and here is the mistake
+            errorLabel.setTextFill(Color.GREEN);
+            errorLabel.setText("Made group succesfully");
+            
         } catch (Exception e) {
             // Handle any unexpected exceptions
             errorLabel.setText("Failed to create group. Please try again.");
