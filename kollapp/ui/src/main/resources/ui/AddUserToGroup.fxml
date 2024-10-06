@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="273.0" prefWidth="340.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.AddUserToGroupController">
+   <children>
+      <Label layoutX="121.0" layoutY="13.0" text="Add user to group" />
+      <ScrollPane layoutX="107.0" layoutY="55.0" prefHeight="97.0" prefWidth="117.0">
+         <content>
+            <ListView fx:id="listViewOfGroups" prefHeight="95.0" prefWidth="115.0" />
+         </content></ScrollPane>
+      <TextField fx:id="username" layoutX="106.0" layoutY="176.0" prefHeight="28.0" prefWidth="117.0" />
+      <Button layoutX="128.0" layoutY="209.0" mnemonicParsing="false" text="Add user" onAction = "#addUserToGroup" />
+      <Label layoutX="108.0" layoutY="38.0" text="Your groups" />
+      <Label layoutX="106.0" layoutY="160.0" text="Username" />
+      <Label fx:id="userNameErrorLabel" layoutX="101.0" layoutY="241.0" prefHeight="28.0" prefWidth="126.0" textFill="RED" />
+   </children>
+</Pane>

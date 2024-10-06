@@ -136,6 +136,49 @@ public class KollAppController {
             
         }
     }
+    
+    @FXML
+    public void OpenRegisterGroupWindow() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("RegisterGroup.fxml"));
+            Parent root = fxmlLoader.load();
+
+            RegisterGroupController controller = fxmlLoader.getController();
+            controller.setUser(this.user);
+            // Create a new stage for the popup window
+            Stage stage = new Stage();
+            stage.setTitle("Register Group");
+            stage.setScene(new Scene(root));
+
+            // Show the new window
+            stage.show();
+    } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void OpenAddUserToGroupWindow() {
+        try {
+        // Load the FXML file
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddUserToGroup.fxml"));
+        Parent root = fxmlLoader.load();
+
+        // Initialize The addToUserGroup
+        AddUserToGroupController controller = fxmlLoader.getController();
+        controller.initializeAddToUserGroup(this.user);
+
+        // Create a new stage for the popup window
+        Stage stage = new Stage();
+        stage.setTitle("Add user to group");
+        stage.setScene(new Scene(root));
+
+        // Show the new window
+        stage.show();
+    } catch (IOException e) {
+        e.printStackTrace();
+        }
+    }
 
     public void innitializeToDoList(User user) {
         this.toDoList = ToDoListHandler.loadToDoList(user);
