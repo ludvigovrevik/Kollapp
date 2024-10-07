@@ -10,6 +10,7 @@ import core.ToDoList;
 import core.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
@@ -20,7 +21,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import core.Task;
+import core.ToDoList;
+import core.User;
 import persistence.ToDoListHandler;
 
 /**
@@ -41,6 +46,8 @@ public class KollAppController {
 
     private User user;
 
+    @FXML
+    private VBox vBoxContainer;
 
     @FXML
     private Label completedLabel;
@@ -53,6 +60,48 @@ public class KollAppController {
         // Change the cursor to hand when hovering over the label
         completedLabel.setStyle("-fx-cursor: hand;");
     }
+    
+    public void populateGroupView() {
+        List<String> groupNames = this.user.getUserGroups();
+        for (String groupName : groupNames) {
+            addGroupLabel(groupName);
+        }
+    }
+
+    private void addGroupLabel(String groupName) {
+        Label groupLabel = new Label(groupName);
+        
+        // Set style to make the label look like a button
+        groupLabel.setStyle("-fx-cursor: hand; -fx-background-color: #7aadff; -fx-text-fill: white; -fx-padding: 10px; -fx-alignment: center;");
+        groupLabel.setPrefHeight(50);
+        groupLabel.setPrefWidth(200);
+        groupLabel.setAlignment(Pos.CENTER);  // Center the text
+        
+        // Set up the click event
+        groupLabel.setOnMouseClicked(event -> handleGroupClick(event, groupName));
+
+        // Add the clickable label to the VBox
+        vBoxContainer.getChildren().add(groupLabel);
+    }
+    /**
+ * Handles the click event for the dynamic group labels.
+ * @param event The mouse click event
+ * @param groupName The name of the group clicked
+ */
+    private static void handleGroupClick(MouseEvent event, String groupName) {
+        System.out.println("Clicked on group: " + groupName);
+        
+        // You can add logic here to perform an action based on the group clicked.
+        // For example, switch scenes or load group-specific data.
+        
+        if (groupName.equals("Palasset")) {
+            // Example action for "Kollektiv 1"
+            System.out.println("Perform action for Kollektiv 1");
+        } else if (groupName.equals("Kollektiv 2")) {
+            System.out.println("Perform action for Kollektiv 2");
+        }
+    }
+    
 
     // Handle the click event on the label Completed
     @FXML
