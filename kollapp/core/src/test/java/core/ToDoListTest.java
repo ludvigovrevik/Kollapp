@@ -4,34 +4,23 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 import java.util.List;
 
 class ToDoListTest {
 
     private ToDoList toDoList;
-    private Task task;
+    private Task task1;
+    private Task task2;
+    private Task task3;
 
     @BeforeEach
     void setUp() {
-        
         toDoList = new ToDoList();
-        task = new Task("Test Task");
-    }
-
-    // Testing with mockito. Mainly to check if mockito is working.
-    @Test
-    public void testAddTask() {
-        // Arrange
-       // Task mockTask = mock(Task.class); // Create a mock Task object
-
-        // Act
-        toDoList.addTask(task);
-
-        // Assert
-        List<Task> tasks = toDoList.getTasks();
-        assertEquals(1, tasks.size()); // Check if the task was added
-        assertEquals(task, tasks.get(0)); // Verify that the added task is the mockTask
+        task1 = new Task("Test task1");
+        task2 = new Task("Test task2");
+        task3 = new Task("Test task3");
     }
 
     @Test
@@ -40,60 +29,50 @@ class ToDoListTest {
     }
 
     @Test
-    void testAddTaskAddsTaskSuccessfully() {
-        toDoList.addTask(task);
-
-        assertEquals(true, toDoList.getTasks().contains(task), "Tasks list should contain the added task");
-
-        toDoList.removeTask(toDoList.getTasks().size() - 1);
-    }
-
-    @Test
-    void testAddTaskThrowsExceptionWhenTaskIsNull() {
+    public void testAddTask() {
+        toDoList.addTask(task1);
+        toDoList.addTask(task2);
+        toDoList.addTask(task3);
+        
+        // throws IllegalArgument when adding task4
         assertThrows(IllegalArgumentException.class, () -> {
             toDoList.addTask(null);
-        }, "Exception should be thrown when task is null");
+        });
+
+        List<Task> tasks = toDoList.getTasks();
+        assertEquals(3, tasks.size()); // Verify that the toDoList has 3 tasks
+        assertEquals(task1, tasks.get(0)); // Verify that the added task1 is in the toDoList
+        assertEquals(task2, tasks.get(1)); // Verify that the added task2 is in the toDoList
+        assertEquals(task3, tasks.get(2)); // Verify that the added task3 is in the toDoList
     }
 
     @Test
-    void testRemoveTaskRemovesTaskSuccessfully() {
-        toDoList.addTask(task);
-        toDoList.removeTask(toDoList.getTasks().size() - 1);
-
-        assertEquals(true, !toDoList.getTasks().contains(task), "Tasks list should not contain the task after removing the task");
-    }
-
-    @Test
-    void testRemoveTaskThrowsExceptionWhenIndexIsOutOfBounds() {
+    public void testRemoveTask() {
+        toDoList.addTask(task1);
+        toDoList.addTask(task2);
+        toDoList.addTask(task3);
+        
+        // throws IndexOutOfBoundsException when removing task4
         assertThrows(IndexOutOfBoundsException.class, () -> {
-            toDoList.removeTask(-1);
-        }, "Exception should be thrown when index is out of bounds");
-        assertThrows(IndexOutOfBoundsException.class, () -> {
-            toDoList.removeTask(toDoList.getTasks().size());
-        }, "Exception should be thrown when index is out of bounds");
+            toDoList.removeTask(mock(Task.class));
+        });
+
+        toDoList.removeTask(task2);
+        List<Task> tasks = toDoList.getTasks();
+        assertEquals(2, tasks.size()); // Verify that the toDoList has 2 tasks
+        assertEquals(task1, tasks.get(0)); // Verify that the task1 is in the toDoList
+        assertEquals(task3, tasks.get(1)); // Verify that the task3 is in the toDoList
     }
 
     @Test
-    void testUpdateTaskUpdatesTaskSuccessfully() {
-        Task originalTask = new Task("Original Task");
-        Task updatedTask = new Task("Updated Task");
-        toDoList.addTask(originalTask);
-        toDoList.updateTask(toDoList.getTasks().size() - 1, updatedTask);
-
-        assertEquals(false, toDoList.getTasks().contains(originalTask), "The task should be updated to the new task");
-        assertEquals(true, toDoList.getTasks().contains(updatedTask), "The task should be updated to the new task");
-
-        toDoList.removeTask(toDoList.getTasks().size() - 1);
-    }
-
-    @Test
-    void testGetTasksModificationAffectsOriginalList() {
-        Task task = new Task("Task");
-        toDoList.addTask(task);
-
-        // Directly modify the list obtained from getTasks()
-        toDoList.getTasks().remove(task);
-
-        assertEquals(false, toDoList.getTasks().contains(task), "Modifying the returned list should affect the original list");
+    public void testGetTasks() {
+        toDoList.addTask(task1);
+        toDoList.addTask(task2);
+        toDoList.addTask(task3);
+        List<Task> tasks = toDoList.getTasks();
+        assertEquals(3, tasks.size()); // Verify that the toDoList has 3 tasks
+        assertEquals(task1, tasks.get(0)); // Verify that the task1 is in the toDoList
+        assertEquals(task2, tasks.get(1)); // Verify that the task2 is in the toDoList
+        assertEquals(task3, tasks.get(2)); // Verify that the task3 is in the toDoList
     }
 }

@@ -52,7 +52,7 @@ public class AddNewTaskController {
         this.user = user;
         this.kollAppController = kollAppController;
         // Initialize the ComboBox with some items
-        Priority.getItems().addAll("High Priority", "Medium Priority", "Low Priority");
+        Priority.getItems().addAll(Task.PRIORITY_NAMES);
     }
 
     @FXML
