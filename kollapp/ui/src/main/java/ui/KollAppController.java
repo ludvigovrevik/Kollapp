@@ -54,13 +54,18 @@ public class KollAppController {
     @FXML
     private Label completedLabel;
 
+    @FXML 
+    private Label personal;
+
     @FXML
     public void initialize() {
         // Set the label to act like a button
         completedLabel.setOnMouseClicked(this::handleLabelClick);
+        personal.setOnMouseClicked(event -> handleGroupClick(event, this.user.getUsername()));
 
         // Change the cursor to hand when hovering over the label
         completedLabel.setStyle("-fx-cursor: hand;");
+        personal.setStyle("-fx-cursor: hand;");
     }
     
     public void populateGroupView() {
@@ -95,14 +100,15 @@ public class KollAppController {
         
         // You can add logic here to perform an action based on the group clicked.
         // For example, switch scenes or load group-specific data.
-        
-        if (groupName.equals("Palasset")) {
-            // Example action for "Kollektiv 1"
-            System.out.println("Perform action for Kollektiv 1");
+        if (groupName.equals(this.user.getUsername())) {
+            changeCurrentTaskView(this.user.getUsername());
+        } else if (groupName.equals("Palasset")) {
+            System.out.println("Perform action for Palasset");
             changeCurrentTaskView("Palasset");
         } else if (groupName.equals("Kollektiv 2")) {
             System.out.println("Perform action for Kollektiv 2");
         }
+        updateGrid();
     }
     
 
@@ -178,14 +184,13 @@ public class KollAppController {
 
     public void changeCurrentTaskView(String taskOwner) {
         if (taskOwner.equals(this.user.getUsername())) {
-            this.toDoList = this.user.getToDoList();
+            this.toDoList = ToDoListHandler.loadToDoList(this.user);
             return;
         }
         // find the todolist of the group you switch to
         UserGroup group = GroupHandler.getGroup(taskOwner);
         ToDoList groupToDoList = group.getToDoList();
         this.toDoList = groupToDoList;
-        updateGrid();
     }
     
     @FXML
