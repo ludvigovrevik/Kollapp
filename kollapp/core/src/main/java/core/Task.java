@@ -86,9 +86,6 @@ public class Task {
 
     // Sets the priority of the task
     public void setPriority(String priority) {
-        if (!PRIORITY_NAMES.contains(priority)) {
-            throw new IllegalArgumentException("Invalid priority level.");
-        }
         this.priority = priority;
     }
 }

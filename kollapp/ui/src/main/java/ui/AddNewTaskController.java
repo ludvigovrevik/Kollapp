@@ -66,7 +66,8 @@ public class AddNewTaskController {
             Task newTask = new Task(taskName, dateTime, description, priority);
             
             toDoList.addTask(newTask);
-            ToDoListHandler.updateToDoList(user, toDoList);
+            ToDoListHandler handler = new ToDoListHandler();
+            handler.updateToDoList(user, toDoList);
             kollAppController.updateGrid();
             
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

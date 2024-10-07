@@ -72,7 +72,6 @@ class TaskTest {
         String newPriority = Task.PRIORITY_NAMES.get(2);
         this.task1.setPriority(newPriority);
         Assertions.assertEquals(newPriority, task1.getPriority(), "Priority should be updated");
-        assertThrows(IllegalArgumentException.class, () -> task1.setPriority("Invalid Priority"));  // Check if an exception is thrown when priority is invalid
     }
 
     @Test

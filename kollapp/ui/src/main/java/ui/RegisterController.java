@@ -40,7 +40,8 @@ public class RegisterController {
             User user = new User(username, password);
             try {
                 UserHandler.saveUser(user); // Save user to JSON file
-                ToDoListHandler.assignToDoList(user); // Assign ToDo-list to JSON file
+                ToDoListHandler handler = new ToDoListHandler();
+                handler.assignToDoList(user); // Assign ToDo-list to JSON file
     
                 switchToKollektivScene(event, user);
     

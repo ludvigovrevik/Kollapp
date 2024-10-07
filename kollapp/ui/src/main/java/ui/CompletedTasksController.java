@@ -74,7 +74,8 @@ public class CompletedTasksController {
                 if (checkBox.isSelected()) {
                     // currentTask.setCompleted(true); // Set the task as completed when checkbox is selected
                     toDoList.removeTask(currentTask); // Remove the task when checkbox is selected
-                    ToDoListHandler.updateToDoList(user, toDoList);
+                    ToDoListHandler handler = new ToDoListHandler();
+                    handler.updateToDoList(user, toDoList);
                     updateGrid();  // Refresh the grid
                 }
             });

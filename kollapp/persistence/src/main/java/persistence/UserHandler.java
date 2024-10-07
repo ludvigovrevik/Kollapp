@@ -38,7 +38,7 @@ public class UserHandler {
                 return user;
             } else {
                 return null;
-            }
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -50,13 +50,13 @@ public class UserHandler {
         if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             return false;
         }
+        if (username.length() < 4) {
+            return false;
+        }
         if (!password.equals(confirmPassword)) {
             return false;
         }
         if (password.length() < 8) {
-            return false;
-        }
-        if (username.length() < 4) {
             return false;
         }
         return true;
@@ -69,13 +69,13 @@ public class UserHandler {
         if (userExists(username)) {
             return "User already exists";
         }
-        if (username.length() <= 4) {
+        if (username.length() < 4) {
             return "Username must be at least 4 characters long";
         }
         if (!password.equals(confirmPassword)) {
             return "Passwords do not match";
         }
-        if (password.length() <= 8) {
+        if (password.length() < 8) {
             return "Password must be at least 8 characters long";
         }
         return null;
