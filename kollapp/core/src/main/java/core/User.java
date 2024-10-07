@@ -27,5 +27,11 @@ public class User implements java.io.Serializable {
     public List<String> getUserGroups() {
         return userGroups;
     }
+
+    public void addUserGroup(String userGroup) {
+        if (!(this.userGroups.contains(userGroup))) {
+            this.userGroups.add(userGroup);
+        }
+    }
 }
 
