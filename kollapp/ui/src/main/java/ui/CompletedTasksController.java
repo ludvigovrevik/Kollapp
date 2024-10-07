@@ -56,7 +56,7 @@ public class CompletedTasksController {
         // Iterate through all tasks
         for (int i = 0; i < tasks.size(); i++) {
             Task currentTask = tasks.get(i);
-            String taskDescription = currentTask.getDescription();
+            String taskDescription = currentTask.getTaskName();
             
             // check if date is empty
             Label dateLabel = new Label(""); 
