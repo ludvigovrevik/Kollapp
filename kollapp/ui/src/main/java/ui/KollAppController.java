@@ -92,17 +92,18 @@ public class KollAppController {
         if (!taskInputField.getText().isEmpty()) {
             String taskDescription = taskInputField.getText();
             LocalDate dateTime = datePicker.getValue();
-            Task newTask = new Task(taskDescription, dateTime);
-            
+
+            Task newTask = new Task();
+            newTask.setDescription(taskDescription);
+
             toDoList.addTask(newTask);
             taskInputField.clear();
             datePicker.setValue(null);
             ToDoListHandler.updateToDoList(user, toDoList);
             // update grid 
-            updateGrid();
-        }
-    }
-
+             updateGrid();
+         }
+     }
 
     @FXML
     public void updateGrid() {
@@ -220,7 +221,5 @@ public class KollAppController {
             e.printStackTrace();
         }        
     }
-
-
 }
 

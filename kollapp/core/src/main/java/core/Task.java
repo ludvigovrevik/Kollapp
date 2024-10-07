@@ -11,6 +11,8 @@ public class Task {
     private String description;
     private boolean isCompleted;
     private LocalDate dateTime;
+    private String taskDescription;
+    private String taskPriority;
 
     // (required by Jackson)
     public Task() {
@@ -22,10 +24,12 @@ public class Task {
      * @param description The description of the task.
      * @param dateTime The date specified with the task.
      */
-    public Task(String description, LocalDate dateTime) {
+    public Task(String description, LocalDate dateTime, String taskDescription, String taskPriority) {
         this.description = description.trim();
         this.dateTime = dateTime;
         this.isCompleted = false;
+        this.taskDescription = taskDescription;
+        this.taskPriority = taskPriority;
     }
 
     public Task(String description) {
@@ -55,6 +59,22 @@ public class Task {
 
     public void setCompleted(boolean completed) {
         isCompleted = completed;
+    }
+
+    public String getTaskDescription() {
+        return taskDescription;
+    }
+
+    public String getTaskPriority() {
+        return taskPriority;
+    }
+
+    public void setTaskDescription(String taskDescription) {
+        this.taskDescription = taskDescription;
+    }
+
+    public void setTaskPriority(String taskPriority) {
+        this.taskPriority = taskPriority;
     }
 
     @Override
