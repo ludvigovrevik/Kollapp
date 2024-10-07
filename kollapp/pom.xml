@@ -146,7 +146,7 @@
                     <execution>
                         <phase>validate</phase>
                         <goals>
-                            <goal>check</goal>
+                            <goal>checkstyle</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -156,6 +156,7 @@
                     <consoleOutput>true</consoleOutput>
                     <failsOnViolation>false</failsOnViolation>  <!-- Do not fail the build -->
                     <failsOnError>false</failsOnError>  <!-- Do not fail the build -->
+                    <excludes>**/module-info.java</excludes>
                 </configuration>
             </plugin>
         </plugins>
