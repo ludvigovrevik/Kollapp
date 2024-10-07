@@ -69,6 +69,4 @@ public class UserGroup implements java.io.Serializable {
     public boolean containsUser(String username) {
         return users.contains(username);
     }
-
-   
 }

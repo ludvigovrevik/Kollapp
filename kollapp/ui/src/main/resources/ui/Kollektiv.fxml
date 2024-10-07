@@ -61,16 +61,6 @@
                <content>
                   <VBox prefHeight="170.0" prefWidth="198.0" fx:id = "vBoxContainer">
                      <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #7aadff;" text="Kollektiv 1" fx:id = "kollektiv1">
-                           <font>
-                              <Font name="Microsoft Sans Serif" size="21.0" />
-                           </font>
-                        </Label>
-                        <Label alignment="CENTER" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #c7ff8f;" text="Kollektiv 2" fx:id = "kollektiv2" >
-                           <font>
-                              <Font name="Microsoft Sans Serif" size="21.0" />
-                           </font>
-                        </Label>
                      </children>
                   </VBox>
                </content>

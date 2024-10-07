@@ -31,16 +31,12 @@ public class CompletedTasksController {
     private User user;
 
     public void initializeToDoList(ToDoList toDoList) {
-
         this.toDoList = toDoList;
-
         updateGrid();
     }
 
     public void initializeUser(User user) {
-
         this.user = user;
-        
         updateGrid();
     }
     
@@ -52,7 +48,6 @@ public class CompletedTasksController {
         }
 
         List<Task> tasks = toDoList.getTasks();
-        
         // Iterate through all tasks
         for (int i = 0; i < tasks.size(); i++) {
             Task currentTask = tasks.get(i);

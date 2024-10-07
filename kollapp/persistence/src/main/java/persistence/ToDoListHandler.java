@@ -14,18 +14,6 @@ public class ToDoListHandler {
     private static final String TODOLIST_PATH = Paths.get("..", "persistence", "src", "main", "java", "persistence", "todolists").toString() + File.separator;
     private static ObjectMapper mapper = new ObjectMapper();
 
-
-    public static void assignToDoList(User user) {
-        ToDoList toDoList = new ToDoList();
-        File file = new File(TODOLIST_PATH + user.getUsername() + ".json");
-        try {
-            mapper.writeValue(file, toDoList);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    
     public static ToDoList loadToDoList(User user) {
         File file = new File(TODOLIST_PATH + user.getUsername() + ".json");
         mapper.registerModule(new JavaTimeModule()); // Register the module

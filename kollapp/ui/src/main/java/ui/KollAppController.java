@@ -26,6 +26,8 @@ import javafx.stage.Stage;
 import core.Task;
 import core.ToDoList;
 import core.User;
+import core.UserGroup;
+import persistence.GroupHandler;
 import persistence.ToDoListHandler;
 
 /**
@@ -88,7 +90,7 @@ public class KollAppController {
  * @param event The mouse click event
  * @param groupName The name of the group clicked
  */
-    private static void handleGroupClick(MouseEvent event, String groupName) {
+    private void handleGroupClick(MouseEvent event, String groupName) {
         System.out.println("Clicked on group: " + groupName);
         
         // You can add logic here to perform an action based on the group clicked.
@@ -97,6 +99,7 @@ public class KollAppController {
         if (groupName.equals("Palasset")) {
             // Example action for "Kollektiv 1"
             System.out.println("Perform action for Kollektiv 1");
+            changeCurrentTaskView("Palasset");
         } else if (groupName.equals("Kollektiv 2")) {
             System.out.println("Perform action for Kollektiv 2");
         }
@@ -130,9 +133,17 @@ public class KollAppController {
         taskGridView.getChildren().clear();
         List<Task> tasks = toDoList.getTasks();
         
+        // Use a separate row counter
+        int row = 0;
+        
         // Iterate through all tasks
         for (int i = 0; i < tasks.size(); i++) {
             Task currentTask = tasks.get(i);
+            if (currentTask.isCompleted()) {
+                continue; // Skip completed tasks
+            }
+
+            String taskDescription = currentTask.getDescription();
             String taskName = currentTask.getTaskName();
             
             // check if date is empty
@@ -150,19 +161,31 @@ public class KollAppController {
             checkBox.setOnAction(event -> {
                 if (checkBox.isSelected()) {
                     currentTask.setCompleted(true); // Set the task as completed when checkbox is selected
-                    //toDoList.removeTask(currentTask); // Remove the task when checkbox is selected
                     ToDoListHandler.updateToDoList(user, toDoList);
                     updateGrid();  // Refresh the grid
                 }
-            });
-            if (!currentTask.isCompleted()) {
-                // Add elements to the grid
-                taskGridView.add(checkBox, 0, i);
-                taskGridView.add(taskLabel, 1, i);
-                taskGridView.add(dateLabel, 2, i);
-            }
-            
+        });
+
+        // Add elements to the grid using the row counter
+        taskGridView.add(checkBox, 0, row);
+        taskGridView.add(taskLabel, 1, row);
+        taskGridView.add(dateLabel, 2, row);
+        
+        // Increment row counter for the next task
+        row++; 
         }
+    }
+
+    public void changeCurrentTaskView(String taskOwner) {
+        if (taskOwner.equals(this.user.getUsername())) {
+            this.toDoList = this.user.getToDoList();
+            return;
+        }
+        // find the todolist of the group you switch to
+        UserGroup group = GroupHandler.getGroup(taskOwner);
+        ToDoList groupToDoList = group.getToDoList();
+        this.toDoList = groupToDoList;
+        updateGrid();
     }
     
     @FXML
