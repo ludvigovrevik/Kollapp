@@ -53,6 +53,7 @@ public class RegisterGroupController {
             System.out.println("before: " + this.user.getUserGroups().toString());
             GroupHandler.createGroup(this.user, groupName);
             System.out.println("after: " + this.user.getUserGroups().toString());
+            
             UserHandler.updateUser(user);
             // testing and here is the mistake
             errorLabel.setTextFill(Color.GREEN);
