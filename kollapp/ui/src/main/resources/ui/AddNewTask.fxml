@@ -13,7 +13,7 @@
       <Label layoutX="29.0" layoutY="63.0" text="Task name" />
       <TextField fx:id="taskNameField" layoutX="124.0" layoutY="59.0" prefHeight="25.0" prefWidth="419.0" />
       <Label layoutX="28.0" layoutY="173.0" text="Description" />
-      <TextField fx:id="taskDescriptionField" layoutX="123.0" layoutY="107.0" prefHeight="149.0" prefWidth="421.0" wrapText="true" />
+      <TextArea fx:id="taskDescriptionField" layoutX="123.0" layoutY="107.0" prefHeight="149.0" prefWidth="421.0" wrapText="true" />
       <DatePicker fx:id="datePicker" layoutX="123.0" layoutY="276.0" prefHeight="25.0" prefWidth="194.0" />
       <Label layoutX="33.0" layoutY="280.0" prefHeight="17.0" prefWidth="53.0" text="Deadline" />
       <ComboBox fx:id="Priority" layoutX="363.0" layoutY="276.0" prefHeight="25.0" prefWidth="183.0" promptText="Priority" />
