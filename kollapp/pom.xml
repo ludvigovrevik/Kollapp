@@ -135,6 +135,30 @@
                     <outputDirectory>${project.build.directory}/spotbugs</outputDirectory>
                 </configuration>
             </plugin>
+        
+
+            <!-- Checkstyle plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>checkstyle</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <configLocation>checkstyle.xml</configLocation>
+                    <encoding>UTF-8</encoding>
+                    <consoleOutput>true</consoleOutput>
+                    <failsOnViolation>false</failsOnViolation>  <!-- Do not fail the build -->
+                    <failsOnError>false</failsOnError>  <!-- Do not fail the build -->
+                    <excludes>**/module-info.java</excludes>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
