@@ -8,10 +8,10 @@ class TaskTest {
     
     @Test
     void testTaskInitialization() {
-        String description = "Complete the report";
-        Task task = new Task(description);
+        String taskName = "Complete the report";
+        Task task = new Task(taskName);
 
-        Assertions.assertEquals(description, task.getDescription(), "Description should match the input");
+        Assertions.assertEquals(taskName, task.getTaskName(), "Description should match the input");
         Assertions.assertFalse(task.isCompleted(), "New task should not be completed");
     }
 

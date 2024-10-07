@@ -5,7 +5,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import javafx.event.ActionEvent;
+import core.Task;
+import core.ToDoList;
+import core.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,18 +19,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-import core.Task;
-import core.ToDoList;
-import core.User;
-import persistence.ToDoListHandler;
-
-import java.io.IOException;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import persistence.ToDoListHandler;
 
 /**
  * Controller class for the KollApp application.
@@ -88,7 +81,7 @@ public class KollAppController {
      * The new task is then added to the to-do list, and clears the input fields.
      */
     @FXML
-    public void handleAddTask() {
+    public void handleAddTasko() {
         if (!taskInputField.getText().isEmpty()) {
             String taskDescription = taskInputField.getText();
             LocalDate dateTime = datePicker.getValue();
@@ -100,8 +93,8 @@ public class KollAppController {
             taskInputField.clear();
             datePicker.setValue(null);
             ToDoListHandler.updateToDoList(user, toDoList);
-            // update grid 
-             updateGrid();
+            // update grid
+             this.updateGrid();
          }
      }
 
@@ -114,7 +107,7 @@ public class KollAppController {
         // Iterate through all tasks
         for (int i = 0; i < tasks.size(); i++) {
             Task currentTask = tasks.get(i);
-            String taskDescription = currentTask.getDescription();
+            String taskName = currentTask.getTaskName();
             
             // check if date is empty
             Label dateLabel = new Label(""); 
@@ -123,7 +116,7 @@ public class KollAppController {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
                 dateLabel.setText(dateTime.format(formatter));
             }
-            Label taskLabel = new Label(taskDescription);
+            Label taskLabel = new Label(taskName);
             
             CheckBox checkBox = new CheckBox();
             
@@ -202,8 +195,8 @@ public class KollAppController {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddNewTask.fxml"));
             Parent root = fxmlLoader.load();
 
-            AddNewTaskController controller = fxmlLoader.getController();
-            controller.initializeTaskWindow(user, toDoList, this);
+            AddNewTaskController addNewTaskController = fxmlLoader.getController();
+            addNewTaskController.initializeTaskWindow(user, toDoList, this);
 
             // Create a new stage for the dialog
             Stage stage = new Stage();

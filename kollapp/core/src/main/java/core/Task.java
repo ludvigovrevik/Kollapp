@@ -8,11 +8,11 @@ import java.time.format.DateTimeFormatter;
  */
 public class Task {
     private int index;
-    private String description;
+    private String taskName;
     private boolean isCompleted;
     private LocalDate dateTime;
-    private String taskDescription;
-    private String taskPriority;
+    private String description;
+    private String priority;
 
     // (required by Jackson)
     public Task() {
@@ -24,21 +24,21 @@ public class Task {
      * @param description The description of the task.
      * @param dateTime The date specified with the task.
      */
-    public Task(String description, LocalDate dateTime, String taskDescription, String taskPriority) {
-        this.description = description.trim();
+    public Task(String taskName, LocalDate dateTime, String description, String priority) {
+        this.taskName = taskName.trim();
         this.dateTime = dateTime;
         this.isCompleted = false;
-        this.taskDescription = taskDescription;
-        this.taskPriority = taskPriority;
+        this.description = description;
+        this.priority = priority;
     }
 
-    public Task(String description) {
-        this.description = description;
+    public Task(String taskName) {
+        this.taskName = taskName;
         this.isCompleted = false;
     }
 
-    public String getDescription() {
-        return description;
+    public String getTaskName() {
+        return taskName;
     }
 
     public int getIndex() {
@@ -49,8 +49,8 @@ public class Task {
         return dateTime;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
     }
 
     public boolean isCompleted() {
@@ -61,31 +61,31 @@ public class Task {
         isCompleted = completed;
     }
 
-    public String getTaskDescription() {
-        return taskDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public String getTaskPriority() {
-        return taskPriority;
+    public String getPriority() {
+        return priority;
     }
 
-    public void setTaskDescription(String taskDescription) {
-        this.taskDescription = taskDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public void setTaskPriority(String taskPriority) {
-        this.taskPriority = taskPriority;
+    public void setPriority(String priority) {
+        this.priority = priority;
     }
 
     @Override
     public String toString() {
         // If the date is not set, return the description only
         if (dateTime == null) {
-            return description; 
+            return taskName; 
         }
         
         // Format the date in MMM dd, yyyy format
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
-        return description + "   " + dateTime.format(formatter);
+        return taskName + "   " + dateTime.format(formatter);
     }
 }
