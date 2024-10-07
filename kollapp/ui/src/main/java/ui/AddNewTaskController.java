@@ -73,34 +73,5 @@ public class AddNewTaskController {
             stage.close();
         }
     }
-
-    @FXML
-    public void updateGrid() {
-        // Clear grid view before retrieving tasks
-        taskGridView.getChildren().clear();
-        List<Task> tasks = toDoList.getTasks();
-        
-        // Iterate through all tasks
-        for (int i = 0; i < tasks.size(); i++) {
-            Task currentTask = tasks.get(i);
-            String taskDescription = currentTask.getDescription();
-            
-            // check if date is empty
-            Label dateLabel = new Label(""); 
-            if (currentTask.getDateTime() != null) {
-                LocalDate dateTime = currentTask.getDateTime();
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
-                dateLabel.setText(dateTime.format(formatter));
-            }
-            Label taskLabel = new Label(taskDescription);
-            
-            CheckBox checkBox = new CheckBox();
-            
-            // Add components to the grid
-            taskGridView.add(dateLabel, 0, i);
-            taskGridView.add(taskLabel, 1, i);
-            taskGridView.add(checkBox, 2, i);
-        }
-    }
 }
 

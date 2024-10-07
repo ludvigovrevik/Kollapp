@@ -74,29 +74,6 @@ public class KollAppController {
             e.printStackTrace();
         }
     }
-    /**
-     * Handles the action of adding a new task.
-     * This method is called when the user clicks the "+" button from the UI.
-     * It retrieves the task description and date from the input fields and creates a new Task object.
-     * The new task is then added to the to-do list, and clears the input fields.
-     */
-    @FXML
-    public void handleAddTasko() {
-        if (!taskInputField.getText().isEmpty()) {
-            String taskDescription = taskInputField.getText();
-            LocalDate dateTime = datePicker.getValue();
-
-            Task newTask = new Task();
-            newTask.setDescription(taskDescription);
-
-            toDoList.addTask(newTask);
-            taskInputField.clear();
-            datePicker.setValue(null);
-            ToDoListHandler.updateToDoList(user, toDoList);
-            // update grid
-             this.updateGrid();
-         }
-     }
 
     @FXML
     public void updateGrid() {
