@@ -111,25 +111,17 @@ public class KollAppController {
         updateGrid();
     }
     
-
     // Handle the click event on the label Completed
     @FXML
     private void handleLabelClick(MouseEvent event) {
-        try {
-            // Load the new FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("CompletedTasks.fxml"));
-            Pane newView = loader.load();
-            CompletedTasksController controller = loader.getController();
-            controller.initializeToDoList(toDoList);
-            controller.initializeUser(user);
-            // Get the current stage (window)
-            Stage stage = (Stage) completedLabel.getScene().getWindow();
-
-            // Set the new scene
-            Scene newScene = new Scene(newView);
-            stage.setScene(newScene);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (completedLabel.getText().equals("Completed")) {
+            this.updateGridViewCompletedTasks();
+            completedLabel.setText("Tasks");
+            return;
+        } else if (completedLabel.getText().equals("Tasks")) {
+            this.updateGrid();
+            completedLabel.setText("Completed");
+            return;
         }
     }
 
@@ -179,6 +171,51 @@ public class KollAppController {
         
         // Increment row counter for the next task
         row++; 
+        }
+    }
+
+    @FXML
+    public void updateGridViewCompletedTasks() {
+        // Clear grid view before retrieving tasks
+        if (taskGridView.getChildren().size() > 0 || taskGridView.getChildren() != null) {
+            taskGridView.getChildren().clear();
+        }
+
+        List<Task> tasks = toDoList.getTasks();
+        // Iterate through all tasks
+        for (int i = 0; i < tasks.size(); i++) {
+            Task currentTask = tasks.get(i);
+            String taskDescription = currentTask.getDescription();
+            
+            // check if date is empty
+            Label dateLabel = new Label(""); 
+            if (currentTask.getDateTime() != null) {
+                LocalDate dateTime = currentTask.getDateTime();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
+                dateLabel.setText(dateTime.format(formatter));
+            }
+            Label taskLabel = new Label(taskDescription);
+            
+            CheckBox checkBox = new CheckBox();
+            
+            // Add event listener to the CheckBox
+            checkBox.setOnAction(event -> {
+                if (checkBox.isSelected()) {
+                    // currentTask.setCompleted(true); // Set the task as completed when checkbox is selected
+                    toDoList.removeTask(currentTask); // Remove the task when checkbox is selected
+                    ToDoListHandler.updateToDoList(user, toDoList);
+                    updateGrid();  // Refresh the grid
+                }
+            });
+
+            // Only tasks that are completed are shown in the completed tasks view
+            if (currentTask.isCompleted()) {
+                // Add elements to the grid
+                taskGridView.add(checkBox, 0, i);
+                taskGridView.add(taskLabel, 1, i);
+                taskGridView.add(dateLabel, 2, i);
+            }
+            
         }
     }
 
