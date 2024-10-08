@@ -30,9 +30,10 @@ public class LoginController {
     private void handleLoginButtonAction() throws Exception {
         String username = usernameField.getText();
         String password = passwordField.getText();
+        UserHandler userHandler = new UserHandler();
 
-        if (UserHandler.userExists(username)) {
-            User user = UserHandler.loadUser(username, password);
+        if (userHandler.userExists(username)) {
+            User user = userHandler.loadUser(username, password);
 
             if (user != null) {
                 loadKollektivScene(user);

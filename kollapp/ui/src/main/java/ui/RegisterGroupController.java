@@ -39,7 +39,8 @@ public class RegisterGroupController {
             GroupHandler.createGroup(this.user, groupName);
             System.out.println("after: " + this.user.getUserGroups().toString());
             
-            UserHandler.updateUser(user);
+            UserHandler userHandler = new UserHandler();
+            userHandler.updateUser(user);
             // testing and here is the mistake
             errorLabel.setTextFill(Color.GREEN);
             errorLabel.setText("Made group succesfully");

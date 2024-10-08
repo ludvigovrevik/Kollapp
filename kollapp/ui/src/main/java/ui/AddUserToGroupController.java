@@ -15,6 +15,7 @@ import persistence.UserHandler;
 public class AddUserToGroupController {
     private User user;
     private List<String> groupNames = new ArrayList<>();
+    UserHandler userHandler = new UserHandler();
 
     public void initializeAddToUserGroup(User user) {
         this.user = user;
@@ -46,13 +47,14 @@ public class AddUserToGroupController {
             }
 
             // Check if the user exists
-            if (!UserHandler.userExists(inputUsername)) {
+
+            if (userHandler.userExists(inputUsername)) {
                 userNameErrorLabel.setText("User does not exist");
                 return; // Exit the method early
             }
 
             // Retrieve the user from the UserHandler
-            Optional<User> newUserOptional = UserHandler.getUser(inputUsername);
+            Optional<User> newUserOptional = userHandler.getUser(inputUsername);
             if (!newUserOptional.isPresent()) {
                 userNameErrorLabel.setText("User retrieval failed");
                 return; // Exit the method early

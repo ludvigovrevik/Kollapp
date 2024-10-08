@@ -12,12 +12,12 @@ import core.ToDoList;
 import core.User;
 
 public class UserHandler {
-    private static final String USER_PATH = Paths.get("..", "persistence", "src", "main", "java", "persistence", "users").toString() + File.separator;
-    private static final String TODOLIST_PATH = Paths.get("..", "persistence", "src", "main", "java", "persistence", "todolists").toString() + File.separator;
-    private static ObjectMapper mapper = new ObjectMapper();
+    private final String USER_PATH = Paths.get("..", "persistence", "src", "main", "java", "persistence", "users").toString() + File.separator;
+    private final String TODOLIST_PATH = Paths.get("..", "persistence", "src", "main", "java", "persistence", "todolists").toString() + File.separator;
+    private ObjectMapper mapper = new ObjectMapper();
     
 
-    public static void saveUser(User user) {
+    public void saveUser(User user) {
         File file = new File(USER_PATH + user.getUsername() + ".json");
         if (file.exists()) {
             throw new IllegalArgumentException("User already exists");
@@ -30,7 +30,7 @@ public class UserHandler {
     }
 
 
-    public static User loadUser(String username, String password) {
+    public User loadUser(String username, String password) {
         File file = new File(USER_PATH + username + ".json");
         try {
             User user = mapper.readValue(file, User.class);
@@ -46,7 +46,7 @@ public class UserHandler {
     }
 
     // helper method to validate a new user
-    public static boolean confirmNewValidUser(String username, String password, String confirmPassword) {
+    public boolean confirmNewValidUser(String username, String password, String confirmPassword) {
         if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             return false;
         }
@@ -62,7 +62,7 @@ public class UserHandler {
         return true;
     }
 
-    public static String getUserValidationErrorMessage(String username, String password, String confirmPassword) {
+    public String getUserValidationErrorMessage(String username, String password, String confirmPassword) {
         if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             return "Fields cannot be empty";
         }
@@ -82,12 +82,12 @@ public class UserHandler {
     }
 
     // returns wheather or not a user exists in database
-    public static boolean userExists(String username) {
+    public boolean userExists(String username) {
         File file = new File(USER_PATH + username + ".json");
         return file.exists(); 
     }
 
-    public static Optional<User> getUser(String username) {
+    public Optional<User> getUser(String username) {
         File file = new File(USER_PATH + username + ".json");
         try {
             User user = mapper.readValue(file, User.class);
@@ -98,7 +98,7 @@ public class UserHandler {
         }
     }
 
-    public static void updateUser(User user) {
+    public void updateUser(User user) {
         File file = new File(USER_PATH + user.getUsername() + ".json");
         try {
             mapper.writeValue(file, user);

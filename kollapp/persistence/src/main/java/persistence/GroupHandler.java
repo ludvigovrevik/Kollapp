@@ -16,6 +16,7 @@ import core.UserGroup;
 public class GroupHandler {
     private static final String TODOLIST_PATH = Paths.get("..", "persistence", "src", "main", "java", "persistence", "groups").toString() + File.separator;
     private static ObjectMapper mapper = new ObjectMapper();
+    private static UserHandler userHandler = new UserHandler();
 
 
     public static void createGroup(User user, String groupName) {
@@ -32,7 +33,7 @@ public class GroupHandler {
             e.printStackTrace();
             throw new RuntimeException("Failed to create group");
         }
-        UserHandler.updateUser(user);
+        userHandler.updateUser(user);
     }
 
     public static UserGroup getGroup(String groupName) {
@@ -62,7 +63,7 @@ public class GroupHandler {
         user.addUserGroup(groupName);
 
         // Update the user information
-        UserHandler.updateUser(user);
+        userHandler.updateUser(user);
     }
 }
 
