@@ -48,6 +48,8 @@ public class KollAppController {
 
     private User user;
 
+    private UserGroup groupInView;
+
     @FXML
     private VBox vBoxContainer;
 
@@ -66,9 +68,11 @@ public class KollAppController {
         // Change the cursor to hand when hovering over the label
         completedLabel.setStyle("-fx-cursor: hand;");
         personal.setStyle("-fx-cursor: hand;");
+        groupInView = null;
     }
     
     public void populateGroupView() {
+        vBoxContainer.getChildren().clear();
         List<String> groupNames = this.user.getUserGroups();
         for (String groupName : groupNames) {
             addGroupLabel(groupName);
@@ -96,19 +100,22 @@ public class KollAppController {
  * @param groupName The name of the group clicked
  */
     private void handleGroupClick(MouseEvent event, String groupName) {
+        List<String> groupNames = this.user.getUserGroups();
         System.out.println("Clicked on group: " + groupName);
         
         // You can add logic here to perform an action based on the group clicked.
         // For example, switch scenes or load group-specific data.
         if (groupName.equals(this.user.getUsername())) {
             changeCurrentTaskView(this.user.getUsername());
-        } else if (groupName.equals("Palasset")) {
-            System.out.println("Perform action for Palasset");
-            changeCurrentTaskView("Palasset");
-        } else if (groupName.equals("Kollektiv 2")) {
-            System.out.println("Perform action for Kollektiv 2");
-        }
+        } else if (groupNames.contains(groupName)) {
+            System.out.println("Perform action for " + groupName);
+            changeCurrentTaskView(groupName);
+        } 
         updateGrid();
+    }
+
+    public UserGroup getGroupInView() {
+        return groupInView;
     }
     
     // Handle the click event on the label Completed
@@ -159,7 +166,11 @@ public class KollAppController {
             checkBox.setOnAction(event -> {
                 if (checkBox.isSelected()) {
                     currentTask.setCompleted(true); // Set the task as completed when checkbox is selected
-                    ToDoListHandler.updateToDoList(user, toDoList);
+                    if (groupInView == null) {
+                        ToDoListHandler.updateToDoList(user, toDoList);
+                    } else {
+                        ToDoListHandler.updateGroupToDoList(groupInView, toDoList);
+                    }
                     updateGrid();  // Refresh the grid
                 }
         });
@@ -182,6 +193,7 @@ public class KollAppController {
         }
 
         List<Task> tasks = toDoList.getTasks();
+        int row = 0;
         // Iterate through all tasks
         for (int i = 0; i < tasks.size(); i++) {
             Task currentTask = tasks.get(i);
@@ -203,7 +215,11 @@ public class KollAppController {
                 if (checkBox.isSelected()) {
                     // currentTask.setCompleted(true); // Set the task as completed when checkbox is selected
                     toDoList.removeTask(currentTask); // Remove the task when checkbox is selected
-                    ToDoListHandler.updateToDoList(user, toDoList);
+                    if (groupInView == null) {
+                        ToDoListHandler.updateToDoList(user, toDoList);
+                    } else {
+                        ToDoListHandler.updateGroupToDoList(groupInView, toDoList);
+                    }
                     updateGrid();  // Refresh the grid
                 }
             });
@@ -211,23 +227,24 @@ public class KollAppController {
             // Only tasks that are completed are shown in the completed tasks view
             if (currentTask.isCompleted()) {
                 // Add elements to the grid
-                taskGridView.add(checkBox, 0, i);
-                taskGridView.add(taskLabel, 1, i);
-                taskGridView.add(dateLabel, 2, i);
+                taskGridView.add(checkBox, 0, row);
+                taskGridView.add(taskLabel, 1, row);
+                taskGridView.add(dateLabel, 2, row);
             }
-            
+            row++; 
         }
     }
 
     public void changeCurrentTaskView(String taskOwner) {
         if (taskOwner.equals(this.user.getUsername())) {
+            groupInView = null;
             this.toDoList = ToDoListHandler.loadToDoList(this.user);
             return;
         }
         // find the todolist of the group you switch to
         UserGroup group = GroupHandler.getGroup(taskOwner);
-        ToDoList groupToDoList = group.getToDoList();
-        this.toDoList = groupToDoList;
+        this.toDoList = ToDoListHandler.loadGroupToDoList(group);
+        groupInView = group;
     }
     
     @FXML
@@ -237,7 +254,7 @@ public class KollAppController {
             Parent root = fxmlLoader.load();
 
             RegisterGroupController controller = fxmlLoader.getController();
-            controller.setUser(this.user);
+            controller.initialize(user, this);
             // Create a new stage for the popup window
             Stage stage = new Stage();
             stage.setTitle("Register Group");

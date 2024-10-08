@@ -3,15 +3,15 @@ package core;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public class UserGroup implements java.io.Serializable {
     private String groupName;
     private List<String> users = new ArrayList<>();
-    private ToDoList toDoList = new ToDoList();
     private int numberOfUsers;
-    
 
     // Default constructor required for Jackson
     public UserGroup() {
@@ -29,10 +29,6 @@ public class UserGroup implements java.io.Serializable {
         return users;
     }
 
-    public ToDoList getToDoList() {
-        return toDoList;
-    }
-    
     @JsonProperty 
     public int getNumberOfUsers() {
         this.numberOfUsers = users.size();
@@ -51,10 +47,6 @@ public class UserGroup implements java.io.Serializable {
             throw new IllegalArgumentException("User does not exist in the group.");
         }
         users.remove(username);
-    }
-
-    public void setToDoList(ToDoList toDoList) {
-        this.toDoList = toDoList;
     }
 
     public void setGroupName(String groupName) {
