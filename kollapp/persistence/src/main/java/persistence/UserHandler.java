@@ -12,10 +12,21 @@ import core.ToDoList;
 import core.User;
 
 public class UserHandler {
-    private final String USER_PATH = Paths.get("..", "persistence", "src", "main", "java", "persistence", "users").toString() + File.separator;
-    private final String TODOLIST_PATH = Paths.get("..", "persistence", "src", "main", "java", "persistence", "todolists").toString() + File.separator;
+    private final String USER_PATH; 
+    private final String TODOLIST_PATH; 
     private ObjectMapper mapper = new ObjectMapper();
     
+    public UserHandler() {
+        this.USER_PATH = Paths.get("..", "persistence", "src", "main", "java", "persistence", "users").toString() + File.separator;
+        this.TODOLIST_PATH = Paths.get("..", "persistence", "src", "main", "java", "persistence", "todolists").toString() + File.separator;
+        this.mapper.registerModule(new JavaTimeModule());
+    }
+
+    public UserHandler(String userPath, String todolistPath) {
+        this.USER_PATH = userPath;
+        this.TODOLIST_PATH = todolistPath;
+        this.mapper.registerModule(new JavaTimeModule());
+    }
 
     public void saveUser(User user) {
         File file = new File(USER_PATH + user.getUsername() + ".json");
@@ -28,7 +39,6 @@ public class UserHandler {
             e.printStackTrace();
         }
     }
-
 
     public User loadUser(String username, String password) {
         File file = new File(USER_PATH + username + ".json");
