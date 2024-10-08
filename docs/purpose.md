@@ -8,7 +8,7 @@
 
 **KollApp** simplifies shared living by managing tasks and events. It serves as a centralized platform that streamlines the management of shared living responsibilities. By combining task management, purchase tracking, and social planning features, the app enhances the overall living experience for roommates by promoting fairness, reducing misunderstandings, and fostering a sense of community.
 
-<img src="./img/illustration.png" alt="KollApp Screenshot" style="width: 400px; height=auto;">
+<img src="./img/illustration.png" alt="KollApp Screenshot" style="width: 300px; height=auto;">
 
 With **KollApp**, you can:
 
@@ -17,6 +17,8 @@ With **KollApp**, you can:
 - 📅 Plan group activities
 - 🕒 Enter and modify task deadlines
 - 🔧 Edit task assignments and responsibilities
+- 🔐 Login securely
+- 👥 Create and search for groups
 
 ---
 
@@ -51,8 +53,19 @@ With **KollApp**, you can:
 - **Send Invitations**: Invite other roommates to events and track RSVPs to manage participation.
 - **Stay Updated**: Ensure all residents are aware of upcoming activities and any changes to scheduled events.
 
+### User Authentication 🔐
+
+- **Secure Login**: Users can securely log in to the application, ensuring that only authorized individuals have access to personal data.
+  
+### Group Management 👥
+
+- **Create Groups**: Users can create groups for specific sets of roomates, making it easier to manage tasks and activities within those groups.
+- **Search Groups**: Users can search for existing groups to join, facilitating better organization and collaboration among roommates.
+
 ---
 
-## 📖 See more detailed examples of user stories [here](./brukerhistorier.md)
+## 📖 See more detailed examples of **[user stories](./brukerhistorier.md)**
 
 ---
+
+📖 Return to the **[Main README](../readme.md)** for additional information and project overview.

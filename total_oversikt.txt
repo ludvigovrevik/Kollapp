@@ -1,0 +1,20 @@
+README.md:
+- Få inn release2 om plantUML og development_practices_and_code_quality
+
+
+Module Structure and Dependencies:
+- Tegne diagram
+
+
+User stories:
+- Endre brukerhistoriene
+
+
+Annet:
+- Skriv mer om persistence
+- Endre screenshot på purpose
+
+
+
+
+
