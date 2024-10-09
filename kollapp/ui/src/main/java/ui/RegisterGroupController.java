@@ -73,6 +73,5 @@ public class RegisterGroupController {
             errorLabel.setText("Failed to create group. Please try again.");
             e.printStackTrace();
         }
-}
-
+    }
 }

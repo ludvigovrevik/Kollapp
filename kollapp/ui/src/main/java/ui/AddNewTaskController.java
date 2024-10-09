@@ -21,7 +21,7 @@ import persistence.ToDoListHandler;
 
 public class AddNewTaskController {
     @FXML
-    private ComboBox<String> Priority;
+    private ComboBox<String> priorityField;
 
     @FXML
     private TextField taskNameField;
@@ -50,7 +50,7 @@ public class AddNewTaskController {
         this.kollAppController = kollAppController;
         this.toDoListHandler = new ToDoListHandler();
         // Initialize the ComboBox with some items
-        Priority.getItems().addAll(Task.PRIORITY_NAMES);
+        priorityField.getItems().addAll(Task.PRIORITY_NAMES);
     }
 
     @FXML
@@ -59,7 +59,7 @@ public class AddNewTaskController {
             String taskName = taskNameField.getText();
             LocalDate dateTime = datePicker.getValue();
             String description = taskDescriptionField.getText();
-            String priority = Priority.getValue();
+            String priority = priorityField.getValue();
             
             Task newTask = new Task(taskName, dateTime, description, priority);
 

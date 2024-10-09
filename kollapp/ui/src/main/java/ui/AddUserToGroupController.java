@@ -84,5 +84,5 @@ public class AddUserToGroupController {
             e.printStackTrace();
             userNameErrorLabel.setText("An unexpected error occurred");
         }
-}  
+    }  
 }

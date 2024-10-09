@@ -20,6 +20,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -49,7 +50,7 @@ public class KollAppController {
     private UserGroup groupInView;
 
     private ToDoListHandler toDoListHandler = new ToDoListHandler();
-    private GroupHandler GroupHandler = new GroupHandler();
+    private GroupHandler groupHandler = new GroupHandler();
 
     @FXML
     private VBox vBoxContainer;
@@ -69,7 +70,9 @@ public class KollAppController {
         // Change the cursor to hand when hovering over the label
         completedLabel.setStyle("-fx-cursor: hand;");
         personal.setStyle("-fx-cursor: hand;");
+        VBox.setVgrow(vBoxContainer, Priority.ALWAYS);
         groupInView = null;
+
     }
     
     public void populateGroupView() {
@@ -148,7 +151,10 @@ public class KollAppController {
             if (currentTask.isCompleted()) {
                 continue; // Skip completed tasks
             }
+
             String taskName = currentTask.getTaskName();
+            String taskDescription = currentTask.getDescription();
+            String priority = currentTask.getPriority();
             
             // check if date is empty
             Label dateLabel = new Label(""); 
@@ -157,9 +163,11 @@ public class KollAppController {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
                 dateLabel.setText(dateTime.format(formatter));
             }
-            Label taskLabel = new Label(taskName);
-            
+
             CheckBox checkBox = new CheckBox();
+            Label taskLabel = new Label(taskName);
+            Label taskDescriptionLabel = new Label(taskDescription);
+            Label priorityLabel = new Label(priority);
             
             // Add event listener to the CheckBox
             checkBox.setOnAction(event -> {
@@ -172,15 +180,17 @@ public class KollAppController {
                     }
                     updateGrid();  // Refresh the grid
                 }
-        });
+            });
 
-        // Add elements to the grid using the row counter
-        taskGridView.add(checkBox, 0, row);
-        taskGridView.add(taskLabel, 1, row);
-        taskGridView.add(dateLabel, 2, row);
-        
-        // Increment row counter for the next task
-        row++; 
+            // Add elements to the grid using the row counter
+            taskGridView.add(checkBox, 0, row);
+            taskGridView.add(taskLabel, 1, row);
+            taskGridView.add(dateLabel, 2, row);
+            taskGridView.add(taskDescriptionLabel, 3, row);
+            taskGridView.add(priorityLabel, 4, row);
+            GridPane.setVgrow(taskLabel, Priority.ALWAYS);
+            // Increment row counter for the next task
+            row++; 
         }
     }
 
@@ -241,13 +251,13 @@ public class KollAppController {
             return;
         }
         // find the todolist of the group you switch to
-        UserGroup group = GroupHandler.getGroup(taskOwner);
+        UserGroup group = groupHandler.getGroup(taskOwner);
         this.toDoList = toDoListHandler.loadGroupToDoList(group);
         groupInView = group;
     }
     
     @FXML
-    public void OpenRegisterGroupWindow() {
+    public void openRegisterGroupWindow() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("RegisterGroup.fxml"));
             Parent root = fxmlLoader.load();
@@ -261,31 +271,31 @@ public class KollAppController {
 
             // Show the new window
             stage.show();
-    } catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @FXML
-    public void OpenAddUserToGroupWindow() {
+    public void openAddUserToGroupWindow() {
         try {
-        // Load the FXML file
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddUserToGroup.fxml"));
-        Parent root = fxmlLoader.load();
+            // Load the FXML file
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddUserToGroup.fxml"));
+            Parent root = fxmlLoader.load();
 
-        // Initialize The addToUserGroup
-        AddUserToGroupController controller = fxmlLoader.getController();
-        controller.initializeAddToUserGroup(this.user);
+            // Initialize The addToUserGroup
+            AddUserToGroupController controller = fxmlLoader.getController();
+            controller.initializeAddToUserGroup(this.user);
 
-        // Create a new stage for the popup window
-        Stage stage = new Stage();
-        stage.setTitle("Add user to group");
-        stage.setScene(new Scene(root));
+            // Create a new stage for the popup window
+            Stage stage = new Stage();
+            stage.setTitle("Add user to group");
+            stage.setScene(new Scene(root));
 
-        // Show the new window
-        stage.show();
-    } catch (IOException e) {
-        e.printStackTrace();
+            // Show the new window
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -298,7 +308,7 @@ public class KollAppController {
 
     @FXML
     public void showDialog() {
-        try{
+        try {
             // Load the FXML file
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddNewTask.fxml"));
             Parent root = fxmlLoader.load();

@@ -43,7 +43,7 @@ public class GroupHandler {
 
         File fileForGroup = new File(GROUP_PATH + groupName + ".json");
         File fileGroupToDoList = new File(GROUP_TODOLIST_PATH + groupName + ".json");
-
+        
         try {
             mapper.writeValue(fileForGroup, userGroup);
             mapper.writeValue(fileGroupToDoList, toDoList);
