@@ -9,15 +9,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.Optional;
+import java.time.LocalDate;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import core.User;
 
@@ -63,6 +67,44 @@ public class UserHandlerTest {
                  .map(Path::toFile)
                  .forEach(File::delete);
         }
+    }
+
+    @Test
+    public void testConstructors() throws Exception {
+        // Create an instance using the default constructor
+        UserHandler defaultHandler = new UserHandler();
+
+        // Use reflection to access the private USER_PATH field
+        Field userPathField = UserHandler.class.getDeclaredField("USER_PATH");
+        userPathField.setAccessible(true);
+        String actualUserPath = (String) userPathField.get(defaultHandler);
+
+        // Expected default user path
+        String expectedUserPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "users")
+                .toString() + File.separator;
+        assertEquals(expectedUserPath, actualUserPath, "The default USER_PATH should be set correctly.");
+
+        // Use reflection to access the private TODOLIST_PATH field
+        Field toDoListPathField = UserHandler.class.getDeclaredField("TODOLIST_PATH");
+        toDoListPathField.setAccessible(true);
+        String actualToDoListPath = (String) toDoListPathField.get(defaultHandler);
+
+        // Expected default to-do list path
+        String expectedToDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "todolists")
+                .toString() + File.separator;
+        assertEquals(expectedToDoListPath, actualToDoListPath, "The default TODOLIST_PATH should be set correctly.");
+
+        // Use reflection to access the private mapper field
+        Field mapperField = UserHandler.class.getDeclaredField("mapper");
+        mapperField.setAccessible(true);
+        ObjectMapper mapper = (ObjectMapper) mapperField.get(defaultHandler);
+        assertNotNull(mapper, "The ObjectMapper should not be null.");
+
+        // Verify that the JavaTimeModule is registered in the mapper
+        LocalDate testDate = LocalDate.now();
+        String dateJson = mapper.writeValueAsString(testDate);
+        LocalDate parsedDate = mapper.readValue(dateJson, LocalDate.class);
+        assertEquals(testDate, parsedDate, "The ObjectMapper should correctly serialize and deserialize LocalDate.");
     }
 
     @Test

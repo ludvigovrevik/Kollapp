@@ -16,6 +16,7 @@ public class AddUserToGroupController {
     private User user;
     private List<String> groupNames = new ArrayList<>();
     UserHandler userHandler = new UserHandler();
+    GroupHandler groupHandler = new GroupHandler();
 
     public void initializeAddToUserGroup(User user) {
         this.user = user;
@@ -70,7 +71,7 @@ public class AddUserToGroupController {
 
             // Assign the user to the selected group within a try-catch block
             try {
-                GroupHandler.assignUserToGroup(newUser, selectedGroupName);
+                groupHandler.assignUserToGroup(newUser, selectedGroupName);
                 userNameErrorLabel.setText("User added to group successfully");
                 userNameErrorLabel.setTextFill(Color.GREEN);
             } catch (Exception e) {
