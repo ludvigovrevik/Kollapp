@@ -8,7 +8,6 @@ User stories:
 - Endre brukerhistoriene
 
 Annet:
-- Skriv mer om persistence (Thomas bli ferdig)
 - Endre screenshot på purpose
 
 
@@ -16,9 +15,11 @@ Annet:
 
 
 
-- Skriv om development practices
-- Endre brukerhistoriene
-- Fiks på issues slik at de knyttes til brukerhistoriene
-- Tegne diagram
-- Skriv mer om persistence
-- Endre screenshot på purpose
+2. Skriv om development practices
+3. Endre brukerhistoriene
+4. Fiks på issues slik at de knyttes til brukerhistoriene
+5. Tegne diagram
+6. Endre screenshot på purpose
+7. Skriv om hvordan man bruker appen
+
+
