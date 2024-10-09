@@ -39,11 +39,8 @@ public class RegisterController {
         if (!UserHandler.userExists(username) && UserHandler.confirmNewValidUser(username, password, confirmPassword)) {
             User user = new User(username, password);
             try {
-                UserHandler.saveUser(user); // Save user to JSON file
-                ToDoListHandler.assignToDoList(user); // Assign ToDo-list to JSON file
-    
+                UserHandler.saveUser(user); // Save user to JSON file to JSON file
                 switchToKollektivScene(event, user);
-    
             } catch (IllegalArgumentException e) {
                 errorMessage.setText("User creation failed: " + e.getMessage());
             } catch (Exception e) {

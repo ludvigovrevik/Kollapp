@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -13,70 +11,86 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.KollAppController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.KollAppController">
    <children>
        
       <Button layoutX="639.0" layoutY="409.0" mnemonicParsing="false" onAction="#showDialog" prefHeight="78.0" prefWidth="81.0" style="-fx-background-color: #9df084; -fx-background-radius: 50%;" text="+" textFill="#096800">
          <font>
             <Font size="36.0" />
          </font></Button>
-      <GridPane fx:id="taskGridView" layoutX="315.0" layoutY="67.0" prefHeight="273.0" prefWidth="307.0">
-         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="181.5321044921875" minWidth="10.0" prefWidth="40.542022705078125" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="252.26705932617188" minWidth="10.0" prefWidth="151.95797729492188" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="212.61550903320312" minWidth="9.16107177734375" prefWidth="114.76141357421875" />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-         </rowConstraints>
-      </GridPane>
-      <Separator layoutX="591.0" layoutY="67.0" orientation="VERTICAL" prefHeight="307.0" prefWidth="5.0" />
-      <Separator layoutX="491.0" layoutY="69.0" orientation="VERTICAL" prefHeight="304.0" prefWidth="8.0" />
-      <Label layoutX="354.0" layoutY="28.0" text="Task">
-         <font>
-            <Font name="Microsoft Sans Serif" size="25.0" />
-         </font>
-      </Label>
-      <Label layoutX="516.0" layoutY="28.0" text="Date">
-         <font>
-            <Font name="Microsoft Sans Serif" size="25.0" />
-         </font>
-      </Label>
-      <Pane layoutX="-3.0" layoutY="-2.0" prefHeight="529.0" prefWidth="200.0" style="-fx-background-color: #e8e8e8;">
-         <children>
-            <VBox layoutX="1.0" layoutY="79.0" prefHeight="253.0" prefWidth="199.0">
+      <ScrollPane hbarPolicy="NEVER" hmax="10.0" layoutX="220.0" layoutY="81.0" prefHeight="302.0" prefWidth="520.0">
+        <content>
+          <AnchorPane>
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #7aadff;" text="Kollektiv 1">
-                     <font>
-                        <Font name="Microsoft Sans Serif" size="21.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #c7ff8f;" text="Kollektiv 2">
-                     <font>
-                        <Font name="Microsoft Sans Serif" size="21.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="completedLabel" alignment="CENTER" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #b891ff;" text="Completed">
-                     <font>
-                        <Font name="Microsoft Sans Serif" size="21.0" />
-                     </font>
-                  </Label>
+                  <GridPane fx:id="taskGridView" layoutX="-1.0" layoutY="-4.0" scaleShape="false">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="181.5321044921875" minWidth="10.0" prefWidth="40.542022705078125" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="252.26705932617188" minWidth="10.0" prefWidth="125.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="212.61550903320312" minWidth="9.16107177734375" prefWidth="104.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="212.61550903320312" minWidth="10.0" prefWidth="141.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="212.61550903320312" minWidth="10.0" prefWidth="114.76141357421875" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                  </GridPane>
                </children>
-            </VBox>
-            <Button layoutX="45.0" layoutY="469.0" mnemonicParsing="false" onAction = "#OpenRegisterGroupWindow" text="Create Group" />
-            <Button layoutX="46.0" layoutY="434.0" mnemonicParsing="false" onAction = "#OpenAddUserToGroupWindow" text="Add user to group" />
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+      <Label layoutX="298.0" layoutY="42.0" text="Task">
+         <font>
+            <Font name="Microsoft Sans Serif" size="25.0" />
+         </font>
+      </Label>
+      <Label layoutX="401.0" layoutY="42.0" text="Date">
+         <font>
+            <Font name="Microsoft Sans Serif" size="25.0" />
+         </font>
+      </Label>
+      <Pane layoutX="-3.0" layoutY="-2.0" prefHeight="529.0" prefWidth="204.0" style="-fx-background-color: #e8e8e8;">
+         <children>
+            <Button layoutX="45.0" layoutY="469.0" mnemonicParsing="false" onAction="#OpenRegisterGroupWindow" text="Create Group" />
+            <Button layoutX="46.0" layoutY="434.0" mnemonicParsing="false" onAction="#OpenAddUserToGroupWindow" text="Add user to group" />
+            <ScrollPane layoutX="4.0" layoutY="175.0" prefHeight="172.0" prefWidth="200.0">
+               <content>
+                  <VBox fx:id="vBoxContainer" prefHeight="170.0" prefWidth="198.0">
+                     <children>
+                     </children>
+                  </VBox>
+               </content>
+            </ScrollPane>
+            <Label fx:id="completedLabel" alignment="CENTER" layoutX="5.0" layoutY="348.0" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #b891ff;" text="Completed">
+               <font>
+                  <Font name="Microsoft Sans Serif" size="21.0" />
+               </font>
+            </Label>
+            <Label fx:id="personal" alignment="CENTER" contentDisplay="CENTER" layoutX="4.0" layoutY="71.0" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #7aadff;" text="Personal">
+               <font>
+                  <Font name="Microsoft Sans Serif" size="21.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
-      <Separator layoutX="344.0" layoutY="67.0" orientation="VERTICAL" prefHeight="308.0" prefWidth="8.0" />
+      <Label layoutX="499.0" layoutY="42.0" text="Description">
+         <font>
+            <Font name="Microsoft Sans Serif" size="25.0" />
+         </font>
+      </Label>
+      <Label layoutX="640.0" layoutY="42.0" text="Priority">
+         <font>
+            <Font name="Microsoft Sans Serif" size="25.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
