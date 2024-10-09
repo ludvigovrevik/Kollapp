@@ -1,107 +1,134 @@
 package ui;
 
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.MockedStatic;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
+import org.testfx.api.FxRobot;
+import org.testfx.framework.junit5.ApplicationExtension;
+import org.testfx.framework.junit5.Start;
 
 import core.User;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import persistence.UserHandler;
 
-import java.util.concurrent.CountDownLatch;
-import javafx.application.Platform;
+@ExtendWith(ApplicationExtension.class)
+public class LoginControllerTest {
+
+    private LoginController controller;
+    private UserHandler mockUserHandler;
+    private UserHandler userHandler = new UserHandler(); // Instance of UserHandler to be used for real
 
 
-class LoginControllerTest {
-    
-    private UserHandler userHandler = new UserHandler();
+    @Start
+    public void start(Stage stage) throws Exception {
+        // Load the FXML and get the scene for the test
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/LoginScreen.fxml"));
+        Parent root = loader.load();
 
-    @Mock
-    private TextField usernameField;
+        // Get the controller instance from the loader
+        controller = loader.getController();
 
-    @Mock
-    private PasswordField passwordField;
+        // Initialize the mock and inject it into the controller
+        mockUserHandler = Mockito.mock(UserHandler.class);
+        controller.setUserHandler(mockUserHandler);
 
-    @Mock
-    private Label loginErrorMessage;
-
-    @InjectMocks
-    private LoginController loginController;
-
-    @BeforeAll
-    static void initToolkit() throws InterruptedException {
-        final CountDownLatch latch = new CountDownLatch(1);
-        Platform.startup(() -> latch.countDown());
-        latch.await();
+        // Set the scene and show the stage
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-
-        // Set default behavior for UI components
-        when(usernameField.getText()).thenReturn("testUser");
-        when(passwordField.getText()).thenReturn("testPassword");
+    public void setUp() {
+        // Make sure the existingUser exists and the password is correct
+        
     }
 
     @Test
-    void testHandleLoginButton_UserDoesNotExist() throws Exception {
-        try (MockedStatic<UserHandler> mockedUserHandler = mockStatic(UserHandler.class)) {
-            // Mock UserHandler to simulate user not existing
-            mockedUserHandler.when(() -> userHandler.userExists("testUser")).thenReturn(false);
+    void testSuccessfulLogin(FxRobot robot) throws Exception {
+        User existingUser = new User("existingUser", "password");
+        // Stub methods on the mockUserHandler
+        when(mockUserHandler.userExists("existingUser")).thenReturn(true);
+        
+        when(mockUserHandler.loadUser("existingUser", "password")).thenReturn(existingUser);
 
-            // Call the method under test
-            loginController.handleLoginButtonAction();
+        // Simulate user input
+        robot.clickOn("#usernameField").write("existingUser");
+        robot.clickOn("#passwordField").write("password");
 
-            // Verify that the correct error message is shown
-            verify(loginErrorMessage).setText("No such user exists.");
-        }
+        // Click the login button
+        robot.clickOn("#loginButton"); // Ensure the login button has fx:id="loginButton"
+
+        // Verify interactions with the mock
+        verify(mockUserHandler).userExists("existingUser");
+        verify(mockUserHandler).loadUser("existingUser", "password");
+
+        // Verify that the loginErrorMessage is empty
+        Label loginErrorMessage = robot.lookup("#loginErrorMessage").queryAs(Label.class);
+        assertEquals("", loginErrorMessage.getText());
+
     }
 
     @Test
-    void testHandleLoginButton_IncorrectPassword() throws Exception {
-        try (MockedStatic<UserHandler> mockedUserHandler = mockStatic(UserHandler.class)) {
-            // Mock UserHandler to simulate user existing but with incorrect password
-            mockedUserHandler.when(() -> userHandler.userExists("testUser")).thenReturn(true);
-            mockedUserHandler.when(() -> userHandler.loadUser("testUser", "testPassword")).thenReturn(null);
+    void testLoginIncorrectPassword(FxRobot robot) throws Exception {
+        // Stub methods to simulate incorrect password
+        when(mockUserHandler.userExists("existingUser")).thenReturn(true);
+        when(mockUserHandler.loadUser("existingUser", "wrongPassword")).thenReturn(null);
 
-            // Call the method under test
-            loginController.handleLoginButtonAction();
+        // Simulate user input
+        robot.clickOn("#usernameField").write("existingUser");
+        robot.clickOn("#passwordField").write("wrongPassword");
 
-            // Verify that the correct error message is shown
-            verify(loginErrorMessage).setText("Incorrect password. Please try again.");
-        }
+        // Click the login button
+        robot.clickOn("#loginButton");
+
+        // Verify interactions with the mock
+        verify(mockUserHandler).userExists("existingUser");
+        verify(mockUserHandler).loadUser("existingUser", "wrongPassword");
+
+        // Verify that the correct error message is displayed
+        Label loginErrorMessage = robot.lookup("#loginErrorMessage").queryAs(Label.class);
+        assertEquals("Incorrect password. Please try again.", loginErrorMessage.getText());
     }
 
     @Test
-    void testHandleLoginButton_SuccessfulLogin() throws Exception {
-        try (MockedStatic<UserHandler> mockedUserHandler = mockStatic(UserHandler.class)) {
-            // Mock UserHandler to simulate user existing and correct password
-            User mockUser = mock(User.class);
-            mockedUserHandler.when(() -> userHandler.userExists("testUser")).thenReturn(true);
-            mockedUserHandler.when(() -> userHandler.loadUser("testUser", "testPassword")).thenReturn(mockUser);
+    void testLoginUserDoesNotExist(FxRobot robot) throws Exception {
+        // Stub methods to simulate user does not exist
+        when(mockUserHandler.userExists("nonExistingUser")).thenReturn(false);
 
-            // Spy on the loginController and mock the loadKollektivScene method
-            LoginController loginControllerSpy = spy(loginController);
-            doNothing().when(loginControllerSpy).loadKollektivScene(mockUser); // Mock the method
+        // Simulate user input
+        robot.clickOn("#usernameField").write("nonExistingUser");
+        robot.clickOn("#passwordField").write("anyPassword");
 
-            // Call the method under test
-            loginControllerSpy.handleLoginButtonAction();
+        // Click the login button
+        robot.clickOn("#loginButton");
 
-            // Verify that loadKollektivScene is called with the correct user
-            verify(loginControllerSpy, times(1)).loadKollektivScene(mockUser);
+        // Verify interactions with the mock
+        verify(mockUserHandler).userExists("nonExistingUser");
 
-            // Also verify that no error message was set
-            verify(loginErrorMessage, never()).setText(anyString());
-        }
+        // Verify that the correct error message is displayed
+        Label loginErrorMessage = robot.lookup("#loginErrorMessage").queryAs(Label.class);
+        assertEquals("No such user exists.", loginErrorMessage.getText());
     }
+
+    @Test
+    void testNavigateToRegisterScreen(FxRobot robot) throws Exception {
+        // Click the register button
+        robot.clickOn("#registerButton"); // Ensure the register button has fx:id="registerButton"
+
+        // Verify that the register screen is displayed
+        // For example, check if a component unique to the register screen is present
+        Button navigateToLoginScreenButton = robot.lookup("#navigateToLoginScreenButton").queryAs(Button.class);
+        assertEquals("Back", navigateToLoginScreenButton.getText());
+    }
+
 }

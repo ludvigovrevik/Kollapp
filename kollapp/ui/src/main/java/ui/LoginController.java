@@ -26,11 +26,16 @@ public class LoginController {
     @FXML
     private Label loginErrorMessage;
 
+    private UserHandler userHandler = new UserHandler();
+
+    public void setUserHandler(UserHandler userHandler) {
+        this.userHandler = userHandler;
+    }
+
     @FXML
     public void handleLoginButtonAction() throws Exception {
         String username = usernameField.getText();
         String password = passwordField.getText();
-        UserHandler userHandler = new UserHandler();
 
         if (userHandler.userExists(username)) {
             User user = userHandler.loadUser(username, password);
