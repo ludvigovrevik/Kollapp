@@ -96,6 +96,16 @@ class RegisterControllerTest extends ApplicationTest {
         assertEquals("Passwords do not match", errorMessage.getText());
     }
 
+    @Test
+    void testNavigateToLoginScreen(FxRobot robot) throws Exception {
+        // Click the register button
+        robot.clickOn("#navigateToLoginScreenButton");
+
+        // Verify that the register screen is displayed
+        Button loginButton = robot.lookup("#loginButton").queryAs(Button.class);
+        assertEquals("Login", loginButton.getText());
+    }
+
     @AfterEach
     void removeUser() {
         // Remove the user from the JSON file
