@@ -46,10 +46,11 @@ public class KollAppController {
     private DatePicker datePicker;
 
     private ToDoList toDoList;
-
     private User user;
-
     private UserGroup groupInView;
+
+    private ToDoListHandler toDoListHandler = new ToDoListHandler();
+    private GroupHandler groupHandler = new GroupHandler();
 
     @FXML
     private VBox vBoxContainer;
@@ -173,23 +174,23 @@ public class KollAppController {
                 if (checkBox.isSelected()) {
                     currentTask.setCompleted(true); // Set the task as completed when checkbox is selected
                     if (groupInView == null) {
-                        ToDoListHandler.updateToDoList(user, toDoList);
+                        toDoListHandler.updateToDoList(user, toDoList);
                     } else {
-                        ToDoListHandler.updateGroupToDoList(groupInView, toDoList);
+                        toDoListHandler.updateGroupToDoList(groupInView, toDoList);
                     }
                     updateGrid();  // Refresh the grid
                 }
-        });
+            });
 
-        // Add elements to the grid using the row counter
-        taskGridView.add(checkBox, 0, row);
-        taskGridView.add(taskLabel, 1, row);
-        taskGridView.add(dateLabel, 2, row);
-        taskGridView.add(taskDescriptionLabel, 3, row);
-        taskGridView.add(priorityLabel, 4, row);
-        GridPane.setVgrow(taskLabel, Priority.ALWAYS);
-        // Increment row counter for the next task
-        row++; 
+            // Add elements to the grid using the row counter
+            taskGridView.add(checkBox, 0, row);
+            taskGridView.add(taskLabel, 1, row);
+            taskGridView.add(dateLabel, 2, row);
+            taskGridView.add(taskDescriptionLabel, 3, row);
+            taskGridView.add(priorityLabel, 4, row);
+            GridPane.setVgrow(taskLabel, Priority.ALWAYS);
+            // Increment row counter for the next task
+            row++; 
         }
     }
 
@@ -205,7 +206,7 @@ public class KollAppController {
         // Iterate through all tasks
         for (int i = 0; i < tasks.size(); i++) {
             Task currentTask = tasks.get(i);
-            String taskDescription = currentTask.getDescription();
+            String taskDescription = currentTask.getTaskName();
             
             // check if date is empty
             Label dateLabel = new Label(""); 
@@ -224,9 +225,9 @@ public class KollAppController {
                     // currentTask.setCompleted(true); // Set the task as completed when checkbox is selected
                     toDoList.removeTask(currentTask); // Remove the task when checkbox is selected
                     if (groupInView == null) {
-                        ToDoListHandler.updateToDoList(user, toDoList);
+                        toDoListHandler.updateToDoList(user, toDoList);
                     } else {
-                        ToDoListHandler.updateGroupToDoList(groupInView, toDoList);
+                        toDoListHandler.updateGroupToDoList(groupInView, toDoList);
                     }
                     updateGrid();  // Refresh the grid
                 }
@@ -246,17 +247,17 @@ public class KollAppController {
     public void changeCurrentTaskView(String taskOwner) {
         if (taskOwner.equals(this.user.getUsername())) {
             groupInView = null;
-            this.toDoList = ToDoListHandler.loadToDoList(this.user);
+            this.toDoList = toDoListHandler.loadToDoList(this.user);
             return;
         }
         // find the todolist of the group you switch to
-        UserGroup group = GroupHandler.getGroup(taskOwner);
-        this.toDoList = ToDoListHandler.loadGroupToDoList(group);
+        UserGroup group = groupHandler.getGroup(taskOwner);
+        this.toDoList = toDoListHandler.loadGroupToDoList(group);
         groupInView = group;
     }
     
     @FXML
-    public void OpenRegisterGroupWindow() {
+    public void openRegisterGroupWindow() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("RegisterGroup.fxml"));
             Parent root = fxmlLoader.load();
@@ -270,43 +271,44 @@ public class KollAppController {
 
             // Show the new window
             stage.show();
-    } catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @FXML
-    public void OpenAddUserToGroupWindow() {
+    public void openAddUserToGroupWindow() {
         try {
-        // Load the FXML file
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddUserToGroup.fxml"));
-        Parent root = fxmlLoader.load();
+            // Load the FXML file
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddUserToGroup.fxml"));
+            Parent root = fxmlLoader.load();
 
-        // Initialize The addToUserGroup
-        AddUserToGroupController controller = fxmlLoader.getController();
-        controller.initializeAddToUserGroup(this.user);
+            // Initialize The addToUserGroup
+            AddUserToGroupController controller = fxmlLoader.getController();
+            controller.initializeAddToUserGroup(this.user);
 
-        // Create a new stage for the popup window
-        Stage stage = new Stage();
-        stage.setTitle("Add user to group");
-        stage.setScene(new Scene(root));
+            // Create a new stage for the popup window
+            Stage stage = new Stage();
+            stage.setTitle("Add user to group");
+            stage.setScene(new Scene(root));
 
-        // Show the new window
-        stage.show();
-    } catch (IOException e) {
-        e.printStackTrace();
+            // Show the new window
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     public void innitializeToDoList(User user) {
-        this.toDoList = ToDoListHandler.loadToDoList(user);
+        ToDoListHandler handler = new ToDoListHandler();
+        this.toDoList = handler.loadToDoList(user);
         this.user = user;
         updateGrid();
     }
 
     @FXML
     public void showDialog() {
-        try{
+        try {
             // Load the FXML file
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddNewTask.fxml"));
             Parent root = fxmlLoader.load();
