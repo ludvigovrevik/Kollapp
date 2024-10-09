@@ -9,9 +9,9 @@ import java.util.List;
 public class ToDoList implements java.io.Serializable {
     private List<Task> tasks = new ArrayList<>();
 
-    // required by Jackson
     public ToDoList() {}
 
+    // Add a task to the to-do list
     public void addTask(Task newTask) {
         if (newTask == null) {
             throw new IllegalArgumentException("Task cannot be null.");
@@ -19,28 +19,16 @@ public class ToDoList implements java.io.Serializable {
         tasks.add(newTask);
     }
 
-    public void removeTask(int index) {
-        if (index < 0 || index >= tasks.size()) {
-            throw new IndexOutOfBoundsException("Index is out of range.");
-        }
-        tasks.remove(index);
+    // Get the list of tasks
+    public List<Task> getTasks() {
+        return tasks;
     }
 
+    // Remove a task from the to-do list
     public void removeTask(Task task) {
         if (!tasks.contains(task)) {
             throw new IndexOutOfBoundsException("Index is out of range.");
         }
         tasks.remove(task);
-    }
-
-    public void updateTask(int index, Task updatedTask) {
-        if (index < 0 || index >= tasks.size()) {
-            throw new IndexOutOfBoundsException("Index is out of range.");
-        }
-        tasks.set(index, updatedTask);
-    }
-
-    public List<Task> getTasks() {
-        return tasks;
     }
 }

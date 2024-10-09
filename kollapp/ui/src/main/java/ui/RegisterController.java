@@ -35,11 +35,15 @@ public class RegisterController {
         String username = usernameField.getText();
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
+        UserHandler userHandler = new UserHandler();
         
-        if (!UserHandler.userExists(username) && UserHandler.confirmNewValidUser(username, password, confirmPassword)) {
+        if (!userHandler.userExists(username) && userHandler.confirmNewValidUser(username, password, confirmPassword)) {
             User user = new User(username, password);
             try {
-                UserHandler.saveUser(user); // Save user to JSON file to JSON file
+                userHandler.saveUser(user); // Save user to JSON file
+                ToDoListHandler handler = new ToDoListHandler();
+                handler.assignToDoList(user); // Assign ToDo-list to JSON file
+    
                 switchToKollektivScene(event, user);
             } catch (IllegalArgumentException e) {
                 errorMessage.setText("User creation failed: " + e.getMessage());
@@ -47,7 +51,7 @@ public class RegisterController {
                 errorMessage.setText("An unexpected error occurred: " + e.getMessage());
             }
         } else {
-            errorMessage.setText(UserHandler.getUserValidationErrorMessage(username, password, confirmPassword));
+            errorMessage.setText(userHandler.getUserValidationErrorMessage(username, password, confirmPassword));
         }
     }
 

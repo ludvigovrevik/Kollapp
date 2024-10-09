@@ -15,6 +15,8 @@ import persistence.UserHandler;
 public class AddUserToGroupController {
     private User user;
     private List<String> groupNames = new ArrayList<>();
+    UserHandler userHandler = new UserHandler();
+    GroupHandler groupHandler = new GroupHandler();
 
     public void initializeAddToUserGroup(User user) {
         this.user = user;
@@ -46,13 +48,13 @@ public class AddUserToGroupController {
             }
 
             // Check if the user exists
-            if (!UserHandler.userExists(inputUsername)) {
+            if (!userHandler.userExists(inputUsername)) {
                 userNameErrorLabel.setText("User does not exist");
                 return; // Exit the method early
             }
 
             // Retrieve the user from the UserHandler
-            Optional<User> newUserOptional = UserHandler.getUser(inputUsername);
+            Optional<User> newUserOptional = userHandler.getUser(inputUsername);
             if (!newUserOptional.isPresent()) {
                 userNameErrorLabel.setText("User retrieval failed");
                 return; // Exit the method early
@@ -69,7 +71,7 @@ public class AddUserToGroupController {
 
             // Assign the user to the selected group within a try-catch block
             try {
-                GroupHandler.assignUserToGroup(newUser, selectedGroupName);
+                groupHandler.assignUserToGroup(newUser, selectedGroupName);
                 userNameErrorLabel.setText("User added to group successfully");
                 userNameErrorLabel.setTextFill(Color.GREEN);
             } catch (Exception e) {
@@ -82,5 +84,5 @@ public class AddUserToGroupController {
             e.printStackTrace();
             userNameErrorLabel.setText("An unexpected error occurred");
         }
-}  
+    }  
 }
