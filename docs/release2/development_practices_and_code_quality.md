@@ -6,54 +6,47 @@ In this project, we have made conscious choices to ensure an efficient workflow,
 
 ## 🛠️ Work Habits
 
-- **Pair Programming and Independent Work**:
-  We have combined pair programming and independent work to leverage the collective knowledge of the group while maintaining productivity when working individually. Pair programming has been particularly useful for solving complex problems, discussing functionalities, and identifying bugs early in the process.
+### Pair Programming and Independent Work
 
-- **Regular Meetings**:
-  The group has had three regular meetings per week where we discussed the project's status, addressed any challenges, and assigned tasks. This has ensured good coordination, progress, and continuous communication among all members.
+- We combined pair programming with independent work to balance collaboration and individual productivity. Our team held regular meetings three times a week, both online and in-person, to discuss progress, address any challenges, and review code updates. These meetings helped us stay on the same page and keep the project moving forward. Pair programming was particularly beneficial for solving difficult issues and identifying bugs early in the development process.
 
-- **Task Distribution and User Stories**:
-  We have divided tasks based on predefined user stories. This has given us a clear picture of what needs to be prioritized and which functionalities should be implemented first, making the development process more focused and structured.
+### Team Roles and Coordination
+
+- In Release 2, we divided our tasks to make the most of our skills and keep things efficient. Ludvig focused on implementing task addition logic and the user login system, while Thomas worked on group management features, such as creating and joining groups. Sang contributed by categorizing tasks, separating unfinished tasks from completed ones. Kien worked on enhancing task addition logic and integrating tasks into JSON with added UI elements. We planned our timelines carefully to make sure each piece was ready for the next person to build on, keeping the workflow smooth and the features well-connected.
+
+### Close Collaboration with Teaching Assistant
+
+- Throughout the project, we maintained close communication with our teaching assistant, Ådne Børresen. Here we asked questions to clarify our doubts and ensure that we fully understood the project requirements. This proactive approach helped us stay on track and align our development with the expectations, making sure we were always on the same page regarding the project's goals and deliverables.
 
 ---
 
 ## 🔄 Workflow
 
-- **Version Control System and Branch Structure**:
-  We use Git as our version control system with a structured branch strategy to ensure stability in the main code (`master` branch). When working on different issues related to predefined user stories, we always create separate feature branches. This prevents conflicts with the `master` branch and allows us to test new features without affecting the main code.
+### Version Control System and Branch Structure
 
-- **Merge Requests and Code Reviews**:
-  Before a merge request is sent to `master`, we always ensure that another person in the group reviews and approves the request. This practice ensures that the changes added to the main code are of high quality and follow our coding standards. Code reviews also contribute to knowledge sharing within the group and help identify potential issues early.
+- We use Git as our version control system with a structured branch strategy to ensure stability in the main code (`master` branch). When working on different issues related to predefined user stories, we always create separate feature branches. This prevents conflicts with the `master` branch and allows us to test new features without affecting the main code.
+
+### Merge Requests and Code Reviews
+
+- Before a merge request is sent to `master`, we always ensure that another person in the group reviews and approves the request. This practice ensures that the changes added to the main code are of high quality and follow our coding standards. Code reviews also contribute to knowledge sharing within the group and help identify potential issues early.
 
 ---
 
 ## ⚙️ Code Quality and Testing
 
-- **Approach to Testing**:
-  Although we developed the tests towards the end of the project, we placed great emphasis on thoroughly testing all critical functions. We used both unit tests and integration tests to ensure that the application works as expected under various scenarios.
+### Approach to Testing
 
-- **Tools for Code Quality**:
+- Even though we developed the tests later in the project, we focused heavily on thoroughly testing all critical functions. We implemented both unit tests and UI tests to ensure that the application behaved as expected in various scenarios. During this process, we faced challenges integrating these tests into our project, as we discovered that specific dependency and Java versions were required to run them successfully, leading to some delays. This experience taught us the importance of carefully managing dependency compatibility and environment configurations early in the development process.
+
+📖 For a quick overview of system requirements and dependencies, visit the **[Main README](../../readme.md)** 
+
+### Tools for Code Quality
+
   We have used several tools to maintain and improve code quality:
-  - **JaCoCo**: To measure test coverage and ensure that a large portion of the code is tested.
-  - **Mockito**: For mocking dependencies in unit tests, allowing us to isolate specific functions.
-  - **Checkstyle**: To follow coding standards and maintain consistency in the code.
-  - **SpotBugs**: To identify potential errors and weaknesses in the code, allowing us to address them before they become issues in production.
 
-- **Settings and Configuration**:
-  - **JaCoCo** is configured to generate detailed reports on test coverage after each project build.
-  - **Checkstyle** is set up with rules that follow standard Java coding conventions to make the code more readable and maintainable.
-  - **SpotBugs** is integrated into our CI pipeline, automatically running and analyzing the code with each pull request.
+- **JaCoCo** (version: 0.8.10): To measure test coverage and ensure that a large portion of the code is tested.
+- **Mockito** (version: 5.0.0): For mocking dependencies in unit tests, allowing us to isolate specific functions.
+- **Checkstyle** (version: 3.2.0): To follow coding standards and maintain consistency in the code.
+- **SpotBugs** (version: 4.7.3.0): To identify potential errors and weaknesses in the code, allowing us to address them before they become issues in production.
 
 ---
-
-## 🤝 Collaboration and Process Improvement
-
-- We have worked in short iterations (sprints), which have allowed us to deliver improvements continuously and quickly adapt to any changes in the project.
-- After each iteration, we have held retrospective meetings to evaluate what worked well and what could be improved in our workflow.
-- All progress and decisions have been thoroughly documented to ensure that the project has been well-organized and transparent.
-
----
-
-## 📈 Summary
-
-Our structured workflow, along with the use of effective tools such as **JaCoCo**, **Mockito**, **Checkstyle**, and **SpotBugs**, has enabled us to maintain high code quality and efficiency in the development process. Our approach to using branches and code reviews has contributed to a stable and well-functioning project that all group members have benefited from.

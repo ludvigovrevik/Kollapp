@@ -8,7 +8,7 @@ In this release, we have made significant improvements and additions to the **Ko
 
 ### 🎨 Enhanced UI and Logic
 
-- Completely revamped the user interface for a more intuitive and user-friendly experience.
+- Completely revamped the user interface for a more user-friendly experience.
 - Improved the underlying logic to support more complex operations and interactions.
 
 ### 📦 Modularized Project Structure
@@ -31,8 +31,19 @@ In this release, we have made significant improvements and additions to the **Ko
 
 ### 👥 Group Functionality
 
-- Introduced the concept of user groups, allowing users to create and manage groups.
+- Introduced the concept of user groups, allowing users to create and add users to groups.
 - Each group has its own to-do list, enabling collaborative task management.
+
+### 🔐 Login Feature
+
+- Introduced a login feature to enhance user authentication and session management.
+- Relevant code paths:
+  - `kollapp/ui/src/main/resources/ui/LoginScreen.fxml`
+  - `kollapp/ui/src/main/resources/ui/RegisterScreen.fxml`
+  - `kollapp/ui/src/main/java/ui/LoginController.java`
+  - `kollapp/ui/src/main/java/ui/RegisterController.java`
+
+
 
 ---
 
