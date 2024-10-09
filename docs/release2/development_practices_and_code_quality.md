@@ -1,60 +1,59 @@
-# 📄 Dokumentasjon av Arbeidsvaner, Arbeidsflyt og Kodekvalitet
+# 📄 Documentation of Work Habits, Workflow, and Code Quality
 
-I dette prosjektet har vi tatt bevisste valg for å sikre en effektiv arbeidsflyt, gode arbeidsvaner og høy kodekvalitet. Denne dokumentasjonen beskriver vår tilnærming til versjonskontroll, samarbeid og testing, samt hvilke verktøy vi har brukt for å opprettholde kodekvaliteten.
-
----
-
-## 🛠️ Arbeidsvaner
-
-- **Parprogrammering og Selvstendig Arbeid**:
-  Vi har kombinert parprogrammering og selvstendig arbeid for å dra nytte av gruppens kollektive kunnskap samtidig som vi opprettholder produktiviteten når vi jobber individuelt. Parprogrammering har vært særlig nyttig for å løse komplekse problemer, diskutere funksjonaliteter, og identifisere bugs tidlig i prosessen.
-
-- **Regelmessige Møter**:
-  Gruppen har hatt tre faste møter per uke der vi har diskutert prosjektets status, adressert eventuelle utfordringer, og fordelt oppgaver. Dette har sikret god koordinering, fremdrift, og kontinuerlig kommunikasjon blant alle medlemmene.
-
-- **Oppgavefordeling og Brukerhistorier**:
-  Vi har delt opp oppgaver basert på brukerhistorier som er definert på forhånd. Dette har gitt oss et klart bilde av hva som skal prioriteres og hvilke funksjonaliteter som skal implementeres først, noe som gjør utviklingsprosessen mer fokusert og strukturert.
+In this project, we have made conscious choices to ensure an efficient workflow, good work habits, and high code quality. This documentation describes our approach to version control, collaboration, and testing, as well as the tools we have used to maintain code quality.
 
 ---
 
-## 🔄 Arbeidsflyt
+## 🛠️ Work Habits
 
-- **Versjonskontrollsystem og Branch-struktur**:
-  Vi bruker Git som vårt versjonskontrollsystem med en strukturert branch-struktur for å sikre stabilitet i hovedkoden (`master`-branch). Når vi jobber på ulike issues som er knyttet til de forhåndsdefinerte brukerhistoriene, oppretter vi alltid egne feature-branches. Dette hindrer konflikter med `master`-branchen og gir oss muligheten til å teste nye funksjoner uten å påvirke hovedkoden.
+- **Pair Programming and Independent Work**:
+  We have combined pair programming and independent work to leverage the collective knowledge of the group while maintaining productivity when working individually. Pair programming has been particularly useful for solving complex problems, discussing functionalities, and identifying bugs early in the process.
 
-- **Merge Requests og Kodegjennomgang**:
-  Før en merge request sendes til `master`, sørger vi alltid for at en annen person i gruppen ser gjennom og godkjenner forespørselen. Denne praksisen sikrer at endringene som legges inn i hovedkoden er av høy kvalitet og følger våre kodestandarder. Kodegjennomgang bidrar også til kunnskapsdeling i gruppen og til å oppdage eventuelle problemer tidlig.
+- **Regular Meetings**:
+  The group has had three regular meetings per week where we discussed the project's status, addressed any challenges, and assigned tasks. This has ensured good coordination, progress, and continuous communication among all members.
 
----
-
-## ⚙️ Kodekvalitet og Testing
-
-- **Tilnærming til Testing**:
-  Selv om vi utviklet testene mot slutten av prosjektet, la vi stor vekt på grundig testing av alle kritiske funksjoner. Vi brukte både enhetstester og integrasjonstester for å sikre at applikasjonen fungerer som forventet under ulike scenarier.
-
-- **Verktøy for Kodekvalitet**:
-  Vi har brukt en rekke verktøy for å opprettholde og forbedre kodekvaliteten:
-  - **JaCoCo**: For å måle testdekningen og sikre at vi tester en stor del av koden.
-  - **Mockito**: For mocking av avhengigheter i enhetstester, slik at vi kan isolere spesifikke funksjoner.
-  - **Checkstyle**: For å følge kodestandarder og opprettholde konsistens i koden.
-  - **SpotBugs**: For å identifisere potensielle feil og svakheter i koden, slik at vi kan adressere dem før de blir problemer i produksjon.
-
-- **Innstillinger og Konfigurasjon**:
-  - **JaCoCo** er konfigurert til å generere detaljerte rapporter om testdekningen etter hver bygging av prosjektet.
-  - **Checkstyle** er satt opp med regler som følger standard Java-kodekonvensjoner for å gjøre koden mer lesbar og vedlikeholdbar.
-  - **SpotBugs** er integrert i vår CI-pipeline, slik at den automatisk kjører og analyserer koden ved hver pull request.
+- **Task Distribution and User Stories**:
+  We have divided tasks based on predefined user stories. This has given us a clear picture of what needs to be prioritized and which functionalities should be implemented first, making the development process more focused and structured.
 
 ---
 
-## 🤝 Samarbeid og Prosessforbedring
+## 🔄 Workflow
 
-- Vi har jobbet i korte iterasjoner (sprints), som har gitt oss muligheten til å levere forbedringer kontinuerlig og raskt tilpasse oss til eventuelle endringer i prosjektet.
-- Etter hver iterasjon har vi hatt retrospektive møter for å evaluere hva som fungerte godt, og hva som kunne forbedres i vår arbeidsflyt.
-- Alle fremgang og beslutninger har blitt grundig dokumentert for å sikre at prosjektet har vært godt organisert og gjennomsiktig.
+- **Version Control System and Branch Structure**:
+  We use Git as our version control system with a structured branch strategy to ensure stability in the main code (`master` branch). When working on different issues related to predefined user stories, we always create separate feature branches. This prevents conflicts with the `master` branch and allows us to test new features without affecting the main code.
+
+- **Merge Requests and Code Reviews**:
+  Before a merge request is sent to `master`, we always ensure that another person in the group reviews and approves the request. This practice ensures that the changes added to the main code are of high quality and follow our coding standards. Code reviews also contribute to knowledge sharing within the group and help identify potential issues early.
 
 ---
 
-## 📈 Oppsummering
+## ⚙️ Code Quality and Testing
 
-Vår strukturerte arbeidsflyt, sammen med bruken av effektive verktøy som **JaCoCo**, **Mockito**, **Checkstyle**, og **SpotBugs**, har gjort det mulig for oss å opprettholde høy kodekvalitet og effektivitet i utviklingsprosessen. Vår tilnærming til bruk av branches og kodegjennomganger har bidratt til et stabilt og velfungerende prosjekt som alle gruppemedlemmene har hatt nytte av.
+- **Approach to Testing**:
+  Although we developed the tests towards the end of the project, we placed great emphasis on thoroughly testing all critical functions. We used both unit tests and integration tests to ensure that the application works as expected under various scenarios.
 
+- **Tools for Code Quality**:
+  We have used several tools to maintain and improve code quality:
+  - **JaCoCo**: To measure test coverage and ensure that a large portion of the code is tested.
+  - **Mockito**: For mocking dependencies in unit tests, allowing us to isolate specific functions.
+  - **Checkstyle**: To follow coding standards and maintain consistency in the code.
+  - **SpotBugs**: To identify potential errors and weaknesses in the code, allowing us to address them before they become issues in production.
+
+- **Settings and Configuration**:
+  - **JaCoCo** is configured to generate detailed reports on test coverage after each project build.
+  - **Checkstyle** is set up with rules that follow standard Java coding conventions to make the code more readable and maintainable.
+  - **SpotBugs** is integrated into our CI pipeline, automatically running and analyzing the code with each pull request.
+
+---
+
+## 🤝 Collaboration and Process Improvement
+
+- We have worked in short iterations (sprints), which have allowed us to deliver improvements continuously and quickly adapt to any changes in the project.
+- After each iteration, we have held retrospective meetings to evaluate what worked well and what could be improved in our workflow.
+- All progress and decisions have been thoroughly documented to ensure that the project has been well-organized and transparent.
+
+---
+
+## 📈 Summary
+
+Our structured workflow, along with the use of effective tools such as **JaCoCo**, **Mockito**, **Checkstyle**, and **SpotBugs**, has enabled us to maintain high code quality and efficiency in the development process. Our approach to using branches and code reviews has contributed to a stable and well-functioning project that all group members have benefited from.

@@ -1,20 +1,24 @@
 README.md:
-- Få inn release2 om plantUML og development_practices_and_code_quality
-
+- development_practices_and_code_quality
 
 Module Structure and Dependencies:
 - Tegne diagram
 
-
 User stories:
 - Endre brukerhistoriene
 
-
 Annet:
-- Skriv mer om persistence
+- Skriv mer om persistence (Thomas bli ferdig)
 - Endre screenshot på purpose
 
 
 
 
 
+
+- Skriv om development practices
+- Endre brukerhistoriene
+- Fiks på issues slik at de knyttes til brukerhistoriene
+- Tegne diagram
+- Skriv mer om persistence
+- Endre screenshot på purpose
