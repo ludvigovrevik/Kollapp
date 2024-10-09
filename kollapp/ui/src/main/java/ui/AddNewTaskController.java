@@ -1,22 +1,18 @@
 package ui;
 
+import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 import core.Task;
 import core.ToDoList;
 import core.User;
+import core.UserGroup;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -43,6 +39,7 @@ public class AddNewTaskController {
     private TextArea taskDescriptionField;
     
     private ToDoList toDoList;
+    private ToDoListHandler toDoListHandler;
     private User user;
     private KollAppController kollAppController;
 
@@ -51,12 +48,13 @@ public class AddNewTaskController {
         this.toDoList = toDoList;
         this.user = user;
         this.kollAppController = kollAppController;
+        this.toDoListHandler = new ToDoListHandler();
         // Initialize the ComboBox with some items
         Priority.getItems().addAll(Task.PRIORITY_NAMES);
     }
 
     @FXML
-    public void handleAddTask(ActionEvent event) {
+    public void handleAddTask(ActionEvent event) throws IOException {
         if (!taskNameField.getText().isEmpty()) {
             String taskName = taskNameField.getText();
             LocalDate dateTime = datePicker.getValue();
@@ -64,15 +62,30 @@ public class AddNewTaskController {
             String priority = Priority.getValue();
             
             Task newTask = new Task(taskName, dateTime, description, priority);
-            
+
             toDoList.addTask(newTask);
-            ToDoListHandler handler = new ToDoListHandler();
-            handler.updateToDoList(user, toDoList);
-            kollAppController.updateGrid();
             
+            UserGroup groupInView = kollAppController.getGroupInView(); 
+            if (groupInView != null) {
+                // Add task to the group's to-do list
+                toDoListHandler.updateGroupToDoList(groupInView, toDoList);
+                System.out.println("Updated to-do list for group: " + groupInView.getGroupName());
+            } else {
+                // Add task to the user's personal to-do list
+                toDoListHandler.updateToDoList(user, toDoList);
+                System.out.println("Updated to-do list for user: " + user.getUsername());
+            }
+            kollAppController.updateGrid();
+
+            // Close the current window
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.close();
         }
     }
+    
 }
+
+    
+
+
 

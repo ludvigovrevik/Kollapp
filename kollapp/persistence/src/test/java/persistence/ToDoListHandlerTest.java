@@ -31,14 +31,15 @@ public class ToDoListHandlerTest {
     private ToDoListHandler toDoListHandler;
     private User user;
     private Path testFolderPath;
+    private Path groupTestFolderPath;
 
     @BeforeEach
     public void setUp() throws IOException {
         // Use a test-specific directory to avoid interfering with real data
         this.testFolderPath = Paths.get("src", "main", "java", "persistence", "todolists", "tests");
-
+        this.groupTestFolderPath = Paths.get("src", "main", "java", "persistence", "grouptodolists", "tests");
         // Initialize ToDoListHandler with the test path
-        toDoListHandler = new ToDoListHandler(testFolderPath.toString() + File.separator);
+        toDoListHandler = new ToDoListHandler(testFolderPath.toString() + File.separator, groupTestFolderPath.toString() + File.separator);
 
         user = new User("testUser", "password123");
 

@@ -10,17 +10,23 @@ import persistence.UserHandler;
 
 public class RegisterGroupController {
     @FXML
-    TextField groupNameField;
+    private TextField groupNameField;
 
     @FXML
-    Label errorLabel;
+    private Label errorLabel;
 
-    User user;
+    private User user;
+    private KollAppController kollAppController;
 
     public void setUser(User user) {
         this.user = user;
     }
 
+    public void initialize(User user, KollAppController kollAppController) {
+        this.user = user;
+        this.kollAppController = kollAppController; 
+    }
+    
     @FXML
     public void createGroup() {
         try {
@@ -41,6 +47,10 @@ public class RegisterGroupController {
             
             UserHandler userHandler = new UserHandler();
             userHandler.updateUser(user);
+
+            // update Kollapp ui
+            kollAppController.populateGroupView();
+
             // testing and here is the mistake
             errorLabel.setTextFill(Color.GREEN);
             errorLabel.setText("Made group succesfully");

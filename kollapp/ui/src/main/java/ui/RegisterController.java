@@ -45,7 +45,6 @@ public class RegisterController {
                 handler.assignToDoList(user); // Assign ToDo-list to JSON file
     
                 switchToKollektivScene(event, user);
-    
             } catch (IllegalArgumentException e) {
                 errorMessage.setText("User creation failed: " + e.getMessage());
             } catch (Exception e) {

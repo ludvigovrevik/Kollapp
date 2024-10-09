@@ -47,8 +47,7 @@ public class AddUserToGroupController {
             }
 
             // Check if the user exists
-
-            if (userHandler.userExists(inputUsername)) {
+            if (!userHandler.userExists(inputUsername)) {
                 userNameErrorLabel.setText("User does not exist");
                 return; // Exit the method early
             }

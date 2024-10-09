@@ -2,14 +2,14 @@ package core;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class UserGroup implements java.io.Serializable {
     private String groupName;
     private List<String> users = new ArrayList<>();
-    private ToDoList toDoList = new ToDoList();
 
-    // Default constructor (required for Jackson)
+    // Default constructor required for Jackson
     public UserGroup() {}
 
     // Constructor for creating a new user group
@@ -32,21 +32,8 @@ public class UserGroup implements java.io.Serializable {
         return new ArrayList<>(users);  // Return a copy to avoid external modification
     }
 
-    // Getter for to-do list
-    public ToDoList getToDoList() {
-        return toDoList;
-    }
-
-    // Setter for to-do list
-    public void setToDoList(ToDoList toDoList) {
-        if (toDoList == null) {
-            throw new IllegalArgumentException("To-do list cannot be null.");
-        }
-        this.toDoList = toDoList;
-    }
-
-    // Returns the number of users in the group
-    @JsonProperty 
+    // Getter for the number of users
+    @JsonIgnore
     public int getNumberOfUsers() {
         return users.size();
     }
@@ -73,7 +60,6 @@ public class UserGroup implements java.io.Serializable {
         users.remove(username);
     }
 
-    // Checks if a user is in the group
     public boolean containsUser(String username) {
         if (username == null || username.trim().isEmpty()) {
             throw new IllegalArgumentException("Username cannot be null or empty.");

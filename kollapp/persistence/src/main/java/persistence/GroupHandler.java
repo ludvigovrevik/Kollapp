@@ -14,7 +14,8 @@ import core.User;
 import core.UserGroup;
 
 public class GroupHandler {
-    private static final String TODOLIST_PATH = Paths.get("..", "persistence", "src", "main", "java", "persistence", "groups").toString() + File.separator;
+    private static final String GROUP_PATH = Paths.get("..", "persistence", "src", "main", "java", "persistence", "groups").toString() + File.separator;
+    private static final String GROUPTODOLIST_PATH = Paths.get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists").toString() + File.separator;
     private static ObjectMapper mapper = new ObjectMapper();
     private static UserHandler userHandler = new UserHandler();
 
@@ -22,13 +23,16 @@ public class GroupHandler {
     public static void createGroup(User user, String groupName) {
         UserGroup userGroup = new UserGroup(groupName);
         userGroup.addUser(user.getUsername());
-        userGroup.setToDoList(new ToDoList());
 
         user.addUserGroup(groupName);
-        
-        File file = new File(TODOLIST_PATH + groupName + ".json");
+        ToDoList toDoList = new ToDoList();        
+
+        File fileForGroup = new File(GROUP_PATH + groupName + ".json");
+        File fileGroupToDoList = new File(GROUPTODOLIST_PATH + groupName + ".json");
+
         try {
-            mapper.writeValue(file, userGroup);
+            mapper.writeValue(fileForGroup, userGroup);
+            mapper.writeValue(fileGroupToDoList, toDoList);
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to create group");
@@ -37,7 +41,7 @@ public class GroupHandler {
     }
 
     public static UserGroup getGroup(String groupName) {
-        File file = new File(TODOLIST_PATH + groupName + ".json");
+        File file = new File(GROUP_PATH + groupName + ".json");
         if (!file.exists()) {
             throw new IllegalArgumentException("Group file does not exist: " + file.getPath());
         }

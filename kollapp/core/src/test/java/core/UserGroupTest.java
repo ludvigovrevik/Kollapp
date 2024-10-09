@@ -1,10 +1,15 @@
 package core;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class UserGroupTest {
 
@@ -104,16 +109,6 @@ public class UserGroupTest {
     }
 
     @Test
-    void testSetToDoList() {
-        // Test setting a ToDoList
-        ToDoList newToDoList = new ToDoList();
-        userGroup.setToDoList(newToDoList);
-
-        assertEquals(newToDoList, userGroup.getToDoList(), "The ToDoList should be updated");
-        assertThrows(IllegalArgumentException.class, () -> userGroup.setToDoList(null));
-    }
-
-    @Test
     void testSetGroupName() {
         // Test setting a group name
         String newGroupName = "New Study Group";
@@ -129,6 +124,5 @@ public class UserGroupTest {
 
         assertNotNull(defaultGroup.getUsers(), "The users list should not be null");
         assertEquals(0, defaultGroup.getUsers().size(), "The users list should be empty");
-        assertNotNull(defaultGroup.getToDoList(), "The ToDoList should not be null");
     }
 }

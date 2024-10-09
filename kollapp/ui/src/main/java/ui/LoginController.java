@@ -52,7 +52,8 @@ public class LoginController {
 
             KollAppController controller = fxmlLoader.getController();
             controller.innitializeToDoList(user); 
-
+            controller.populateGroupView();
+            
             Scene scene = new Scene(parent);
             Stage stage = (Stage) usernameField.getScene().getWindow();
             stage.setScene(scene);
