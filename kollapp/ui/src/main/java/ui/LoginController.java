@@ -27,7 +27,7 @@ public class LoginController {
     private Label loginErrorMessage;
 
     @FXML
-    private void handleLoginButtonAction() throws Exception {
+    public void handleLoginButtonAction() throws Exception {
         String username = usernameField.getText();
         String password = passwordField.getText();
         UserHandler userHandler = new UserHandler();
@@ -45,7 +45,7 @@ public class LoginController {
         }
     }
 
-    private void loadKollektivScene(User user) {
+    public void loadKollektivScene(User user) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Kollektiv.fxml"));
             Parent parent = fxmlLoader.load();
@@ -66,7 +66,7 @@ public class LoginController {
     }
 
     @FXML
-    private void handleRegisterButtonAction(ActionEvent event) {
+    public void handleRegisterButtonAction(ActionEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("RegisterScreen.fxml"));
             Parent parent = fxmlLoader.load();
