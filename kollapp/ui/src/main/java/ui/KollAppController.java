@@ -20,6 +20,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -68,7 +69,9 @@ public class KollAppController {
         // Change the cursor to hand when hovering over the label
         completedLabel.setStyle("-fx-cursor: hand;");
         personal.setStyle("-fx-cursor: hand;");
+        VBox.setVgrow(vBoxContainer, Priority.ALWAYS);
         groupInView = null;
+
     }
     
     public void populateGroupView() {
@@ -148,8 +151,9 @@ public class KollAppController {
                 continue; // Skip completed tasks
             }
 
-            String taskDescription = currentTask.getDescription();
             String taskName = currentTask.getTaskName();
+            String taskDescription = currentTask.getDescription();
+            String priority = currentTask.getPriority();
             
             // check if date is empty
             Label dateLabel = new Label(""); 
@@ -158,9 +162,11 @@ public class KollAppController {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
                 dateLabel.setText(dateTime.format(formatter));
             }
-            Label taskLabel = new Label(taskName);
-            
+
             CheckBox checkBox = new CheckBox();
+            Label taskLabel = new Label(taskName);
+            Label taskDescriptionLabel = new Label(taskDescription);
+            Label priorityLabel = new Label(priority);
             
             // Add event listener to the CheckBox
             checkBox.setOnAction(event -> {
@@ -179,7 +185,9 @@ public class KollAppController {
         taskGridView.add(checkBox, 0, row);
         taskGridView.add(taskLabel, 1, row);
         taskGridView.add(dateLabel, 2, row);
-        
+        taskGridView.add(taskDescriptionLabel, 3, row);
+        taskGridView.add(priorityLabel, 4, row);
+        GridPane.setVgrow(taskLabel, Priority.ALWAYS);
         // Increment row counter for the next task
         row++; 
         }
