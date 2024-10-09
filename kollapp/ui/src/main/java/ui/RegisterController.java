@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import persistence.ToDoListHandler;
 import persistence.UserHandler;
 
 public class RegisterController {
@@ -29,12 +30,13 @@ public class RegisterController {
     @FXML
     private PasswordField confirmPasswordField;
 
+    private UserHandler userHandler = new UserHandler();
+
     @FXML
     private void registerUser(ActionEvent event) {
         String username = usernameField.getText();
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
-        UserHandler userHandler = new UserHandler();
         
         if (!userHandler.userExists(username) && userHandler.confirmNewValidUser(username, password, confirmPassword)) {
             User user = new User(username, password);
@@ -84,4 +86,9 @@ public class RegisterController {
             e.printStackTrace();
         }
     }
+
+    public void setUserHandler(UserHandler userHandler) {
+        this.userHandler = userHandler;
+    }
+    
 }

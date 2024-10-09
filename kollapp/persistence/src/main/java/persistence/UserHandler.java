@@ -55,6 +55,15 @@ public class UserHandler {
         return null;
     }
 
+    public void removeUser(String username) {
+        if (userExists(username)) {
+            File file = new File(USER_PATH + username + ".json");
+            if (file.exists()) {
+                file.delete();
+            }
+        }
+    }
+
     // helper method to validate a new user
     public boolean confirmNewValidUser(String username, String password, String confirmPassword) {
         if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {

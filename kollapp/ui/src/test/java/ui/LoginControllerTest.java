@@ -22,6 +22,8 @@ import javafx.application.Platform;
 
 
 class LoginControllerTest {
+    
+    private UserHandler userHandler = new UserHandler();
 
     @Mock
     private TextField usernameField;
@@ -55,7 +57,7 @@ class LoginControllerTest {
     void testHandleLoginButton_UserDoesNotExist() throws Exception {
         try (MockedStatic<UserHandler> mockedUserHandler = mockStatic(UserHandler.class)) {
             // Mock UserHandler to simulate user not existing
-            mockedUserHandler.when(() -> UserHandler.userExists("testUser")).thenReturn(false);
+            mockedUserHandler.when(() -> userHandler.userExists("testUser")).thenReturn(false);
 
             // Call the method under test
             loginController.handleLoginButtonAction();
@@ -69,8 +71,8 @@ class LoginControllerTest {
     void testHandleLoginButton_IncorrectPassword() throws Exception {
         try (MockedStatic<UserHandler> mockedUserHandler = mockStatic(UserHandler.class)) {
             // Mock UserHandler to simulate user existing but with incorrect password
-            mockedUserHandler.when(() -> UserHandler.userExists("testUser")).thenReturn(true);
-            mockedUserHandler.when(() -> UserHandler.loadUser("testUser", "testPassword")).thenReturn(null);
+            mockedUserHandler.when(() -> userHandler.userExists("testUser")).thenReturn(true);
+            mockedUserHandler.when(() -> userHandler.loadUser("testUser", "testPassword")).thenReturn(null);
 
             // Call the method under test
             loginController.handleLoginButtonAction();
@@ -85,8 +87,8 @@ class LoginControllerTest {
         try (MockedStatic<UserHandler> mockedUserHandler = mockStatic(UserHandler.class)) {
             // Mock UserHandler to simulate user existing and correct password
             User mockUser = mock(User.class);
-            mockedUserHandler.when(() -> UserHandler.userExists("testUser")).thenReturn(true);
-            mockedUserHandler.when(() -> UserHandler.loadUser("testUser", "testPassword")).thenReturn(mockUser);
+            mockedUserHandler.when(() -> userHandler.userExists("testUser")).thenReturn(true);
+            mockedUserHandler.when(() -> userHandler.loadUser("testUser", "testPassword")).thenReturn(mockUser);
 
             // Spy on the loginController and mock the loadKollektivScene method
             LoginController loginControllerSpy = spy(loginController);

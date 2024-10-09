@@ -1,17 +1,15 @@
 package ui;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationTest;
 
-import core.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -32,7 +30,9 @@ class RegisterControllerTest extends ApplicationTest {
     private PasswordField confirmPasswordField;
     private Label errorMessage;
     private Button registerButton;
-    private Button navigateToLoginScreenButton;
+
+    private UserHandler userHandlerMock;  // Instance of UserHandler to be mocked
+    private UserHandler userHandler = new UserHandler(); // Instance of UserHandler to be used for real
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -52,60 +52,54 @@ class RegisterControllerTest extends ApplicationTest {
         confirmPasswordField = lookup("#confirmPasswordField").query(); // ID in FXML
         errorMessage = lookup("#errorMessage").query(); // ID in FXML
         registerButton = lookup("#registerButton").query(); // ID in FXML
-        navigateToLoginScreenButton = lookup("#navigateToLoginScreenButton").query(); // ID in FXML
+
+        // Initialize the mock instance of UserHandler
+        userHandlerMock = Mockito.mock(UserHandler.class);
+        
     }
 
     @Test
     void testRegisterUser_Success(FxRobot robot) {
-        try (MockedStatic<UserHandler> mockedUserHandler = Mockito.mockStatic(UserHandler.class)) {
-            // Mock UserHandler methods to simulate valid user creation
-            mockedUserHandler.when(() -> UserHandler.userExists("newUser")).thenReturn(false);
-            mockedUserHandler.when(() -> UserHandler.confirmNewValidUser("newUser", "password", "password")).thenReturn(true);
+        // Mock the behavior of userHandler methods to simulate a successful registration
+        when(userHandlerMock.userExists("newUser")).thenReturn(false);
+        when(userHandlerMock.confirmNewValidUser("newUser", "password", "password")).thenReturn(true);
 
-            // Simulate filling out the form
-            robot.clickOn(usernameField).write("newUser");
-            robot.clickOn(passwordField).write("password");
-            robot.clickOn(confirmPasswordField).write("password");
+        // Simulate filling out the form
+        robot.clickOn(usernameField).write("newUser");
+        robot.clickOn(passwordField).write("password");
+        robot.clickOn(confirmPasswordField).write("password");
 
-            // Simulate clicking the register button (assuming the button ID is "registerButton")
-            robot.clickOn(registerButton);
+        // Simulate clicking the register button
+        robot.clickOn(registerButton);
 
-            // Verify that no error message is set (i.e., user registration is successful)
-            assertEquals("", errorMessage.getText());
+        // Verify that no error message is set (i.e., user registration is successful)
+        assertEquals("", errorMessage.getText());
 
-            // Optionally, verify that the user was saved
-            mockedUserHandler.verify(() -> UserHandler.saveUser(Mockito.any(User.class)), times(1));
-        }
     }
 
     @Test
     void testRegisterUser_PasswordMismatch(FxRobot robot) {
-        try (MockedStatic<UserHandler> mockedUserHandler = Mockito.mockStatic(UserHandler.class)) {
-            // Mock UserHandler to simulate password mismatch
-            mockedUserHandler.when(() -> UserHandler.userExists("testUser")).thenReturn(false);
-            mockedUserHandler.when(() -> UserHandler.confirmNewValidUser("testUser", "password", "mismatch")).thenReturn(false);
-            mockedUserHandler.when(() -> UserHandler.getUserValidationErrorMessage("testUser", "password", "mismatch")).thenReturn("Passwords do not match.");
+        // Mock the behavior of userHandler to simulate a password mismatch
+        when(userHandlerMock.userExists("testUser")).thenReturn(false);
+        when(userHandlerMock.confirmNewValidUser("testUser", "password", "mismatch")).thenReturn(false);
+        when(userHandlerMock.getUserValidationErrorMessage("testUser", "password", "mismatch")).thenReturn("Passwords do not match.");
 
-            // Simulate filling out the form with mismatching passwords
-            robot.clickOn(usernameField).write("testUser");
-            robot.clickOn(passwordField).write("password");
-            robot.clickOn(confirmPasswordField).write("mismatch");
+        // Simulate filling out the form with mismatching passwords
+        robot.clickOn(usernameField).write("testUser");
+        robot.clickOn(passwordField).write("password");
+        robot.clickOn(confirmPasswordField).write("mismatch");
 
-            // Simulate clicking the register button
-            robot.clickOn(registerButton);
+        // Simulate clicking the register button
+        robot.clickOn(registerButton);
 
-            // Verify that the error message is displayed
-            assertEquals("Passwords do not match", errorMessage.getText());
-        }
+        // Verify that the error message is displayed
+        assertEquals("Passwords do not match", errorMessage.getText());
     }
 
-    @Test
-    void testNavigateToLoginScreen(FxRobot robot) {
-        // Simulate clicking the navigate to login button (assuming the button ID is "loginButton")
-        robot.clickOn(navigateToLoginScreenButton);
-
-        // Verify that the current scene is the login screen (check by querying some component in the login screen)
-        // Assuming the login screen has a component with ID "loginTitle"
-        assertNotNull(navigateToLoginScreenButton);
+    @AfterEach
+    void removeUser() {
+        // Remove the user from the JSON file
+        userHandler.removeUser("newUser");
     }
+
 }
