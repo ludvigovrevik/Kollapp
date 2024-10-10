@@ -110,6 +110,8 @@ class RegisterControllerTest extends ApplicationTest {
     void removeUser() {
         // Remove the user from the JSON file
         userHandler.removeUser("newUser");
+
+        // Also have to remove user's todo list file, but there is no method for that in UserHandler or ToDoListHandler yet.
     }
 
 }
