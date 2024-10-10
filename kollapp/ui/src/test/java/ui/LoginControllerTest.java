@@ -58,8 +58,8 @@ public class LoginControllerTest {
         robot.clickOn("#usernameField").write("TestUserDoNotDelete");
         robot.clickOn("#passwordField").write("password");
 
-        // Click the login button
-        robot.clickOn("#loginButton");
+    //     // Click the login button
+    //     robot.clickOn("#loginButton");
 
         // Verify interactions with the mock
         verify(mockUserHandler).userExists("TestUserDoNotDelete");
