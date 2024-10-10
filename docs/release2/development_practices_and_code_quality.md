@@ -45,8 +45,10 @@ In this project, we have made conscious choices to ensure an efficient workflow,
   We have used several tools to maintain and improve code quality:
 
 - **JaCoCo** (version: 0.8.10): To measure test coverage and ensure that a large portion of the code is tested.
-- **Mockito** (version: 5.0.0): For mocking dependencies in unit tests, allowing us to isolate specific functions.
+- **Mockito** (version: 5.0.0): For creating mock objects in tests.
 - **Checkstyle** (version: 3.2.0): To follow coding standards and maintain consistency in the code.
 - **SpotBugs** (version: 4.7.3.0): To identify potential errors and weaknesses in the code, allowing us to address them before they become issues in production.
 
 ---
+
+📖 Return to the **[Main README](../../readme.md)** for additional information and project overview.

@@ -46,7 +46,7 @@ By following this architecture, **KollApp** ensures a maintainable, scalable, an
 
 **KollApp** uses an implicit storage strategy, similar to modern applications, where data is automatically saved without requiring explicit user actions. This approach ensures a seamless user experience, reducing the risk of data loss.
 
-📖 For detailed information about the JSON save format used for users, to-do lists, and groups, see **[JSON Save Format](json_format.md)**.
+📖 For detailed information about the JSON save format used for users, to-do lists, and groups, see **[JSON Save Format](json_format.md)**
 
 ---
 

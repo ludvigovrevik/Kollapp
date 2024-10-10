@@ -1,23 +1,2 @@
-README.md:
-- development_practices_and_code_quality
-
-Module Structure and Dependencies:
-- Tegne diagram
-
-User stories:
-- Endre brukerhistoriene
-
-Annet:
-- Endre screenshot på purpose
-
-
-
-
-
-
-1. Endre brukerhistoriene
-2. Fiks på issues slik at de knyttes til brukerhistoriene
-3. Tegne diagram
-4. Endre screenshot på purpose
-
-
+1. Tegne diagram
+2. Endre screenshot på purpose

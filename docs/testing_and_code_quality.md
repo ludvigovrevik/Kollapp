@@ -45,6 +45,7 @@ mvn clean verify
 ```
 
 📄 The JaCoCo report will be available at:
+
 - `kollapp/report-aggregate/target/site/jacoco-aggregate/index.html`
 
 ## 6. Run SpotBugs Analysis 🔍

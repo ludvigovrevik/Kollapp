@@ -1,6 +1,6 @@
 # 🚀 Release 2 Updates
 
-In this release, we have made significant improvements and additions to the **KollApp** project. In Release 1, we began with a basic to-do list application as a foundation, implementing simple functionality such as adding tasks with due dates and saving them in a text file. This initial step was part of our broader vision to evolve the project into a more comprehensive and feature-rich application. Here are the key updates and enhancements in Release 2:
+In this release, we have made significant improvements and additions to the **KollApp** project. In Release 1, we began with a basic to-do list application as a foundation, implementing simple functionality such as adding tasks with due dates and saving them in a text file. This initial step was part of our broader vision to evolve the project into a more comprehensive application. Here are the key updates and enhancements in Release 2:
 
 ---
 
@@ -22,7 +22,7 @@ In this release, we have made significant improvements and additions to the **Ko
 
 - Switched from text file storage to JSON format for data persistence.
 - Utilized the Jackson library for efficient JSON processing.
-- 📖 For more details, visit **[JSON Format](../json_format.md)**
+- 📖 For more details about our implementation of JSON, visit **[JSON Save Format](../json_format.md)**
 
 ### ✅ Task Management
 
@@ -43,43 +43,43 @@ In this release, we have made significant improvements and additions to the **Ko
   - `kollapp/ui/src/main/java/ui/LoginController.java`
   - `kollapp/ui/src/main/java/ui/RegisterController.java`
 
-
-
 ---
 
 ## 🛠️ Tools and Libraries
 
 ### 📊 JaCoCo
 
+- Version 0.8.10
 - Integrated JaCoCo for code coverage analysis.
 - Ensured that our tests cover a significant portion of the codebase.
 
 ### 🧪 Mockito
 
+- Version 5.0.0
 - Utilized Mockito for creating mock objects in tests.
 - Enhanced the robustness of our unit tests by isolating dependencies.
 
 ### 🐞 SpotBugs
 
+- Version 4.7.3.0
 - Incorporated SpotBugs for static code analysis.
-- Identified and fixed potential bugs and code smells.
+- Identified and fixed potential bugs.
 
 ### 🛡️ Checkstyle
 
+- Version 3.2.0
 - Implemented Checkstyle for code style and formatting checks.
 - Ensured consistent coding standards across the project.
 
-📖 For more details on the module structure and dependencies, see **[Module Structure and Dependencies](../module_structure_and_dependencies.md)** documentation.
+📖 For more related information, visit **[Module Structure and Dependencies](../module_structure_and_dependencies.md)** documentation.
 
 ---
 
 ## 🧪 Testing and Code Quality
 
-- Comprehensive unit tests for all major functionalities.
-- Continuous integration setup to run tests and checks automatically.
-- Detailed documentation for testing and code quality practices.
+- Implemented unit and UI tests for all major functionalities.
 
-📖 For more details, see **[Testing and Code Quality](../testing_and_code_quality.md)** documentation.
+📖 For more details about getting started with testing and its respective tools, see **[Testing and Code Quality](../testing_and_code_quality.md)** documentation.
 
 ---
 
@@ -103,6 +103,13 @@ In the next release, we plan to implement the following features:
 ### 📅 Calendar Integration
 
 - Adding a calendar feature to visualize upcoming events and to-dos, helping users keep track of their schedules.
+
+---
+
+## 📚 Suggested Reading
+
+- 📖 **[Main README](../../readme.md)**: For an overview of the project, including system requirements and setup instructions.
+- 📖 **[Development Practices and Tools](development_practices_and_code_quality.md)**: For detailed information on our work habits, workflow, and code quality practices.
 
 ---
 
