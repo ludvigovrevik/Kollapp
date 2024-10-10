@@ -29,44 +29,61 @@ import core.UserGroup;
 
 public class ToDoListHandlerTest {
 
-    private ToDoListHandler toDoListHandler;
     private User user;
     private UserGroup userGroup;
-    private Path testFolderPath;
+    
+    private Path testToDoListFolderPath;
     private Path groupTestFolderPath;
+    private Path userTestFolderPath;
+
+    private ToDoListHandler toDoListHandler;
+    private GroupHandler groupHandler;
+    private UserHandler userHandler;
 
     @BeforeEach
     public void setUp() throws IOException {
         // Use test-specific directories to avoid interfering with real data
-        this.testFolderPath = Paths.get("src", "main", "java", "persistence", "todolists", "tests");
+        this.testToDoListFolderPath = Paths.get("src", "main", "java", "persistence", "todolists", "tests");
         this.groupTestFolderPath = Paths.get("src", "main", "java", "persistence", "grouptodolists", "tests");
-
+        this.userTestFolderPath = Paths.get("src", "main", "java", "persistence", "users", "tests");
+        
         // Initialize ToDoListHandler with the test paths
-        toDoListHandler = new ToDoListHandler(testFolderPath.toString() + File.separator, groupTestFolderPath.toString() + File.separator);
-
+        toDoListHandler = new ToDoListHandler(testToDoListFolderPath.toString() + File.separator, groupTestFolderPath.toString() + File.separator);
+        userHandler = new UserHandler(userTestFolderPath.toString() + File.separator, testToDoListFolderPath.toString() + File.separator);
+        groupHandler = new GroupHandler(groupTestFolderPath.toString() + File.separator, groupTestFolderPath.toString() + File.separator, userHandler);
+        
         user = new User("testUser", "password123");
         userGroup = new UserGroup("testGroup");
 
         // Create the test directories if they don't exist
-        if (!Files.exists(testFolderPath)) {
-            Files.createDirectories(testFolderPath);
+        if (!Files.exists(testToDoListFolderPath)) {
+            Files.createDirectories(testToDoListFolderPath);
         }
         if (!Files.exists(groupTestFolderPath)) {
             Files.createDirectories(groupTestFolderPath);
+        }
+        if (!Files.exists(userTestFolderPath)) {
+            Files.createDirectories(userTestFolderPath);
         }
     }
 
     @AfterEach
     public void tearDown() throws IOException {
         // Delete the content in the test directories
-        if (Files.exists(testFolderPath)) {
-            Files.walk(testFolderPath)
+        if (Files.exists(testToDoListFolderPath)) {
+            Files.walk(testToDoListFolderPath)
                  .sorted(Comparator.reverseOrder())
                  .map(Path::toFile)
                  .forEach(File::delete);
         }
         if (Files.exists(groupTestFolderPath)) {
             Files.walk(groupTestFolderPath)
+                 .sorted(Comparator.reverseOrder())
+                 .map(Path::toFile)
+                 .forEach(File::delete);
+        }
+        if (Files.exists(userTestFolderPath)) {
+            Files.walk(userTestFolderPath)
                  .sorted(Comparator.reverseOrder())
                  .map(Path::toFile)
                  .forEach(File::delete);
@@ -78,15 +95,15 @@ public class ToDoListHandlerTest {
         // Create an instance using the default constructor
         ToDoListHandler defaultHandler = new ToDoListHandler();
 
-        // Use reflection to access the private TODOLIST_PATH field
-        Field pathField = ToDoListHandler.class.getDeclaredField("TODOLIST_PATH");
+        // Use reflection to access the private toDoListPath field
+        Field pathField = ToDoListHandler.class.getDeclaredField("toDoListPath");
         pathField.setAccessible(true);
         String actualPath = (String) pathField.get(defaultHandler);
 
         // Expected default path
         String expectedPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "todolists")
                 .toString() + File.separator;
-        assertEquals(expectedPath, actualPath, "The default TODOLIST_PATH should be set correctly.");
+        assertEquals(expectedPath, actualPath, "The default toDoListPath should be set correctly.");
 
         // Use reflection to access the private mapper field
         Field mapperField = ToDoListHandler.class.getDeclaredField("mapper");
@@ -107,7 +124,7 @@ public class ToDoListHandlerTest {
         toDoListHandler.assignToDoList(user);
 
         // Verify that the file exists
-        File expectedFile = new File(testFolderPath.toString(), user.getUsername() + ".json");
+        File expectedFile = new File(testToDoListFolderPath.toString(), user.getUsername() + ".json");
         assertTrue(expectedFile.exists(), "The to-do list file should be created.");
 
         // Verify that the file contains an empty ToDoList
@@ -158,7 +175,7 @@ public class ToDoListHandlerTest {
     @Test
     public void testLoadToDoList_FileDoesNotExist() {
         // Ensure the file does not exist
-        File file = new File(testFolderPath.toString(), user.getUsername() + ".json");
+        File file = new File(testToDoListFolderPath.toString(), user.getUsername() + ".json");
         if (file.exists()) {
             file.delete();
         }
@@ -177,7 +194,7 @@ public class ToDoListHandlerTest {
     @Test
     public void testUpdateToDoList_FileDoesNotExist() {
         // Ensure the file does not exist
-        File file = new File(testFolderPath.toString(), user.getUsername() + ".json");
+        File file = new File(testToDoListFolderPath.toString(), user.getUsername() + ".json");
         if (file.exists()) {
             file.delete();
         }
@@ -186,7 +203,6 @@ public class ToDoListHandlerTest {
         ToDoList toDoList = new ToDoList();
         toDoList.addTask(new Task("Simple task"));
 
-        // Update the to-do list file
         toDoListHandler.updateToDoList(user, toDoList);
 
         // Verify that the file now exists
@@ -204,6 +220,7 @@ public class ToDoListHandlerTest {
         // Create an initial to-do list file
         ToDoList toDoList = new ToDoList();
         toDoList.addTask(new Task("Simple task"));
+        toDoListHandler.assignToDoList(user);
         toDoListHandler.updateToDoList(user, toDoList);
 
         // Assign a new empty to-do list
@@ -239,6 +256,8 @@ public class ToDoListHandlerTest {
         }
 
         // Load the group to-do list
+        userHandler.saveUser(user); // createGroup requires the user to exist
+        groupHandler.createGroup(user, userGroup.getGroupName());
         ToDoList toDoList = toDoListHandler.loadGroupToDoList(userGroup);
 
         // Assert that an empty ToDoList is returned
@@ -257,6 +276,8 @@ public class ToDoListHandlerTest {
         toDoList.addTask(task2);
 
         // Update the group to-do list
+        userHandler.saveUser(user); // createGroup requires the user to exist
+        groupHandler.createGroup(user, userGroup.getGroupName()); // updateGroupToDoList requires the group to exist
         toDoListHandler.updateGroupToDoList(userGroup, toDoList);
 
         // Verify that the to-do list file was created
@@ -280,6 +301,8 @@ public class ToDoListHandlerTest {
         Files.writeString(file.toPath(), "This is not valid JSON");
 
         // Load the group to-do list
+        userHandler.saveUser(user); // createGroup requires the user to exist
+        groupHandler.createGroup(user, userGroup.getGroupName());
         ToDoList toDoList = toDoListHandler.loadGroupToDoList(userGroup);
 
         // Assert that an empty ToDoList is returned

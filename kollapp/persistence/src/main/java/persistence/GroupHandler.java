@@ -15,21 +15,21 @@ import core.User;
 import core.UserGroup;
 
 public class GroupHandler {
-    private final String GROUP_PATH;
-    private final String GROUP_TODOLIST_PATH;
+    private final String groupPath;
+    private final String groupToDoListPath;
     private ObjectMapper mapper = new ObjectMapper();
     private UserHandler userHandler;
 
     public GroupHandler() {
-        this.GROUP_PATH = Paths.get("..", "persistence", "src", "main", "java", "persistence", "groups").toString() + File.separator;
-        this.GROUP_TODOLIST_PATH = Paths.get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists").toString() + File.separator;
+        this.groupPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "groups").toString() + File.separator;
+        this.groupToDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists").toString() + File.separator;
         this.mapper.registerModule(new JavaTimeModule());
         userHandler = new UserHandler();
     }
 
     public GroupHandler(String groupPath, String groupToDoListPath, UserHandler userHandler) {
-        this.GROUP_PATH = groupPath;
-        this.GROUP_TODOLIST_PATH = groupToDoListPath;
+        this.groupPath = groupPath;
+        this.groupToDoListPath = groupToDoListPath;
         this.mapper.registerModule(new JavaTimeModule());
         this.userHandler = userHandler;
     }
@@ -41,8 +41,8 @@ public class GroupHandler {
 
         ToDoList toDoList = new ToDoList();
 
-        File fileForGroup = new File(GROUP_PATH + groupName + ".json");
-        File fileGroupToDoList = new File(GROUP_TODOLIST_PATH + groupName + ".json");
+        File fileForGroup = new File(groupPath + groupName + ".json");
+        File fileGroupToDoList = new File(groupToDoListPath + groupName + ".json");
         
         try {
             mapper.writeValue(fileForGroup, userGroup);
@@ -55,7 +55,7 @@ public class GroupHandler {
     }
 
     public UserGroup getGroup(String groupName) {
-        File file = new File(GROUP_PATH + groupName + ".json");
+        File file = new File(groupPath + groupName + ".json");
         if (!file.exists()) {
             throw new IllegalArgumentException("Group file does not exist: " + file.getPath());
         }
@@ -83,7 +83,7 @@ public class GroupHandler {
         userHandler.updateUser(user);
 
         // **Save the updated group back to the file**
-        File fileForGroup = new File(GROUP_PATH + groupName + ".json");
+        File fileForGroup = new File(groupPath + groupName + ".json");
         try {
             mapper.writeValue(fileForGroup, group);
         } catch (IOException e) {

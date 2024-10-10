@@ -72,24 +72,24 @@ public class GroupHandlerTest {
         GroupHandler defaultHandler = new GroupHandler();
 
         // Use reflection to access the private GROUP_PATH field
-        Field groupPathField = GroupHandler.class.getDeclaredField("GROUP_PATH");
+        Field groupPathField = GroupHandler.class.getDeclaredField("groupPath");
         groupPathField.setAccessible(true);
         String actualGroupPath = (String) groupPathField.get(defaultHandler);
 
         // Expected default group path
         String expectedGroupPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "groups")
                 .toString() + File.separator;
-        assertEquals(expectedGroupPath, actualGroupPath, "The default GROUP_PATH should be set correctly.");
+        assertEquals(expectedGroupPath, actualGroupPath, "The default groupPath should be set correctly.");
 
         // Use reflection to access the private GROUP_TODOLIST_PATH field
-        Field groupToDoListPathField = GroupHandler.class.getDeclaredField("GROUP_TODOLIST_PATH");
+        Field groupToDoListPathField = GroupHandler.class.getDeclaredField("groupToDoListPath");
         groupToDoListPathField.setAccessible(true);
         String actualGroupToDoListPath = (String) groupToDoListPathField.get(defaultHandler);
 
         // Expected default group to-do list path
         String expectedGroupToDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists")
                 .toString() + File.separator;
-        assertEquals(expectedGroupToDoListPath, actualGroupToDoListPath, "The default GROUP_TODOLIST_PATH should be set correctly.");
+        assertEquals(expectedGroupToDoListPath, actualGroupToDoListPath, "The default groupToDoListPath should be set correctly.");
 
         // Use reflection to access the private mapper field
         Field mapperField = GroupHandler.class.getDeclaredField("mapper");

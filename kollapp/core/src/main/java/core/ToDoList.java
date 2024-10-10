@@ -9,7 +9,7 @@ import java.util.List;
 public class ToDoList implements java.io.Serializable {
     private List<Task> tasks = new ArrayList<>();
 
-    public ToDoList() {}
+    public ToDoList() { }
 
     // Add a task to the to-do list
     public void addTask(Task newTask) {

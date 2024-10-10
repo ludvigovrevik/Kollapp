@@ -12,27 +12,28 @@ import core.ToDoList;
 import core.User;
 
 public class UserHandler {
-    private final String USER_PATH; 
-    private final String TODOLIST_PATH; 
+    private final String userPath; 
+    private final String toDoListPath; 
     private ObjectMapper mapper = new ObjectMapper();
     
     public UserHandler() {
-        this.USER_PATH = Paths.get("..", "persistence", "src", "main", "java", "persistence", "users").toString() + File.separator;
-        this.TODOLIST_PATH = Paths.get("..", "persistence", "src", "main", "java", "persistence", "todolists").toString() + File.separator;
+        this.userPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "users").toString() + File.separator;
+        this.toDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "todolists").toString() + File.separator;
         this.mapper.registerModule(new JavaTimeModule());
     }
 
     public UserHandler(String userPath, String todolistPath) {
-        this.USER_PATH = userPath;
-        this.TODOLIST_PATH = todolistPath;
+        this.userPath = userPath;
+        this.toDoListPath = todolistPath;
         this.mapper.registerModule(new JavaTimeModule());
     }
 
     public void saveUser(User user) {
-        File file = new File(USER_PATH + user.getUsername() + ".json");
-        if (file.exists()) {
+        if (userExists(user.getUsername())) {
             throw new IllegalArgumentException("User already exists");
         }
+
+        File file = new File(userPath + user.getUsername() + ".json");
         try {
             mapper.writeValue(file, user);
         } catch (IOException e) {
@@ -41,23 +42,27 @@ public class UserHandler {
     }
 
     public User loadUser(String username, String password) {
-        File file = new File(USER_PATH + username + ".json");
+        File file = new File(userPath + username + ".json");
+        if (!userExists(username)) {
+            return null;
+        }
+
         try {
             User user = mapper.readValue(file, User.class);
             if (user.getPassword().equals(password)) {
                 return user;
             } else {
                 return null;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
     public void removeUser(String username) {
         if (userExists(username)) {
-            File file = new File(USER_PATH + username + ".json");
+            File file = new File(userPath + username + ".json");
             if (file.exists()) {
                 file.delete();
             }
@@ -100,14 +105,12 @@ public class UserHandler {
         return null;
     }
 
-    // returns wheather or not a user exists in database
-    public boolean userExists(String username) {
-        File file = new File(USER_PATH + username + ".json");
-        return file.exists(); 
-    }
-
     public Optional<User> getUser(String username) {
-        File file = new File(USER_PATH + username + ".json");
+        if (!userExists(username)) {
+            return Optional.empty();
+        }
+        
+        File file = new File(userPath + username + ".json");
         try {
             User user = mapper.readValue(file, User.class);
             return Optional.of(user);
@@ -118,7 +121,11 @@ public class UserHandler {
     }
 
     public void updateUser(User user) {
-        File file = new File(USER_PATH + user.getUsername() + ".json");
+        if (!userExists(user.getUsername())) {
+            throw new IllegalArgumentException("User file does not exist for user: " + user.getUsername());
+        }
+
+        File file = new File(userPath + user.getUsername() + ".json");
         try {
             mapper.writeValue(file, user);
         } catch (IOException e) {
@@ -127,4 +134,9 @@ public class UserHandler {
         }
     }
 
+    // returns wheather or not a user exists in database
+    public boolean userExists(String username) {
+        File file = new File(userPath + username + ".json");
+        return file.exists(); 
+    }
 }

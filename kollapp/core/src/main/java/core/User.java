@@ -10,7 +10,7 @@ public class User implements java.io.Serializable {
     private ToDoList toDoList;
 
     // Default constructor required for Jackson
-    public User() {}
+    public User() { }
 
     // Constructor for creating a new user
     public User(String username, String password) {

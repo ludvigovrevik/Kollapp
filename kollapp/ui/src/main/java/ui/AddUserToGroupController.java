@@ -13,11 +13,21 @@ import persistence.GroupHandler;
 import persistence.UserHandler;
 
 public class AddUserToGroupController {
+    @FXML
+    TextField username;
+    
+    @FXML
+    ListView<String> listViewOfGroups;
+    
+    @FXML
+    Label userNameErrorLabel;
+    
     private User user;
     private List<String> groupNames = new ArrayList<>();
     UserHandler userHandler = new UserHandler();
     GroupHandler groupHandler = new GroupHandler();
 
+    
     public void initializeAddToUserGroup(User user) {
         this.user = user;
         this.groupNames = this.user.getUserGroups();
@@ -25,15 +35,6 @@ public class AddUserToGroupController {
             listViewOfGroups.getItems().add(groupname);
         }
     }
-
-    @FXML
-    TextField username;
-
-    @FXML
-    ListView<String> listViewOfGroups;
-
-    @FXML
-    Label userNameErrorLabel;
 
     @FXML
     public void addUserToGroup() {

@@ -74,25 +74,25 @@ public class UserHandlerTest {
         // Create an instance using the default constructor
         UserHandler defaultHandler = new UserHandler();
 
-        // Use reflection to access the private USER_PATH field
-        Field userPathField = UserHandler.class.getDeclaredField("USER_PATH");
+        // Use reflection to access the private userPath field
+        Field userPathField = UserHandler.class.getDeclaredField("userPath");
         userPathField.setAccessible(true);
         String actualUserPath = (String) userPathField.get(defaultHandler);
 
         // Expected default user path
         String expectedUserPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "users")
                 .toString() + File.separator;
-        assertEquals(expectedUserPath, actualUserPath, "The default USER_PATH should be set correctly.");
+        assertEquals(expectedUserPath, actualUserPath, "The default userPath should be set correctly.");
 
-        // Use reflection to access the private TODOLIST_PATH field
-        Field toDoListPathField = UserHandler.class.getDeclaredField("TODOLIST_PATH");
+        // Use reflection to access the private toDoListPath field
+        Field toDoListPathField = UserHandler.class.getDeclaredField("toDoListPath");
         toDoListPathField.setAccessible(true);
         String actualToDoListPath = (String) toDoListPathField.get(defaultHandler);
 
         // Expected default to-do list path
         String expectedToDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "todolists")
                 .toString() + File.separator;
-        assertEquals(expectedToDoListPath, actualToDoListPath, "The default TODOLIST_PATH should be set correctly.");
+        assertEquals(expectedToDoListPath, actualToDoListPath, "The default toDoListPath should be set correctly.");
 
         // Use reflection to access the private mapper field
         Field mapperField = UserHandler.class.getDeclaredField("mapper");

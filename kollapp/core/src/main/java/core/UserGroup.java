@@ -10,7 +10,7 @@ public class UserGroup implements java.io.Serializable {
     private List<String> users = new ArrayList<>();
 
     // Default constructor required for Jackson
-    public UserGroup() {}
+    public UserGroup() { }
 
     // Constructor for creating a new user group
     public UserGroup(String groupName) {
