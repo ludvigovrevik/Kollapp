@@ -13,6 +13,15 @@ import persistence.GroupHandler;
 import persistence.UserHandler;
 
 public class AddUserToGroupController {
+    @FXML
+    TextField username;
+
+    @FXML
+    ListView<String> listViewOfGroups;
+
+    @FXML
+    Label userNameErrorLabel;
+
     private User user;
     private List<String> groupNames = new ArrayList<>();
     UserHandler userHandler = new UserHandler();
@@ -27,17 +36,8 @@ public class AddUserToGroupController {
     }
 
     @FXML
-    TextField username;
-
-    @FXML
-    ListView<String> listViewOfGroups;
-
-    @FXML
-    Label userNameErrorLabel;
-
-    @FXML
     public void addUserToGroup() {
-    // Clear previous error messages
+        // Clear previous error messages
         userNameErrorLabel.setText("");
         try {
             // Validate that the username field is not empty
@@ -84,5 +84,5 @@ public class AddUserToGroupController {
             e.printStackTrace();
             userNameErrorLabel.setText("An unexpected error occurred");
         }
-    }  
+    }
 }

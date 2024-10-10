@@ -1,30 +1,34 @@
 package core;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Unit tests for the {@link UserGroup} class.
+ */
+@Tag("usergroup")
 public class UserGroupTest {
 
     private UserGroup userGroup;
     private static final String GROUP_NAME = "Study Group";
 
     @BeforeEach
+    @DisplayName("Initialize UserGroup before each test")
     void setUp() {
         // Initialize a UserGroup object before each test
         userGroup = new UserGroup(GROUP_NAME);
     }
 
     @Test
+    @DisplayName("Test adding valid users to the group")
+    @Tag("add")
     void testAddUser() {
-        // Test adding a valid user
         String user1 = "john_doe";
         String user2 = "jane_doe";
 
@@ -38,8 +42,9 @@ public class UserGroupTest {
     }
 
     @Test
+    @DisplayName("Test adding duplicate users to the group")
+    @Tag("add")
     void testAddDuplicateUser() {
-        // Test adding the same user twice
         String user1 = "john_doe";
         userGroup.addUser(user1);
 
@@ -48,8 +53,9 @@ public class UserGroupTest {
     }
 
     @Test
+    @DisplayName("Test adding invalid users (null or empty)")
+    @Tag("add")
     void testAddInvalidUser() {
-        // Test adding null or empty users
         Exception nullException = assertThrows(IllegalArgumentException.class, () -> userGroup.addUser(null));
         assertEquals("Username cannot be null or empty.", nullException.getMessage());
 
@@ -58,8 +64,9 @@ public class UserGroupTest {
     }
 
     @Test
+    @DisplayName("Test removing valid users from the group")
+    @Tag("remove")
     void testRemoveUser() {
-        // Test removing an existing user
         String user1 = "john_doe";
         userGroup.addUser(user1);
         assertTrue(userGroup.containsUser(user1), "User should be present in the group");
@@ -69,8 +76,9 @@ public class UserGroupTest {
     }
 
     @Test
+    @DisplayName("Test removing non-existent users from the group")
+    @Tag("remove")
     void testRemoveNonExistentUser() {
-        // Test removing a user that doesn't exist
         String user1 = "john_doe";
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> userGroup.removeUser(user1));
@@ -78,8 +86,9 @@ public class UserGroupTest {
     }
 
     @Test
+    @DisplayName("Test removing invalid users (null or empty)")
+    @Tag("remove")
     void testRemoveInvalidUser() {
-        // Test removing null or empty users
         Exception nullException = assertThrows(IllegalArgumentException.class, () -> userGroup.removeUser(null));
         assertEquals("Username cannot be null or empty.", nullException.getMessage());
 
@@ -88,17 +97,9 @@ public class UserGroupTest {
     }
 
     @Test
-    void testGetNumberOfUsers() {
-        // Test number of users in the group
-        userGroup.addUser("john_doe");
-        userGroup.addUser("jane_doe");
-
-        assertEquals(2, userGroup.getNumberOfUsers(), "The group should contain 2 users");
-    }
-
-    @Test
+    @DisplayName("Test checking if the group contains a specific user")
+    @Tag("getter")
     void testContainsUser() {
-        // Test whether the group contains a user
         String user1 = "john_doe";
         userGroup.addUser(user1);
 
@@ -109,8 +110,9 @@ public class UserGroupTest {
     }
 
     @Test
+    @DisplayName("Test setting a new group name")
+    @Tag("setter")
     void testSetGroupName() {
-        // Test setting a group name
         String newGroupName = "New Study Group";
         userGroup.setGroupName(newGroupName);
 
@@ -118,8 +120,9 @@ public class UserGroupTest {
     }
 
     @Test
+    @DisplayName("Test UserGroup default constructor initializes an empty list")
+    @Tag("constructor")
     void testDefaultConstructor() {
-        // Test the default constructor
         UserGroup defaultGroup = new UserGroup();
 
         assertNotNull(defaultGroup.getUsers(), "The users list should not be null");

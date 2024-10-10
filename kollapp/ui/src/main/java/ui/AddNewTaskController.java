@@ -43,13 +43,20 @@ public class AddNewTaskController {
     private User user;
     private KollAppController kollAppController;
 
+    /**
+     * Initializes the task window with the provided user, to-do list, and main controller.
+     * Sets up the to-do list handler and populates the priority field with priority names.
+     *
+     * @param user The user associated with the task window.
+     * @param toDoList The to-do list to be managed in the task window.
+     * @param kollAppController The main controller of the application.
+     */
     @FXML
     public void initializeTaskWindow(User user, ToDoList toDoList, KollAppController kollAppController) {
         this.toDoList = toDoList;
         this.user = user;
         this.kollAppController = kollAppController;
         this.toDoListHandler = new ToDoListHandler();
-        // Initialize the ComboBox with some items
         priorityField.getItems().addAll(Task.PRIORITY_NAMES);
     }
 
@@ -81,8 +88,7 @@ public class AddNewTaskController {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.close();
         }
-    }
-    
+    } 
 }
 
     

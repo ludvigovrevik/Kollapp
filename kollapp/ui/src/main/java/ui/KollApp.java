@@ -9,10 +9,16 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
- * JavaFX App
+ * The main class for the KollApp application.
  */
 public class KollApp extends Application {
 
+    /**
+     * Starts the JavaFX application by setting up the primary stage.
+     *
+     * @param stage the primary stage for this application
+     * @throws IOException if the FXML file cannot be loaded
+     */
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("LoginScreen.fxml"));
