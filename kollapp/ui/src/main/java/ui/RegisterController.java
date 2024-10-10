@@ -2,6 +2,7 @@ package ui;
 
 import java.io.IOException;
 
+import core.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +15,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import persistence.ToDoListHandler;
 import persistence.UserHandler;
-import core.User;
 
 public class RegisterController {
 
@@ -30,12 +30,13 @@ public class RegisterController {
     @FXML
     private PasswordField confirmPasswordField;
 
+    private UserHandler userHandler = new UserHandler();
+
     @FXML
     private void registerUser(ActionEvent event) {
         String username = usernameField.getText();
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
-        UserHandler userHandler = new UserHandler();
         
         if (!userHandler.userExists(username) && userHandler.confirmNewValidUser(username, password, confirmPassword)) {
             User user = new User(username, password);
@@ -85,4 +86,9 @@ public class RegisterController {
             e.printStackTrace();
         }
     }
+
+    public void setUserHandler(UserHandler userHandler) {
+        this.userHandler = userHandler;
+    }
+    
 }

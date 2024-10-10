@@ -1,10 +1,10 @@
 module ui {
-    requires core;
-    requires persistence;
-    requires javafx.controls;
-    requires javafx.fxml;
-    requires javafx.graphics;
-    requires javafx.base;
+    requires transitive core;
+    requires transitive persistence;
+    requires transitive javafx.controls;
+    requires transitive javafx.fxml;
+    requires transitive javafx.graphics;
+    requires transitive javafx.base;
 
     opens ui to javafx.graphics, javafx.fxml;
 
