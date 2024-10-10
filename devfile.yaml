@@ -4,7 +4,7 @@ metadata:
 components:
   - name: kollapp
     container:
-      image: adrianstoica/it1901:latest
+      image: docker.io/adrianstoica/it1901:latest
       memoryLimit: 3Gi
       endpoints:
         - exposure: public
