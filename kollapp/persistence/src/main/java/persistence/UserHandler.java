@@ -64,7 +64,10 @@ public class UserHandler {
         if (userExists(username)) {
             File file = new File(userPath + username + ".json");
             if (file.exists()) {
-                file.delete();
+                boolean deleted = file.delete();
+                if (!deleted) {
+                    throw new RuntimeException("Failed to delete user file: " + file.getAbsolutePath());
+                }
             }
         }
     }

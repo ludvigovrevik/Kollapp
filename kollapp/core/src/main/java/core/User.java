@@ -10,7 +10,8 @@ public class User implements java.io.Serializable {
     private ToDoList toDoList;
 
     // Default constructor required for Jackson
-    public User() { }
+    public User() {
+    }
 
     // Constructor for creating a new user
     public User(String username, String password) {
@@ -31,7 +32,7 @@ public class User implements java.io.Serializable {
 
     // Get the list of user groups
     public List<String> getUserGroups() {
-        return userGroups;
+        return new ArrayList<>(userGroups);
     }
 
     // Add a group to the users list of groups
@@ -42,11 +43,10 @@ public class User implements java.io.Serializable {
     }
 
     public void setToDoList(ToDoList toDoList) {
-        this.toDoList = toDoList;
+        this.toDoList = new ToDoList(toDoList);
     }
 
     public ToDoList getToDoList() {
-        return this.toDoList;
+        return new ToDoList(toDoList);
     }
 }
-

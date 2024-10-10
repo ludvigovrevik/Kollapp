@@ -50,7 +50,7 @@ public class ToDoListHandlerTest {
         // Initialize ToDoListHandler with the test paths
         toDoListHandler = new ToDoListHandler(testToDoListFolderPath.toString() + File.separator, groupTestFolderPath.toString() + File.separator);
         userHandler = new UserHandler(userTestFolderPath.toString() + File.separator, testToDoListFolderPath.toString() + File.separator);
-        groupHandler = new GroupHandler(groupTestFolderPath.toString() + File.separator, groupTestFolderPath.toString() + File.separator, userHandler);
+        groupHandler = new GroupHandler(groupTestFolderPath.toString() + File.separator, groupTestFolderPath.toString(), userHandler);
         
         user = new User("testUser", "password123");
         userGroup = new UserGroup("testGroup");
@@ -202,6 +202,7 @@ public class ToDoListHandlerTest {
         // Create a to-do list and attempt to update
         ToDoList toDoList = new ToDoList();
         toDoList.addTask(new Task("Simple task"));
+
 
         toDoListHandler.updateToDoList(user, toDoList);
 

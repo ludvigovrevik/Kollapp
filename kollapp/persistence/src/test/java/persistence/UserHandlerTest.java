@@ -39,7 +39,8 @@ public class UserHandlerTest {
         this.userPath = Paths.get("src", "main", "java", "persistence", "users", "tests");
 
         // Initialize UserHandler with the test path
-        this.userHandler = new UserHandler(userPath.toString() + File.separator, toDoListPath.toString() + File.separator);
+        this.userHandler = new UserHandler(userPath.toString() + File.separator,
+                toDoListPath.toString() + File.separator);
 
         user = new User("testUser", "password123");
 
@@ -57,15 +58,15 @@ public class UserHandlerTest {
         // Delete the content in the test directory
         if (Files.exists(userPath)) {
             Files.walk(userPath)
-                 .sorted(Comparator.reverseOrder())
-                 .map(Path::toFile)
-                 .forEach(File::delete);
+                    .sorted(Comparator.reverseOrder())
+                    .map(Path::toFile)
+                    .forEach(File::delete);
         }
         if (Files.exists(toDoListPath)) {
             Files.walk(toDoListPath)
-                 .sorted(Comparator.reverseOrder())
-                 .map(Path::toFile)
-                 .forEach(File::delete);
+                    .sorted(Comparator.reverseOrder())
+                    .map(Path::toFile)
+                    .forEach(File::delete);
         }
     }
 
@@ -163,21 +164,27 @@ public class UserHandlerTest {
         userHandler.saveUser(new User(username, password));
 
         // Now user exists, should return "User already exists"
-        assertEquals("User already exists", userHandler.getUserValidationErrorMessage(username, password, confirmPassword));
+        assertEquals("User already exists",
+                userHandler.getUserValidationErrorMessage(username, password, confirmPassword));
 
         // Test empty fields
-        assertEquals("Fields cannot be empty", userHandler.getUserValidationErrorMessage("", password, confirmPassword));
-        assertEquals("Fields cannot be empty", userHandler.getUserValidationErrorMessage(username, "", confirmPassword));
+        assertEquals("Fields cannot be empty",
+                userHandler.getUserValidationErrorMessage("", password, confirmPassword));
+        assertEquals("Fields cannot be empty",
+                userHandler.getUserValidationErrorMessage(username, "", confirmPassword));
         assertEquals("Fields cannot be empty", userHandler.getUserValidationErrorMessage(username, password, ""));
 
         // Test username length less than 4
-        assertEquals("Username must be at least 4 characters long", userHandler.getUserValidationErrorMessage("usr", password, confirmPassword));
+        assertEquals("Username must be at least 4 characters long",
+                userHandler.getUserValidationErrorMessage("usr", password, confirmPassword));
 
         // Test passwords do not match
-        assertEquals("Passwords do not match", userHandler.getUserValidationErrorMessage("new-test-user", password, "differentPassword"));
+        assertEquals("Passwords do not match",
+                userHandler.getUserValidationErrorMessage("new-test-user", password, "differentPassword"));
 
         // Test password length less than 8
-        assertEquals("Password must be at least 8 characters long", userHandler.getUserValidationErrorMessage("new-test-user", "pass123", "pass123"));
+        assertEquals("Password must be at least 8 characters long",
+                userHandler.getUserValidationErrorMessage("new-test-user", "pass123", "pass123"));
     }
 
     @Test

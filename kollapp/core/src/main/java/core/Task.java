@@ -1,13 +1,15 @@
 package core;
 
+import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Represents a task in the to-do list.
  */
-public class Task {
+public class Task implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String taskName;
     private boolean isCompleted;
     private LocalDate dateTime;
@@ -17,6 +19,20 @@ public class Task {
 
     // (required by Jackson)
     public Task() {
+    }
+
+
+    /**
+     * Constructs a new Task by copying the properties of an existing Task.
+     *
+     * @param task the Task to copy
+     */
+    public Task(Task task) {
+        this.taskName = task.taskName;
+        this.isCompleted = task.isCompleted;
+        this.dateTime = task.dateTime;
+        this.description = task.description;
+        this.priority = task.priority;
     }
 
     public Task(String taskName, LocalDate dateTime, String description, String priority) {

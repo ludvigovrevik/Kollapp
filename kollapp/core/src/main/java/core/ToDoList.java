@@ -9,7 +9,14 @@ import java.util.List;
 public class ToDoList implements java.io.Serializable {
     private List<Task> tasks = new ArrayList<>();
 
-    public ToDoList() { }
+    public ToDoList() {
+    }
+
+    public ToDoList(ToDoList toDoList) {
+        for (Task task : toDoList.getTasks()) {
+            tasks.add(new Task(task));
+        }
+    }
 
     // Add a task to the to-do list
     public void addTask(Task newTask) {
@@ -21,7 +28,7 @@ public class ToDoList implements java.io.Serializable {
 
     // Get the list of tasks
     public List<Task> getTasks() {
-        return tasks;
+        return new ArrayList<>(tasks);
     }
 
     // Remove a task from the to-do list
