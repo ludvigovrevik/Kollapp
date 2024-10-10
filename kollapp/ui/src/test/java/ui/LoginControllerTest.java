@@ -48,41 +48,41 @@ public class LoginControllerTest {
 
     @Test
     void testSuccessfulLogin(FxRobot robot) throws Exception {
-        User existingUser = new User("existingUser", "password");
+        User TestUserDoNotDelete = new User("TestUserDoNotDelete", "password");
 
         // Stub methods on the mockUserHandler
-        when(mockUserHandler.userExists("existingUser")).thenReturn(true);
-        when(mockUserHandler.loadUser("existingUser", "password")).thenReturn(existingUser);
+        when(mockUserHandler.userExists("TestUserDoNotDelete")).thenReturn(true);
+        when(mockUserHandler.loadUser("TestUserDoNotDelete", "password")).thenReturn(TestUserDoNotDelete);
 
         // Simulate user input
-        robot.clickOn("#usernameField").write("existingUser");
+        robot.clickOn("#usernameField").write("TestUserDoNotDelete");
         robot.clickOn("#passwordField").write("password");
 
         // Click the login button
         robot.clickOn("#loginButton");
 
         // Verify interactions with the mock
-        verify(mockUserHandler).userExists("existingUser");
-        verify(mockUserHandler).loadUser("existingUser", "password");
+        verify(mockUserHandler).userExists("TestUserDoNotDelete");
+        verify(mockUserHandler).loadUser("TestUserDoNotDelete", "password");
     }
 
 
     @Test
     void testLoginIncorrectPassword(FxRobot robot) throws Exception {
         // Stub methods to simulate incorrect password
-        when(mockUserHandler.userExists("existingUser")).thenReturn(true);
-        when(mockUserHandler.loadUser("existingUser", "wrongPassword")).thenReturn(null);
+        when(mockUserHandler.userExists("TestUserDoNotDelete")).thenReturn(true);
+        when(mockUserHandler.loadUser("TestUserDoNotDelete", "wrongPassword")).thenReturn(null);
 
         // Simulate user input
-        robot.clickOn("#usernameField").write("existingUser");
+        robot.clickOn("#usernameField").write("TestUserDoNotDelete");
         robot.clickOn("#passwordField").write("wrongPassword");
 
         // Click the login button
         robot.clickOn("#loginButton");
 
         // Verify interactions with the mock
-        verify(mockUserHandler).userExists("existingUser");
-        verify(mockUserHandler).loadUser("existingUser", "wrongPassword");
+        verify(mockUserHandler).userExists("TestUserDoNotDelete");
+        verify(mockUserHandler).loadUser("TestUserDoNotDelete", "wrongPassword");
 
         // Verify that the correct error message is displayed
         Label loginErrorMessage = robot.lookup("#loginErrorMessage").queryAs(Label.class);
@@ -92,17 +92,17 @@ public class LoginControllerTest {
     @Test
     void testLoginUserDoesNotExist(FxRobot robot) throws Exception {
         // Stub methods to simulate user does not exist
-        when(mockUserHandler.userExists("nonExistingUser")).thenReturn(false);
+        when(mockUserHandler.userExists("nonTestUserDoNotDelete")).thenReturn(false);
 
         // Simulate user input
-        robot.clickOn("#usernameField").write("nonExistingUser");
+        robot.clickOn("#usernameField").write("nonTestUserDoNotDelete");
         robot.clickOn("#passwordField").write("anyPassword");
 
         // Click the login button
         robot.clickOn("#loginButton");
 
         // Verify interactions with the mock
-        verify(mockUserHandler).userExists("nonExistingUser");
+        verify(mockUserHandler).userExists("nonTestUserDoNotDelete");
 
         // Verify that the correct error message is displayed
         Label loginErrorMessage = robot.lookup("#loginErrorMessage").queryAs(Label.class);
