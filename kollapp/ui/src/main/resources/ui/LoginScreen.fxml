@@ -13,8 +13,8 @@
       <PasswordField fx:id="passwordField" layoutX="261.0" layoutY="300.0" prefHeight="26.0" prefWidth="242.0" text=""/>
       <Label layoutX="262.0" layoutY="220.0" text="Username" />
       <Label layoutX="262.0" layoutY="282.0" text="Password" />
-      <Button onAction="#handleLoginButtonAction" layoutX="262.0" layoutY="344.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="110.0" text="Login" />
-      <Button onAction="#handleRegisterButtonAction" layoutX="394.0" layoutY="344.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="109.0" text="Register" />
+      <Button fx:id="loginButton" onAction="#handleLoginButtonAction" layoutX="262.0" layoutY="344.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="110.0" text="Login" />
+      <Button fx:id="registerButton" onAction="#handleRegisterButtonAction" layoutX="394.0" layoutY="344.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="109.0" text="Register" />
       <Label fx:id="loginErrorMessage" layoutX="260.0" layoutY="390.0" style="-fx-font-size: 16; -fx-text-fill: red;"></Label>
       <Label layoutX="337.0" layoutY="168.0" prefHeight="42.0" prefWidth="90.0" text="Login">
          <font>
