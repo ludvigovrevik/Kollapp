@@ -55,16 +55,6 @@ public class UserGroup implements java.io.Serializable {
     }
 
     /**
-     * Returns the number of users in the group.
-     *
-     * @return the number of users
-     */
-    @JsonIgnore
-    public int getNumberOfUsers() {
-        return users.size();
-    }
-
-    /**
      * Adds a user to the group if the user is not already present.
      *
      * @param username the username to add

@@ -85,21 +85,21 @@ public class Task implements Serializable {
     }
 
     /**
-     * Returns the date and time associated with the task.
-     *
-     * @return the task's date and time
-     */
-    public LocalDate getDateTime() {
-        return dateTime;
-    }
-
-    /**
      * Sets the task name.
      *
      * @param taskName the name to set for the task
      */
     public void setTaskName(String taskName) {
         this.taskName = taskName;
+    }
+
+    /**
+     * Returns the date and time associated with the task.
+     *
+     * @return the task's date and time
+     */
+    public LocalDate getDateTime() {
+        return dateTime;
     }
 
     /**

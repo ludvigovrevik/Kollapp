@@ -97,16 +97,6 @@ public class UserGroupTest {
     }
 
     @Test
-    @DisplayName("Test getting the number of users in the group")
-    @Tag("getter")
-    void testGetNumberOfUsers() {
-        userGroup.addUser("john_doe");
-        userGroup.addUser("jane_doe");
-
-        assertEquals(2, userGroup.getNumberOfUsers(), "The group should contain 2 users");
-    }
-
-    @Test
     @DisplayName("Test checking if the group contains a specific user")
     @Tag("getter")
     void testContainsUser() {
