@@ -5,40 +5,61 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * Represents a group of users, containing the group's name and a list of users.
+ */
 public class UserGroup implements java.io.Serializable {
     private String groupName;
     private List<String> users = new ArrayList<>();
 
-    // Default constructor required for Jackson
-    public UserGroup() {}
+    /**
+     * Default constructor required for Jackson deserialization.
+     */
+    public UserGroup() {
+    }
 
-    // Constructor for creating a new user group
+    /**
+     * Constructs a new UserGroup with the specified group name.
+     *
+     * @param groupName the name of the group
+     */
     public UserGroup(String groupName) {
         this.groupName = groupName;
     }
 
-    // Getter for groupName
+    /**
+     * Returns the name of the group.
+     *
+     * @return the group name
+     */
     public String getGroupName() {
         return groupName;
     }
 
-    // Setter for groupName
+    /**
+     * Sets the name of the group.
+     *
+     * @param groupName the name to set
+     */
     public void setGroupName(String groupName) {
         this.groupName = groupName;
     }
 
-    // Getter for the list of users
+    /**
+     * Returns a copy of the list of users in the group.
+     *
+     * @return a list of users
+     */
     public List<String> getUsers() {
-        return new ArrayList<>(users);  // Return a copy to avoid external modification
+        return new ArrayList<>(users); // Return a copy to avoid external modification
     }
 
-    // Getter for the number of users
-    @JsonIgnore
-    public int getNumberOfUsers() {
-        return users.size();
-    }
-
-    // Adds a user to the group
+    /**
+     * Adds a user to the group if the user is not already present.
+     *
+     * @param username the username to add
+     * @throws IllegalArgumentException if the username is null, empty, or already exists in the group
+     */
     public void addUser(String username) {
         if (username == null || username.trim().isEmpty()) {
             throw new IllegalArgumentException("Username cannot be null or empty.");
@@ -49,7 +70,12 @@ public class UserGroup implements java.io.Serializable {
         users.add(username);
     }
 
-    // Removes a user from the group
+    /**
+     * Removes a user from the group if the user exists.
+     *
+     * @param username the username to remove
+     * @throws IllegalArgumentException if the username is null, empty, or does not exist in the group
+     */
     public void removeUser(String username) {
         if (username == null || username.trim().isEmpty()) {
             throw new IllegalArgumentException("Username cannot be null or empty.");
@@ -60,6 +86,13 @@ public class UserGroup implements java.io.Serializable {
         users.remove(username);
     }
 
+    /**
+     * Checks if the group contains the specified user.
+     *
+     * @param username the username to check
+     * @return true if the user is in the group, false otherwise
+     * @throws IllegalArgumentException if the username is null or empty
+     */
     public boolean containsUser(String username) {
         if (username == null || username.trim().isEmpty()) {
             throw new IllegalArgumentException("Username cannot be null or empty.");

@@ -38,7 +38,7 @@ public class KollAppController {
     @FXML
     private TextField taskInputField;
 
-    @FXML 
+    @FXML
     private DatePicker datePicker;
 
     private ToDoList toDoList;
@@ -54,7 +54,7 @@ public class KollAppController {
     @FXML
     private Label completedLabel;
 
-    @FXML 
+    @FXML
     private Label personal;
 
     @FXML
@@ -70,7 +70,7 @@ public class KollAppController {
         groupInView = null;
 
     }
-    
+
     public void populateGroupView() {
         vBoxContainer.getChildren().clear();
         List<String> groupNames = this.user.getUserGroups();
@@ -81,28 +81,30 @@ public class KollAppController {
 
     private void addGroupLabel(String groupName) {
         Label groupLabel = new Label(groupName);
-        
+
         // Set style to make the label look like a button
         groupLabel.setStyle("-fx-cursor: hand; -fx-background-color: #7aadff; -fx-text-fill: white; -fx-padding: 10px; -fx-alignment: center;");
         groupLabel.setPrefHeight(50);
         groupLabel.setPrefWidth(200);
-        groupLabel.setAlignment(Pos.CENTER);  // Center the text
-        
+        groupLabel.setAlignment(Pos.CENTER); // Center the text
+
         // Set up the click event
         groupLabel.setOnMouseClicked(event -> handleGroupClick(event, groupName));
 
         // Add the clickable label to the VBox
         vBoxContainer.getChildren().add(groupLabel);
     }
+
     /**
- * Handles the click event for the dynamic group labels.
- * @param event The mouse click event
- * @param groupName The name of the group clicked
- */
+     * Handles the click event for the dynamic group labels.
+     * 
+     * @param event     The mouse click event
+     * @param groupName The name of the group clicked
+     */
     private void handleGroupClick(MouseEvent event, String groupName) {
         List<String> groupNames = this.user.getUserGroups();
         System.out.println("Clicked on group: " + groupName);
-        
+
         // You can add logic here to perform an action based on the group clicked.
         // For example, switch scenes or load group-specific data.
         if (groupName.equals(this.user.getUsername())) {
@@ -110,14 +112,14 @@ public class KollAppController {
         } else if (groupNames.contains(groupName)) {
             System.out.println("Perform action for " + groupName);
             changeCurrentTaskView(groupName);
-        } 
+        }
         updateGrid();
     }
 
     public UserGroup getGroupInView() {
         return groupInView;
     }
-    
+
     // Handle the click event on the label Completed
     @FXML
     private void handleLabelClick(MouseEvent event) {
@@ -137,10 +139,10 @@ public class KollAppController {
         // Clear grid view before retrieving tasks
         taskGridView.getChildren().clear();
         List<Task> tasks = toDoList.getTasks();
-        
+
         // Use a separate row counter
         int row = 0;
-        
+
         // Iterate through all tasks
         for (int i = 0; i < tasks.size(); i++) {
             Task currentTask = tasks.get(i);
@@ -151,9 +153,9 @@ public class KollAppController {
             String taskName = currentTask.getTaskName();
             String taskDescription = currentTask.getDescription();
             String priority = currentTask.getPriority();
-            
+
             // check if date is empty
-            Label dateLabel = new Label(""); 
+            Label dateLabel = new Label("");
             if (currentTask.getDateTime() != null) {
                 LocalDate dateTime = currentTask.getDateTime();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
@@ -164,7 +166,7 @@ public class KollAppController {
             Label taskLabel = new Label(taskName);
             Label taskDescriptionLabel = new Label(taskDescription);
             Label priorityLabel = new Label(priority);
-            
+
             // Add event listener to the CheckBox
             checkBox.setOnAction(event -> {
                 if (checkBox.isSelected()) {
@@ -174,7 +176,7 @@ public class KollAppController {
                     } else {
                         toDoListHandler.updateGroupToDoList(groupInView, toDoList);
                     }
-                    updateGrid();  // Refresh the grid
+                    updateGrid(); // Refresh the grid
                 }
             });
 
@@ -186,7 +188,7 @@ public class KollAppController {
             taskGridView.add(priorityLabel, 4, row);
             GridPane.setVgrow(taskLabel, Priority.ALWAYS);
             // Increment row counter for the next task
-            row++; 
+            row++;
         }
     }
 
@@ -203,29 +205,30 @@ public class KollAppController {
         for (int i = 0; i < tasks.size(); i++) {
             Task currentTask = tasks.get(i);
             String taskDescription = currentTask.getTaskName();
-            
+
             // check if date is empty
-            Label dateLabel = new Label(""); 
+            Label dateLabel = new Label("");
             if (currentTask.getDateTime() != null) {
                 LocalDate dateTime = currentTask.getDateTime();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
                 dateLabel.setText(dateTime.format(formatter));
             }
             Label taskLabel = new Label(taskDescription);
-            
+
             CheckBox checkBox = new CheckBox();
-            
+
             // Add event listener to the CheckBox
             checkBox.setOnAction(event -> {
                 if (checkBox.isSelected()) {
-                    // currentTask.setCompleted(true); // Set the task as completed when checkbox is selected
+                    // currentTask.setCompleted(true); // Set the task as completed when checkbox is
+                    // selected
                     toDoList.removeTask(currentTask); // Remove the task when checkbox is selected
                     if (groupInView == null) {
                         toDoListHandler.updateToDoList(user, toDoList);
                     } else {
                         toDoListHandler.updateGroupToDoList(groupInView, toDoList);
                     }
-                    updateGrid();  // Refresh the grid
+                    updateGrid(); // Refresh the grid
                 }
             });
 
@@ -236,7 +239,7 @@ public class KollAppController {
                 taskGridView.add(taskLabel, 1, row);
                 taskGridView.add(dateLabel, 2, row);
             }
-            row++; 
+            row++;
         }
     }
 
@@ -251,7 +254,7 @@ public class KollAppController {
         this.toDoList = toDoListHandler.loadGroupToDoList(group);
         groupInView = group;
     }
-    
+
     @FXML
     public void openRegisterGroupWindow() {
         try {
@@ -323,10 +326,9 @@ public class KollAppController {
             stage.initModality(Modality.APPLICATION_MODAL);
 
             stage.showAndWait();
- 
+
         } catch (IOException e) {
             e.printStackTrace();
-        }        
+        }
     }
 }
-
