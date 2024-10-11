@@ -11,23 +11,23 @@ components:
           name: 6080-tcp-desktop-ui
           protocol: http
           targetPort: 6080
-        - exposure: public
+        - exposure: none
           name: 3000-tcp
           protocol: http
           targetPort: 3000
-        - exposure: public
+        - exposure: none
           name: 5900-tcp
           protocol: http
           targetPort: 5900
-        - exposure: public
+        - exposure: none
           name: 5901-tcp
           protocol: http
           targetPort: 5901
-        - exposure: public
+        - exposure: none
           name: 8080-tcp
           protocol: http
           targetPort: 8080
-        - exposure: public
+        - exposure: none
           name: 5500-tcp
           protocol: http
           targetPort: 5500
