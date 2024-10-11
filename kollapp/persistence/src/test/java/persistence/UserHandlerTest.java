@@ -4,24 +4,18 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.Comparator;
 import java.util.Optional;
 import java.time.LocalDate;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import core.User;
 
 /**
- * Unit tests for the UserHandler class.
+ * Unit tests for the {@link UserHandler} class.
  */
-@Tag("persistence")
+@Tag("unit")
 public class UserHandlerTest {
 
     private UserHandler userHandler;
@@ -30,15 +24,17 @@ public class UserHandlerTest {
     private Path userPath;
 
     /**
-     * Sets up the necessary test environment by creating directories
-     * and initializing the UserHandler before each test.
+     * Sets up the test environment by initializing paths and creating necessary directories.
      */
     @BeforeEach
     public void setUp() throws IOException {
         this.toDoListPath = Paths.get("src", "main", "java", "persistence", "todolists", "tests");
         this.userPath = Paths.get("src", "main", "java", "persistence", "users", "tests");
 
-        this.userHandler = new UserHandler(userPath.toString() + File.separator, toDoListPath.toString() + File.separator);
+        this.userHandler = new UserHandler(
+            userPath.toString() + File.separator,
+            toDoListPath.toString() + File.separator
+        );
         user = new User("testUser", "password123");
 
         if (!Files.exists(toDoListPath)) {
@@ -50,20 +46,30 @@ public class UserHandlerTest {
     }
 
     /**
-     * Cleans up the test environment after each test by deleting the created directories.
+     * Cleans up the test environment by deleting created directories after each test.
      */
     @AfterEach
     public void tearDown() throws IOException {
         if (Files.exists(userPath)) {
-            Files.walk(userPath).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+            Files.walk(userPath)
+                .sorted(Comparator.reverseOrder())
+                .map(Path::toFile)
+                .forEach(File::delete);
         }
         if (Files.exists(toDoListPath)) {
-            Files.walk(toDoListPath).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+            Files.walk(toDoListPath)
+                .sorted(Comparator.reverseOrder())
+                .map(Path::toFile)
+                .forEach(File::delete);
         }
     }
 
+    /**
+     * Tests the default constructor and ensures paths and ObjectMapper are correctly initialized.
+     */
     @Test
     @DisplayName("Test UserHandler constructors and default paths")
+    @Tag("constructor")
     void testConstructors() throws Exception {
         UserHandler defaultHandler = new UserHandler();
 
@@ -92,8 +98,12 @@ public class UserHandlerTest {
         assertEquals(testDate, parsedDate);
     }
 
+    /**
+     * Tests the confirmation of a new valid user with various input scenarios.
+     */
     @Test
     @DisplayName("Test confirmation of new valid user")
+    @Tag("validation")
     void testConfirmNewValidUser() {
         assertTrue(userHandler.confirmNewValidUser("testUser", "password123", "password123"));
         assertFalse(userHandler.confirmNewValidUser("", "password123", "password123"));
@@ -104,20 +114,29 @@ public class UserHandlerTest {
         assertFalse(userHandler.confirmNewValidUser("testUser", "passo", "passo"));
     }
 
+    /**
+     * Tests retrieving an existing user and ensures correct user data is returned.
+     */
     @Test
     @DisplayName("Test retrieving an existing user")
+    @Tag("persistence")
     void testGetUser() throws IOException {
         userHandler.saveUser(user);
         Optional<User> retrievedUser = userHandler.getUser(user.getUsername());
         assertTrue(retrievedUser.isPresent());
         assertEquals(user.getUsername(), retrievedUser.get().getUsername());
         assertEquals(user.getPassword(), retrievedUser.get().getPassword());
+
         Optional<User> nonExistingUser = userHandler.getUser("nonExistingUser");
         assertFalse(nonExistingUser.isPresent());
     }
 
+    /**
+     * Tests user validation error messages for various invalid input scenarios.
+     */
     @Test
     @DisplayName("Test user validation error messages")
+    @Tag("validation")
     void testGetUserValidationErrorMessage() throws IOException {
         String username = "newUser";
         String password = "password123";
@@ -127,18 +146,29 @@ public class UserHandlerTest {
         assertNull(userHandler.getUserValidationErrorMessage(username, password, confirmPassword));
 
         userHandler.saveUser(new User(username, password));
-        assertEquals("User already exists", userHandler.getUserValidationErrorMessage(username, password, confirmPassword));
+        assertEquals("User already exists",
+            userHandler.getUserValidationErrorMessage(username, password, confirmPassword));
 
-        assertEquals("Fields cannot be empty", userHandler.getUserValidationErrorMessage("", password, confirmPassword));
-        assertEquals("Fields cannot be empty", userHandler.getUserValidationErrorMessage(username, "", confirmPassword));
-        assertEquals("Fields cannot be empty", userHandler.getUserValidationErrorMessage(username, password, ""));
-        assertEquals("Username must be at least 3 characters long", userHandler.getUserValidationErrorMessage("us", password, confirmPassword));
-        assertEquals("Passwords do not match", userHandler.getUserValidationErrorMessage("new-test-user", password, "differentPassword"));
-        assertEquals("Password must be at least 6 characters long", userHandler.getUserValidationErrorMessage("new-test-user", "passo", "passo"));
+        assertEquals("Fields cannot be empty",
+            userHandler.getUserValidationErrorMessage("", password, confirmPassword));
+        assertEquals("Fields cannot be empty",
+            userHandler.getUserValidationErrorMessage(username, "", confirmPassword));
+        assertEquals("Fields cannot be empty",
+            userHandler.getUserValidationErrorMessage(username, password, ""));
+        assertEquals("Username must be at least 3 characters long",
+            userHandler.getUserValidationErrorMessage("us", password, confirmPassword));
+        assertEquals("Passwords do not match",
+            userHandler.getUserValidationErrorMessage("new-test-user", password, "differentPassword"));
+        assertEquals("Password must be at least 6 characters long",
+            userHandler.getUserValidationErrorMessage("new-test-user", "passo", "passo"));
     }
 
+    /**
+     * Tests loading an existing user and validates password matching.
+     */
     @Test
     @DisplayName("Test loading an existing user")
+    @Tag("persistence")
     void testLoadUser() throws IOException {
         userHandler.saveUser(user);
         User loadedUser = userHandler.loadUser(user.getUsername(), user.getPassword());
@@ -153,8 +183,12 @@ public class UserHandlerTest {
         assertNull(nonExistingUser);
     }
 
+    /**
+     * Tests saving a new user and checks for exceptions when saving an existing user.
+     */
     @Test
     @DisplayName("Test saving a new user")
+    @Tag("persistence")
     void testSaveUser() throws IOException {
         userHandler.saveUser(user);
         Path userFilePath = userPath.resolve(user.getUsername() + ".json");
@@ -163,8 +197,12 @@ public class UserHandlerTest {
         assertThrows(IllegalArgumentException.class, () -> userHandler.saveUser(user));
     }
 
+    /**
+     * Tests updating an existing user and verifies that changes are persisted.
+     */
     @Test
     @DisplayName("Test updating an existing user")
+    @Tag("persistence")
     void testUpdateUser() throws IOException {
         userHandler.saveUser(user);
         user.addUserGroup("Test group");
@@ -177,8 +215,12 @@ public class UserHandlerTest {
         assertEquals(user.getUserGroups(), updatedUser.getUserGroups());
     }
 
+    /**
+     * Tests checking if a user exists in the system.
+     */
     @Test
     @DisplayName("Test checking if a user exists")
+    @Tag("validation")
     void testUserExists() throws IOException {
         assertFalse(userHandler.userExists(user.getUsername()));
 

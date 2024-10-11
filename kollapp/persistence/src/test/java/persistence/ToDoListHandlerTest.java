@@ -1,10 +1,6 @@
 package persistence;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,11 +8,13 @@ import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Comparator;
 import java.time.LocalDate;
+import java.util.Comparator;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,6 +25,10 @@ import core.ToDoList;
 import core.User;
 import core.UserGroup;
 
+/**
+ * Unit tests for the {@link ToDoListHandler} class.
+ */
+@Tag("unit")
 public class ToDoListHandlerTest {
 
     private User user;
@@ -40,14 +42,15 @@ public class ToDoListHandlerTest {
     private GroupHandler groupHandler;
     private UserHandler userHandler;
 
+    /**
+     * Sets up the test environment by creating directories and initializing handlers.
+     */
     @BeforeEach
     public void setUp() throws IOException {
-        // Use test-specific directories to avoid interfering with real data
         this.testToDoListFolderPath = Paths.get("src", "main", "java", "persistence", "todolists", "tests");
         this.groupTestFolderPath = Paths.get("src", "main", "java", "persistence", "grouptodolists", "tests");
         this.userTestFolderPath = Paths.get("src", "main", "java", "persistence", "users", "tests");
         
-        // Initialize ToDoListHandler with the test paths
         toDoListHandler = new ToDoListHandler(testToDoListFolderPath.toString() + File.separator, groupTestFolderPath.toString() + File.separator);
         userHandler = new UserHandler(userTestFolderPath.toString() + File.separator, testToDoListFolderPath.toString() + File.separator);
         groupHandler = new GroupHandler(groupTestFolderPath.toString() + File.separator, groupTestFolderPath.toString(), userHandler);
@@ -55,7 +58,6 @@ public class ToDoListHandlerTest {
         user = new User("testUser", "password123");
         userGroup = new UserGroup("testGroup");
 
-        // Create the test directories if they don't exist
         if (!Files.exists(testToDoListFolderPath)) {
             Files.createDirectories(testToDoListFolderPath);
         }
@@ -67,247 +69,247 @@ public class ToDoListHandlerTest {
         }
     }
 
+    /**
+     * Cleans up test directories after each test.
+     */
     @AfterEach
     public void tearDown() throws IOException {
-        // Delete the content in the test directories
         if (Files.exists(testToDoListFolderPath)) {
-            Files.walk(testToDoListFolderPath)
-                 .sorted(Comparator.reverseOrder())
-                 .map(Path::toFile)
-                 .forEach(File::delete);
+            Files.walk(testToDoListFolderPath).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
         }
         if (Files.exists(groupTestFolderPath)) {
-            Files.walk(groupTestFolderPath)
-                 .sorted(Comparator.reverseOrder())
-                 .map(Path::toFile)
-                 .forEach(File::delete);
+            Files.walk(groupTestFolderPath).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
         }
         if (Files.exists(userTestFolderPath)) {
-            Files.walk(userTestFolderPath)
-                 .sorted(Comparator.reverseOrder())
-                 .map(Path::toFile)
-                 .forEach(File::delete);
+            Files.walk(userTestFolderPath).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
         }
     }
 
+    /**
+     * Tests the default constructor of ToDoListHandler.
+     * Ensures that the default paths and ObjectMapper are correctly initialized.
+     */
     @Test
+    @DisplayName("Test default constructor initialization")
+    @Tag("constructor")
     public void testConstructors() throws Exception {
-        // Create an instance using the default constructor
         ToDoListHandler defaultHandler = new ToDoListHandler();
-
-        // Use reflection to access the private toDoListPath field
+    
         Field pathField = ToDoListHandler.class.getDeclaredField("toDoListPath");
         pathField.setAccessible(true);
         String actualPath = (String) pathField.get(defaultHandler);
 
-        // Expected default path
         String expectedPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "todolists")
                 .toString() + File.separator;
-        assertEquals(expectedPath, actualPath, "The default toDoListPath should be set correctly.");
+        assertEquals(expectedPath, actualPath);
 
-        // Use reflection to access the private mapper field
         Field mapperField = ToDoListHandler.class.getDeclaredField("mapper");
         mapperField.setAccessible(true);
         ObjectMapper mapper = (ObjectMapper) mapperField.get(defaultHandler);
-        assertNotNull(mapper, "The ObjectMapper should not be null.");
+        assertNotNull(mapper);
 
-        // Verify that the JavaTimeModule is registered in the mapper
         LocalDate testDate = LocalDate.now();
         String dateJson = mapper.writeValueAsString(testDate);
         LocalDate parsedDate = mapper.readValue(dateJson, LocalDate.class);
-        assertEquals(testDate, parsedDate, "The ObjectMapper should correctly serialize and deserialize LocalDate.");
+        assertEquals(testDate, parsedDate);
     }
 
+    /**
+     * Tests that assigning a to-do list to a user creates an empty file.
+     */
     @Test
+    @DisplayName("Assign to-do list creates empty file")
+    @Tag("file")
     public void testAssignToDoList_CreatesEmptyFile() {
-        // Call the method
         toDoListHandler.assignToDoList(user);
 
-        // Verify that the file exists
         File expectedFile = new File(testToDoListFolderPath.toString(), user.getUsername() + ".json");
-        assertTrue(expectedFile.exists(), "The to-do list file should be created.");
+        assertTrue(expectedFile.exists());
 
-        // Verify that the file contains an empty ToDoList
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         try {
             ToDoList loadedList = mapper.readValue(expectedFile, ToDoList.class);
-            assertNotNull(loadedList, "The loaded to-do list should not be null.");
-            assertTrue(loadedList.getTasks().isEmpty(), "The to-do list should be empty.");
+            assertNotNull(loadedList);
+            assertTrue(loadedList.getTasks().isEmpty());
         } catch (IOException e) {
             fail("Failed to read the to-do list file.");
         }
     }
 
+    /**
+     * Tests loading a to-do list when the file exists.
+     * Verifies that the tasks are correctly loaded from the file.
+     */
     @Test
+    @DisplayName("Load to-do list when file exists")
+    @Tag("load")
     public void testLoadToDoList_FileExists() {
-        // Assign an empty to-do list to create the file
         toDoListHandler.assignToDoList(user);
 
-        // Prepare a ToDoList with tasks
         ToDoList toDoList = new ToDoList();
-        Task task1 = new Task("Sample Task1");
-        task1.setPriority("Medium");
-        toDoList.addTask(task1);
+        toDoList.addTask(new Task("Sample Task1"));
+        toDoList.addTask(new Task("Sample Task2", LocalDate.now(), "Description", "High"));
+        toDoList.addTask(new Task("Sample Task3", null, "Description", "Low"));
 
-        Task task2 = new Task("Sample Task2", LocalDate.now(), "Description", "High");
-        toDoList.addTask(task2);
-
-        Task task3 = new Task("Sample Task3");
-        task3.setPriority("Low");
-        task3.setCompleted(true);
-        toDoList.addTask(task3);
-
-        // Update the to-do list file with the new tasks
         toDoListHandler.updateToDoList(user, toDoList);
 
-        // Load the to-do list using the handler
         ToDoList loadedList = toDoListHandler.loadToDoList(user);
 
-        // Verify the contents
-        assertNotNull(loadedList, "The loaded to-do list should not be null.");
-        assertEquals(3, loadedList.getTasks().size(), "The to-do list should have three tasks.");
-        assertEquals("Sample Task1", loadedList.getTasks().get(0).getTaskName(), "First task name should match.");
-        assertEquals("Description", loadedList.getTasks().get(1).getDescription(), "Second task description should match.");
-        assertEquals(true, loadedList.getTasks().get(2).isCompleted(), "Third task should be completed.");
+        assertNotNull(loadedList);
+        assertEquals(3, loadedList.getTasks().size());
+        assertEquals("Sample Task1", loadedList.getTasks().get(0).getTaskName());
+        assertEquals("Description", loadedList.getTasks().get(1).getDescription());
+        assertFalse(loadedList.getTasks().get(2).isCompleted());
     }
 
+    /**
+     * Tests that loading a to-do list that does not exist throws an exception with the correct message.
+     */
     @Test
+    @DisplayName("Throw exception when loading a to-do list that does not exist")
+    @Tag("exception")
     public void testLoadToDoList_FileDoesNotExist() {
-        // Ensure the file does not exist
         File file = new File(testToDoListFolderPath.toString(), user.getUsername() + ".json");
         if (file.exists()) {
             file.delete();
         }
 
-        // Attempt to load the to-do list and expect an exception
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             toDoListHandler.loadToDoList(user);
         });
 
         String expectedMessage = "To-do list file does not exist for user: " + user.getUsername();
-        String actualMessage = exception.getMessage();
-
-        assertEquals(expectedMessage, actualMessage, "Exception message should match.");
+        assertEquals(expectedMessage, exception.getMessage());
     }
 
+    /**
+     * Tests updating a to-do list when the file does not exist.
+     * Verifies that the file is created and tasks are saved correctly.
+     */
     @Test
+    @DisplayName("Update to-do list when file does not exist")
+    @Tag("update")
     public void testUpdateToDoList_FileDoesNotExist() {
-        // Ensure the file does not exist
         File file = new File(testToDoListFolderPath.toString(), user.getUsername() + ".json");
         if (file.exists()) {
             file.delete();
         }
 
-        // Create a to-do list and attempt to update
         ToDoList toDoList = new ToDoList();
         toDoList.addTask(new Task("Simple task"));
 
-
         toDoListHandler.updateToDoList(user, toDoList);
 
-        // Verify that the file now exists
-        assertTrue(file.exists(), "The to-do list file should be created after update.");
+        assertTrue(file.exists());
 
-        // Load the to-do list and verify contents
         ToDoList loadedList = toDoListHandler.loadToDoList(user);
-        assertNotNull(loadedList, "The loaded to-do list should not be null.");
-        assertEquals(1, loadedList.getTasks().size(), "The to-do list should have one task.");
-        assertEquals("Simple task", loadedList.getTasks().get(0).getTaskName(), "Task name should match.");
+        assertNotNull(loadedList);
+        assertEquals(1, loadedList.getTasks().size());
+        assertEquals("Simple task", loadedList.getTasks().get(0).getTaskName());
     }
 
+    /**
+     * Tests that assigning a to-do list overwrites the existing file.
+     */
     @Test
+    @DisplayName("Assign to-do list overwrites existing file")
+    @Tag("file")
     public void testAssignToDoList_OverwritesExistingFile() throws IOException {
-        // Create an initial to-do list file
         ToDoList toDoList = new ToDoList();
         toDoList.addTask(new Task("Simple task"));
         toDoListHandler.assignToDoList(user);
         toDoListHandler.updateToDoList(user, toDoList);
 
-        // Assign a new empty to-do list
         toDoListHandler.assignToDoList(user);
 
-        // Load the to-do list and verify it's empty
         ToDoList loadedList = toDoListHandler.loadToDoList(user);
-        assertNotNull(loadedList, "The loaded to-do list should not be null.");
-        assertTrue(loadedList.getTasks().isEmpty(), "The to-do list should be empty after assignment.");
+        assertNotNull(loadedList);
+        assertTrue(loadedList.getTasks().isEmpty());
     }
 
+    /**
+     * Tests updating a to-do list with an empty list.
+     * Verifies that the to-do list file is updated accordingly.
+     */
     @Test
+    @DisplayName("Update to-do list with empty list")
+    @Tag("update")
     public void testUpdateToDoList_WithEmptyList() throws IOException {
-        // Assign an empty to-do list
         toDoListHandler.assignToDoList(user);
 
-        // Update with an empty to-do list
         ToDoList toDoList = new ToDoList();
         toDoListHandler.updateToDoList(user, toDoList);
 
-        // Load and verify the to-do list is empty
         ToDoList loadedList = toDoListHandler.loadToDoList(user);
-        assertNotNull(loadedList, "The loaded to-do list should not be null.");
-        assertTrue(loadedList.getTasks().isEmpty(), "The to-do list should be empty.");
+        assertNotNull(loadedList);
+        assertTrue(loadedList.getTasks().isEmpty());
     }
 
+    /**
+     * Tests loading a group to-do list when the file does not exist.
+     * Verifies that an empty ToDoList is returned.
+     */
     @Test
+    @DisplayName("Load group to-do list when file does not exist")
+    @Tag("group")
     public void testLoadGroupToDoList_FileDoesNotExist() {
-        // Ensure the to-do list file for the group does not exist
         File file = new File(groupTestFolderPath.toString(), userGroup.getGroupName() + ".json");
         if (file.exists()) {
             file.delete();
         }
 
-        // Load the group to-do list
-        userHandler.saveUser(user); // createGroup requires the user to exist
+        userHandler.saveUser(user);
         groupHandler.createGroup(user, userGroup.getGroupName());
         ToDoList toDoList = toDoListHandler.loadGroupToDoList(userGroup);
 
-        // Assert that an empty ToDoList is returned
-        assertNotNull(toDoList, "ToDoList should not be null when file does not exist.");
-        assertTrue(toDoList.getTasks().isEmpty(), "ToDoList should be empty when file does not exist.");
+        assertNotNull(toDoList);
+        assertTrue(toDoList.getTasks().isEmpty());
     }
 
+    /**
+     * Tests updating and loading a group to-do list.
+     * Verifies that tasks are correctly saved and loaded.
+     */
     @Test
+    @DisplayName("Update and load group to-do list")
+    @Tag("group")
     public void testUpdateGroupToDoList_And_LoadGroupToDoList() {
-        // Create a ToDoList with some tasks
         ToDoList toDoList = new ToDoList();
-        Task task1 = new Task("Group Task 1");
-        toDoList.addTask(task1);
+        toDoList.addTask(new Task("Group Task 1"));
+        toDoList.addTask(new Task("Group Task 2", LocalDate.now(), "Group Description", "High"));
 
-        Task task2 = new Task("Group Task 2", LocalDate.now(), "Group Description", "High");
-        toDoList.addTask(task2);
-
-        // Update the group to-do list
-        userHandler.saveUser(user); // createGroup requires the user to exist
-        groupHandler.createGroup(user, userGroup.getGroupName()); // updateGroupToDoList requires the group to exist
+        userHandler.saveUser(user);
+        groupHandler.createGroup(user, userGroup.getGroupName());
         toDoListHandler.updateGroupToDoList(userGroup, toDoList);
 
-        // Verify that the to-do list file was created
         File file = new File(groupTestFolderPath.toString(), userGroup.getGroupName() + ".json");
-        assertTrue(file.exists(), "The group to-do list file should be created after update.");
+        assertTrue(file.exists());
 
-        // Load the group to-do list
         ToDoList loadedToDoList = toDoListHandler.loadGroupToDoList(userGroup);
 
-        // Verify that the loaded ToDoList matches the one we saved
-        assertNotNull(loadedToDoList, "Loaded ToDoList should not be null.");
-        assertEquals(toDoList.getTasks().size(), loadedToDoList.getTasks().size(), "ToDoList sizes should match.");
-        assertEquals(toDoList.getTasks().get(0).getTaskName(), loadedToDoList.getTasks().get(0).getTaskName(), "First task names should match.");
-        assertEquals(toDoList.getTasks().get(1).getDescription(), loadedToDoList.getTasks().get(1).getDescription(), "Second task descriptions should match.");
+        assertNotNull(loadedToDoList);
+        assertEquals(toDoList.getTasks().size(), loadedToDoList.getTasks().size());
+        assertEquals(toDoList.getTasks().get(0).getTaskName(), loadedToDoList.getTasks().get(0).getTaskName());
+        assertEquals(toDoList.getTasks().get(1).getDescription(), loadedToDoList.getTasks().get(1).getDescription());
     }
 
+    /**
+     * Tests loading a group to-do list when the file is corrupted.
+     * Verifies that an empty ToDoList is returned.
+     */
     @Test
+    @DisplayName("Load group to-do list when file is corrupted")
+    @Tag("group")
     public void testLoadGroupToDoList_FileIsCorrupted() throws IOException {
-        // Create a corrupted to-do list file
         File file = new File(groupTestFolderPath.toString(), userGroup.getGroupName() + ".json");
         Files.writeString(file.toPath(), "This is not valid JSON");
 
-        // Load the group to-do list
-        userHandler.saveUser(user); // createGroup requires the user to exist
+        userHandler.saveUser(user);
         groupHandler.createGroup(user, userGroup.getGroupName());
         ToDoList toDoList = toDoListHandler.loadGroupToDoList(userGroup);
 
-        // Assert that an empty ToDoList is returned
-        assertNotNull(toDoList, "ToDoList should not be null even if the file is corrupted.");
-        assertTrue(toDoList.getTasks().isEmpty(), "ToDoList should be empty when file is corrupted.");
+        assertNotNull(toDoList);
+        assertTrue(toDoList.getTasks().isEmpty());
     }
 }
