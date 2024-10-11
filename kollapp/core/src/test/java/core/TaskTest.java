@@ -14,7 +14,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-@Tag("task") // Class level tag for Task tests
+/**
+ * Unit tests for the {@link Task} class.
+ */
+@Tag("task")
 class TaskTest {
 
     private Task task1;
