@@ -30,9 +30,9 @@ Example for `kollapp/persistence/src/main/java/persistence/users/johnDoe.json`:
 
 ```json
 {
-  "username": "johnDoe",
+  "username": "kristin",
   "password": "password123",
-  "userGroups": ["exampleGroup"]
+  "userGroups": ["Lerkendal studentby rom 33"]
 }
 ```
 
@@ -42,7 +42,6 @@ Example for `kollapp/persistence/src/main/java/persistence/users/johnDoe.json`:
 
 Each user todo-list has its own JSON file that includes the following fields:
 
-- **index**: The unique identifier for the task.
 - **taskName**: The name of the task.
 - **dateTime**: The date and time for the task, specified in the format [YYYY, MM, DD]
 - **priority**: The priority level of the task.
@@ -54,14 +53,12 @@ Example for `kollapp/persistence/src/main/java/persistence/todolists/johnDoe.jso
 {
   "tasks": [
     {
-      "index": 0,
       "taskName": "Finish Data Structures and Algorithms Homework",
       "dateTime": [2024, 10, 10],
       "priority": "High Priority",
       "completed": false
     },
     {
-      "index": 1,
       "taskName": "Attend ITP Meeting",
       "dateTime": [2024, 10, 11],
       "priority": "Medium Priority",
@@ -111,9 +108,8 @@ Example for `kollapp/persistence/src/main/java/persistence/groups/lerkendalStude
 
 ## 📋 Group TodoList Data Format
 
-Each group todo-list has its own JSON file that includes the following fields:
+Each group-specific to-do list maintains its own JSON file, which includes the following fields, similar to how an individual user would add a task.
 
-- **index**: The unique identifier for the task.
 - **taskName**: The name of the task.
 - **dateTime**: The date and time for the task, specified in the format [YYYY, MM, DD].
 - **priority**: The priority level of the task.
@@ -125,21 +121,18 @@ Example for `kollapp/persistence/src/main/java/persistence/grouptodolists/bergSt
 {
   "tasks": [
     {
-      "index": 0,
       "taskName": "Weekly Cleaning",
       "dateTime": [2024, 10, 11],
       "priority": "High Priority",
       "completed": false
     },
     {
-      "index": 1,
       "taskName": "Grocery Shopping",
       "dateTime": [2024, 10, 12],
       "priority": "Medium Priority",
       "completed": false
     },
     {
-      "index": 3,
       "taskName": "Organize Movie Night",
       "dateTime": [2024, 10, 14],
       "priority": "Low Priority",
@@ -151,4 +144,4 @@ Example for `kollapp/persistence/src/main/java/persistence/grouptodolists/bergSt
 
 ---
 
-📖 Return to the **[Main README](../readme.md)** for additional information and project overview.
+📖 Return to the **[Main README](../../readme.md)** for additional information and project overview.

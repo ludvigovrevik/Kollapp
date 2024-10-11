@@ -109,6 +109,7 @@ In the next release, we plan to implement the following features:
 
 - 📖 **[Main README](../../readme.md)**: For an overview of the project, including system requirements and setup instructions.
 - 📖 **[Development Practices and Tools](development_practices_and_code_quality.md)**: For detailed information on our work habits, workflow, and code quality practices.
+- 📖 **[Project Architecture Diagrams](architecture_diagrams.md)**: For an overview showcasing different diagrams of the project's architecture.
 
 ---
 

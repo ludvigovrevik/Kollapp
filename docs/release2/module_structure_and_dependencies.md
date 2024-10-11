@@ -50,4 +50,4 @@ By following this architecture, **KollApp** ensures a maintainable, scalable, an
 
 ---
 
-📖 Return to the **[Main README](../README.md)** for additional information and project overview.
+📖 Return to the **[Main README](../../README.md)** for additional information and project overview.

@@ -1,0 +1,61 @@
+@startuml Core Class Diagram
+
+class User {
+    - String username
+    - String password
+    - List<String> userGroups
+    + getUsername(): String
+    + getPassword(): String
+    + getUserGroups(): List<String>
+    + addUserGroup(String): void
+}
+
+class ToDoList {
+    - List<Task> tasks
+    + addTask(Task): void
+    + getTasks(): List<Task>
+    + removeTask(Task): void
+}
+
+class Task {
+    - {static} long serialVersionUID
+    - String taskName
+    - boolean isCompleted
+    - LocalDate dateTime
+    - String description
+    - String priority
+    + {static} final List<String> PRIORITY_NAMES
+    + getTaskName(): String
+    + setTaskName(String): void
+    + setCompleted(boolean): void
+    + isCompleted(): boolean
+    + getDateTime(): LocalDate
+    + getDescription(): String
+    + setDescription(String): void
+    + getPriority(): String
+    + setPriority(String): void
+}
+
+class UserGroup {
+    - String groupName
+    - List<String> users
+    + getGroupName(): String
+    + setGroupName(String): void
+    + getUsers(): List<String>
+    + addUser(String): void
+    + removeUser(String): void
+    + containsUser(String): boolean
+}
+
+User "1" -- "1" ToDoList : has >
+UserGroup "1" -- "1" ToDoList : has >
+ToDoList "1" -- "0..*" Task : contains >
+User "1" -- "0..*" UserGroup : belongs to >
+UserGroup "1" -- "1..*" User : contains >
+
+note "ToDoList is associated with User and UserGroup\nthrough file system, not direct reference" as N1
+User .. N1
+UserGroup .. N1
+ToDoList .. N1
+
+@enduml

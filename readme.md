@@ -47,10 +47,9 @@ The **KollApp** project is organized into several modules, each with a specific 
   `gr2409/kollapp/persistence`  
   Manages the storage and retrieval of data.
 
-📖 For an in-depth look at the modules and their dependencies, visit **[Module Structure and Dependencies](docs/module_structure_and_dependencies.md)**
+📖 For an in-depth look at the modules and their dependencies, visit **[Module Structure and Dependencies](docs/release2/module_structure_and_dependencies.md)**
 
-📖 For an in-depth look at the project's architecture and its components, including a visual representation of module interactions, visit the **[Project Architecture Diagram]()**
-
+📖 For an in-depth look at the project's architecture and its components, including a visual representation of module interactions, visit the **[Project Architecture Diagram](/docs/release2/architecture_diagrams.md)**
 
 ---
 
@@ -71,7 +70,6 @@ The **KollApp** application relies on the following dependencies:
 - **JUnit 5** (version 5.10.0) for writing and running unit tests.
 - **Mockito** (version 5.0.0) for creating mock objects in tests.
 - **TestFX** (version 4.0.16-alpha) for testing JavaFX applications.
-- **Hamcrest** (version 2.2) for writing matcher objects for assertions.
 - **Jackson** (version 2.18.0-rc1) for JSON processing.
 - **Maven** (version 3.9.9) for project management and build automation.
 
@@ -121,3 +119,4 @@ Maintaining a high standard of code reliability and performance is essential to 
 
 - 📖 **[Release 2](/docs/release2/release2_updates.md)**: For detailed information on major updates.
 - 📖 **[Development Practices and Tools](/docs/release2/development_practices_and_code_quality.md)**: For detailed information on our work habits, workflow, and code quality practices.
+- 📖 **[Project Architecture Diagrams](docs/release2/architecture_diagrams.md)**: For an overview showcasing different diagrams of the project's architecture.
