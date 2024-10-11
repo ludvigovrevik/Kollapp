@@ -10,8 +10,11 @@ import java.time.LocalDate;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+@Tag("task") // Class level tag for Task tests
 class TaskTest {
 
     private Task task1;
@@ -28,6 +31,8 @@ class TaskTest {
     }
     
     @Test
+    @DisplayName("Test task initialization with default values")
+    @Tag("init")
     void testTaskInitialization() {
         assertNotNull(new Task(), "Task object should not be null");
         Assertions.assertEquals(TASK_NAME, task1.getTaskName(), "Description should match the input");
@@ -38,6 +43,8 @@ class TaskTest {
     }
 
     @Test
+    @DisplayName("Test task constructor with valid and invalid inputs")
+    @Tag("constructor")
     public void testTaskConstructor() {
         assertEquals(TASK_NAME, task2.getTaskName(), "Task name should be 'Buy groceries'");  // Check if taskName is trimmed
         assertEquals(DUE_DATE, task2.getDateTime(), "Due date should be Oct 7, 2024");
@@ -45,27 +52,34 @@ class TaskTest {
         assertEquals(PRIORITY, task2.getPriority(), "Priority should be 'High'");
         assertFalse(task2.isCompleted());  // Check if isCompleted is set to false by default
         
-        assertThrows(IllegalArgumentException.class, () -> new Task(""));  // Check if an exception is thrown when taskName is empty
-        assertThrows(IllegalArgumentException.class, () -> new Task(" ", DUE_DATE, DESCRIPTION, PRIORITY));  // Check if an exception is thrown when taskName is empty
+        assertThrows(IllegalArgumentException.class, () -> new Task(""), "Task name cannot be empty");
+        assertThrows(IllegalArgumentException.class, () -> new Task(" ", DUE_DATE, DESCRIPTION, PRIORITY), "Task name cannot be blank");
+        assertThrows(IllegalArgumentException.class, () -> new Task(TASK_NAME, DUE_DATE, DESCRIPTION, "Invalid Priority"), "Invalid priority should throw exception");
         
-        assertThrows(IllegalArgumentException.class, () -> new Task(TASK_NAME, DUE_DATE, DESCRIPTION, "Invalid Priority"));  // Check if an exception is thrown when priority is invalid
         Task task = new Task(TASK_NAME, DUE_DATE, DESCRIPTION, null);
-        assertNull(task.getPriority());  // Check if an exception is thrown when priority is null
+        assertNull(task.getPriority(), "Null priority should be allowed");
     }
 
     @Test
+    @DisplayName("Test getting task name")
+    @Tag("getter")
     void testGetTaskName() {
         Assertions.assertEquals(TASK_NAME, task1.getTaskName(), "Task name should match the input");
         Assertions.assertEquals(TASK_NAME, task2.getTaskName(), "Task name should match the input");   
     }
 
     @Test
+    @DisplayName("Test getting and setting task priority")
+    @Tag("getter")
+    @Tag("setter")
     void testGetPriority() {
         Assertions.assertNull(task1.getPriority(), "Priority should be null");
         Assertions.assertEquals(PRIORITY, task2.getPriority(), "Priority should match the input");
     }
 
     @Test
+    @DisplayName("Test setting task priority")
+    @Tag("setter")
     void testSetPriority() {
         Assertions.assertNull(task1.getPriority(), "Priority should be null");
         Assertions.assertEquals(PRIORITY, task2.getPriority(), "Priority should match the input");
@@ -75,6 +89,8 @@ class TaskTest {
     }
 
     @Test
+    @DisplayName("Test setting task name")
+    @Tag("setter")
     void testSetTaskName() {
         String newTaskName = "Buy groceries and cook dinner";
         this.task1.setTaskName(newTaskName);
@@ -82,6 +98,8 @@ class TaskTest {
     }
 
     @Test
+    @DisplayName("Test setting task description")
+    @Tag("setter")
     void testSetDescription() {
         String newDescription = "Updated Description";
         this.task1.setDescription(newDescription);
@@ -93,24 +111,32 @@ class TaskTest {
     }
 
     @Test
+    @DisplayName("Test getting task due date")
+    @Tag("getter")
     void testGetDateTime() {
         Assertions.assertNull(task1.getDateTime(), "Date should be null");
         Assertions.assertEquals(DUE_DATE, task2.getDateTime(), "Date should match the input");
     }
 
     @Test
+    @DisplayName("Test getting task description")
+    @Tag("getter")
     void testGetDescription() {
         Assertions.assertNull(task1.getDescription(), "Description should be null");
         Assertions.assertEquals(DESCRIPTION, task2.getDescription(), "Description should match the input");
     }
 
     @Test
+    @DisplayName("Test if task is completed")
+    @Tag("getter")
     void testIsCompleted() {
         Assertions.assertFalse(task1.isCompleted(), "Task should not be completed");
         Assertions.assertFalse(task2.isCompleted(), "Task should not be completed");
     }
 
     @Test
+    @DisplayName("Test setting task completion status")
+    @Tag("setter")
     void testSetCompleted() {
         task1.setCompleted(true);
         Assertions.assertTrue(task1.isCompleted(), "Task should be completed");
