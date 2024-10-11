@@ -3,9 +3,12 @@ package core;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Represents a to-do list that contains tasks.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ToDoList implements java.io.Serializable {
     private List<Task> tasks = new ArrayList<>();
 
