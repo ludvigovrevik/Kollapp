@@ -26,10 +26,18 @@ public class LoginController {
     @FXML
     private Label loginErrorMessage;
 
-    private UserHandler userHandler = new UserHandler();
+    private UserHandler userHandler;
 
+    // Setter for dependency injection
     public void setUserHandler(UserHandler userHandler) {
         this.userHandler = userHandler;
+    }
+
+    @FXML
+    public void initialize() {
+        if (userHandler == null) {
+            userHandler = new UserHandler();
+        }
     }
 
     @FXML

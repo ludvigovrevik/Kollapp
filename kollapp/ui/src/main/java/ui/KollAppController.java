@@ -57,7 +57,34 @@ public class KollAppController {
     @FXML 
     private Label personal;
 
-    @FXML
+
+    public void setToDoListHandler(ToDoListHandler toDoListHandler) {
+        this.toDoListHandler = toDoListHandler;
+    }
+
+    public void setGroupHandler(GroupHandler groupHandler) {
+        this.groupHandler = groupHandler;
+    }
+    // Add the following getter methods in KollAppController
+
+    public GridPane getTaskGridView() {
+        return taskGridView;
+    }
+
+    public VBox getVBoxContainer() {
+        return vBoxContainer;
+    }
+
+    public Label getCompletedLabel() {
+        return completedLabel;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+        personal.setOnMouseClicked(event -> handleGroupClick(event, this.user.getUsername()));
+    }
+
+    
     public void initialize() {
         // Set the label to act like a button
         completedLabel.setOnMouseClicked(this::handleLabelClick);
@@ -68,7 +95,6 @@ public class KollAppController {
         personal.setStyle("-fx-cursor: hand;");
         VBox.setVgrow(vBoxContainer, Priority.ALWAYS);
         groupInView = null;
-
     }
     
     public void populateGroupView() {
