@@ -6,7 +6,6 @@ Welcome to **KollApp**, a Java application developed as part of the course **IT1
 
 ## **🚀 Quick Start with Eclipse Che**
 
-
 [Click here to open this project in Eclipse Che](https://che.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2024/gr2409/gr2409/-/tree/master?ref_type=heads?new)
 
 ---
@@ -27,6 +26,8 @@ Welcome to **KollApp**, a Java application developed as part of the course **IT1
 - **🕒 Task Deadlines**: Add, modify, and manage task deadlines.
 - **🔐 Secure Login**: Ensure that only authorized users can access the application.
 - **👥 Group Management**: Create and search for groups to manage tasks and activities within specific sets of roommates.
+
+📖 **For a detailed description of user stories, visit [User Stories](docs/user_stories.md)**
 
 ---
 
@@ -115,3 +116,8 @@ Maintaining a high standard of code reliability and performance is essential to 
 📖 For a detailed guide on how to run tests and use tools like JaCoCo, SpotBugs and Checkstyle, see **[Testing and Code Quality](docs/testing_and_code_quality.md)**
 
 ---
+
+## 📚 Suggested Reading
+
+- 📖 **[Release 2](/docs/release2/release2_updates.md)**: For detailed information on major updates.
+- 📖 **[Development Practices and Tools](/docs/release2/development_practices_and_code_quality.md)**: For detailed information on our work habits, workflow, and code quality practices.

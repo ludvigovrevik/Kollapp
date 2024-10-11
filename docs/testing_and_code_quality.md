@@ -103,7 +103,7 @@ mvn javafx:run
 
 ---
 
-By following these steps, you can effectively manage testing and code quality for the **KollApp** project, ensuring a reliable and maintainable codebase throughout development. 
+By following these steps, you can effectively manage testing and code quality for the **KollApp** project, ensuring a reliable and maintainable codebase throughout development.
 
 ---
 

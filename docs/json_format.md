@@ -28,7 +28,6 @@ Each user has their own JSON file that includes the following fields:
 
 Example for `kollapp/persistence/src/main/java/persistence/users/johnDoe.json`:
 
-
 ```json
 {
   "username": "johnDoe",

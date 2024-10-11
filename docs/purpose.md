@@ -64,7 +64,9 @@ With **KollApp**, you can:
 
 ---
 
-## 📖 See more detailed examples of **[user stories](./brukerhistorier.md)**
+## 📚 Suggested Reading
+
+📖 See more detailed examples of **[User Stories](/docs/user_stories.md)**
 
 ---
 

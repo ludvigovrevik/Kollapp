@@ -17,7 +17,6 @@ In this release, we have made significant improvements and additions to the **Ko
 - This modularization enhances maintainability and scalability.
 - Relevant code paths: `kollapp/core/`, `kollapp/ui/`, `kollapp/persistence/`
 
-
 ### 📂 JSON Data Persistence
 
 - Switched from text file storage to JSON format for data persistence.

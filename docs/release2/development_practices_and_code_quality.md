@@ -38,7 +38,7 @@ In this project, we have made conscious choices to ensure an efficient workflow,
 
 - Even though we developed the tests later in the project, we focused heavily on thoroughly testing all critical functions. We implemented both unit tests and UI tests to ensure that the application behaved as expected in various scenarios. During this process, we faced challenges integrating these tests into our project, as we discovered that specific dependency and Java versions were required to run them successfully, leading to some delays. This experience taught us the importance of carefully managing dependency compatibility and environment configurations early in the development process.
 
-📖 For a quick overview of system requirements and dependencies, visit the **[Main README](../../readme.md)** 
+📖 For a quick overview of system requirements and dependencies, visit the **[Main README](../../readme.md)**
 
 ### Tools for Code Quality
 
