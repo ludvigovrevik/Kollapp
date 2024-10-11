@@ -1,8 +1,8 @@
 schemaVersion: 2.1.0
 metadata:
-  name: kollapp
+  name: gr2409
 components:
-  - name: kollapp
+  - name: gr2409
     container:
       image: adrianstoica/it1901:latest
       memoryLimit: 3Gi
@@ -31,10 +31,3 @@ components:
           name: 5500-tcp
           protocol: http
           targetPort: 5500
-commands:
-  - id: changedir
-    exec:
-      component: kollapp
-      commandLine: cd kollapp
-      label: change directory
-
