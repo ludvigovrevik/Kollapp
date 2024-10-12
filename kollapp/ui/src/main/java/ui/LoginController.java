@@ -31,7 +31,7 @@ public class LoginController {
 
     private UserHandler userHandler = new UserHandler();
 
-    /**
+     /**
      * Handles the action triggered by the login button.
      * <p>
      * This method retrieves the username and password from the respective input fields,
@@ -42,6 +42,13 @@ public class LoginController {
      *
      * @throws Exception if an error occurs during the login process.
      */
+    @FXML
+    public void initialize() {
+        if (userHandler == null) {
+            userHandler = new UserHandler();
+        }
+    }
+
     @FXML
     public void handleLoginButtonAction() throws Exception {
         String username = usernameField.getText();
@@ -59,7 +66,7 @@ public class LoginController {
             loginErrorMessage.setText("No such user exists.");
         }
     }
-    
+
     /**
      * Loads the Kollektiv scene and initializes the necessary controllers.
      *
@@ -85,13 +92,14 @@ public class LoginController {
             loginErrorMessage.setText("Failed to load the next scene.");
         }
     }
-   
+
     /**
      * Handles the action event triggered by the register button.
      * This method loads the RegisterScreen.fxml file and sets the scene to the new stage.
      *
      * @param event the action event triggered by the register button
      */
+
     @FXML
     public void handleRegisterButtonAction(ActionEvent event) {
         try {

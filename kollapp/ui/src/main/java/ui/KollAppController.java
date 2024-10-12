@@ -57,12 +57,35 @@ public class KollAppController {
     private ToDoListHandler toDoListHandler = new ToDoListHandler();
     private GroupHandler groupHandler = new GroupHandler();
 
+    public void setToDoListHandler(ToDoListHandler toDoListHandler) {
+        this.toDoListHandler = toDoListHandler;
+    }
 
-    /**
+    public void setGroupHandler(GroupHandler groupHandler) {
+        this.groupHandler = groupHandler;
+    }
+
+    public GridPane getTaskGridView() {
+        return taskGridView;
+    }
+
+    public VBox getVBoxContainer() {
+        return vBoxContainer;
+    }
+
+    public Label getCompletedLabel() {
+        return completedLabel;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+        personal.setOnMouseClicked(event -> handleGroupClick(event, this.user.getUsername()));
+    }
+
+     /**
      * Initializes the controller, setting event handlers for labels 
      * and preparing the interface for interaction.
      */
-    @FXML
     public void initialize() {
         // Set the label to act like a button
         completedLabel.setOnMouseClicked(this::handleLabelClick);
