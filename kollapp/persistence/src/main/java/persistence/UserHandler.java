@@ -90,7 +90,7 @@ public class UserHandler {
      * <p>
      * This method checks if the user exists and then attempts to delete the user's
      * corresponding JSON file from the file system. If the file cannot be deleted,
-     * a RuntimeException is thrown.
+     * a RuntimeException is thrown. (Will be used in the future to remove users from the system)
      * </p>
      *
      * @param username the username of the user to be removed

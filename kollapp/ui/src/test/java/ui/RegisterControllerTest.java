@@ -5,6 +5,8 @@ import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.testfx.api.FxRobot;
@@ -22,7 +24,11 @@ import persistence.UserHandler;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.framework.junit5.ApplicationExtension;
 
+/**
+ * Unit tests for the RegisterController class.
+ */
 @ExtendWith(ApplicationExtension.class)
+@Tag("ui")
 class RegisterControllerTest extends ApplicationTest {
 
     private TextField usernameField;
@@ -31,87 +37,100 @@ class RegisterControllerTest extends ApplicationTest {
     private Label errorMessage;
     private Button registerButton;
 
-    private UserHandler userHandlerMock;  // Instance of UserHandler to be mocked
-    private UserHandler userHandler = new UserHandler(); // Instance of UserHandler to be used for real
+    private UserHandler userHandlerMock;
+    private UserHandler userHandler = new UserHandler();
 
+    /**
+     * Sets up the test environment by loading the RegisterScreen.fxml and initializing the scene.
+     *
+     * @param stage the primary stage for JavaFX tests
+     * @throws Exception if FXML loading fails
+     */
     @Override
     public void start(Stage stage) throws Exception {
-        // Load the FXML and get the scene for the test
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/RegisterScreen.fxml"));
         Parent root = loader.load();
 
-        // Set the scene and show the stage
         stage.setScene(new Scene(root));
         stage.show();
     }
 
     @BeforeEach
     public void setUp() {
-        usernameField = lookup("#usernameField").query(); // ID in FXML
-        passwordField = lookup("#passwordField").query(); // ID in FXML
-        confirmPasswordField = lookup("#confirmPasswordField").query(); // ID in FXML
-        errorMessage = lookup("#errorMessage").query(); // ID in FXML
-        registerButton = lookup("#registerButton").query(); // ID in FXML
+        usernameField = lookup("#usernameField").query();
+        passwordField = lookup("#passwordField").query();
+        confirmPasswordField = lookup("#confirmPasswordField").query();
+        errorMessage = lookup("#errorMessage").query();
+        registerButton = lookup("#registerButton").query();
 
-        // Initialize the mock instance of UserHandler
         userHandlerMock = Mockito.mock(UserHandler.class);
-        
     }
 
+    /**
+     * Tests the successful registration of a user with valid input.
+     *
+     * @param robot the FxRobot instance for simulating user interactions
+     */
     @Test
+    @DisplayName("Test successful user registration")
+    @Tag("register")
     void testRegisterUser_Success(FxRobot robot) {
-        // Mock the behavior of userHandler methods to simulate a successful registration
         when(userHandlerMock.userExists("newUser")).thenReturn(false);
         when(userHandlerMock.confirmNewValidUser("newUser", "password", "password")).thenReturn(true);
 
-        // Simulate filling out the form
         robot.clickOn(usernameField).write("newUser");
         robot.clickOn(passwordField).write("password");
         robot.clickOn(confirmPasswordField).write("password");
 
-        // Simulate clicking the register button
         robot.clickOn(registerButton);
 
-        // Verify that no error message is set (i.e., user registration is successful)
         assertEquals("", errorMessage.getText());
-
     }
 
+    /**
+     * Tests user registration with mismatched passwords.
+     *
+     * @param robot the FxRobot instance for simulating user interactions
+     */
     @Test
+    @DisplayName("Test user registration with password mismatch")
+    @Tag("register")
     void testRegisterUser_PasswordMismatch(FxRobot robot) {
-        // Mock the behavior of userHandler to simulate a password mismatch
         when(userHandlerMock.userExists("testUser")).thenReturn(false);
         when(userHandlerMock.confirmNewValidUser("testUser", "password", "mismatch")).thenReturn(false);
         when(userHandlerMock.getUserValidationErrorMessage("testUser", "password", "mismatch")).thenReturn("Passwords do not match.");
 
-        // Simulate filling out the form with mismatching passwords
         robot.clickOn(usernameField).write("testUser");
         robot.clickOn(passwordField).write("password");
         robot.clickOn(confirmPasswordField).write("mismatch");
 
-        // Simulate clicking the register button
         robot.clickOn(registerButton);
 
-        // Verify that the error message is displayed
         assertEquals("Passwords do not match", errorMessage.getText());
     }
 
+    /**
+     * Tests navigation from the register screen to the login screen.
+     *
+     * @param robot the FxRobot instance for simulating user interactions
+     */
     @Test
+    @DisplayName("Test navigation to login screen")
+    @Tag("navigation")
     void testNavigateToLoginScreen(FxRobot robot) throws Exception {
-        // Click the register button
         robot.clickOn("#navigateToLoginScreenButton");
 
-        // Verify that the register screen is displayed
         Button loginButton = robot.lookup("#loginButton").queryAs(Button.class);
         assertEquals("Login", loginButton.getText());
     }
 
+    /**
+     * Cleans up by removing the test user after each test.
+     */
     @AfterEach
+    @DisplayName("Remove test user after each test")
     void removeUser() {
-        // Remove the user from the JSON file
         userHandler.removeUser("newUser");
-
-        // Also have to remove user's todo list file, but there is no method for that in UserHandler or ToDoListHandler yet.
+        // Remove user's todo list if required, not yet implemented in toDoListHandler.
     }
-
 }
