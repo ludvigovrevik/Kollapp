@@ -127,4 +127,15 @@ public class GroupHandler {
             throw new RuntimeException("Failed to update group file");
         }
     }
+
+    /**
+     * Checks if a group with the specified name exists.
+     *
+     * @param groupName the name of the group to check for existence
+     * @return true if the group exists, false otherwise
+     */
+    public boolean groupExists(String groupName) {
+        File file = new File(groupPath + groupName + ".json");
+        return file.exists();
+    }
 }

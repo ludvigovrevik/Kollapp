@@ -29,16 +29,7 @@ public class LoginController {
     @FXML
     private Label loginErrorMessage;
 
-    private UserHandler userHandler;
-
-     /**
-     * Sets the {@link UserHandler} to manage user data.
-     *
-     * @param userHandler the user handler to be used
-     */
-    public void setUserHandler(UserHandler userHandler) {
-        this.userHandler = userHandler;
-    }
+    private UserHandler userHandler = new UserHandler();
 
      /**
      * Handles the action triggered by the login button.
@@ -123,5 +114,14 @@ public class LoginController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Sets the {@link UserHandler} to manage user data. Primarily used for testing purposes.
+     *
+     * @param userHandler the user handler to be used
+     */
+    public void setUserHandler(UserHandler userHandler) {
+        this.userHandler = userHandler;
     }
 }

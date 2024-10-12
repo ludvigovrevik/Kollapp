@@ -4,18 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.lang.reflect.Field;
 import java.net.URL;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
@@ -31,7 +27,11 @@ import javafx.stage.Stage;
 import persistence.GroupHandler;
 import persistence.UserHandler;
 
+/**
+ * Unit tests for the RegisterGroupController class.
+ */
 @ExtendWith(ApplicationExtension.class)
+@Tag("ui")
 public class RegisterGroupControllerTest {
 
     private RegisterGroupController controller;
@@ -40,41 +40,40 @@ public class RegisterGroupControllerTest {
     private KollAppController mockKollAppController;
     private User mockUser;
 
+    /**
+     * Initializes the test environment by loading the RegisterGroup.fxml and setting up dependencies.
+     *
+     * @param stage the primary stage for JavaFX tests
+     * @throws Exception if FXML loading fails
+     */
     @Start
     public void start(Stage stage) throws Exception {
-        // Load the FXML file
         URL fxmlUrl = getClass().getResource("/ui/RegisterGroup.fxml");
         assertNotNull(fxmlUrl, "FXML file not found! Check the resource path.");
         FXMLLoader loader = new FXMLLoader(fxmlUrl);
         Parent root = loader.load();
 
-        // Get the controller instance from the loader
         controller = loader.getController();
 
-        // Mock dependencies
         mockGroupHandler = mock(GroupHandler.class);
         mockUserHandler = mock(UserHandler.class);
         mockKollAppController = mock(KollAppController.class);
         mockUser = mock(User.class);
 
-        // Inject mocks into the controller using reflection
         setPrivateField(controller, "groupHandler", mockGroupHandler);
         setPrivateField(controller, "userHandler", mockUserHandler);
         setPrivateField(controller, "kollAppController", mockKollAppController);
         setPrivateField(controller, "user", mockUser);
 
-        // Stub methods if necessary
         when(mockUser.getUsername()).thenReturn("testUser");
 
-        // Set the scene and show the stage
         stage.setScene(new Scene(root));
         stage.show();
     }
 
     @BeforeEach
     public void setUp(FxRobot robot) {
-        // Initialize any necessary state before each test
-        // For this controller, initialization is done in the start method
+        // Initialization before each test is handled in the start method
     }
 
     private void setPrivateField(Object target, String fieldName, Object value) throws Exception {
@@ -83,99 +82,99 @@ public class RegisterGroupControllerTest {
         field.set(target, value);
     }
 
+    /**
+     * Tests successful group creation when valid inputs are provided.
+     *
+     * @param robot the FxRobot instance for simulating user interactions
+     */
     @Test
+    @DisplayName("Test successful group creation")
+    @Tag("group")
     void testCreateGroup_Success(FxRobot robot) throws Exception {
-        // Arrange
         String groupName = "NewGroup";
 
-        // Mock behavior for groupHandler.createGroup and userHandler.updateUser
         doNothing().when(mockGroupHandler).createGroup(mockUser, groupName);
         doNothing().when(mockUserHandler).updateUser(mockUser);
 
-        // Act
         robot.clickOn("#groupNameField").write(groupName);
-        robot.clickOn("Create group"); // Assuming the button text is unique
+        robot.clickOn("Create group");
 
-        // Assert
-        // Verify that createGroup and updateUser were called
         verify(mockGroupHandler, times(1)).createGroup(mockUser, groupName);
         verify(mockUserHandler, times(1)).updateUser(mockUser);
-
-        // Verify that populateGroupView was called on kollAppController
         verify(mockKollAppController, times(1)).populateGroupView();
 
-        // Verify that the errorLabel shows success message
         Label errorLabel = robot.lookup("#errorLabel").queryAs(Label.class);
         assertNotNull(errorLabel, "Error label not found!");
         assertEquals("Made group succesfully", errorLabel.getText());
         assertEquals(javafx.scene.paint.Color.GREEN, errorLabel.getTextFill());
     }
 
+    /**
+     * Tests that the group creation fails if the group name is empty.
+     *
+     * @param robot the FxRobot instance for simulating user interactions
+     */
     @Test
+    @DisplayName("Test group creation with empty group name")
+    @Tag("group")
     void testCreateGroup_EmptyGroupName(FxRobot robot) throws Exception {
-        // Arrange
         String groupName = "";
 
-        // Act
         robot.clickOn("#groupNameField").write(groupName);
-        robot.clickOn("Create group"); // Assuming the button text is unique
+        robot.clickOn("Create group");
 
-        // Assert
-        // Verify that createGroup and updateUser were NOT called
         verify(mockGroupHandler, never()).createGroup(any(User.class), anyString());
         verify(mockUserHandler, never()).updateUser(any(User.class));
 
-        // Verify that the errorLabel shows error message
         Label errorLabel = robot.lookup("#errorLabel").queryAs(Label.class);
         assertNotNull(errorLabel, "Error label not found!");
         assertEquals("Group Name cannot be empty", errorLabel.getText());
     }
 
+    /**
+     * Tests that the group creation fails if the user is not logged in.
+     *
+     * @param robot the FxRobot instance for simulating user interactions
+     */
     @Test
+    @DisplayName("Test group creation without logged-in user")
+    @Tag("group")
     void testCreateGroup_UserNotLoggedIn(FxRobot robot) throws Exception {
-        // Arrange
         String groupName = "AnotherGroup";
 
-        // Inject null user
         setPrivateField(controller, "user", null);
 
-        // Act
         robot.clickOn("#groupNameField").write(groupName);
-        robot.clickOn("Create group"); // Assuming the button text is unique
+        robot.clickOn("Create group");
 
-        // Assert
-        // Verify that createGroup and updateUser were NOT called
         verify(mockGroupHandler, never()).createGroup(any(User.class), anyString());
         verify(mockUserHandler, never()).updateUser(any(User.class));
 
-        // Verify that the errorLabel shows error message
         Label errorLabel = robot.lookup("#errorLabel").queryAs(Label.class);
         assertNotNull(errorLabel, "Error label not found!");
         assertEquals("User not found. Please log in.", errorLabel.getText());
     }
 
+    /**
+     * Tests that an appropriate error message is shown when an exception is thrown during group creation.
+     *
+     * @param robot the FxRobot instance for simulating user interactions
+     */
     @Test
+    @DisplayName("Test group creation exception")
+    @Tag("group")
     void testCreateGroup_ExceptionDuringCreation(FxRobot robot) throws Exception {
-        // Arrange
         String groupName = "ExceptionGroup";
 
-        // Mock behavior to throw an exception when createGroup is called
         doThrow(new RuntimeException("Creation failed")).when(mockGroupHandler).createGroup(mockUser, groupName);
 
-        // Act
         robot.clickOn("#groupNameField").write(groupName);
-        robot.clickOn("Create group"); // Assuming the button text is unique
+        robot.clickOn("Create group");
 
-        // Assert
-        // Verify that createGroup was called
         verify(mockGroupHandler, times(1)).createGroup(mockUser, groupName);
-        // Verify that updateUser was NOT called due to exception
         verify(mockUserHandler, never()).updateUser(any(User.class));
-
-        // Verify that populateGroupView was NOT called due to exception
         verify(mockKollAppController, never()).populateGroupView();
 
-        // Verify that the errorLabel shows failure message
         Label errorLabel = robot.lookup("#errorLabel").queryAs(Label.class);
         assertNotNull(errorLabel, "Error label not found!");
         assertEquals("Failed to create group. Please try again.", errorLabel.getText());

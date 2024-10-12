@@ -1,5 +1,7 @@
 package ui;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -18,9 +20,13 @@ import javafx.stage.Stage;
 import persistence.GroupHandler;
 import persistence.ToDoListHandler;
 
-
+/**
+ * Unit tests for the KollAppController class.
+ */
 @ExtendWith(ApplicationExtension.class)
+@Tag("ui")
 public class KollAppControllerTest {
+
     @Mock
     private ToDoList mockToDoList;
 
@@ -33,11 +39,14 @@ public class KollAppControllerTest {
     @Mock
     private User mockUser;
 
-    private KollAppController controller;
-
+    /**
+     * Initializes the test environment by loading the Kollektiv.fxml and setting up the controller.
+     *
+     * @param stage the primary stage for JavaFX tests
+     * @throws Exception if FXML loading fails
+     */
     @Start
     private void start(Stage stage) throws Exception {
-        // Load Kollektiv.fxml
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Kollektiv.fxml"));
         Parent root = loader.load();
 
@@ -46,16 +55,22 @@ public class KollAppControllerTest {
         controller.innitializeToDoList(user); 
         controller.populateGroupView();
 
-        // Set the scene and show the stage
         stage.setScene(new Scene(root));
         stage.show();
     }
 
+    /**
+     * Verifies that the "+" button is present and has the correct text.
+     *
+     * @param robot the FxRobot instance for simulating user interactions
+     */
     @Test
+    @DisplayName("Test presence of '+' button in KollAppController UI")
+    @Tag("ui")
     public void shouldContainAddButton(FxRobot robot) {
         // Verify that the "+" button is present
-        robot.lookup("#addButton").queryAs(Button.class);
-        Assertions.assertThat(robot.lookup("#addButton").queryAs(Button.class)).isNotNull();
-        Assertions.assertThat(robot.lookup("#addButton").queryAs(Button.class)).hasText("+");
+        Button addButton = robot.lookup("#addButton").queryAs(Button.class);
+        Assertions.assertThat(addButton).isNotNull();
+        Assertions.assertThat(addButton).hasText("+");
     }
 }
