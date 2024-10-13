@@ -1,48 +1,59 @@
 # **🏠 KollApp: Manage Shared Living Efficiently 💻**
 
-Welcome to **KollApp**, a Java application developed as part of the course **Informatikk Prosjektarbeid I - IT1901**. This app is designed to help roomates efficiently manage and share household tasks in a shared living space. Let's make communal living stress-free!
+Welcome to **KollApp**, a Java application developed as part of the course **IT1901 - Informatikk Prosjektarbeid I**. This app is designed to help roomates efficiently manage and share household tasks in a shared living space. Let's make communal living stress-free!
 
 ---
 
-## **🚀 Get Started Quickly with Eclipse Che**
-
+## **🚀 Quick Start with Eclipse Che**
 
 [Click here to open this project in Eclipse Che](https://che.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2024/gr2409/gr2409?new)
 
 ---
 
-## **🎯 Purpose of KollApp**
+## **🎯 Purpose**
 
-This repository is for developing **KollApp**, a Java application created as part of the course **Informatikk Prosjektarbeid I - IT1901**.
+**KollApp** aims to help roommates coordinate and manage household tasks, such as cleaning, dishwashing, grocery shopping, and other shared responsibilities. It enhances communication and ensures that tasks are fairly distributed and completed on time.
 
-**KollApp** is designed to help roommates in a shared flat manage and share household tasks more efficiently. The application provides an overview of shared responsibilities such as house cleaning, unloading the dishwasher, grocery shopping, and other communal tasks. It aims to improve communication and coordination among flatmates, ensuring that chores are evenly distributed and completed on time.
-
-📖 **More details about the app's purpose can be found [here](docs/purpose.md).**
+📖 **For a detailed description of the purpose and intended functionality, visit [Purpose and Functionality](docs/purpose.md)**
 
 ---
 
-## **🗂️ Repository Structure**
+## **🔑 Key Feautures**
 
-Here's an overview of the project's structure:
+- **📋 Task Assignment**: Easily assign tasks to roomates.
+- **🛒 Shared Purchases**: Track shared expenses for household items.
+- **📅 Event Planning**: Plan group events and share them with your roomates.
+- **🕒 Task Deadlines**: Add, modify, and manage task deadlines.
+- **🔐 Secure Login**: Ensure that only authorized users can access the application.
+- **👥 Group Management**: Create and search for groups to manage tasks and activities within specific sets of roommates.
 
-- **Main Application Code 📂**
-  `gr2409/kollapp/src/main/java/app`  
-
-  Contains the Java files responsible for handling the application's logic and functionality.
-
-- **Resources 📂**
-  `gr2409/kollapp/src/main/resources/app`  
-
-  Contains resource files such as `.fxml` files for the user interface.
-
-- **Tests 🧪**
-  `gr2409/kollapp/src/test/java/app`  
-
-  Contains unit tests to ensure the app work as expected.
+📖 **For a detailed description of user stories, visit [User Stories](docs/user_stories.md)**
 
 ---
 
-## **⚙️ Requirements**
+## **🗂️ Project Architecture**
+
+The **KollApp** project is organized into several modules, each with a specific responsibility. Below is an overview of the project's structure:
+
+**1. Core Module 📂**
+  `gr2409/kollapp/core`  
+  Contains the core logic of the application.
+
+**2. UI Module 📂**
+  `gr2409/kollapp/ui`  
+  Contains the user interface components of the application.
+
+**3. Persistence Module 📂**
+  `gr2409/kollapp/persistence`  
+  Manages the storage and retrieval of data.
+
+📖 For an in-depth look at the modules and their dependencies, visit **[Module Structure and Dependencies](docs/release2/module_structure_and_dependencies.md)**
+
+📖 For an in-depth look at the project's architecture and its components, including a visual representation of module interactions, visit the **[Project Architecture Diagram](/docs/release2/architecture_diagrams.md)**
+
+---
+
+## **⚙️ System Requirements**
 
 To build and run **KollApp**, make sure you have the following installed:
 
@@ -53,48 +64,63 @@ To build and run **KollApp**, make sure you have the following installed:
 
 ## **📦 Dependencies**
 
-The **KollApp** application has the following dependencies:
+The **KollApp** application relies on the following dependencies:
 
 - **JavaFX** (version 17.0.12) for building the user interface.
 - **JUnit 5** (version 5.10.0) for writing and running unit tests.
-- **Maven** (version 2.2) for project management and build automation.
+- **Mockito** (version 5.0.0) for creating mock objects in tests.
+- **TestFX** (version 4.0.16-alpha) for testing JavaFX applications.
+- **Jackson** (version 2.18.0-rc1) for JSON processing.
+- **Maven** (version 3.9.9) for project management and build automation.
 
-These dependencies are specified in the [pom.xml](../kollapp/pom.xml) file. Ensure Maven is installed and properly configured to handle these dependencies.
+Ensure Maven is installed and properly configured to handle these dependencies.
+
+📖 Full dependency details are available in the **[pom.xml](kollapp/pom.xml)** file.
 
 ---
 
 ## **🚀 How to Run the Application**
 
-Follow these steps to build and run **KollApp**:
+To build and launch **KollApp**, follow these steps:
 
-**1. Build the Project 🛠️** 
-   Navigate to the `kollapp` directory and run the following Maven command to build the project:
+**1. Navigating to Project Directory 🛠️**
+   Before running the commands, navigate to the `kollapp` directory:
+
+   ```sh
+   cd kollapp
+   ```
+
+**2. Build the Project and Install Dependencies 📦**
+    To clean the project and install all required dependencies, run:
 
    ```sh
    mvn clean install
    ```
 
-**2. Run the Application ▶️**
-    After the build is complete, run the following command to launch the application:
+**3. Run the Application ▶️**
+    After the build is complete, launch `kollapp` with the following command:
 
    ```sh
+   cd ui
    mvn javafx:run
    ```
 
-**3. Run Unit Tests 🧪**
-    To run all the JUnit tests for the application, use the following command:
+---
 
-   ```sh
-   mvn test
-   ```
+## **🧪 Testing and Code Quality**
+
+Maintaining a high standard of code reliability and performance is essential to the  **KollApp** project. To achieve this, we utilize a range of comprehensive testing and code analysis tools that ensure the robustness of our codebase.
+
+📖 For a detailed guide on how to run tests and use tools like JaCoCo, SpotBugs and Checkstyle, see **[Testing and Code Quality](docs/release2/testing_and_code_quality.md)**
 
 ---
 
-## **🎯 Key Feautures of KollApp**
+## 📚 Suggested Reading
 
-- **📋 Task Assignment**: Easily assign tasks to roomates.
-- **🛒 Shared Purchases**: Track shared expenses for household items.
-- **📅 Event Planning**: Plan group events and share them with your roomates.
-- **🕒 Task Deadlines**: Add, modify, and manage task deadlines.
-
----
+- 📖 **[Release 2](/docs/release2/release2_updates.md)**: For detailed information on major updates.
+- 📖 **[Development Practices and Tools](/docs/release2/development_practices_and_code_quality.md)**: For detailed information on our work habits, workflow, and code quality practices.
+- 📖 **[Testing and Code Quality](docs/release2/testing_and_code_quality.md)**: For a detailed guide on how to run tests and use tools like JaCoCo, SpotBugs and Checkstyle.
+- 📖 **[Project Architecture Diagrams](docs/release2/architecture_diagrams.md)**: For an overview showcasing different diagrams of the project's architecture.
+- 📖 **[User Stories](/docs/user_stories.md)**: For an overview of user stories.
+- 📖 **[JSON Save Format](/docs/release2/json_format.md)**: For more details about our implementation of JSON.
+- 📖 **[AI declaration](/docs/release2/ai_declaration.md)**: For an overview about AI tools utilized in the project.
