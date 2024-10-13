@@ -109,10 +109,10 @@ In the next release, we plan to implement the following features:
 
 - 📖 **[Main README](../../readme.md)**: For an overview of the project, including system requirements and setup instructions.
 - 📖 **[Development Practices and Tools](development_practices_and_code_quality.md)**: For detailed information on our work habits, workflow, and code quality practices.
+- 📖 **[Testing and Code Quality](testing_and_code_quality.md)**: For a detailed guide on how to run tests and use tools like JaCoCo, SpotBugs and Checkstyle.
 - 📖 **[Project Architecture Diagrams](architecture_diagrams.md)**: For an overview showcasing different diagrams of the project's architecture.
 - 📖 **[User Stories](../user_stories.md)**: For an updated overview of user stories.
 - 📖 **[JSON Save Format](json_format.md)**: For more details about our implementation of JSON.
-- 📖 **[Testing and Code Quality](testing_and_code_quality.md)**: For a detailed guide on how to run tests and use tools like JaCoCo, SpotBugs and Checkstyle.
 - 📖 **[AI declaration](ai_declaration.md)**: For an overview about AI tools utilized in the project.
 
 ---
