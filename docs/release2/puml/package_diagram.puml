@@ -1,0 +1,48 @@
+@startuml KollApp Package Diagram
+
+package "core" {
+    [Jackson]
+    [JavaFX]
+    [JUnit]
+    [Mockito]
+}
+
+package "persistence" {
+    [Jackson]
+    [JavaFX]
+    [JUnit]
+    [Mockito]
+}
+
+package "ui" {
+    [JavaFX]
+    [JUnit]
+    [TestFX]
+    [Mockito]
+}
+
+ui --> core : depends on
+ui --> persistence : depends on
+persistence --> core : depends on
+
+note right of core
+    Requires:
+    - javafx.controls
+    - javafx.fxml
+    - com.fasterxml.jackson.*
+end note
+
+note right of persistence
+    Requires:
+    - core
+    - com.fasterxml.jackson.*
+end note
+
+note right of ui
+    Requires:
+    - core
+    - persistence
+    - javafx.*
+end note
+
+@enduml
