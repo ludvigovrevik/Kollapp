@@ -12,52 +12,69 @@ import core.User;
 import persistence.GroupHandler;
 import persistence.UserHandler;
 
+/**
+ * Controller class for adding a user to an existing group.
+ * This class manages the process of retrieving users and assigning them to
+ * selected groups in the application.
+ */
 public class AddUserToGroupController {
+
+    @FXML
+    private TextField username;
+
+    @FXML
+    private ListView<String> listViewOfGroups;
+
+    @FXML
+    private Label userNameErrorLabel;
+
     private User user;
     private List<String> groupNames = new ArrayList<>();
-    UserHandler userHandler = new UserHandler();
-    GroupHandler groupHandler = new GroupHandler();
+    private UserHandler userHandler = new UserHandler();
+    private GroupHandler groupHandler = new GroupHandler();
 
+    /**
+     * Initializes the controller with the provided user and their groups.
+     * Populates the ListView with the user's group names.
+     *
+     * @param user The current user whose groups are to be displayed.
+     */
     public void initializeAddToUserGroup(User user) {
         this.user = user;
         this.groupNames = this.user.getUserGroups();
-        for (String groupname : groupNames) {
-            listViewOfGroups.getItems().add(groupname);
+        for (String groupName : groupNames) {
+            listViewOfGroups.getItems().add(groupName);
         }
     }
 
-    @FXML
-    TextField username;
-
-    @FXML
-    ListView<String> listViewOfGroups;
-
-    @FXML
-    Label userNameErrorLabel;
-
+    /**
+     * Handles the action of adding a user to the selected group.
+     * Validates the username and group selection before proceeding with
+     * the group assignment. Displays relevant messages for success or failure.
+     */
     @FXML
     public void addUserToGroup() {
-    // Clear previous error messages
+        // Clear previous error messages
         userNameErrorLabel.setText("");
         try {
             // Validate that the username field is not empty
             String inputUsername = username.getText().trim();
             if (inputUsername.isEmpty()) {
                 userNameErrorLabel.setText("Username is empty");
-                return; // Exit the method early
+                return;
             }
 
             // Check if the user exists
             if (!userHandler.userExists(inputUsername)) {
                 userNameErrorLabel.setText("User does not exist");
-                return; // Exit the method early
+                return;
             }
 
             // Retrieve the user from the UserHandler
             Optional<User> newUserOptional = userHandler.getUser(inputUsername);
             if (!newUserOptional.isPresent()) {
                 userNameErrorLabel.setText("User retrieval failed");
-                return; // Exit the method early
+                return;
             }
 
             User newUser = newUserOptional.get();
@@ -66,10 +83,10 @@ public class AddUserToGroupController {
             String selectedGroupName = listViewOfGroups.getSelectionModel().getSelectedItem();
             if (selectedGroupName == null || selectedGroupName.isEmpty()) {
                 userNameErrorLabel.setText("No group selected");
-                return; // Exit the method early
+                return;
             }
 
-            // Assign the user to the selected group within a try-catch block
+            // Assign the user to the selected group
             try {
                 groupHandler.assignUserToGroup(newUser, selectedGroupName);
                 userNameErrorLabel.setText("User added to group successfully");
@@ -84,5 +101,5 @@ public class AddUserToGroupController {
             e.printStackTrace();
             userNameErrorLabel.setText("An unexpected error occurred");
         }
-    }  
+    }
 }

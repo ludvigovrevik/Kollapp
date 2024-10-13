@@ -15,6 +15,9 @@ import javafx.stage.Stage;
 import persistence.UserHandler;
 import core.User;
 
+/**
+ * Controller class for handling user login and navigation to other scenes.
+ */
 public class LoginController {
 
     @FXML
@@ -28,8 +31,22 @@ public class LoginController {
 
     private UserHandler userHandler = new UserHandler();
 
-    public void setUserHandler(UserHandler userHandler) {
-        this.userHandler = userHandler;
+     /**
+     * Handles the action triggered by the login button.
+     * <p>
+     * This method retrieves the username and password from the respective input fields,
+     * checks if the user exists, and attempts to load the user. If the user exists and
+     * the password is correct, it loads the main scene for the user. Otherwise, it displays
+     * an appropriate error message.
+     * </p>
+     *
+     * @throws Exception if an error occurs during the login process.
+     */
+    @FXML
+    public void initialize() {
+        if (userHandler == null) {
+            userHandler = new UserHandler();
+        }
     }
 
     @FXML
@@ -50,6 +67,12 @@ public class LoginController {
         }
     }
 
+    /**
+     * Loads the Kollektiv scene and initializes the necessary controllers.
+     *
+     * @param user The user object containing user-specific data.
+     * @throws IOException If the FXML file cannot be loaded.
+     */
     public void loadKollektivScene(User user) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Kollektiv.fxml"));
@@ -70,6 +93,13 @@ public class LoginController {
         }
     }
 
+    /**
+     * Handles the action event triggered by the register button.
+     * This method loads the RegisterScreen.fxml file and sets the scene to the new stage.
+     *
+     * @param event the action event triggered by the register button
+     */
+
     @FXML
     public void handleRegisterButtonAction(ActionEvent event) {
         try {
@@ -84,5 +114,14 @@ public class LoginController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Sets the {@link UserHandler} to manage user data. Primarily used for testing purposes.
+     *
+     * @param userHandler the user handler to be used
+     */
+    public void setUserHandler(UserHandler userHandler) {
+        this.userHandler = userHandler;
     }
 }

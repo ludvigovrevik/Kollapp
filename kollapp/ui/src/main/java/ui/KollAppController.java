@@ -38,15 +38,8 @@ public class KollAppController {
     @FXML
     private TextField taskInputField;
 
-    @FXML 
+    @FXML
     private DatePicker datePicker;
-
-    private ToDoList toDoList;
-    private User user;
-    private UserGroup groupInView;
-
-    private ToDoListHandler toDoListHandler = new ToDoListHandler();
-    private GroupHandler groupHandler = new GroupHandler();
 
     @FXML
     private VBox vBoxContainer;
@@ -54,10 +47,45 @@ public class KollAppController {
     @FXML
     private Label completedLabel;
 
-    @FXML 
-    private Label personal;
-
     @FXML
+    private Label personal;
+    
+    private ToDoList toDoList;
+    private User user;
+    private UserGroup groupInView;
+
+    private ToDoListHandler toDoListHandler = new ToDoListHandler();
+    private GroupHandler groupHandler = new GroupHandler();
+
+    public void setToDoListHandler(ToDoListHandler toDoListHandler) {
+        this.toDoListHandler = toDoListHandler;
+    }
+
+    public void setGroupHandler(GroupHandler groupHandler) {
+        this.groupHandler = groupHandler;
+    }
+
+    public GridPane getTaskGridView() {
+        return taskGridView;
+    }
+
+    public VBox getVBoxContainer() {
+        return vBoxContainer;
+    }
+
+    public Label getCompletedLabel() {
+        return completedLabel;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+        personal.setOnMouseClicked(event -> handleGroupClick(event, this.user.getUsername()));
+    }
+
+     /**
+     * Initializes the controller, setting event handlers for labels 
+     * and preparing the interface for interaction.
+     */
     public void initialize() {
         // Set the label to act like a button
         completedLabel.setOnMouseClicked(this::handleLabelClick);
@@ -68,9 +96,22 @@ public class KollAppController {
         personal.setStyle("-fx-cursor: hand;");
         VBox.setVgrow(vBoxContainer, Priority.ALWAYS);
         groupInView = null;
-
     }
-    
+
+    /**
+     * Initializes the to-do list for the given user and updates the grid view with tasks.
+     *
+     * @param user The user whose to-do list is to be displayed
+     */
+    public void innitializeToDoList(User user) {
+        this.toDoList = toDoListHandler.loadToDoList(user);
+        this.user = user;
+        updateGrid();
+    }
+
+    /**
+     * Populates the view with the user's group names, displaying them as clickable labels.
+     */
     public void populateGroupView() {
         vBoxContainer.getChildren().clear();
         List<String> groupNames = this.user.getUserGroups();
@@ -79,46 +120,60 @@ public class KollAppController {
         }
     }
 
+    /**
+     * Adds a label for a group, making it clickable and styled like a button.
+     *
+     * @param groupName the name of the group to add to the view
+     */
     private void addGroupLabel(String groupName) {
         Label groupLabel = new Label(groupName);
-        
+
         // Set style to make the label look like a button
         groupLabel.setStyle("-fx-cursor: hand; -fx-background-color: #7aadff; -fx-text-fill: white; -fx-padding: 10px; -fx-alignment: center;");
         groupLabel.setPrefHeight(50);
         groupLabel.setPrefWidth(200);
-        groupLabel.setAlignment(Pos.CENTER);  // Center the text
-        
+        groupLabel.setAlignment(Pos.CENTER); // Center the text
+
         // Set up the click event
         groupLabel.setOnMouseClicked(event -> handleGroupClick(event, groupName));
 
         // Add the clickable label to the VBox
         vBoxContainer.getChildren().add(groupLabel);
     }
+
     /**
- * Handles the click event for the dynamic group labels.
- * @param event The mouse click event
- * @param groupName The name of the group clicked
- */
+     * Handles the click event for the dynamic group labels.
+     * 
+     * @param event     The mouse click event
+     * @param groupName The name of the group clicked
+     */
     private void handleGroupClick(MouseEvent event, String groupName) {
         List<String> groupNames = this.user.getUserGroups();
         System.out.println("Clicked on group: " + groupName);
-        
-        // You can add logic here to perform an action based on the group clicked.
-        // For example, switch scenes or load group-specific data.
+
         if (groupName.equals(this.user.getUsername())) {
             changeCurrentTaskView(this.user.getUsername());
         } else if (groupNames.contains(groupName)) {
             System.out.println("Perform action for " + groupName);
             changeCurrentTaskView(groupName);
-        } 
+        }
         updateGrid();
     }
 
+    /**
+     * Gets the group currently being viewed in the application.
+     *
+     * @return the UserGroup currently being viewed
+     */
     public UserGroup getGroupInView() {
         return groupInView;
     }
-    
-    // Handle the click event on the label Completed
+
+    /**
+     * Handles the click event for toggling between completed and pending tasks.
+     *
+     * @param event The mouse event triggered by clicking the "Completed" label
+     */
     @FXML
     private void handleLabelClick(MouseEvent event) {
         if (completedLabel.getText().equals("Completed")) {
@@ -131,17 +186,21 @@ public class KollAppController {
             return;
         }
     }
-
+    
+    /**
+     * Updates the task grid view by clearing existing tasks and populating it with
+     * tasks from the to-do list that are not completed. Each task is displayed with
+     * its name, description, priority, and date (if available). A checkbox is added
+     * to each task, allowing the user to mark it as completed. When a task is marked
+     * as completed, the to-do list is updated accordingly, and the grid is refreshed.
+     */
     @FXML
     public void updateGrid() {
-        // Clear grid view before retrieving tasks
         taskGridView.getChildren().clear();
         List<Task> tasks = toDoList.getTasks();
-        
-        // Use a separate row counter
+
         int row = 0;
-        
-        // Iterate through all tasks
+
         for (int i = 0; i < tasks.size(); i++) {
             Task currentTask = tasks.get(i);
             if (currentTask.isCompleted()) {
@@ -151,9 +210,8 @@ public class KollAppController {
             String taskName = currentTask.getTaskName();
             String taskDescription = currentTask.getDescription();
             String priority = currentTask.getPriority();
-            
-            // check if date is empty
-            Label dateLabel = new Label(""); 
+
+            Label dateLabel = new Label("");
             if (currentTask.getDateTime() != null) {
                 LocalDate dateTime = currentTask.getDateTime();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
@@ -164,94 +222,95 @@ public class KollAppController {
             Label taskLabel = new Label(taskName);
             Label taskDescriptionLabel = new Label(taskDescription);
             Label priorityLabel = new Label(priority);
-            
+
             // Add event listener to the CheckBox
             checkBox.setOnAction(event -> {
                 if (checkBox.isSelected()) {
-                    currentTask.setCompleted(true); // Set the task as completed when checkbox is selected
+                    currentTask.setCompleted(true);
                     if (groupInView == null) {
                         toDoListHandler.updateToDoList(user, toDoList);
                     } else {
                         toDoListHandler.updateGroupToDoList(groupInView, toDoList);
                     }
-                    updateGrid();  // Refresh the grid
+                    updateGrid();
                 }
             });
 
-            // Add elements to the grid using the row counter
             taskGridView.add(checkBox, 0, row);
             taskGridView.add(taskLabel, 1, row);
             taskGridView.add(dateLabel, 2, row);
             taskGridView.add(taskDescriptionLabel, 3, row);
             taskGridView.add(priorityLabel, 4, row);
             GridPane.setVgrow(taskLabel, Priority.ALWAYS);
-            // Increment row counter for the next task
-            row++; 
+            row++;
         }
     }
 
+    /**
+     * Updates the grid view to display only the completed tasks.
+     * This method clears the current grid view and repopulates it with tasks
+     * that are marked as completed. Each task is displayed with a checkbox,
+     * task description, and date (if available). The checkbox allows for the
+     * removal of the task from the to-do list.
+     */
     @FXML
     public void updateGridViewCompletedTasks() {
-        // Clear grid view before retrieving tasks
-        if (taskGridView.getChildren().size() > 0 || taskGridView.getChildren() != null) {
-            taskGridView.getChildren().clear();
-        }
-
+        taskGridView.getChildren().clear();
         List<Task> tasks = toDoList.getTasks();
         int row = 0;
-        // Iterate through all tasks
-        for (int i = 0; i < tasks.size(); i++) {
-            Task currentTask = tasks.get(i);
-            String taskDescription = currentTask.getTaskName();
-            
-            // check if date is empty
-            Label dateLabel = new Label(""); 
-            if (currentTask.getDateTime() != null) {
-                LocalDate dateTime = currentTask.getDateTime();
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
-                dateLabel.setText(dateTime.format(formatter));
-            }
-            Label taskLabel = new Label(taskDescription);
-            
-            CheckBox checkBox = new CheckBox();
-            
-            // Add event listener to the CheckBox
-            checkBox.setOnAction(event -> {
-                if (checkBox.isSelected()) {
-                    // currentTask.setCompleted(true); // Set the task as completed when checkbox is selected
-                    toDoList.removeTask(currentTask); // Remove the task when checkbox is selected
+
+        for (Task currentTask : tasks) {
+            if (currentTask.isCompleted()) {
+                String taskDescription = currentTask.getTaskName();
+
+                Label dateLabel = new Label("");
+                if (currentTask.getDateTime() != null) {
+                    LocalDate dateTime = currentTask.getDateTime();
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
+                    dateLabel.setText(dateTime.format(formatter));
+                }
+
+                Label taskLabel = new Label(taskDescription);
+                CheckBox checkBox = new CheckBox();
+
+                // Add event listener to the CheckBox for task removal
+                checkBox.setOnAction(event -> {
+                    toDoList.removeTask(currentTask);
                     if (groupInView == null) {
                         toDoListHandler.updateToDoList(user, toDoList);
                     } else {
                         toDoListHandler.updateGroupToDoList(groupInView, toDoList);
                     }
-                    updateGrid();  // Refresh the grid
-                }
-            });
+                    updateGrid(); // Refresh the grid
+                });
 
-            // Only tasks that are completed are shown in the completed tasks view
-            if (currentTask.isCompleted()) {
-                // Add elements to the grid
                 taskGridView.add(checkBox, 0, row);
                 taskGridView.add(taskLabel, 1, row);
                 taskGridView.add(dateLabel, 2, row);
+                row++;
             }
-            row++; 
         }
     }
 
+    /**
+     * Changes the current task view to the user's personal tasks or a group's tasks.
+     *
+     * @param taskOwner The name of the user or group whose tasks to display
+     */
     public void changeCurrentTaskView(String taskOwner) {
         if (taskOwner.equals(this.user.getUsername())) {
             groupInView = null;
             this.toDoList = toDoListHandler.loadToDoList(this.user);
-            return;
+        } else {
+            UserGroup group = groupHandler.getGroup(taskOwner);
+            this.toDoList = toDoListHandler.loadGroupToDoList(group);
+            groupInView = group;
         }
-        // find the todolist of the group you switch to
-        UserGroup group = groupHandler.getGroup(taskOwner);
-        this.toDoList = toDoListHandler.loadGroupToDoList(group);
-        groupInView = group;
     }
-    
+
+    /**
+     * Opens the "Register Group" window, allowing the user to create a new group.
+     */
     @FXML
     public void openRegisterGroupWindow() {
         try {
@@ -260,73 +319,60 @@ public class KollAppController {
 
             RegisterGroupController controller = fxmlLoader.getController();
             controller.initialize(user, this);
-            // Create a new stage for the popup window
             Stage stage = new Stage();
             stage.setTitle("Register Group");
             stage.setScene(new Scene(root));
 
-            // Show the new window
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Opens the "Add User to Group" window, allowing the user to add other users to a group.
+     */
     @FXML
     public void openAddUserToGroupWindow() {
         try {
-            // Load the FXML file
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddUserToGroup.fxml"));
             Parent root = fxmlLoader.load();
 
-            // Initialize The addToUserGroup
             AddUserToGroupController controller = fxmlLoader.getController();
             controller.initializeAddToUserGroup(this.user);
 
-            // Create a new stage for the popup window
             Stage stage = new Stage();
             stage.setTitle("Add user to group");
             stage.setScene(new Scene(root));
 
-            // Show the new window
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void innitializeToDoList(User user) {
-        ToDoListHandler handler = new ToDoListHandler();
-        this.toDoList = handler.loadToDoList(user);
-        this.user = user;
-        updateGrid();
-    }
-
+    /**
+     * Opens the "Add New Task" dialog, allowing the user to create a new task.
+     */
     @FXML
     public void showDialog() {
         try {
-            // Load the FXML file
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddNewTask.fxml"));
             Parent root = fxmlLoader.load();
 
             AddNewTaskController addNewTaskController = fxmlLoader.getController();
             addNewTaskController.initializeTaskWindow(user, toDoList, this);
 
-            // Create a new stage for the dialog
             Stage stage = new Stage();
             stage.setTitle("Add New Task");
-
-            // Set the scene for the FXML dialog file
             stage.setScene(new Scene(root));
 
-            // Set the stage as modal, so it blocks user input to other windows
+            // Set the stage as modal, blocking user input to other windows
             stage.initModality(Modality.APPLICATION_MODAL);
-
             stage.showAndWait();
- 
+
         } catch (IOException e) {
             e.printStackTrace();
-        }        
+        }
     }
 }
-
