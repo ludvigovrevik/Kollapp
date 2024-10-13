@@ -8,7 +8,7 @@
 
 **KollApp** simplifies shared living by managing tasks and events. It serves as a centralized platform that streamlines the management of shared living responsibilities. By combining task management, purchase tracking, and social planning features, the app enhances the overall living experience for roommates by promoting fairness, reducing misunderstandings, and fostering a sense of community.
 
-<img src="./img/illustration.png" alt="KollApp Screenshot" style="width: 500px; height=400px;">
+<img src="./img/illustration.png" alt="KollApp Screenshot" style="width: 700px; height=auto;">
 
 With **KollApp**, you can:
 
