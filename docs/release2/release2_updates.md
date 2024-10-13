@@ -21,7 +21,7 @@ In this release, we have made significant improvements and additions to the **Ko
 
 - Switched from text file storage to JSON format for data persistence.
 - Utilized the Jackson library for efficient JSON processing.
-- 📖 For more details about our implementation of JSON, visit **[JSON Save Format](../json_format.md)**
+- 📖 For more details about our implementation of JSON, visit **[JSON Save Format](json_format.md)**
 
 ### ✅ Task Management
 
@@ -70,7 +70,7 @@ In this release, we have made significant improvements and additions to the **Ko
 - Implemented Checkstyle for code style and formatting checks.
 - Ensured consistent coding standards across the project.
 
-📖 For more related information, visit **[Module Structure and Dependencies](../module_structure_and_dependencies.md)** documentation.
+📖 For more related information, visit **[Module Structure and Dependencies](module_structure_and_dependencies.md)** documentation.
 
 ---
 
@@ -78,7 +78,7 @@ In this release, we have made significant improvements and additions to the **Ko
 
 - Implemented unit and UI tests for all major functionalities.
 
-📖 For more details about getting started with testing and its respective tools, see **[Testing and Code Quality](../testing_and_code_quality.md)** documentation.
+📖 For more details about getting started with testing and its respective tools, see **[Testing and Code Quality](testing_and_code_quality.md)** documentation.
 
 ---
 
@@ -110,6 +110,10 @@ In the next release, we plan to implement the following features:
 - 📖 **[Main README](../../readme.md)**: For an overview of the project, including system requirements and setup instructions.
 - 📖 **[Development Practices and Tools](development_practices_and_code_quality.md)**: For detailed information on our work habits, workflow, and code quality practices.
 - 📖 **[Project Architecture Diagrams](architecture_diagrams.md)**: For an overview showcasing different diagrams of the project's architecture.
+- 📖 **[User Stories](../user_stories.md)**: For an updated overview of user stories.
+- 📖 **[JSON Save Format](json_format.md)**: For more details about our implementation of JSON.
+- 📖 **[Testing and Code Quality](testing_and_code_quality.md)**: For a detailed guide on how to run tests and use tools like JaCoCo, SpotBugs and Checkstyle.
+- 📖 **[AI declaration](ai_declaration.md)**: For an overview about AI tools utilized in the project.
 
 ---
 

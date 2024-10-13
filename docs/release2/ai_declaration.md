@@ -1,8 +1,10 @@
-# AI Tools Utilized in Group Assignment 2
+# 🤖 AI Tools Utilized in Group Assignment 2
 
 ## Introduction
 
 In developing our Java Maven project for Group Assignment 2, our team used artificial intelligence (AI) tools to increase productivity, improve code quality, and facilitate learning. This declaration provides an overview of the AI tools employed—**ChatGPT** and **GitHub Copilot**—including their roles, usage, and the ethical considerations surrounding their integration into our workflow as a step make sure that the group has adhered to academic policies of the course IT1901 relating to the use of AI-tools.
+
+---
 
 ## AI Tools Employed
 
@@ -15,7 +17,7 @@ ChatGPT is an advanced language model developed by OpenAI. It is designed to gen
 **Version and Access:**
 
 - **Version:** GPT-4o, GPT-o1-preview
-- **Access Method:** OpenAI's platform, chaGPT desktop application
+- **Access Method:** OpenAI's platform, Chat-GPT desktop application
 
 **Usage in the Project:**
 
@@ -64,6 +66,8 @@ GitHub Copilot is an AI-powered code assistant developed by GitHub in collaborat
 - **Code Quality Improvement:**
   - **Best Practices:** Suggested coding patterns and practices that improved the overall quality and readability of the code.
   - **Learning Aid:** Served as a learning tool by exposing team members to new functions and libraries relevant to the project.
+
+---
   
 ## Limitations and Challenges
 
@@ -74,8 +78,14 @@ GitHub Copilot is an AI-powered code assistant developed by GitHub in collaborat
   - **Content Verification:** All code suggestions from ChatGPT and GitHub Copilot were reviewed for accuracy and adjusted as necessary to fit the project's requirements.
   - **Avoiding Over-Reliance:** Ensured that AI's suggestions did not replace our own problem-solving efforts and understanding.
 
+---
+
 ## Conclusion
 
 The integration of ChatGPT and GitHub Copilot into our project workflow significantly contributed to the efficiency, quality, and educational value of Group Assignment 2. These AI tools served as assistants in refining documentation, generating and refactoring code, and enhancing our understanding of new technologies.
 
 By responsibly managing the use of AI tools and adhering to ethical standards, we ensured that our work remained authentic and that our learning objectives were met. This declaration serves as a transparent account of how AI tools were utilized in Group Assignment 2.
+
+---
+
+📖 Return to the **[Main README](../../readme.md)** for additional information and project overview.

@@ -111,7 +111,7 @@ To build and launch **KollApp**, follow these steps:
 
 Maintaining a high standard of code reliability and performance is essential to the  **KollApp** project. To achieve this, we utilize a range of comprehensive testing and code analysis tools that ensure the robustness of our codebase.
 
-📖 For a detailed guide on how to run tests and use tools like JaCoCo, SpotBugs and Checkstyle, see **[Testing and Code Quality](docs/testing_and_code_quality.md)**
+📖 For a detailed guide on how to run tests and use tools like JaCoCo, SpotBugs and Checkstyle, see **[Testing and Code Quality](docs/release2/testing_and_code_quality.md)**
 
 ---
 
@@ -120,3 +120,7 @@ Maintaining a high standard of code reliability and performance is essential to 
 - 📖 **[Release 2](/docs/release2/release2_updates.md)**: For detailed information on major updates.
 - 📖 **[Development Practices and Tools](/docs/release2/development_practices_and_code_quality.md)**: For detailed information on our work habits, workflow, and code quality practices.
 - 📖 **[Project Architecture Diagrams](docs/release2/architecture_diagrams.md)**: For an overview showcasing different diagrams of the project's architecture.
+- 📖 **[User Stories](/docs/user_stories.md)**: For an overview of user stories.
+- 📖 **[JSON Save Format](/docs/release2/json_format.md)**: For more details about our implementation of JSON.
+- 📖 **[Testing and Code Quality](docs/release2/testing_and_code_quality.md)**: For a detailed guide on how to run tests and use tools like JaCoCo, SpotBugs and Checkstyle.
+- 📖 **[AI declaration](/docs/release2/ai_declaration.md)**: For an overview about AI tools utilized in the project.

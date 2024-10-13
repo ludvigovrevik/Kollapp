@@ -8,7 +8,7 @@ In this project, we have made conscious choices to ensure an efficient workflow,
 
 ### Pair Programming and Independent Work
 
-- We combined pair programming with independent work to balance collaboration and individual productivity. Our team held regular meetings three times a week, both online and in-person, to discuss progress, address any challenges, and review code updates. These meetings helped us stay on the same page and keep the project moving forward. Pair programming was particularly beneficial for solving difficult issues and identifying bugs early in the development process.
+- We combined pair programming with independent work to balance collaboration and individual productivity. Our team held organized work into sprints and held regular meetings three times a week, both online and in-person, to discuss progress, address any challenges, and review code updates. These meetings, held between sprints, kept the project moving forward and ensured continuous alignment. Pair programming was particularly beneficial for solving difficult issues and identifying bugs early in the development process, while independent work allowed us to make steady individual contributions.
 
 ### Team Roles and Coordination
 
