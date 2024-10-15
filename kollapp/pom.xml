@@ -19,7 +19,25 @@
         <junit.version>5.10.0</junit.version>
         <testfx.version>4.0.16-alpha</testfx.version>
         <hamcrest.version>2.2</hamcrest.version>
+
+        <uiTestExcludePattern></uiTestExcludePattern>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>skip-ui-tests</id>
+            <activation>
+                <property>
+                    <name>skipUITests</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <properties>
+                <!-- Pattern to exclude UI tests -->
+                <uiTestExcludePattern>**/ui/**/*Test.java</uiTestExcludePattern>
+            </properties>
+        </profile>
+    </profiles>
 
     <!-- Centralized dependency management -->
     <dependencyManagement>
