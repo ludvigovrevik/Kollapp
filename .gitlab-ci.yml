@@ -17,4 +17,4 @@ maven-test:
   script:
     - echo "Running tests..."
     - cd kollapp
-    - mvn test -DskipUITests
+    - mvn test -DskipUITests=true
