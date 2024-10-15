@@ -1,0 +1,20 @@
+image: maven:3.9.9-openjdk-17
+
+stages:
+  - build
+  - test
+
+maven-build:
+  stage: build
+  script:
+    - echo "Building the project..."
+    - cd kollapp
+    - mvn clean install -DskipTests -DskipUITests
+    - mvn compile
+
+maven-test:
+  stage: test
+  script:
+    - echo "Running tests..."
+    - cd kollapp
+    - mvn test -DskipUITests
