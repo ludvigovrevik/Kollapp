@@ -20,86 +20,140 @@ import persistence.UserHandler;
 public class AddUserToGroupController {
 
     @FXML
-    private TextField username;
+    private TextField usernameField;
 
     @FXML
-    private ListView<String> listViewOfGroups;
+    private ListView<String> groupsListView;
 
     @FXML
-    private Label userNameErrorLabel;
+    private Label feedbackLabel;
 
     private User user;
-    private List<String> groupNames = new ArrayList<>();
-    private UserHandler userHandler = new UserHandler();
-    private GroupHandler groupHandler = new GroupHandler();
+    
+    private final UserHandler userHandler;
+    private final GroupHandler groupHandler;
+
+    // Constants for Feedback Messages
+    private static final String USERNAME_EMPTY_MSG = "Username is empty.";
+    private static final String USER_NOT_EXIST_MSG = "User does not exist.";
+    private static final String USER_RETRIEVAL_FAILED_MSG = "User retrieval failed.";
+    private static final String NO_GROUP_SELECTED_MSG = "No group selected.";
+    private static final String ADD_USER_SUCCESS_MSG = "User added to group successfully.";
+    private static final String ADD_USER_FAILURE_MSG = "Failed to add user to group.";
+
+
+    // Constructor with Dependency Injection for Testability
+    public AddUserToGroupController() {
+        this.userHandler = new UserHandler();
+        this.groupHandler = new GroupHandler();
+    }
 
     /**
-     * Initializes the controller with the provided user and their groups.
-     * Populates the ListView with the user's group names.
+     * Constructs a new AddUserToGroupController with the specified user and group handlers.
+     *
+     * @param userHandler the user handler
+     * @param groupHandler the group handler
+     */
+    public AddUserToGroupController(UserHandler userHandler, GroupHandler groupHandler) {
+        this.userHandler = userHandler;
+        this.groupHandler = groupHandler;
+    }
+
+    /**
+     * Initializes the controller with the provided user and populates the groups list.
      *
      * @param user The current user whose groups are to be displayed.
      */
     public void initializeAddToUserGroup(User user) {
         this.user = user;
-        this.groupNames = this.user.getUserGroups();
-        for (String groupName : groupNames) {
-            listViewOfGroups.getItems().add(groupName);
-        }
+        populateGroupsList(user.getUserGroups());
+    }
+
+    /**
+     * Populates the ListView with the user's group names.
+     *
+     * @param groups List of group names.
+     */
+    private void populateGroupsList(List<String> groups) {
+        groupsListView.getItems().setAll(groups);
     }
 
     /**
      * Handles the action of adding a user to the selected group.
-     * Validates the username and group selection before proceeding with
-     * the group assignment. Displays relevant messages for success or failure.
+     * Validates the input and performs the group assignment.
      */
     @FXML
-    public void addUserToGroup() {
-        // Clear previous error messages
-        userNameErrorLabel.setText("");
-        try {
-            // Validate that the username field is not empty
-            String inputUsername = username.getText().trim();
-            if (inputUsername.isEmpty()) {
-                userNameErrorLabel.setText("Username is empty");
-                return;
-            }
+    private void handleAddUserToGroup() {
+        clearFeedback();
 
-            // Check if the user exists
-            if (!userHandler.userExists(inputUsername)) {
-                userNameErrorLabel.setText("User does not exist");
-                return;
-            }
+        String usernameInput = usernameField.getText().trim();
 
-            // Retrieve the user from the UserHandler
-            Optional<User> newUserOptional = userHandler.getUser(inputUsername);
-            if (!newUserOptional.isPresent()) {
-                userNameErrorLabel.setText("User retrieval failed");
-                return;
-            }
-
-            User newUser = newUserOptional.get();
-
-            // Validate that a group is selected
-            String selectedGroupName = listViewOfGroups.getSelectionModel().getSelectedItem();
-            if (selectedGroupName == null || selectedGroupName.isEmpty()) {
-                userNameErrorLabel.setText("No group selected");
-                return;
-            }
-
-            // Assign the user to the selected group
-            try {
-                groupHandler.assignUserToGroup(newUser, selectedGroupName);
-                userNameErrorLabel.setText("User added to group successfully");
-                userNameErrorLabel.setTextFill(Color.GREEN);
-            } catch (Exception e) {
-                e.printStackTrace();
-                userNameErrorLabel.setText("Failed to add user to group");
-            }
-
-        } catch (Exception e) {
-            // Handle any unforeseen exceptions
-            e.printStackTrace();
-            userNameErrorLabel.setText("An unexpected error occurred");
+        // Validate Username
+        String validationError = validateUsername(usernameInput);
+        if (validationError != null) {
+            displayFeedback(validationError, Color.RED);
+            return;
         }
+
+        // Retrieve User
+        Optional<User> optionalUser = userHandler.getUser(usernameInput);
+        if (!optionalUser.isPresent()) {
+            displayFeedback(USER_RETRIEVAL_FAILED_MSG, Color.RED);
+            return;
+        }
+
+        User userToAdd = optionalUser.get();
+
+        // Validate Group Selection
+        String selectedGroup = groupsListView.getSelectionModel().getSelectedItem();
+        if (selectedGroup == null || selectedGroup.isEmpty()) {
+            displayFeedback(NO_GROUP_SELECTED_MSG, Color.RED);
+            return;
+        }
+
+        // Assign User to Group
+        try {
+            groupHandler.assignUserToGroup(userToAdd, selectedGroup);
+            displayFeedback(ADD_USER_SUCCESS_MSG, Color.GREEN);
+        } catch (Exception e) {
+            e.printStackTrace();
+            displayFeedback(ADD_USER_FAILURE_MSG, Color.RED);
+        }
+    }
+
+    /**
+     * Validates the input username.
+     *
+     * @param username The username input.
+     * @return An error message if validation fails; otherwise, null.
+     */
+    private String validateUsername(String username) {
+        if (username.isEmpty()) {
+            return USERNAME_EMPTY_MSG;
+        }
+
+        if (!userHandler.userExists(username)) {
+            return USER_NOT_EXIST_MSG;
+        }
+
+        return null;
+    }
+
+    /**
+     * Clears any existing feedback messages.
+     */
+    private void clearFeedback() {
+        feedbackLabel.setText("");
+    }
+
+    /**
+     * Displays a feedback message with the specified color.
+     *
+     * @param message The message to display.
+     * @param color   The color of the text.
+     */
+    private void displayFeedback(String message, Color color) {
+        feedbackLabel.setText(message);
+        feedbackLabel.setTextFill(color);
     }
 }
