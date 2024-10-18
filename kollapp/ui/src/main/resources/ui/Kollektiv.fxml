@@ -14,10 +14,11 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.KollAppController">
    <children>
        
-      <Button fx:id="addButton" layoutX="639.0" layoutY="409.0" mnemonicParsing="false" onAction="#showDialog" prefHeight="78.0" prefWidth="81.0" style="-fx-background-color: #9df084; -fx-background-radius: 50%;" text="+" textFill="#096800">
+            <Button fx:id="addButton" layoutX="638.0" layoutY="417.0" mnemonicParsing="false" onAction="#showDialog" prefHeight="78.0" prefWidth="81.0" style="-fx-background-color: #9df084; -fx-background-radius: 50%;" text="+" textFill="#096800">
          <font>
             <Font size="36.0" />
-         </font></Button>
+         </font>
+      </Button>
       <ScrollPane hbarPolicy="NEVER" hmax="10.0" layoutX="220.0" layoutY="81.0" prefHeight="302.0" prefWidth="520.0">
         <content>
           <AnchorPane>
@@ -60,8 +61,8 @@
       </Label>
       <Pane layoutX="-3.0" layoutY="-2.0" prefHeight="529.0" prefWidth="204.0" style="-fx-background-color: #e8e8e8;">
          <children>
-            <Button fx:id="createGroupButton" layoutX="45.0" layoutY="469.0" mnemonicParsing="false" onAction="#openRegisterGroupWindow" text="Create Group" />
-            <Button fx:id="addUserToGroupButton" layoutX="46.0" layoutY="434.0" mnemonicParsing="false" onAction="#openAddUserToGroupWindow" text="Add user to group" />
+            <Button fx:id="createGroupButton" layoutX="14.0" layoutY="439.0" mnemonicParsing="false" onAction="#openRegisterGroupWindow" prefHeight="25.0" prefWidth="113.0" text="Create Group" />
+            <Button fx:id="addUserToGroupButton" layoutX="14.0" layoutY="406.0" mnemonicParsing="false" onAction="#openAddUserToGroupWindow" text="Add user to group" />
             <ScrollPane layoutX="4.0" layoutY="175.0" prefHeight="172.0" prefWidth="200.0">
                <content>
                   <VBox fx:id="vBoxContainer" prefHeight="170.0" prefWidth="198.0">
@@ -80,6 +81,7 @@
                   <Font name="Microsoft Sans Serif" size="21.0" />
                </font>
             </Label>
+            <Button onAction="#logOut" layoutX="14.0" layoutY="488.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="63.0" text="Log out" />
          </children>
       </Pane>
       <Label layoutX="499.0" layoutY="42.0" text="Description">

@@ -246,6 +246,24 @@ public class KollAppController {
         }
     }
 
+    @FXML
+    public void logOut() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LoginScreen.fxml"));
+            Parent root = fxmlLoader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Login");
+            stage.setScene(new Scene(root));
+
+            stage.show();
+            Stage currentStage = (Stage) taskGridView.getScene().getWindow();
+            currentStage.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Updates the grid view to display only the completed tasks.
      * This method clears the current grid view and repopulates it with tasks
