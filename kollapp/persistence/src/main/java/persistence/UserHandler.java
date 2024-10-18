@@ -203,7 +203,6 @@ public class UserHandler {
         try {
             mapper.writeValue(file, user);
         } catch (IOException e) {
-            e.printStackTrace();
             throw new RuntimeException("Failed to update user file for user: " + user.getUsername());
         }
     }
