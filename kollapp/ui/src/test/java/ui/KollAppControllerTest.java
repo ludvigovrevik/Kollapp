@@ -27,18 +27,6 @@ import persistence.ToDoListHandler;
 @Tag("ui")
 public class KollAppControllerTest {
 
-    @Mock
-    private ToDoList mockToDoList;
-
-    @Mock
-    private ToDoListHandler mockToDoListHandler;
-
-    @Mock
-    private GroupHandler mockGroupHandler;
-
-    @Mock
-    private User mockUser;
-
     /**
      * Initializes the test environment by loading the Kollektiv.fxml and setting up the controller.
      *
@@ -52,7 +40,7 @@ public class KollAppControllerTest {
 
         KollAppController controller = loader.getController();
         User user = new User("KollAppControllerUserTest", "passwordd");
-        controller.innitializeToDoList(user); 
+        controller.initializeToDoList(user);
         controller.populateGroupView();
 
         stage.setScene(new Scene(root));

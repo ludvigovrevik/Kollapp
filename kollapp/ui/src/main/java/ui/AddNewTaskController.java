@@ -1,8 +1,5 @@
 package ui;
 
-import java.io.IOException;
-import java.time.LocalDate;
-
 import core.Task;
 import core.ToDoList;
 import core.User;
@@ -10,14 +7,11 @@ import core.UserGroup;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import persistence.ToDoListHandler;
+
+import java.time.LocalDate;
 
 /**
  * Controller class for managing the addition of new tasks to a to-do list.
@@ -30,16 +24,13 @@ public class AddNewTaskController {
     private ComboBox<String> priorityField;
 
     @FXML
+    public Label errorLabel;
+
+    @FXML
     private TextField taskNameField;
 
     @FXML
     private DatePicker datePicker;
-
-    @FXML
-    private GridPane taskGridView;
-
-    @FXML
-    private Button handleAddTask;
 
     @FXML
     private TextArea taskDescriptionField;
@@ -74,21 +65,19 @@ public class AddNewTaskController {
      * After updating, the view is refreshed, and the window is closed.
      *
      * @param event The event triggered by clicking the "Add Task" button.
-     * @throws IOException if an error occurs while updating the to-do list.
      */
     @FXML
-    public void handleAddTask(ActionEvent event) throws IOException {
+    public void handleAddTask(ActionEvent event) {
         if (!taskNameField.getText().isEmpty()) {
             String taskName = taskNameField.getText();
             LocalDate dateTime = datePicker.getValue();
             String description = taskDescriptionField.getText();
             String priority = priorityField.getValue();
-            
-            Task newTask = new Task(taskName, dateTime, description, priority);
 
+            Task newTask = new Task(taskName, dateTime, description, priority);
             toDoList.addTask(newTask);
-            
-            UserGroup groupInView = kollAppController.getGroupInView(); 
+
+            UserGroup groupInView = kollAppController.getGroupInView();
             if (groupInView != null) {
                 // Add task to the group's to-do list
                 toDoListHandler.updateGroupToDoList(groupInView, toDoList);
@@ -103,8 +92,10 @@ public class AddNewTaskController {
             // Close the current window
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.close();
+        } else {
+            errorLabel.setText("Task cannot be null.");
         }
-    } 
+    }
 }
 
     

@@ -31,26 +31,15 @@ public class LoginController {
 
     private UserHandler userHandler = new UserHandler();
 
-     /**
-     * Handles the action triggered by the login button.
-     * <p>
-     * This method retrieves the username and password from the respective input fields,
-     * checks if the user exists, and attempts to load the user. If the user exists and
-     * the password is correct, it loads the main scene for the user. Otherwise, it displays
-     * an appropriate error message.
-     * </p>
-     *
-     * @throws Exception if an error occurs during the login process.
+    /**
+     * Handles the action event triggered by the login button.
+     * Retrieves the username and password from the respective input fields,
+     * checks if the user exists, and attempts to load the user.
+     * If the user exists and the password is correct, it loads the Kollektiv scene.
+     * Otherwise, it displays an appropriate error message.
      */
     @FXML
-    public void initialize() {
-        if (userHandler == null) {
-            userHandler = new UserHandler();
-        }
-    }
-
-    @FXML
-    public void handleLoginButtonAction() throws Exception {
+    public void handleLoginButtonAction() {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
@@ -71,7 +60,6 @@ public class LoginController {
      * Loads the Kollektiv scene and initializes the necessary controllers.
      *
      * @param user The user object containing user-specific data.
-     * @throws IOException If the FXML file cannot be loaded.
      */
     public void loadKollektivScene(User user) {
         try {
@@ -88,7 +76,6 @@ public class LoginController {
             stage.show();
 
         } catch (IOException e) {
-            e.printStackTrace();
             loginErrorMessage.setText("Failed to load the next scene.");
         }
     }
@@ -101,8 +88,7 @@ public class LoginController {
      */
 
     @FXML
-    public void handleRegisterButtonAction(ActionEvent event) {
-        try {
+    public void handleRegisterButtonAction(ActionEvent event) throws IOException{
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("RegisterScreen.fxml"));
             Parent parent = fxmlLoader.load();
             Scene scene = new Scene(parent);
@@ -110,10 +96,6 @@ public class LoginController {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     /**

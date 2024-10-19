@@ -60,8 +60,6 @@ public class RegisterGroupController {
      * the process,
      * an appropriate error message is displayed.
      * </p>
-     * 
-     * @throws Exception if an unexpected error occurs during group creation
      */
     @FXML
     public void createGroup(ActionEvent event) {
@@ -90,7 +88,6 @@ public class RegisterGroupController {
      *
      * @param groupName the group name to be validated
      * @return true if the group name meets the required criteria, false otherwise
-     * 
      *         The criteria for a valid group are:
      *         - The group name must not be empty.
      *         - The group must not already exist.
@@ -99,10 +96,7 @@ public class RegisterGroupController {
         if (groupName == null || groupName.isEmpty()) {
             return false;
         }
-        if (groupHandler.groupExists(groupName)) {
-            return false;
-        }
-        return true;
+        return !groupHandler.groupExists(groupName);
     }
 
     /**
