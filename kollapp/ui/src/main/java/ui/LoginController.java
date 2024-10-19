@@ -79,7 +79,7 @@ public class LoginController {
             Parent parent = fxmlLoader.load();
 
             KollAppController controller = fxmlLoader.getController();
-            controller.innitializeToDoList(user); 
+            controller.initializeToDoList(user); 
             controller.populateGroupView();
             
             Scene scene = new Scene(parent);

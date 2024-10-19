@@ -35,7 +35,7 @@ public class RegisterController {
     @FXML
     private PasswordField confirmPasswordField;
 
-    private UserHandler userHandler = new UserHandler();
+    private final UserHandler userHandler = new UserHandler();
 
     /**
      * Handles the registration process by validating the user's input.
@@ -100,7 +100,7 @@ public class RegisterController {
             Parent parent = fxmlLoader.load();
 
             KollAppController controller = fxmlLoader.getController();
-            controller.innitializeToDoList(user);
+            controller.initializeToDoList(user);
 
             Scene scene = new Scene(parent);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

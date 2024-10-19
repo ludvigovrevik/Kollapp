@@ -103,7 +103,7 @@ public class KollAppController {
      *
      * @param user The user whose to-do list is to be displayed
      */
-    public void innitializeToDoList(User user) {
+    public void initializeToDoList(User user) {
         this.toDoList = toDoListHandler.loadToDoList(user);
         this.user = user;
         updateGrid();
