@@ -253,7 +253,7 @@ public class ToDoListHandlerTest {
     @Test
     @DisplayName("Load group to-do list when file does not exist")
     @Tag("group")
-    public void testLoadGroupToDoList_FileDoesNotExist() {
+    public void testLoadGroupToDoList_FileDoesNotExist() throws IOException{
         File file = new File(groupTestFolderPath.toString(), userGroup.getGroupName() + ".json");
         if (file.exists()) {
             file.delete();
@@ -274,7 +274,7 @@ public class ToDoListHandlerTest {
     @Test
     @DisplayName("Update and load group to-do list")
     @Tag("group")
-    public void testUpdateGroupToDoList_And_LoadGroupToDoList() {
+    public void testUpdateGroupToDoList_And_LoadGroupToDoList() throws IOException {
         ToDoList toDoList = new ToDoList();
         toDoList.addTask(new Task("Group Task 1"));
         toDoList.addTask(new Task("Group Task 2", LocalDate.now(), "Group Description", "High"));

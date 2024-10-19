@@ -9,12 +9,11 @@ import core.UserGroup;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.logging.Logger;
 
 public class ToDoListHandler {
     private final String toDoListPath;
     private final String groupToDoListPath;
-    private ObjectMapper mapper;
+    private final ObjectMapper mapper;
 
     /**
      * Constructs a new ToDoListHandler.
@@ -29,8 +28,8 @@ public class ToDoListHandler {
      * The ObjectMapper is configured to handle Java 8 date and time API classes by registering the JavaTimeModule.
      */
     public ToDoListHandler() {
-        this.toDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "todolists").toString() + File.separator;
-        this.groupToDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists").toString() + File.separator;
+        this.toDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "todolists") + File.separator;
+        this.groupToDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists") + File.separator;
         this.mapper = new ObjectMapper();
         this.mapper.registerModule(new JavaTimeModule());
     }
@@ -137,7 +136,7 @@ public class ToDoListHandler {
         try {
             mapper.writeValue(file, toDoList);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException("Couldn't update to-do list");
         }
     }
 }
