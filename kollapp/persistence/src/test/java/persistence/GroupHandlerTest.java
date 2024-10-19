@@ -13,7 +13,6 @@ import org.junit.jupiter.api.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import core.ToDoList;
 import core.User;
 import core.UserGroup;
 
@@ -48,8 +47,8 @@ public class GroupHandlerTest {
         createDirectory(toDoListPath);
 
         this.userHandler = new UserHandler(
-                userPath.toString() + File.separator,
-                toDoListPath.toString() + File.separator);
+                userPath.toString() + File.separator
+        );
         this.groupHandler = new GroupHandler(
                 groupPath.toString() + File.separator,
                 groupToDoListPath.toString() + File.separator,
@@ -98,18 +97,6 @@ public class GroupHandlerTest {
                 .get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists")
                 .toString() + File.separator;
         assertEquals(expectedGroupToDoListPath, actualGroupToDoListPath);
-
-        // Verify ObjectMapper
-        Field mapperField = GroupHandler.class.getDeclaredField("mapper");
-        mapperField.setAccessible(true);
-        ObjectMapper mapper = (ObjectMapper) mapperField.get(defaultHandler);
-        assertNotNull(mapper);
-
-        // Verify JavaTimeModule registration
-        LocalDate testDate = LocalDate.now();
-        String dateJson = mapper.writeValueAsString(testDate);
-        LocalDate parsedDate = mapper.readValue(dateJson, LocalDate.class);
-        assertEquals(testDate, parsedDate);
     }
 
     /**

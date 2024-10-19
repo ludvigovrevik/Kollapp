@@ -88,14 +88,14 @@ public class LoginController {
      */
 
     @FXML
-    public void handleRegisterButtonAction(ActionEvent event) throws IOException{
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("RegisterScreen.fxml"));
-            Parent parent = fxmlLoader.load();
-            Scene scene = new Scene(parent);
+    public void handleRegisterButtonAction(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("RegisterScreen.fxml"));
+        Parent parent = fxmlLoader.load();
+        Scene scene = new Scene(parent);
 
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
     }
 
     /**

@@ -8,12 +8,10 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Optional;
 
-import core.ToDoList;
 import core.User;
 
 public class UserHandler {
-    private final String userPath; 
-    private final String toDoListPath; 
+    private final String userPath;
     private ObjectMapper mapper = new ObjectMapper();
     
     /**
@@ -23,7 +21,6 @@ public class UserHandler {
      */
     public UserHandler() {
         this.userPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "users").toString() + File.separator;
-        this.toDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "todolists").toString() + File.separator;
         this.mapper.registerModule(new JavaTimeModule());
     }
 
@@ -31,11 +28,9 @@ public class UserHandler {
      * Constructs a new UserHandler with the specified paths for user data and to-do list data.
      *
      * @param userPath the file path where user data is stored
-     * @param todolistPath the file path where to-do list data is stored
      */
-    public UserHandler(String userPath, String todolistPath) {
+    public UserHandler(String userPath) {
         this.userPath = userPath;
-        this.toDoListPath = todolistPath;
         this.mapper.registerModule(new JavaTimeModule());
     }
 
@@ -45,17 +40,13 @@ public class UserHandler {
      * @param user The user object to be saved.
      * @throws IllegalArgumentException if a user with the same username already exists.
      */
-    public void saveUser(User user) {
+    public void saveUser(User user) throws IOException {
         if (userExists(user.getUsername())) {
             throw new IllegalArgumentException("User already exists");
         }
 
         File file = new File(userPath + user.getUsername() + ".json");
-        try {
-            mapper.writeValue(file, user);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        mapper.writeValue(file, user);
     }
 
     /**
@@ -80,9 +71,60 @@ public class UserHandler {
                 return null;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException("Failed to read user file");
         }
-        return null;
+    }
+
+    /**
+     * Retrieves a user by their username.
+     *
+     * @param username the username of the user to retrieve
+     * @return an Optional containing the User if found, or an empty Optional if the user does not exist or an error occurs
+     */
+    public Optional<User> getUser(String username) {
+        if (!userExists(username)) {
+            return Optional.empty();
+        }
+
+        File file = new File(userPath + username + ".json");
+        try {
+            User user = mapper.readValue(file, User.class);
+            return Optional.of(user);
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Failed to retrieve user");
+        }
+    }
+
+    /**
+     * Updates the user information in the corresponding JSON file.
+     * If the user does not exist, an IllegalArgumentException is thrown.
+     *
+     * @param user The User object containing updated information.
+     * @throws IllegalArgumentException if the user file does not exist.
+     * @throws RuntimeException if there is an error writing to the user file.
+     */
+    public void updateUser(User user) {
+        if (!userExists(user.getUsername())) {
+            throw new IllegalArgumentException("User file does not exist for user: " + user.getUsername());
+        }
+
+        File file = new File(userPath + user.getUsername() + ".json");
+        try {
+            mapper.writeValue(file, user);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to update user file for user: " + user.getUsername());
+        }
+    }
+
+    /**
+     * Checks if a user exists by verifying the presence of a corresponding JSON file.
+     *
+     * @param username the username to check for existence
+     * @return true if the user file exists, false otherwise
+     */
+    public boolean userExists(String username) {
+        File file = new File(userPath + username + ".json");
+        return file.exists();
     }
 
     /**
@@ -163,58 +205,5 @@ public class UserHandler {
             return "Password must be at least 6 characters long";
         }
         return null;
-    }
-
-    /**
-     * Retrieves a user by their username.
-     *
-     * @param username the username of the user to retrieve
-     * @return an Optional containing the User if found, or an empty Optional if the user does not exist or an error occurs
-     */
-    public Optional<User> getUser(String username) {
-        if (!userExists(username)) {
-            return Optional.empty();
-        }
-        
-        File file = new File(userPath + username + ".json");
-        try {
-            User user = mapper.readValue(file, User.class);
-            return Optional.of(user);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return Optional.empty();
-        }
-    }
-
-    /**
-     * Updates the user information in the corresponding JSON file.
-     * If the user does not exist, an IllegalArgumentException is thrown.
-     * 
-     * @param user The User object containing updated information.
-     * @throws IllegalArgumentException if the user file does not exist.
-     * @throws RuntimeException if there is an error writing to the user file.
-     */
-    public void updateUser(User user) {
-        if (!userExists(user.getUsername())) {
-            throw new IllegalArgumentException("User file does not exist for user: " + user.getUsername());
-        }
-
-        File file = new File(userPath + user.getUsername() + ".json");
-        try {
-            mapper.writeValue(file, user);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to update user file for user: " + user.getUsername());
-        }
-    }
-
-    /**
-     * Checks if a user exists by verifying the presence of a corresponding JSON file.
-     *
-     * @param username the username to check for existence
-     * @return true if the user file exists, false otherwise
-     */
-    public boolean userExists(String username) {
-        File file = new File(userPath + username + ".json");
-        return file.exists(); 
     }
 }

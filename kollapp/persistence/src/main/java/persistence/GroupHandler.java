@@ -2,11 +2,8 @@ package persistence;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.System.Logger;
 import java.nio.file.Paths;
-import java.util.Optional;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -18,7 +15,7 @@ public class GroupHandler {
     private final String groupPath;
     private final String groupToDoListPath;
     private ObjectMapper mapper = new ObjectMapper();
-    private UserHandler userHandler;
+    private final UserHandler userHandler;
 
     /**
      * Constructs a new GroupHandler instance.
@@ -36,7 +33,7 @@ public class GroupHandler {
         this.groupPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "groups").toString() + File.separator;
         this.groupToDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists").toString() + File.separator;
         this.mapper.registerModule(new JavaTimeModule());
-        userHandler = new UserHandler();
+        this.userHandler = new UserHandler();
     }
 
     /**
@@ -75,7 +72,6 @@ public class GroupHandler {
             mapper.writeValue(fileForGroup, userGroup);
             mapper.writeValue(fileGroupToDoList, toDoList);
         } catch (IOException e) {
-            e.printStackTrace();
             throw new RuntimeException("Failed to create group");
         }
         userHandler.updateUser(user);
@@ -94,10 +90,8 @@ public class GroupHandler {
             throw new IllegalArgumentException("Group file does not exist: " + file.getPath());
         }
         try {
-            UserGroup userGroup = mapper.readValue(file, UserGroup.class);
-            return userGroup;
+            return mapper.readValue(file, UserGroup.class);
         } catch (IOException e) {
-            e.printStackTrace();
             throw new IllegalArgumentException("Error reading the group file: " + e.getMessage());
         }
     }
@@ -123,7 +117,6 @@ public class GroupHandler {
         try {
             mapper.writeValue(fileForGroup, group);
         } catch (IOException e) {
-            e.printStackTrace();
             throw new RuntimeException("Failed to update group file");
         }
     }
