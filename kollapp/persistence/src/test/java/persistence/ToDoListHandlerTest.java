@@ -99,8 +99,7 @@ public class ToDoListHandlerTest {
         pathField.setAccessible(true);
         String actualPath = (String) pathField.get(defaultHandler);
 
-        String expectedPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "todolists")
-                .toString() + File.separator;
+        String expectedPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "todolists") + File.separator;
         assertEquals(expectedPath, actualPath);
 
         Field mapperField = ToDoListHandler.class.getDeclaredField("mapper");
@@ -175,9 +174,7 @@ public class ToDoListHandlerTest {
             file.delete();
         }
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            toDoListHandler.loadToDoList(user);
-        });
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> toDoListHandler.loadToDoList(user));
 
         String expectedMessage = "To-do list file does not exist for user: " + user.getUsername();
         assertEquals(expectedMessage, exception.getMessage());
@@ -215,7 +212,7 @@ public class ToDoListHandlerTest {
     @Test
     @DisplayName("Assign to-do list overwrites existing file")
     @Tag("file")
-    public void testAssignToDoList_OverwritesExistingFile() throws IOException {
+    public void testAssignToDoList_OverwritesExistingFile() {
         ToDoList toDoList = new ToDoList();
         toDoList.addTask(new Task("Simple task"));
         toDoListHandler.assignToDoList(user);
@@ -235,7 +232,7 @@ public class ToDoListHandlerTest {
     @Test
     @DisplayName("Update to-do list with empty list")
     @Tag("update")
-    public void testUpdateToDoList_WithEmptyList() throws IOException {
+    public void testUpdateToDoList_WithEmptyList() {
         toDoListHandler.assignToDoList(user);
 
         ToDoList toDoList = new ToDoList();
