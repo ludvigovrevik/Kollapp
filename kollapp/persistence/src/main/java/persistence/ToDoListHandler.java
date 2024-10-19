@@ -1,15 +1,15 @@
 package persistence;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Paths;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
 import core.ToDoList;
 import core.User;
 import core.UserGroup;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.logging.Logger;
 
 public class ToDoListHandler {
     private final String toDoListPath;
@@ -41,12 +41,12 @@ public class ToDoListHandler {
      * The ObjectMapper is configured to handle Java 8 date and time API classes by registering the JavaTimeModule.
      *
      * @param todolistPath the file path for the to-do list
-     * @param grouptodolistPath the file path for the group to-do list
+     * @param groupToDoListPath the file path for the group to-do list
      * 
      */
-    public ToDoListHandler(String todolistPath, String grouptodolistPath) {
+    public ToDoListHandler(String todolistPath, String groupToDoListPath) {
         this.toDoListPath = todolistPath;
-        this.groupToDoListPath = grouptodolistPath;
+        this.groupToDoListPath = groupToDoListPath;
         this.mapper = new ObjectMapper();
         this.mapper.registerModule(new JavaTimeModule());
     }
@@ -63,7 +63,7 @@ public class ToDoListHandler {
         try {
             mapper.writeValue(file, toDoList);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException("Failed to assign to-do-list to user");
         }
     }
     
@@ -82,8 +82,7 @@ public class ToDoListHandler {
         try {
             return mapper.readValue(file, ToDoList.class);
         } catch (IOException e) {
-            System.out.println("Failed to load to-do list for user: " + user.getUsername());
-            throw new IllegalArgumentException(e);
+            throw new IllegalArgumentException("Failed to load to-do-list");
         }
     }
     
@@ -98,7 +97,7 @@ public class ToDoListHandler {
         try {
             mapper.writeValue(file, toDoList);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException("Failed to update to-do-list");
         }
     }
 
@@ -113,16 +112,14 @@ public class ToDoListHandler {
         String groupName = userGroup.getGroupName();
         File file = new File(groupToDoListPath + groupName + ".json");
         if (!file.exists()) {
-            System.out.println("File not found for user: " + groupName);
             return new ToDoList(); // Return an empty list instead of null if file doesn't exist
         }
+
         try {
             return mapper.readValue(file, ToDoList.class);
         } catch (IOException e) {
-            System.out.println("Failed to load to-do list for group: " + groupName);
-            e.printStackTrace();
+            throw new IllegalArgumentException("Failed to load group to-do-list");
         }
-        return new ToDoList(); // Return an empty list instead of null if an exception occurs
     }
 
     /**

@@ -52,7 +52,7 @@ public class ToDoListHandlerTest {
         this.userTestFolderPath = Paths.get("src", "main", "java", "persistence", "users", "tests");
         
         toDoListHandler = new ToDoListHandler(testToDoListFolderPath.toString() + File.separator, groupTestFolderPath.toString() + File.separator);
-        userHandler = new UserHandler(userTestFolderPath.toString() + File.separator, testToDoListFolderPath.toString() + File.separator);
+        userHandler = new UserHandler(userTestFolderPath.toString() + File.separator);
         groupHandler = new GroupHandler(groupTestFolderPath.toString() + File.separator, groupTestFolderPath.toString(), userHandler);
         
         user = new User("testUser", "password123");

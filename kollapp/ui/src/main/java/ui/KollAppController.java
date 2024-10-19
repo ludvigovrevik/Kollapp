@@ -1,10 +1,5 @@
 package ui;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-
 import core.Task;
 import core.ToDoList;
 import core.User;
@@ -15,9 +10,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -27,6 +20,11 @@ import javafx.stage.Stage;
 import persistence.GroupHandler;
 import persistence.ToDoListHandler;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
 /**
  * Controller class for the KollApp application.
  */
@@ -34,12 +32,6 @@ public class KollAppController {
 
     @FXML
     private GridPane taskGridView;
-
-    @FXML
-    private TextField taskInputField;
-
-    @FXML
-    private DatePicker datePicker;
 
     @FXML
     private VBox vBoxContainer;
@@ -54,32 +46,12 @@ public class KollAppController {
     private User user;
     private UserGroup groupInView;
 
-    private ToDoListHandler toDoListHandler = new ToDoListHandler();
-    private GroupHandler groupHandler = new GroupHandler();
-
-    public void setToDoListHandler(ToDoListHandler toDoListHandler) {
-        this.toDoListHandler = toDoListHandler;
-    }
-
-    public void setGroupHandler(GroupHandler groupHandler) {
-        this.groupHandler = groupHandler;
-    }
-
-    public GridPane getTaskGridView() {
-        return taskGridView;
-    }
-
-    public VBox getVBoxContainer() {
-        return vBoxContainer;
-    }
-
-    public Label getCompletedLabel() {
-        return completedLabel;
-    }
+    private final ToDoListHandler toDoListHandler = new ToDoListHandler();
+    private final GroupHandler groupHandler = new GroupHandler();
 
     public void setUser(User user) {
         this.user = user;
-        personal.setOnMouseClicked(event -> handleGroupClick(event, this.user.getUsername()));
+        personal.setOnMouseClicked(event -> handleGroupClick(this.user.getUsername()));
     }
 
      /**
@@ -89,7 +61,7 @@ public class KollAppController {
     public void initialize() {
         // Set the label to act like a button
         completedLabel.setOnMouseClicked(this::handleLabelClick);
-        personal.setOnMouseClicked(event -> handleGroupClick(event, this.user.getUsername()));
+        personal.setOnMouseClicked(event -> handleGroupClick(this.user.getUsername()));
 
         // Change the cursor to hand when hovering over the label
         completedLabel.setStyle("-fx-cursor: hand;");
@@ -135,7 +107,7 @@ public class KollAppController {
         groupLabel.setAlignment(Pos.CENTER); // Center the text
 
         // Set up the click event
-        groupLabel.setOnMouseClicked(event -> handleGroupClick(event, groupName));
+        groupLabel.setOnMouseClicked(event -> handleGroupClick(groupName));
 
         // Add the clickable label to the VBox
         vBoxContainer.getChildren().add(groupLabel);
@@ -144,10 +116,9 @@ public class KollAppController {
     /**
      * Handles the click event for the dynamic group labels.
      * 
-     * @param event     The mouse click event
      * @param groupName The name of the group clicked
      */
-    private void handleGroupClick(MouseEvent event, String groupName) {
+    private void handleGroupClick(String groupName) {
         List<String> groupNames = this.user.getUserGroups();
         System.out.println("Clicked on group: " + groupName);
 
@@ -179,11 +150,9 @@ public class KollAppController {
         if (completedLabel.getText().equals("Completed")) {
             this.updateGridViewCompletedTasks();
             completedLabel.setText("Tasks");
-            return;
         } else if (completedLabel.getText().equals("Tasks")) {
             this.updateGrid();
             completedLabel.setText("Completed");
-            return;
         }
     }
     
@@ -201,8 +170,7 @@ public class KollAppController {
 
         int row = 0;
 
-        for (int i = 0; i < tasks.size(); i++) {
-            Task currentTask = tasks.get(i);
+        for (Task currentTask : tasks) {
             if (currentTask.isCompleted()) {
                 continue; // Skip completed tasks
             }
@@ -242,7 +210,6 @@ public class KollAppController {
             taskGridView.add(taskDescriptionLabel, 3, row);
             taskGridView.add(priorityLabel, 4, row);
             GridPane.setVgrow(taskLabel, Priority.ALWAYS);
-            row++;
         }
     }
 
@@ -260,7 +227,7 @@ public class KollAppController {
             Stage currentStage = (Stage) taskGridView.getScene().getWindow();
             currentStage.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -289,18 +256,7 @@ public class KollAppController {
                 }
 
                 Label taskLabel = new Label(taskDescription);
-                CheckBox checkBox = new CheckBox();
-
-                // Add event listener to the CheckBox for task removal
-                checkBox.setOnAction(event -> {
-                    toDoList.removeTask(currentTask);
-                    if (groupInView == null) {
-                        toDoListHandler.updateToDoList(user, toDoList);
-                    } else {
-                        toDoListHandler.updateGroupToDoList(groupInView, toDoList);
-                    }
-                    updateGrid(); // Refresh the grid
-                });
+                CheckBox checkBox = getCheckBox(currentTask);
 
                 taskGridView.add(checkBox, 0, row);
                 taskGridView.add(taskLabel, 1, row);
@@ -308,6 +264,22 @@ public class KollAppController {
                 row++;
             }
         }
+    }
+
+    private CheckBox getCheckBox(Task currentTask) {
+        CheckBox checkBox = new CheckBox();
+
+        // Add event listener to the CheckBox for task removal
+        checkBox.setOnAction(event -> {
+            toDoList.removeTask(currentTask);
+            if (groupInView == null) {
+                toDoListHandler.updateToDoList(user, toDoList);
+            } else {
+                toDoListHandler.updateGroupToDoList(groupInView, toDoList);
+            }
+            updateGrid(); // Refresh the grid
+        });
+        return checkBox;
     }
 
     /**
@@ -321,10 +293,15 @@ public class KollAppController {
             this.toDoList = toDoListHandler.loadToDoList(this.user);
         } else {
             UserGroup group = groupHandler.getGroup(taskOwner);
-            this.toDoList = toDoListHandler.loadGroupToDoList(group);
             groupInView = group;
+            try {
+                this.toDoList = toDoListHandler.loadGroupToDoList(group);
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
+    
 
     /**
      * Opens the "Register Group" window, allowing the user to create a new group.
@@ -336,14 +313,14 @@ public class KollAppController {
             Parent root = fxmlLoader.load();
 
             RegisterGroupController controller = fxmlLoader.getController();
-            controller.initialize(user, this);
+            controller.initialize(this.user, this);
             Stage stage = new Stage();
             stage.setTitle("Register Group");
             stage.setScene(new Scene(root));
 
             stage.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -365,7 +342,7 @@ public class KollAppController {
 
             stage.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -390,7 +367,7 @@ public class KollAppController {
             stage.showAndWait();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 }
