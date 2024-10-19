@@ -12,7 +12,7 @@ import core.User;
 
 public class UserHandler {
     private final String userPath;
-    private ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
     
     /**
      * Constructs a new UserHandler instance.
@@ -20,7 +20,7 @@ public class UserHandler {
      * Registers the JavaTimeModule with the ObjectMapper to handle Java 8 date and time types.
      */
     public UserHandler() {
-        this.userPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "users").toString() + File.separator;
+        this.userPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "users") + File.separator;
         this.mapper.registerModule(new JavaTimeModule());
     }
 
@@ -157,7 +157,6 @@ public class UserHandler {
      * @param password the password to be validated
      * @param confirmPassword the confirmation of the password to be validated
      * @return true if the username and passwords meet the required criteria, false otherwise
-     * 
      * The criteria for a valid user are:
      * - None of the fields should be empty.
      * - The username must be at least 3 characters long.
@@ -165,19 +164,9 @@ public class UserHandler {
      * - The password must be at least 6 characters long.
      */
     public boolean confirmNewValidUser(String username, String password, String confirmPassword) {
-        if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-            return false;
-        }
-        if (username.length() < 3) {
-            return false;
-        }
-        if (!password.equals(confirmPassword)) {
-            return false;
-        }
-        if (password.length() < 6) {
-            return false;
-        }
-        return true;
+        return username.length() >= 3
+                && password.equals(confirmPassword)
+                && password.length() >= 6;
     }
 
     /**

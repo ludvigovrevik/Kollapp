@@ -93,8 +93,7 @@ public class UserHandlerTest {
         Field userPathField = UserHandler.class.getDeclaredField("userPath");
         userPathField.setAccessible(true);
         String actualUserPath = (String) userPathField.get(defaultHandler);
-        String expectedUserPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "users")
-                .toString() + File.separator;
+        String expectedUserPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "users") + File.separator;
         assertEquals(expectedUserPath, actualUserPath);
 
         Field mapperField = UserHandler.class.getDeclaredField("mapper");

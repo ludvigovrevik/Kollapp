@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.Comparator;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -75,13 +76,41 @@ public class ToDoListHandlerTest {
     @AfterEach
     public void tearDown() throws IOException {
         if (Files.exists(testToDoListFolderPath)) {
-            Files.walk(testToDoListFolderPath).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+            try (Stream<Path> userStream = Files.walk(testToDoListFolderPath)) {
+                userStream
+                        .sorted(Comparator.reverseOrder())
+                        .map(Path::toFile)
+                        .forEach(file -> {
+                            if (!file.delete()) {
+                                System.out.println("Failed to delete: " + file.getAbsolutePath());
+                            }
+                        });
+            }
         }
+
         if (Files.exists(groupTestFolderPath)) {
-            Files.walk(groupTestFolderPath).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+            try (Stream<Path> toDoListStream = Files.walk(groupTestFolderPath)) {
+                toDoListStream
+                        .sorted(Comparator.reverseOrder())
+                        .map(Path::toFile)
+                        .forEach(file -> {
+                            if (!file.delete()) {
+                                System.out.println("Failed to delete: " + file.getAbsolutePath());
+                            }
+                        });
+            }
         }
         if (Files.exists(userTestFolderPath)) {
-            Files.walk(userTestFolderPath).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+            try (Stream<Path> userStream = Files.walk(userTestFolderPath)) {
+                userStream
+                        .sorted(Comparator.reverseOrder())
+                        .map(Path::toFile)
+                        .forEach(file -> {
+                            if (!file.delete()) {
+                                System.out.println("Failed to delete: " + file.getAbsolutePath());
+                            }
+                        });
+            }
         }
     }
 

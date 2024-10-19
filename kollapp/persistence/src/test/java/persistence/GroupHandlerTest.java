@@ -7,11 +7,9 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.*;
 import java.util.Comparator;
-import java.time.LocalDate;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.*;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import core.User;
 import core.UserGroup;
@@ -85,8 +83,7 @@ public class GroupHandlerTest {
         Field groupPathField = GroupHandler.class.getDeclaredField("groupPath");
         groupPathField.setAccessible(true);
         String actualGroupPath = (String) groupPathField.get(defaultHandler);
-        String expectedGroupPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "groups")
-                .toString() + File.separator;
+        String expectedGroupPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "groups") + File.separator;
         assertEquals(expectedGroupPath, actualGroupPath);
 
         // Verify groupToDoListPath field
@@ -94,8 +91,7 @@ public class GroupHandlerTest {
         groupToDoListPathField.setAccessible(true);
         String actualGroupToDoListPath = (String) groupToDoListPathField.get(defaultHandler);
         String expectedGroupToDoListPath = Paths
-                .get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists")
-                .toString() + File.separator;
+                .get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists") + File.separator;
         assertEquals(expectedGroupToDoListPath, actualGroupToDoListPath);
     }
 
@@ -106,7 +102,7 @@ public class GroupHandlerTest {
     @Test
     @DisplayName("Test creating a new group")
     @Tag("group")
-    void testCreateGroup() throws IOException {
+    void testCreateGroup() {
         String groupName = "testGroup";
 
         groupHandler.createGroup(user, groupName);
@@ -117,7 +113,7 @@ public class GroupHandlerTest {
         Path groupToDoListFilePath = groupToDoListPath.resolve(groupName + ".json");
         assertTrue(Files.exists(groupToDoListFilePath));
 
-        User updatedUser = userHandler.getUser(user.getUsername()).get();
+        User updatedUser = userHandler.getUser(user.getUsername()).orElseThrow(() -> new IllegalArgumentException("User not found"));
         assertTrue(updatedUser.getUserGroups().contains(groupName));
 
         UserGroup group = groupHandler.getGroup(groupName);
@@ -132,7 +128,7 @@ public class GroupHandlerTest {
     @Test
     @DisplayName("Test retrieving an existing group")
     @Tag("group")
-    void testGetGroup() throws IOException {
+    void testGetGroup() {
         String groupName = "testGroup";
 
         groupHandler.createGroup(user, groupName);
@@ -152,13 +148,13 @@ public class GroupHandlerTest {
     @Test
     @DisplayName("Test assigning a user to a group")
     @Tag("group")
-    void testAssignUserToGroup() throws IOException {
+    void testAssignUserToGroup() {
         String groupName = "testGroup";
 
         groupHandler.createGroup(user, groupName);
         groupHandler.assignUserToGroup(user2, groupName);
 
-        User updatedUser2 = userHandler.getUser(user2.getUsername()).get();
+        User updatedUser2 = userHandler.getUser(user2.getUsername()).orElseThrow(() -> new IllegalArgumentException("User not found"));;
         assertTrue(updatedUser2.getUserGroups().contains(groupName));
 
         UserGroup group = groupHandler.getGroup(groupName);
@@ -186,10 +182,16 @@ public class GroupHandlerTest {
      */
     private void deleteDirectory(Path path) throws IOException {
         if (Files.exists(path)) {
-            Files.walk(path)
-                    .sorted(Comparator.reverseOrder())
-                    .map(Path::toFile)
-                    .forEach(File::delete);
+            try (Stream<Path> groupStream = Files.walk(path)) {
+                groupStream
+                        .sorted(Comparator.reverseOrder())
+                        .map(Path::toFile)
+                        .forEach(file -> {
+                            if (!file.delete()) {
+                                System.out.println("Failed to delete: " + file.getAbsolutePath());
+                            }
+                        });
+            }
         }
     }
 }

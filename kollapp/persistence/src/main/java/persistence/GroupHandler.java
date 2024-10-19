@@ -14,7 +14,7 @@ import core.UserGroup;
 public class GroupHandler {
     private final String groupPath;
     private final String groupToDoListPath;
-    private ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
     private final UserHandler userHandler;
 
     /**
@@ -30,8 +30,8 @@ public class GroupHandler {
      * Registers the JavaTimeModule with the ObjectMapper and initializes the UserHandler instance.
      */
     public GroupHandler() {
-        this.groupPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "groups").toString() + File.separator;
-        this.groupToDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists").toString() + File.separator;
+        this.groupPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "groups") + File.separator;
+        this.groupToDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists") + File.separator;
         this.mapper.registerModule(new JavaTimeModule());
         this.userHandler = new UserHandler();
     }
@@ -99,7 +99,6 @@ public class GroupHandler {
    
     /**
      * Assigns a user to a specified group.
-     *
      * Updates the group file with the new user added to the group.
      * Also Updates the user file with the new group added to the user.
      *
