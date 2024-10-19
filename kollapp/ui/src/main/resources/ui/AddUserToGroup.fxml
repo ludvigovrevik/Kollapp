@@ -12,12 +12,12 @@
       <Label layoutX="121.0" layoutY="13.0" text="Add user to group" />
       <ScrollPane layoutX="107.0" layoutY="55.0" prefHeight="97.0" prefWidth="117.0">
          <content>
-            <ListView fx:id="listViewOfGroups" prefHeight="95.0" prefWidth="115.0" />
+            <ListView fx:id="groupsListView" prefHeight="95.0" prefWidth="115.0" />
          </content></ScrollPane>
-      <TextField fx:id="username" layoutX="106.0" layoutY="176.0" prefHeight="28.0" prefWidth="117.0" />
-      <Button layoutX="128.0" layoutY="209.0" mnemonicParsing="false" text="Add user" onAction = "#addUserToGroup" />
+      <TextField fx:id="usernameField" layoutX="106.0" layoutY="176.0" prefHeight="28.0" prefWidth="117.0" />
+      <Button layoutX="128.0" layoutY="209.0" mnemonicParsing="false" text="Add user" onAction = "#handleAddUserToGroup" />
       <Label layoutX="108.0" layoutY="38.0" text="Your groups" />
       <Label layoutX="106.0" layoutY="160.0" text="Username" />
-      <Label fx:id="userNameErrorLabel" layoutX="101.0" layoutY="241.0" prefHeight="28.0" prefWidth="126.0" textFill="RED" />
+      <Label fx:id="feedbackLabel" layoutX="101.0" layoutY="241.0" prefHeight="28.0" prefWidth="126.0" textFill="RED" />
    </children>
 </Pane>

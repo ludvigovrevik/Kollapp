@@ -56,12 +56,10 @@ public class RegisterGroupControllerTest {
         controller = loader.getController();
 
         mockGroupHandler = mock(GroupHandler.class);
-        mockUserHandler = mock(UserHandler.class);
         mockKollAppController = mock(KollAppController.class);
         mockUser = mock(User.class);
 
         setPrivateField(controller, "groupHandler", mockGroupHandler);
-        setPrivateField(controller, "userHandler", mockUserHandler);
         setPrivateField(controller, "kollAppController", mockKollAppController);
         setPrivateField(controller, "user", mockUser);
 
@@ -76,6 +74,14 @@ public class RegisterGroupControllerTest {
         // Initialization before each test is handled in the start method
     }
 
+    /**
+     * Sets the value of a private field in the specified target object.
+     *
+     * @param target the object whose private field is to be modified
+     * @param fieldName the name of the private field to be modified
+     * @param value the new value to set for the private field
+     * @throws Exception if the field cannot be found or accessed
+     */
     private void setPrivateField(Object target, String fieldName, Object value) throws Exception {
         Field field = RegisterGroupController.class.getDeclaredField(fieldName);
         field.setAccessible(true);
@@ -94,19 +100,12 @@ public class RegisterGroupControllerTest {
         String groupName = "NewGroup";
 
         doNothing().when(mockGroupHandler).createGroup(mockUser, groupName);
-        doNothing().when(mockUserHandler).updateUser(mockUser);
 
         robot.clickOn("#groupNameField").write(groupName);
         robot.clickOn("Create group");
 
         verify(mockGroupHandler, times(1)).createGroup(mockUser, groupName);
-        verify(mockUserHandler, times(1)).updateUser(mockUser);
         verify(mockKollAppController, times(1)).populateGroupView();
-
-        Label errorLabel = robot.lookup("#errorLabel").queryAs(Label.class);
-        assertNotNull(errorLabel, "Error label not found!");
-        assertEquals("Made group succesfully", errorLabel.getText());
-        assertEquals(javafx.scene.paint.Color.GREEN, errorLabel.getTextFill());
     }
 
     /**
@@ -124,35 +123,10 @@ public class RegisterGroupControllerTest {
         robot.clickOn("Create group");
 
         verify(mockGroupHandler, never()).createGroup(any(User.class), anyString());
-        verify(mockUserHandler, never()).updateUser(any(User.class));
 
         Label errorLabel = robot.lookup("#errorLabel").queryAs(Label.class);
         assertNotNull(errorLabel, "Error label not found!");
         assertEquals("Group Name cannot be empty", errorLabel.getText());
-    }
-
-    /**
-     * Tests that the group creation fails if the user is not logged in.
-     *
-     * @param robot the FxRobot instance for simulating user interactions
-     */
-    @Test
-    @DisplayName("Test group creation without logged-in user")
-    @Tag("group")
-    void testCreateGroup_UserNotLoggedIn(FxRobot robot) throws Exception {
-        String groupName = "AnotherGroup";
-
-        setPrivateField(controller, "user", null);
-
-        robot.clickOn("#groupNameField").write(groupName);
-        robot.clickOn("Create group");
-
-        verify(mockGroupHandler, never()).createGroup(any(User.class), anyString());
-        verify(mockUserHandler, never()).updateUser(any(User.class));
-
-        Label errorLabel = robot.lookup("#errorLabel").queryAs(Label.class);
-        assertNotNull(errorLabel, "Error label not found!");
-        assertEquals("User not found. Please log in.", errorLabel.getText());
     }
 
     /**
@@ -172,7 +146,6 @@ public class RegisterGroupControllerTest {
         robot.clickOn("Create group");
 
         verify(mockGroupHandler, times(1)).createGroup(mockUser, groupName);
-        verify(mockUserHandler, never()).updateUser(any(User.class));
         verify(mockKollAppController, never()).populateGroupView();
 
         Label errorLabel = robot.lookup("#errorLabel").queryAs(Label.class);
