@@ -44,6 +44,7 @@ public class KollAppController {
     
     private ToDoList toDoList;
     private User user;
+    private String groupNameChat;
     private UserGroup groupInView;
 
     private final ToDoListHandler toDoListHandler = new ToDoListHandler();
@@ -119,6 +120,7 @@ public class KollAppController {
      * @param groupName The name of the group clicked
      */
     private void handleGroupClick(String groupName) {
+        this.groupNameChat = groupName;
         List<String> groupNames = this.user.getUserGroups();
         System.out.println("Clicked on group: " + groupName);
 
@@ -294,6 +296,7 @@ public class KollAppController {
             this.toDoList = toDoListHandler.loadToDoList(this.user);
         } else {
             UserGroup group = groupHandler.getGroup(taskOwner);
+            this.groupNameChat = group.getGroupName();
             groupInView = group;
             try {
                 this.toDoList = toDoListHandler.loadGroupToDoList(group);
@@ -361,6 +364,30 @@ public class KollAppController {
 
             Stage stage = new Stage();
             stage.setTitle("Add New Task");
+            stage.setScene(new Scene(root));
+
+            // Set the stage as modal, blocking user input to other windows
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @FXML
+    public void showGroupChat() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("GroupChatScreen.fxml"));
+            Parent root = fxmlLoader.load();
+
+            GroupChatController groupChatController = fxmlLoader.getController();
+
+            // Pass the groupName to the initializeGroupChatWindow method
+            groupChatController.initializeGroupChatWindow(this.user, this.groupNameChat);
+
+            Stage stage = new Stage();
+            stage.setTitle("Group Chat");
             stage.setScene(new Scene(root));
 
             // Set the stage as modal, blocking user input to other windows

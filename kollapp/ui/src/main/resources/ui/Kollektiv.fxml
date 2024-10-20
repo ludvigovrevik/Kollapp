@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.KollAppController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.KollAppController">
    <children>
        
             <Button fx:id="addButton" layoutX="638.0" layoutY="417.0" mnemonicParsing="false" onAction="#showDialog" prefHeight="78.0" prefWidth="81.0" style="-fx-background-color: #9df084; -fx-background-radius: 50%;" text="+" textFill="#096800">
@@ -81,7 +81,7 @@
                   <Font name="Microsoft Sans Serif" size="21.0" />
                </font>
             </Label>
-            <Button onAction="#logOut" layoutX="14.0" layoutY="488.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="63.0" text="Log out" />
+            <Button layoutX="14.0" layoutY="488.0" mnemonicParsing="false" onAction="#logOut" prefHeight="28.0" prefWidth="63.0" text="Log out" />
          </children>
       </Pane>
       <Label layoutX="499.0" layoutY="42.0" text="Description">
@@ -94,5 +94,6 @@
             <Font name="Microsoft Sans Serif" size="25.0" />
          </font>
       </Label>
+      <Button layoutX="220.0" layoutY="481.0" mnemonicParsing="false" onAction="#showGroupChat" prefHeight="28.0" prefWidth="150.0" text="Open group chat" />
    </children>
 </AnchorPane>

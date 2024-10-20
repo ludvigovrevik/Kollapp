@@ -1,36 +1,46 @@
 package core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Message {
-    private String username;
-    private String text;
+    private String author;
+    private List<List<String>> messages = new ArrayList<>();
 
     public Message() {
     }
     
-    public Message(String username, String text) {
-        this.username = username;
-        this.text = text;
+    public Message(String author, String text) {
+        this.author = author;
+
+        List<String> message = new ArrayList<>();
+        message.add(author);
+        message.add(text);
+        messages.add(message);
     }
 
-    public String getUsername() {
-        return username;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setUsername(String username) {
-        if (this.username.equals(username)) {
-            throw new IllegalArgumentException("Username cannot be identical to the current username");
+    public void setAuthor(String author) {
+        if (author == null) {
+            throw new IllegalArgumentException("Author cannot be null");
         }
-        this.username = username;
+        this.author = author;
     }
 
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
+    public void addMessage(String text) {
         if (text == null) {
             throw new IllegalArgumentException("Text cannot be null");
         }
-        this.text = text;
+        List<String> localMessage = new ArrayList<>();
+        localMessage.add(author);
+        localMessage.add(text);
+        messages.add(localMessage);
+    }
+
+    public List<List<String>> getMessages() {
+        return new ArrayList<>(messages);
     }
 }

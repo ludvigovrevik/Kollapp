@@ -2,9 +2,9 @@ package persistence;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import core.Message;
-import javafx.scene.Group;
+import core.User;
+import core.UserGroup;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,51 +15,71 @@ import java.util.List;
 public class GroupChatHandler {
     private final ObjectMapper mapper;
     private final String groupChatPath;
-    private Message message;
 
     public GroupChatHandler() {
-        this.groupChatPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "groupchat").toString() + File.separator;
+        // Define the path where group chat files are stored
+        this.groupChatPath = Paths.get("groupchat").toString() + File.separator;
         this.mapper = new ObjectMapper();
     }
 
-    public void createGroupChat(String groupName) {
+        // Create a new group chat file (if it doesn't exist)
+    public void createGroupChat(String author, String groupName, String text) {
+        Message localMessage = new Message(author, text);
+        
         File fileForGroupChat = new File(groupChatPath + groupName + ".json");
         try {
-            mapper.writeValue(fileForGroupChat, new ArrayList<>());
+            mapper.writeValue(fileForGroupChat, localMessage);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to create group chat");
+            // TODO: handle exception
         }
     }
 
-    public void appendMessage(String groupName, Message message) {
+    // Create a new group chat file (if it doesn't exist)
+    public void createGroupChat(User user, String groupName, String text) {
+        String author = user.getUsername();
+        Message localMessage = new Message(author, "");
+        
         File fileForGroupChat = new File(groupChatPath + groupName + ".json");
-        List<Message> messages = new ArrayList<>();
         try {
-            messages = mapper.readValue(fileForGroupChat, new TypeReference<List<Message>>() {});
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to read messages");
-        }
-
-        messages.add(message);
-        try {
-            mapper.writeValue(fileForGroupChat, messages);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to save messages");
+            mapper.writeValue(fileForGroupChat, localMessage);
+        } catch (Exception e) {
+            // TODO: handle exception
         }
     }
 
-    public List<Message> getMessages(String groupName) {
+    public Message getGroupChat(String groupName) {
         File fileForGroupChat = new File(groupChatPath + groupName + ".json");
-        List<Message> messages = new ArrayList<>();
-        try {
-            messages = mapper.readValue(fileForGroupChat, new TypeReference<List<Message>>() {});
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to read messages");
+        if (!fileForGroupChat.exists()) {
+            
+            String author = user.getUsername();
+            Message localMessage = new Message(author, "");
+
+            File fileForGroupChat = new File(groupChatPath + groupName + ".json");
+            try {
+                mapper.writeValue(fileForGroupChat, localMessage);
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+
+
         }
-        return messages;
+        try {
+            return mapper.readValue(fileForGroupChat, Message.class);
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Error reading the group chat file: " + e.getMessage());
+        }
     }
 
+    // Append a message to the group chat file
+    public void appendMessage(User user, String groupName, String text ) {
+        Message groupChat = getGroupChat(groupName);
+        groupChat.addMessage(text);
+
+        File fileForGroupChat = new File(groupChatPath + groupName + ".json");
+        try {
+            mapper.writeValue(fileForGroupChat, groupChat);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to update group chat file");
+        }
+    }
 }
