@@ -37,34 +37,40 @@ public class GroupChatController {
         this.groupName = groupName; // Set the group name (e.g., "GroupChat1")
         this.author = user.getUsername();
         this.groupChatHandler = new GroupChatHandler(); // Initialize the handler
-        this.groupChatHandler.createGroupChat(author, groupName, "");
+        // this.groupChatHandler.createGroupChat(author, groupName, "");
         
         // Display the current messages in the view
-        updateMessageView();
+        // updateMessageView();
     }
 
     // Handle sending messages
     @FXML
     private void handleSendMessage() {
         String text = messageTextArea.getText(); // Get the text from the input box
-        // if (this.groupChatHandler.getGroupChat(groupName) == null) {
-        //     this.groupChatHandler.createGroupChat(author, groupName, text);
-        // }
-
-        this.groupChatHandler.createGroupChat(author, groupName, text);
-
-        // Replace "username" with the actual user's name
-        Message message = new Message("username", text);
-
-        // Append the message to the JSON file using GroupChatHandler
-        groupChatHandler.appendMessage(user,this.groupName, text);
-
+    
+        // Create a new TextArea for the message
+        TextArea messageArea = new TextArea(text);
+        messageArea.setWrapText(true); // Wrap text for longer messages
+        messageArea.setEditable(false); // The message box should be read-only
+        
+        // Set a fixed height for the TextArea (50px as requested)
+        messageArea.setPrefHeight(50); // Fixed height of 50 pixels
+    
+        // Optionally, disable resizing of TextArea to preserve uniformity
+        messageArea.setMinHeight(50); 
+        messageArea.setMaxHeight(50);
+    
+        // Add the message to the VBox
+        vboxMessages.getChildren().add(messageArea);
+    
         // Clear the message input box
         messageTextArea.clear();
-
-        // Update the chat view to show the new message
-        updateMessageView();
+    
+        // Scroll to the bottom to show the latest message
+        viewMessagePane.layout(); // Ensure the layout is updated before scrolling
+        viewMessagePane.setVvalue(1.0); // Scroll to the bottom
     }
+    
 
     // Update the chat window with messages from the JSON file
     private void updateMessageView() {
