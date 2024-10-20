@@ -52,11 +52,8 @@ public class GroupChatController {
         TextArea messageArea = new TextArea(text);
         messageArea.setWrapText(true); // Wrap text for longer messages
         messageArea.setEditable(false); // The message box should be read-only
-        
-        // Set a fixed height for the TextArea (50px as requested)
-        messageArea.setPrefHeight(50); // Fixed height of 50 pixels
     
-        // Optionally, disable resizing of TextArea to preserve uniformity
+        // Disable resizing of TextArea to preserve uniformity
         messageArea.setMinHeight(50); 
         messageArea.setMaxHeight(50);
     
