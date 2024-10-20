@@ -170,18 +170,18 @@ public class KollAppController {
 
         int row = 0;
 
-        for (Task currentTask : tasks) {
-            if (currentTask.isCompleted()) {
+        for (Task task : tasks) {
+            if (task.isCompleted()) {
                 continue; // Skip completed tasks
             }
 
-            String taskName = currentTask.getTaskName();
-            String taskDescription = currentTask.getDescription();
-            String priority = currentTask.getPriority();
+            String taskName = task.getTaskName();
+            String taskDescription = task.getDescription();
+            String priority = task.getPriority();
 
             Label dateLabel = new Label("");
-            if (currentTask.getDateTime() != null) {
-                LocalDate dateTime = currentTask.getDateTime();
+            if (task.getDateTime() != null) {
+                LocalDate dateTime = task.getDateTime();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
                 dateLabel.setText(dateTime.format(formatter));
             }
@@ -194,7 +194,7 @@ public class KollAppController {
             // Add event listener to the CheckBox
             checkBox.setOnAction(event -> {
                 if (checkBox.isSelected()) {
-                    currentTask.setCompleted(true);
+                    task.setCompleted(true);
                     if (groupInView == null) {
                         toDoListHandler.updateToDoList(user, toDoList);
                     } else {
@@ -210,6 +210,7 @@ public class KollAppController {
             taskGridView.add(taskDescriptionLabel, 3, row);
             taskGridView.add(priorityLabel, 4, row);
             GridPane.setVgrow(taskLabel, Priority.ALWAYS);
+            row++;
         }
     }
 
