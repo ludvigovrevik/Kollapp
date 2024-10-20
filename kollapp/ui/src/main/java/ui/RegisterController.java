@@ -35,7 +35,7 @@ public class RegisterController {
     @FXML
     private PasswordField confirmPasswordField;
 
-    private UserHandler userHandler = new UserHandler();
+    private final UserHandler userHandler = new UserHandler();
 
     /**
      * Handles the registration process by validating the user's input.
@@ -60,7 +60,7 @@ public class RegisterController {
                 switchToKollektivScene(event, user); // Switch to main screen
             } catch (IllegalArgumentException e) {
                 errorMessage.setText("User creation failed: " + e.getMessage());
-            } catch (Exception e) {
+            } catch (IOException e) {
                 errorMessage.setText("An unexpected error occurred: " + e.getMessage());
             }
         } else {
@@ -83,7 +83,7 @@ public class RegisterController {
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            errorMessage.setText("Failed to return to Login Screen.");
         }
     }
     
@@ -100,14 +100,14 @@ public class RegisterController {
             Parent parent = fxmlLoader.load();
 
             KollAppController controller = fxmlLoader.getController();
-            controller.innitializeToDoList(user);
+            controller.initializeToDoList(user);
 
             Scene scene = new Scene(parent);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 }

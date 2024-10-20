@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.Comparator;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,7 +53,7 @@ public class ToDoListHandlerTest {
         this.userTestFolderPath = Paths.get("src", "main", "java", "persistence", "users", "tests");
         
         toDoListHandler = new ToDoListHandler(testToDoListFolderPath.toString() + File.separator, groupTestFolderPath.toString() + File.separator);
-        userHandler = new UserHandler(userTestFolderPath.toString() + File.separator, testToDoListFolderPath.toString() + File.separator);
+        userHandler = new UserHandler(userTestFolderPath.toString() + File.separator);
         groupHandler = new GroupHandler(groupTestFolderPath.toString() + File.separator, groupTestFolderPath.toString(), userHandler);
         
         user = new User("testUser", "password123");
@@ -75,13 +76,41 @@ public class ToDoListHandlerTest {
     @AfterEach
     public void tearDown() throws IOException {
         if (Files.exists(testToDoListFolderPath)) {
-            Files.walk(testToDoListFolderPath).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+            try (Stream<Path> userStream = Files.walk(testToDoListFolderPath)) {
+                userStream
+                        .sorted(Comparator.reverseOrder())
+                        .map(Path::toFile)
+                        .forEach(file -> {
+                            if (!file.delete()) {
+                                System.out.println("Failed to delete: " + file.getAbsolutePath());
+                            }
+                        });
+            }
         }
+
         if (Files.exists(groupTestFolderPath)) {
-            Files.walk(groupTestFolderPath).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+            try (Stream<Path> toDoListStream = Files.walk(groupTestFolderPath)) {
+                toDoListStream
+                        .sorted(Comparator.reverseOrder())
+                        .map(Path::toFile)
+                        .forEach(file -> {
+                            if (!file.delete()) {
+                                System.out.println("Failed to delete: " + file.getAbsolutePath());
+                            }
+                        });
+            }
         }
         if (Files.exists(userTestFolderPath)) {
-            Files.walk(userTestFolderPath).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+            try (Stream<Path> userStream = Files.walk(userTestFolderPath)) {
+                userStream
+                        .sorted(Comparator.reverseOrder())
+                        .map(Path::toFile)
+                        .forEach(file -> {
+                            if (!file.delete()) {
+                                System.out.println("Failed to delete: " + file.getAbsolutePath());
+                            }
+                        });
+            }
         }
     }
 
@@ -99,8 +128,7 @@ public class ToDoListHandlerTest {
         pathField.setAccessible(true);
         String actualPath = (String) pathField.get(defaultHandler);
 
-        String expectedPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "todolists")
-                .toString() + File.separator;
+        String expectedPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "todolists") + File.separator;
         assertEquals(expectedPath, actualPath);
 
         Field mapperField = ToDoListHandler.class.getDeclaredField("mapper");
@@ -175,9 +203,7 @@ public class ToDoListHandlerTest {
             file.delete();
         }
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            toDoListHandler.loadToDoList(user);
-        });
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> toDoListHandler.loadToDoList(user));
 
         String expectedMessage = "To-do list file does not exist for user: " + user.getUsername();
         assertEquals(expectedMessage, exception.getMessage());
@@ -215,7 +241,7 @@ public class ToDoListHandlerTest {
     @Test
     @DisplayName("Assign to-do list overwrites existing file")
     @Tag("file")
-    public void testAssignToDoList_OverwritesExistingFile() throws IOException {
+    public void testAssignToDoList_OverwritesExistingFile() {
         ToDoList toDoList = new ToDoList();
         toDoList.addTask(new Task("Simple task"));
         toDoListHandler.assignToDoList(user);
@@ -235,7 +261,7 @@ public class ToDoListHandlerTest {
     @Test
     @DisplayName("Update to-do list with empty list")
     @Tag("update")
-    public void testUpdateToDoList_WithEmptyList() throws IOException {
+    public void testUpdateToDoList_WithEmptyList() {
         toDoListHandler.assignToDoList(user);
 
         ToDoList toDoList = new ToDoList();
@@ -253,7 +279,7 @@ public class ToDoListHandlerTest {
     @Test
     @DisplayName("Load group to-do list when file does not exist")
     @Tag("group")
-    public void testLoadGroupToDoList_FileDoesNotExist() {
+    public void testLoadGroupToDoList_FileDoesNotExist() throws IOException{
         File file = new File(groupTestFolderPath.toString(), userGroup.getGroupName() + ".json");
         if (file.exists()) {
             file.delete();
@@ -274,7 +300,7 @@ public class ToDoListHandlerTest {
     @Test
     @DisplayName("Update and load group to-do list")
     @Tag("group")
-    public void testUpdateGroupToDoList_And_LoadGroupToDoList() {
+    public void testUpdateGroupToDoList_And_LoadGroupToDoList() throws IOException {
         ToDoList toDoList = new ToDoList();
         toDoList.addTask(new Task("Group Task 1"));
         toDoList.addTask(new Task("Group Task 2", LocalDate.now(), "Group Description", "High"));

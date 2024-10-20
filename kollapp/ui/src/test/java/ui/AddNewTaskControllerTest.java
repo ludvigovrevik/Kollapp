@@ -1,8 +1,10 @@
 package ui;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
+import javafx.scene.control.Label;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -29,10 +31,8 @@ import javafx.scene.control.DatePicker;
 @Tag("ui")
 public class AddNewTaskControllerTest {
 
-    private AddNewTaskController controller;
     private ToDoList mockToDoList;
     private KollAppController mockKollAppController;
-    private User mockUser;
 
     /**
      * Initializes the controller and the stage for testing.
@@ -45,10 +45,10 @@ public class AddNewTaskControllerTest {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/AddNewTask.fxml"));
         Parent root = loader.load();
 
-        controller = loader.getController();
+        AddNewTaskController controller = loader.getController();
         mockToDoList = mock(ToDoList.class);
         mockKollAppController = mock(KollAppController.class);
-        mockUser = mock(User.class);
+        User mockUser = mock(User.class);
 
         controller.initializeTaskWindow(mockUser, mockToDoList, mockKollAppController);
 
@@ -109,5 +109,9 @@ public class AddNewTaskControllerTest {
 
         verify(mockToDoList, never()).addTask(any(Task.class));
         verify(mockKollAppController, never()).updateGrid();
+
+        Label errorLabel = robot.lookup("#errorLabel").queryAs(Label.class);
+        assertNotNull(errorLabel, "Error label not found!");
+        assertEquals("Task cannot be null.", errorLabel.getText());
     }
 }

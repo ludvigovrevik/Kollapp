@@ -1,5 +1,6 @@
 package core;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
  * completion status, date, description, and priority.
  */
 public class Task implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private String taskName;
@@ -45,7 +47,6 @@ public class Task implements Serializable {
      * @throws IllegalArgumentException if taskName is blank or priority is invalid
      */
     public Task(String taskName, LocalDate dateTime, String description, String priority) {
-        taskName = taskName.trim();
         if (taskName.isBlank()) {
             throw new IllegalArgumentException("Task name cannot be empty.");
         }
@@ -67,11 +68,10 @@ public class Task implements Serializable {
      * @throws IllegalArgumentException if taskName is blank
      */
     public Task(String taskName) {
-        taskName = taskName.trim();
         if (taskName.isBlank()) {
             throw new IllegalArgumentException("Task name cannot be empty.");
         }
-        this.taskName = taskName;
+        this.taskName = taskName.trim();
         this.isCompleted = false;
     }
 

@@ -1,16 +1,21 @@
 package persistence;
 
-import static org.junit.jupiter.api.Assertions.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import core.User;
+import org.junit.jupiter.api.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.Optional;
-import java.time.LocalDate;
-import org.junit.jupiter.api.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import core.User;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for the {@link UserHandler} class.
@@ -32,8 +37,7 @@ public class UserHandlerTest {
         this.userPath = Paths.get("src", "main", "java", "persistence", "users", "tests");
 
         this.userHandler = new UserHandler(
-            userPath.toString() + File.separator,
-            toDoListPath.toString() + File.separator
+            userPath + File.separator
         );
         user = new User("testUser", "password123");
 
@@ -51,18 +55,31 @@ public class UserHandlerTest {
     @AfterEach
     public void tearDown() throws IOException {
         if (Files.exists(userPath)) {
-            Files.walk(userPath)
-                .sorted(Comparator.reverseOrder())
-                .map(Path::toFile)
-                .forEach(File::delete);
+            try (Stream<Path> userStream = Files.walk(userPath)) {
+                userStream
+                        .sorted(Comparator.reverseOrder())
+                        .map(Path::toFile)
+                        .forEach(file -> {
+                            if (!file.delete()) {
+                                System.out.println("Failed to delete: " + file.getAbsolutePath());
+                            }
+                        });
+            }
         }
+
         if (Files.exists(toDoListPath)) {
-            Files.walk(toDoListPath)
-                .sorted(Comparator.reverseOrder())
-                .map(Path::toFile)
-                .forEach(File::delete);
+            try (Stream<Path> toDoListStream = Files.walk(toDoListPath)) {
+                toDoListStream
+                        .sorted(Comparator.reverseOrder())
+                        .map(Path::toFile)
+                        .forEach(file -> {
+                            if (!file.delete()) {
+                                System.out.println("Failed to delete: " + file.getAbsolutePath());
+                            }
+                        });
+                }
+            }
         }
-    }
 
     /**
      * Tests the default constructor and ensures paths and ObjectMapper are correctly initialized.
@@ -76,16 +93,8 @@ public class UserHandlerTest {
         Field userPathField = UserHandler.class.getDeclaredField("userPath");
         userPathField.setAccessible(true);
         String actualUserPath = (String) userPathField.get(defaultHandler);
-        String expectedUserPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "users")
-                .toString() + File.separator;
+        String expectedUserPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "users") + File.separator;
         assertEquals(expectedUserPath, actualUserPath);
-
-        Field toDoListPathField = UserHandler.class.getDeclaredField("toDoListPath");
-        toDoListPathField.setAccessible(true);
-        String actualToDoListPath = (String) toDoListPathField.get(defaultHandler);
-        String expectedToDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "todolists")
-                .toString() + File.separator;
-        assertEquals(expectedToDoListPath, actualToDoListPath);
 
         Field mapperField = UserHandler.class.getDeclaredField("mapper");
         mapperField.setAccessible(true);

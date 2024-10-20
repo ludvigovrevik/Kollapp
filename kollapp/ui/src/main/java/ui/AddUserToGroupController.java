@@ -1,6 +1,5 @@
 package ui;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javafx.fxml.FXML;
@@ -27,8 +26,6 @@ public class AddUserToGroupController {
 
     @FXML
     private Label feedbackLabel;
-
-    private User user;
     
     private final UserHandler userHandler;
     private final GroupHandler groupHandler;
@@ -65,7 +62,6 @@ public class AddUserToGroupController {
      * @param user The current user whose groups are to be displayed.
      */
     public void initializeAddToUserGroup(User user) {
-        this.user = user;
         populateGroupsList(user.getUserGroups());
     }
 
@@ -97,7 +93,7 @@ public class AddUserToGroupController {
 
         // Retrieve User
         Optional<User> optionalUser = userHandler.getUser(usernameInput);
-        if (!optionalUser.isPresent()) {
+        if (optionalUser.isEmpty()) {
             displayFeedback(USER_RETRIEVAL_FAILED_MSG, Color.RED);
             return;
         }
@@ -116,7 +112,6 @@ public class AddUserToGroupController {
             groupHandler.assignUserToGroup(userToAdd, selectedGroup);
             displayFeedback(ADD_USER_SUCCESS_MSG, Color.GREEN);
         } catch (Exception e) {
-            e.printStackTrace();
             displayFeedback(ADD_USER_FAILURE_MSG, Color.RED);
         }
     }
