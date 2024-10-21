@@ -47,39 +47,39 @@ public class GroupChatHandler {
         }
     }
 
-    public Message getGroupChat(String groupName) {
-        File fileForGroupChat = new File(groupChatPath + groupName + ".json");
-        if (!fileForGroupChat.exists()) {
+    // public Message getGroupChat(String groupName) {
+    //     File fileForGroupChat = new File(groupChatPath + groupName + ".json");
+    //     if (!fileForGroupChat.exists()) {
             
-            String author = user.getUsername();
-            Message localMessage = new Message(author, "");
+    //         String author = user.getUsername();
+    //         Message localMessage = new Message(author, "");
 
-            File fileForGroupChat = new File(groupChatPath + groupName + ".json");
-            try {
-                mapper.writeValue(fileForGroupChat, localMessage);
-            } catch (Exception e) {
-                // TODO: handle exception
-            }
+    //         File fileForGroupChat = new File(groupChatPath + groupName + ".json");
+    //         try {
+    //             mapper.writeValue(fileForGroupChat, localMessage);
+    //         } catch (Exception e) {
+    //             // TODO: handle exception
+    //         }
 
 
-        }
-        try {
-            return mapper.readValue(fileForGroupChat, Message.class);
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Error reading the group chat file: " + e.getMessage());
-        }
-    }
+    //     }
+    //     try {
+    //         return mapper.readValue(fileForGroupChat, Message.class);
+    //     } catch (IOException e) {
+    //         throw new IllegalArgumentException("Error reading the group chat file: " + e.getMessage());
+    //     }
+    // }
 
     // Append a message to the group chat file
-    public void appendMessage(User user, String groupName, String text ) {
-        Message groupChat = getGroupChat(groupName);
-        groupChat.addMessage(text);
+    // public void appendMessage(User user, String groupName, String text ) {
+    //     Message groupChat = getGroupChat(groupName);
+    //     groupChat.addMessage(text);
 
-        File fileForGroupChat = new File(groupChatPath + groupName + ".json");
-        try {
-            mapper.writeValue(fileForGroupChat, groupChat);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to update group chat file");
-        }
-    }
+    //     File fileForGroupChat = new File(groupChatPath + groupName + ".json");
+    //     try {
+    //         mapper.writeValue(fileForGroupChat, groupChat);
+    //     } catch (Exception e) {
+    //         throw new RuntimeException("Failed to update group chat file");
+    //     }
+    // }
 }

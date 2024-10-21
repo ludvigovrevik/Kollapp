@@ -70,21 +70,21 @@ public class GroupChatController {
     
 
     // Update the chat window with messages from the JSON file
-    private void updateMessageView() {
-        Message groupChat = groupChatHandler.getGroupChat(this.groupName); // Get all messages for the group
-        List<List<String>> messages = groupChat.getMessages();
+    // private void updateMessageView() {
+    //     Message groupChat = groupChatHandler.getGroupChat(this.groupName); // Get all messages for the group
+    //     List<List<String>> messages = groupChat.getMessages();
 
-        // Clear the VBox before adding updated messages
-        vboxMessages.getChildren().clear();
+    //     // Clear the VBox before adding updated messages
+    //     vboxMessages.getChildren().clear();
 
-        for (int i = 0; i < messages.size(); i++) {
-            TextArea messageArea = new TextArea(messages.get(i).get(0) + ": " + messages.get(i).get(1));
-            messageArea.setWrapText(true); // Wrap text for longer messages
-            messageArea.setEditable(false); // The message box should be read-only
-            vboxMessages.getChildren().add(messageArea); // Add the message to the VBox
-        }
-         // Scroll to the bottom to show the latest message
-         viewMessagePane.setVvalue(1.0);
-    }
+    //     for (int i = 0; i < messages.size(); i++) {
+    //         TextArea messageArea = new TextArea(messages.get(i).get(0) + ": " + messages.get(i).get(1));
+    //         messageArea.setWrapText(true); // Wrap text for longer messages
+    //         messageArea.setEditable(false); // The message box should be read-only
+    //         vboxMessages.getChildren().add(messageArea); // Add the message to the VBox
+    //     }
+    //      // Scroll to the bottom to show the latest message
+    //      viewMessagePane.setVvalue(1.0);
+    // }
 }
 
