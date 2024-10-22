@@ -16,6 +16,6 @@
       <TextField fx:id="usernameField" layoutX="38.0" layoutY="250.0" prefHeight="25.0" prefWidth="247.0" promptText="Add user to group" />
       <Button layoutX="301.0" layoutY="250.0" mnemonicParsing="false" onAction="#handleAddUserToGroup" prefHeight="25.0" prefWidth="116.0" text="Add user" />
       <Label layoutX="38.0" layoutY="26.0" prefWidth="72.0" text="Your groups" />
-      <Label fx:id="feedbackLabel" layoutX="301.0" layoutY="21.0" prefHeight="28.0" prefWidth="116.0" textFill="RED" />
+      <Label fx:id="feedbackLabel" layoutX="217.0" layoutY="21.0" prefHeight="28.0" prefWidth="200.0" textAlignment="RIGHT" textFill="RED" />
    </children>
 </Pane>
