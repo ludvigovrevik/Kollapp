@@ -1,5 +1,7 @@
 package ui;
 
+import core.MessageContent;
+import core.MessageLog;
 import core.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import persistence.GroupHandler;
+import persistence.GroupChatHandler;
 
 /**
  * Controller class for handling the creation of new user groups.
@@ -25,6 +28,8 @@ public class RegisterGroupController {
     private User user;
     private KollAppController kollAppController;
     private GroupHandler groupHandler;
+    private GroupChatHandler groupChatHandler;
+    private MessageLog messageLog;
 
     /**
      * Sets the user for the group registration process.
@@ -47,6 +52,7 @@ public class RegisterGroupController {
         this.user = user;
         this.kollAppController = kollAppController;
         groupHandler = new GroupHandler();
+        this.groupChatHandler = new GroupChatHandler();
     }
 
     /**
@@ -77,6 +83,8 @@ public class RegisterGroupController {
             // Close the current window
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.close();
+            messageLog.addMessage(new MessageContent("System", "Group chat created"));
+            groupChatHandler.createGroupChat(groupName, messageLog);
 
         } catch (Exception e) {
             errorLabel.setText("Failed to create group. Please try again.");

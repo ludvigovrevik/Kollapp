@@ -1,6 +1,6 @@
 package ui;
 
-import core.Message;
+import core.MessageLog;
 import core.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -35,10 +35,8 @@ public class GroupChatController {
     public void initializeGroupChatWindow(User user, String groupName) {
         this.user = user;
         this.groupName = groupName; // Set the group name (e.g., "GroupChat1")
-        this.author = user.getUsername();
         this.groupChatHandler = new GroupChatHandler(); // Initialize the handler
-        // this.groupChatHandler.createGroupChat(author, groupName, "");
-        
+
         // Display the current messages in the view
         // updateMessageView();
     }

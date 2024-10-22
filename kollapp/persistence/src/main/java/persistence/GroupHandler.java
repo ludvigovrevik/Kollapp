@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import core.MessageLog;
 import core.ToDoList;
 import core.User;
 import core.UserGroup;
@@ -16,6 +17,7 @@ public class GroupHandler {
     private final String groupToDoListPath;
     private final ObjectMapper mapper = new ObjectMapper();
     private final UserHandler userHandler;
+    // private final GroupChatHandler groupChatHandler;
 
     /**
      * Constructs a new GroupHandler instance.
@@ -34,6 +36,7 @@ public class GroupHandler {
         this.groupToDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists") + File.separator;
         this.mapper.registerModule(new JavaTimeModule());
         this.userHandler = new UserHandler();
+        // this.groupChatHandler = new GroupChatHandler();
     }
 
     /**
@@ -48,6 +51,7 @@ public class GroupHandler {
         this.groupToDoListPath = groupToDoListPath;
         this.mapper.registerModule(new JavaTimeModule());
         this.userHandler = userHandler;
+        // this.groupChatHandler = new GroupChatHandler();
     }
 
     /**
@@ -62,7 +66,7 @@ public class GroupHandler {
         UserGroup userGroup = new UserGroup(groupName);
         userGroup.addUser(user.getUsername());
         user.addUserGroup(groupName);
-
+        MessageLog messageLog = new MessageLog();
         ToDoList toDoList = new ToDoList();
 
         File fileForGroup = new File(groupPath + groupName + ".json");

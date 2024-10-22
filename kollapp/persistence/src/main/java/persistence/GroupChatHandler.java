@@ -2,7 +2,9 @@ package persistence;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import core.Message;
+
+import core.MessageContent;
+import core.MessageLog;
 import core.User;
 import core.UserGroup;
 
@@ -18,33 +20,21 @@ public class GroupChatHandler {
 
     public GroupChatHandler() {
         // Define the path where group chat files are stored
-        this.groupChatPath = Paths.get("groupchat").toString() + File.separator;
+        this.groupChatPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "groupchat") + File.separator;
         this.mapper = new ObjectMapper();
     }
 
-        // Create a new group chat file (if it doesn't exist)
-    public void createGroupChat(String author, String groupName, String text) {
-        Message localMessage = new Message(author, text);
-        
+    public void createGroupChat(String groupName, MessageLog messageLog) {
         File fileForGroupChat = new File(groupChatPath + groupName + ".json");
+        // MessageLog messageLog = new MessageLog();
+        // MessageContent systemMessage = new MessageContent("System", "Group chat created");
+        // messageLog.addMessage(systemMessage);
         try {
-            mapper.writeValue(fileForGroupChat, localMessage);
-        } catch (Exception e) {
-            // TODO: handle exception
+            mapper.writeValue(fileForGroupChat, messageLog);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to create group chat");
         }
-    }
 
-    // Create a new group chat file (if it doesn't exist)
-    public void createGroupChat(User user, String groupName, String text) {
-        String author = user.getUsername();
-        Message localMessage = new Message(author, "");
-        
-        File fileForGroupChat = new File(groupChatPath + groupName + ".json");
-        try {
-            mapper.writeValue(fileForGroupChat, localMessage);
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
     }
 
     // public Message getGroupChat(String groupName) {
