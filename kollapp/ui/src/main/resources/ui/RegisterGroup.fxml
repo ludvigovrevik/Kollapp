@@ -5,12 +5,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="273.0" prefWidth="340.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.RegisterGroupController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="110.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.RegisterGroupController">
    <children>
-      <Label layoutX="118.0" layoutY="31.0" text="Create a new group" />
-      <TextField fx:id="groupNameField" layoutX="90.0" layoutY="124.0" />
-      <Button layoutX="116.0" layoutY="160.0" mnemonicParsing="false" onAction="#createGroup" text="Create group" />
-      <Label layoutX="90.0" layoutY="107.0" text="Name of group" />
-      <Label fx:id="errorLabel" layoutX="81.0" layoutY="195.0" prefHeight="41.0" prefWidth="176.0" textFill="RED" />
+      <Label layoutX="28.0" layoutY="31.0" text="Create a new group" />
+      <TextField fx:id="groupNameField" layoutX="28.0" layoutY="59.0" prefHeight="25.0" prefWidth="252.0" promptText="Enter group name" />
+      <Button layoutX="283.0" layoutY="59.0" mnemonicParsing="false" onAction="#createGroup" prefHeight="25.0" prefWidth="100.0" text="Create group" />
+      <Label fx:id="errorLabel" layoutX="265.0" layoutY="27.0" prefHeight="25.0" prefWidth="121.0" textFill="RED" />
    </children>
 </Pane>

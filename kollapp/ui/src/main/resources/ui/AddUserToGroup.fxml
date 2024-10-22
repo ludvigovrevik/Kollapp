@@ -7,17 +7,15 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="273.0" prefWidth="340.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.AddUserToGroupController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="298.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.AddUserToGroupController">
    <children>
-      <Label layoutX="121.0" layoutY="13.0" text="Add user to group" />
-      <ScrollPane layoutX="107.0" layoutY="55.0" prefHeight="97.0" prefWidth="117.0">
+      <ScrollPane layoutX="38.0" layoutY="55.0" prefHeight="185.0" prefWidth="378.0">
          <content>
-            <ListView fx:id="groupsListView" prefHeight="95.0" prefWidth="115.0" />
+            <ListView fx:id="groupsListView" prefHeight="183.0" prefWidth="376.0" />
          </content></ScrollPane>
-      <TextField fx:id="usernameField" layoutX="106.0" layoutY="176.0" prefHeight="28.0" prefWidth="117.0" />
-      <Button layoutX="128.0" layoutY="209.0" mnemonicParsing="false" text="Add user" onAction = "#handleAddUserToGroup" />
-      <Label layoutX="108.0" layoutY="38.0" text="Your groups" />
-      <Label layoutX="106.0" layoutY="160.0" text="Username" />
-      <Label fx:id="feedbackLabel" layoutX="101.0" layoutY="241.0" prefHeight="28.0" prefWidth="126.0" textFill="RED" />
+      <TextField fx:id="usernameField" layoutX="38.0" layoutY="250.0" prefHeight="25.0" prefWidth="247.0" promptText="Add user to group" />
+      <Button layoutX="301.0" layoutY="250.0" mnemonicParsing="false" onAction="#handleAddUserToGroup" prefHeight="25.0" prefWidth="116.0" text="Add user" />
+      <Label layoutX="38.0" layoutY="26.0" prefWidth="72.0" text="Your groups" />
+      <Label fx:id="feedbackLabel" layoutX="301.0" layoutY="21.0" prefHeight="28.0" prefWidth="116.0" textFill="RED" />
    </children>
 </Pane>

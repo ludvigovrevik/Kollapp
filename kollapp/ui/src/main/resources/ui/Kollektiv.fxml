@@ -94,6 +94,6 @@
             <Font name="Microsoft Sans Serif" size="25.0" />
          </font>
       </Label>
-      <Button layoutX="220.0" layoutY="481.0" mnemonicParsing="false" onAction="#showGroupChat" prefHeight="28.0" prefWidth="150.0" text="Open group chat" />
+      <Button fx:id="groupChatButton" layoutX="220.0" layoutY="481.0" mnemonicParsing="false" onAction="#showGroupChat" prefHeight="28.0" prefWidth="150.0" text="Open group chat" />
    </children>
 </AnchorPane>
