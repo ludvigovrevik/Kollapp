@@ -61,8 +61,8 @@
       </Label>
       <Pane layoutX="-3.0" layoutY="-2.0" prefHeight="529.0" prefWidth="204.0" style="-fx-background-color: #e8e8e8;">
          <children>
-            <Button fx:id="createGroupButton" layoutX="14.0" layoutY="439.0" mnemonicParsing="false" onAction="#openRegisterGroupWindow" prefHeight="25.0" prefWidth="113.0" text="Create Group" />
-            <Button fx:id="addUserToGroupButton" layoutX="14.0" layoutY="406.0" mnemonicParsing="false" onAction="#openAddUserToGroupWindow" text="Add user to group" />
+            <Button fx:id="createGroupButton" layoutX="14.0" layoutY="439.0" mnemonicParsing="false" onAction="#openRegisterGroupWindow" prefHeight="25.0" prefWidth="179.0" text="Create Group" />
+            <Button fx:id="addUserToGroupButton" layoutX="14.0" layoutY="406.0" mnemonicParsing="false" onAction="#openAddUserToGroupWindow" prefHeight="25.0" prefWidth="179.0" text="Add user to group" />
             <ScrollPane layoutX="4.0" layoutY="175.0" prefHeight="172.0" prefWidth="200.0">
                <content>
                   <VBox fx:id="vBoxContainer" prefHeight="170.0" prefWidth="198.0">
