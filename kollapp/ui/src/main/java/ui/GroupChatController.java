@@ -1,6 +1,7 @@
 package ui;
 
-import core.MessageLog;
+import core.GroupChat;
+import core.Message;
 import core.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -26,7 +27,6 @@ public class GroupChatController {
     private VBox vboxMessages; // VBox that holds the messages
 
     private User user;
-    private String author;
     private GroupChatHandler groupChatHandler;
     private String groupName;  // The name of the group for which we are loading messages
 
@@ -36,17 +36,21 @@ public class GroupChatController {
         this.user = user;
         this.groupName = groupName; // Set the group name (e.g., "GroupChat1")
         this.groupChatHandler = new GroupChatHandler(); // Initialize the handler
-
-        // Display the current messages in the view
-        // updateMessageView();
+        updateMessageView();
     }
 
     // Handle sending messages
     @FXML
     private void handleSendMessage() {
         String text = messageTextArea.getText(); // Get the text from the input box
-    
-        // Create a new TextArea for the message
+        Message message = new Message(this.user.getUsername(), text);
+        groupChatHandler.sendMessage(this.groupName, message);
+        applyChatBoxStyle(text);
+        updateMessageView();
+    }
+
+    private void applyChatBoxStyle(String text) {
+         // Create a new TextArea for the message
         TextArea messageArea = new TextArea(text);
         messageArea.setWrapText(true); // Wrap text for longer messages
         messageArea.setEditable(false); // The message box should be read-only
@@ -68,21 +72,24 @@ public class GroupChatController {
     
 
     // Update the chat window with messages from the JSON file
-    // private void updateMessageView() {
-    //     Message groupChat = groupChatHandler.getGroupChat(this.groupName); // Get all messages for the group
-    //     List<List<String>> messages = groupChat.getMessages();
+    private void updateMessageView() {
+        GroupChat groupChat = groupChatHandler.getGroupChat(this.groupName); // Get all messages for the group
+        List<Message> messages = groupChat.getMessages();
 
-    //     // Clear the VBox before adding updated messages
-    //     vboxMessages.getChildren().clear();
+        // Clear the VBox before adding updated messages
+        vboxMessages.getChildren().clear();
 
-    //     for (int i = 0; i < messages.size(); i++) {
-    //         TextArea messageArea = new TextArea(messages.get(i).get(0) + ": " + messages.get(i).get(1));
-    //         messageArea.setWrapText(true); // Wrap text for longer messages
-    //         messageArea.setEditable(false); // The message box should be read-only
-    //         vboxMessages.getChildren().add(messageArea); // Add the message to the VBox
-    //     }
-    //      // Scroll to the bottom to show the latest message
-    //      viewMessagePane.setVvalue(1.0);
-    // }
+        for (int i = 0; i < messages.size(); i++) {
+            String author = messages.get(i).getAuthor();
+            String text = messages.get(i).getText();
+            TextArea messageArea = new TextArea(author + ": " + text);
+
+            messageArea.setWrapText(true); // Wrap text for longer messages
+            messageArea.setEditable(false); // The message box should be read-only
+            vboxMessages.getChildren().add(messageArea); // Add the message to the VBox
+        }
+         // Scroll to the bottom to show the latest message
+         viewMessagePane.setVvalue(1.0);
+    }
 }
 

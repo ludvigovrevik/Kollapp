@@ -331,10 +331,8 @@ public class KollAppController {
             stage.setScene(new Scene(root));
 
             // Set the stage as modal, blocking user input to other windows
-            // stage.initModality(Modality.APPLICATION_MODAL);
-            // stage.showAndWait();
-
-            stage.show();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
             
         } catch (IOException e) {
             System.out.println(e.getMessage());

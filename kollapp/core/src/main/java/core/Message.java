@@ -1,17 +1,22 @@
 package core;
 
-public class MessageContent {
-    private String author = "";
-    private String text = "";
+import java.io.Serializable;
 
-    public MessageContent() {
+public class Message implements Serializable {
+    private String author;
+    private String text;
+
+    // Default constructor for Jackson
+    public Message() {
     }
 
-    public MessageContent(String author, String text) {
+    // Constructor with parameters
+    public Message(String author, String text) {
         this.author = author;
         this.text = text;
     }
 
+    // Getters and setters for Jackson
     public String getAuthor() {
         return author;
     }
@@ -32,5 +37,5 @@ public class MessageContent {
             throw new IllegalArgumentException("Text cannot be null.");
         }
         this.text = text;
-    } 
+    }
 }

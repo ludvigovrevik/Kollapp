@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import core.MessageLog;
+import core.GroupChat;
 import core.ToDoList;
 import core.User;
 import core.UserGroup;
@@ -15,9 +15,9 @@ import core.UserGroup;
 public class GroupHandler {
     private final String groupPath;
     private final String groupToDoListPath;
+    private final String groupChatPath;
     private final ObjectMapper mapper = new ObjectMapper();
     private final UserHandler userHandler;
-    // private final GroupChatHandler groupChatHandler;
 
     /**
      * Constructs a new GroupHandler instance.
@@ -34,9 +34,9 @@ public class GroupHandler {
     public GroupHandler() {
         this.groupPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "groups") + File.separator;
         this.groupToDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists") + File.separator;
+        this.groupChatPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "groupchat") + File.separator;
         this.mapper.registerModule(new JavaTimeModule());
-        this.userHandler = new UserHandler();
-        // this.groupChatHandler = new GroupChatHandler();
+        this.userHandler = new UserHandler();   
     }
 
     /**
@@ -49,9 +49,9 @@ public class GroupHandler {
     public GroupHandler(String groupPath, String groupToDoListPath, UserHandler userHandler) {
         this.groupPath = groupPath;
         this.groupToDoListPath = groupToDoListPath;
+        this.groupChatPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "groupchat") + File.separator;
         this.mapper.registerModule(new JavaTimeModule());
         this.userHandler = userHandler;
-        // this.groupChatHandler = new GroupChatHandler();
     }
 
     /**
@@ -66,7 +66,6 @@ public class GroupHandler {
         UserGroup userGroup = new UserGroup(groupName);
         userGroup.addUser(user.getUsername());
         user.addUserGroup(groupName);
-        MessageLog messageLog = new MessageLog();
         ToDoList toDoList = new ToDoList();
 
         File fileForGroup = new File(groupPath + groupName + ".json");
