@@ -130,8 +130,8 @@ public class KollAppController {
         System.out.println("Clicked on group: " + groupName);
 
         if (groupName.equals(this.user.getUsername())) {
-            groupChatButton.setVisible(false);
             changeCurrentTaskView(this.user.getUsername());
+            groupChatButton.setVisible(false);
         } else if (groupNames.contains(groupName)) {
             this.groupNameChat = groupName;
             groupChatButton.setVisible(true);

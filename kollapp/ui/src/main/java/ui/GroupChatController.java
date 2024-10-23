@@ -10,7 +10,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import persistence.GroupChatHandler;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -59,8 +58,8 @@ public class GroupChatController {
         messageArea.setEditable(false); // The message box should be read-only
     
         // Disable resizing of TextArea to preserve uniformity
-        messageArea.setMinHeight(100); 
-        messageArea.setMaxHeight(100);
+        messageArea.setMinHeight(10); 
+        messageArea.setMaxHeight(10);
     
         // Add the message to the VBox
         vboxMessages.getChildren().add(messageArea);

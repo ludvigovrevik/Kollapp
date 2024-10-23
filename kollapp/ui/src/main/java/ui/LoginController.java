@@ -73,6 +73,7 @@ public class LoginController {
             Scene scene = new Scene(parent);
             Stage stage = (Stage) usernameField.getScene().getWindow();
             stage.setScene(scene);
+            stage.setTitle("Welcome " + user.getUsername() + "!");
             stage.show();
 
         } catch (IOException e) {
@@ -95,6 +96,7 @@ public class LoginController {
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
+        stage.setTitle("Register");
         stage.show();
     }
 

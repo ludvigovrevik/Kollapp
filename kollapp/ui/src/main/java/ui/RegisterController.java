@@ -37,6 +37,8 @@ public class RegisterController {
 
     private final UserHandler userHandler = new UserHandler();
 
+    private String username;
+
     /**
      * Handles the registration process by validating the user's input.
      * If valid, the user is created and saved, and the application switches
@@ -81,6 +83,7 @@ public class RegisterController {
             Scene scene = new Scene(parent);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
+            stage.setTitle("Login");
             stage.show();
         } catch (IOException e) {
             errorMessage.setText("Failed to return to Login Screen.");
@@ -105,6 +108,7 @@ public class RegisterController {
             Scene scene = new Scene(parent);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
+            stage.setTitle("Welcome " + user.getUsername() + "!");
             stage.show();
         } catch (IOException e) {
             System.out.println(e.getMessage());
