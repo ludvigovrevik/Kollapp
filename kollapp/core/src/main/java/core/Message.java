@@ -1,10 +1,12 @@
 package core;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 public class Message implements Serializable {
     private String author;
     private String text;
+    private LocalDateTime timestamp;
 
     // Default constructor for Jackson
     public Message() {
@@ -14,6 +16,7 @@ public class Message implements Serializable {
     public Message(String author, String text) {
         this.author = author;
         this.text = text;
+        this.timestamp = LocalDateTime.now();
     }
 
     // Getters and setters for Jackson
@@ -37,5 +40,9 @@ public class Message implements Serializable {
             throw new IllegalArgumentException("Text cannot be null.");
         }
         this.text = text;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
     }
 }

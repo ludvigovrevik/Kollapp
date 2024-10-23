@@ -10,6 +10,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import persistence.GroupChatHandler;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class GroupChatController {
@@ -56,8 +59,8 @@ public class GroupChatController {
         messageArea.setEditable(false); // The message box should be read-only
     
         // Disable resizing of TextArea to preserve uniformity
-        messageArea.setMinHeight(50); 
-        messageArea.setMaxHeight(50);
+        messageArea.setMinHeight(100); 
+        messageArea.setMaxHeight(100);
     
         // Add the message to the VBox
         vboxMessages.getChildren().add(messageArea);
@@ -79,10 +82,15 @@ public class GroupChatController {
         // Clear the VBox before adding updated messages
         vboxMessages.getChildren().clear();
 
-        for (int i = 0; i < messages.size(); i++) {
-            String author = messages.get(i).getAuthor();
-            String text = messages.get(i).getText();
-            TextArea messageArea = new TextArea(author + ": " + text);
+        for (Message message : messages) {
+            String author = message.getAuthor();
+            String text = message.getText();
+            LocalDateTime timestamp = message.getTimestamp();
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, HH:mm");
+            String formattedTimestamp = timestamp.format(formatter);
+            
+            TextArea messageArea = new TextArea(author + " [" + formattedTimestamp + "]: " + text);
 
             messageArea.setWrapText(true); // Wrap text for longer messages
             messageArea.setEditable(false); // The message box should be read-only

@@ -2,6 +2,7 @@ package persistence;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import core.Message;
 import core.GroupChat;
@@ -15,12 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GroupChatHandler {
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper;
     private final String groupChatPath;
 
     public GroupChatHandler() {
         // Define the path where group chat files are stored
         this.groupChatPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "groupchat") + File.separator;
+        this.mapper = new ObjectMapper();
+        this.mapper.registerModule(new JavaTimeModule());
     }
 
     public void createGroupChat(String groupName) {
