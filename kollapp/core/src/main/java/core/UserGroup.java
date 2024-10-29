@@ -1,14 +1,13 @@
 package core;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Represents a group of users, containing the group's name and a list of users.
  */
-public class UserGroup implements java.io.Serializable {
+public class UserGroup implements Serializable {
     private String groupName;
     private List<String> users = new ArrayList<>();
 

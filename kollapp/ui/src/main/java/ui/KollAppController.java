@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -41,9 +42,13 @@ public class KollAppController {
 
     @FXML
     private Label personal;
+
+    @FXML
+    private Button groupChatButton;
     
     private ToDoList toDoList;
     private User user;
+    private String groupNameChat;
     private UserGroup groupInView;
 
     private final ToDoListHandler toDoListHandler = new ToDoListHandler();
@@ -68,6 +73,8 @@ public class KollAppController {
         personal.setStyle("-fx-cursor: hand;");
         VBox.setVgrow(vBoxContainer, Priority.ALWAYS);
         groupInView = null;
+
+        groupChatButton.setVisible(false);
     }
 
     /**
@@ -124,7 +131,10 @@ public class KollAppController {
 
         if (groupName.equals(this.user.getUsername())) {
             changeCurrentTaskView(this.user.getUsername());
+            groupChatButton.setVisible(false);
         } else if (groupNames.contains(groupName)) {
+            this.groupNameChat = groupName;
+            groupChatButton.setVisible(true);
             System.out.println("Perform action for " + groupName);
             changeCurrentTaskView(groupName);
         }
@@ -294,6 +304,7 @@ public class KollAppController {
             this.toDoList = toDoListHandler.loadToDoList(this.user);
         } else {
             UserGroup group = groupHandler.getGroup(taskOwner);
+            this.groupNameChat = group.getGroupName();
             groupInView = group;
             try {
                 this.toDoList = toDoListHandler.loadGroupToDoList(group);
@@ -319,7 +330,10 @@ public class KollAppController {
             stage.setTitle("Register Group");
             stage.setScene(new Scene(root));
 
-            stage.show();
+            // Set the stage as modal, blocking user input to other windows
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+            
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -341,7 +355,10 @@ public class KollAppController {
             stage.setTitle("Add user to group");
             stage.setScene(new Scene(root));
 
-            stage.show();
+            // Set the stage as modal, blocking user input to other windows
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -361,6 +378,30 @@ public class KollAppController {
 
             Stage stage = new Stage();
             stage.setTitle("Add New Task");
+            stage.setScene(new Scene(root));
+
+            // Set the stage as modal, blocking user input to other windows
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @FXML
+    public void showGroupChat() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("GroupChatScreen.fxml"));
+            Parent root = fxmlLoader.load();
+
+            GroupChatController groupChatController = fxmlLoader.getController();
+
+            // Pass the groupName to the initializeGroupChatWindow method
+            groupChatController.initializeGroupChatWindow(this.user, this.groupNameChat);
+
+            Stage stage = new Stage();
+            stage.setTitle(this.groupNameChat + " discussion");
             stage.setScene(new Scene(root));
 
             // Set the stage as modal, blocking user input to other windows
