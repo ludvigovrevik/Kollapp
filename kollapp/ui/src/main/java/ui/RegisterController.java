@@ -37,8 +37,6 @@ public class RegisterController {
 
     private final UserHandler userHandler = new UserHandler();
 
-    private String username;
-
     /**
      * Handles the registration process by validating the user's input.
      * If valid, the user is created and saved, and the application switches
