@@ -14,6 +14,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+/**
+ * Controller class for handling the group chat UI.
+ */
 public class GroupChatController {
 
     @FXML
@@ -26,61 +29,49 @@ public class GroupChatController {
     private Button sendMessage;
 
     @FXML
-    private VBox vboxMessages; // VBox that holds the messages
+    private VBox vboxMessages;
 
     private User user;
     private GroupChatHandler groupChatHandler;
-    private String groupName;  // The name of the group for which we are loading messages
+    private String groupName; 
 
-    // Initialize the GroupChat window and bind it with the group chat handler
+    /**
+     * Initializes the GroupChat window and binds it with the group chat handler.
+     *
+     * @param user      the user participating in the chat
+     * @param groupName the name of the group chat
+     */
     @FXML
     public void initializeGroupChatWindow(User user, String groupName) {
         this.user = user;
-        this.groupName = groupName; // Set the group name (e.g., "GroupChat1")
+        this.groupName = groupName;
         this.groupChatHandler = new GroupChatHandler(); // Initialize the handler
         updateMessageView();
     }
 
-    // Handle sending messages
+    /**
+     * Handles sending messages.
+     */
     @FXML
     private void handleSendMessage() {
-        String text = messageTextArea.getText(); // Get the text from the input box
+        String text = messageTextArea.getText();
         Message message = new Message(this.user.getUsername(), text);
         groupChatHandler.sendMessage(this.groupName, message);
-        applyChatBoxStyle(text);
+
         updateMessageView();
     }
-
-    private void applyChatBoxStyle(String text) {
-         // Create a new TextArea for the message
-        TextArea messageArea = new TextArea(text);
-        messageArea.setWrapText(true); // Wrap text for longer messages
-        messageArea.setEditable(false); // The message box should be read-only
     
-        // Disable resizing of TextArea to preserve uniformity
-        messageArea.setMinHeight(10); 
-        messageArea.setMaxHeight(10);
-    
-        // Add the message to the VBox
-        vboxMessages.getChildren().add(messageArea);
-    
-        // Clear the message input box
-        messageTextArea.clear();
-    
-        // Scroll to the bottom to show the latest message
-        viewMessagePane.layout(); // Ensure the layout is updated before scrolling
-        viewMessagePane.setVvalue(1.0); // Scroll to the bottom
-    }
-    
-
-    // Update the chat window with messages from the JSON file
+    /**
+     * Updates the message view with the latest messages.
+     */
     private void updateMessageView() {
-        GroupChat groupChat = groupChatHandler.getGroupChat(this.groupName); // Get all messages for the group
+        GroupChat groupChat = groupChatHandler.getGroupChat(this.groupName);
         List<Message> messages = groupChat.getMessages();
 
         // Clear the VBox before adding updated messages
         vboxMessages.getChildren().clear();
 
+        // Add each message to the VBox
         for (Message message : messages) {
             String author = message.getAuthor();
             String text = message.getText();
@@ -88,12 +79,19 @@ public class GroupChatController {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, HH:mm");
             String formattedTimestamp = timestamp.format(formatter);
-            
-            TextArea messageArea = new TextArea(author + " [" + formattedTimestamp + "]: " + text);
+            TextArea messageArea = new TextArea("[" + formattedTimestamp + "] " + author + ": " + text);
 
-            messageArea.setWrapText(true); // Wrap text for longer messages
-            messageArea.setEditable(false); // The message box should be read-only
-            vboxMessages.getChildren().add(messageArea); // Add the message to the VBox
+            // Set the message area properties
+            messageArea.setWrapText(true);
+            messageArea.setEditable(false); 
+            messageArea.setMinHeight(50); 
+            messageArea.setMaxHeight(50);
+
+            // Add the message to the VBox
+            vboxMessages.getChildren().add(messageArea);
+
+            // Clear the message text area after sending the message
+            messageTextArea.clear();
         }
          // Scroll to the bottom to show the latest message
          viewMessagePane.setVvalue(1.0);
