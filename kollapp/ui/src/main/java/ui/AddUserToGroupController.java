@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import api.UserApiHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
@@ -35,9 +36,8 @@ public class AddUserToGroupController {
     @FXML
     private Label feedbackLabel;
     
-    private final HttpClient httpClient;
     private final GroupHandler groupHandler;
-
+    private final UserApiHandler userApiHandler;
     // Constants for Feedback Messages
     private static final String USERNAME_EMPTY_MSG = "Username is empty.";
     private static final String USER_NOT_EXIST_MSG = "User does not exist.";
@@ -49,13 +49,13 @@ public class AddUserToGroupController {
 
     // Constructor with Dependency Injection for Testability
     public AddUserToGroupController() {
-        this.httpClient = HttpClient.newHttpClient();
+        this.userApiHandler = new UserApiHandler();
         this.groupHandler = new GroupHandler();
     }
 
     // Constructor with Dependency Injection for Testability
     public AddUserToGroupController(GroupHandler groupHandler) {
-        this.httpClient = HttpClient.newHttpClient();
+        this.userApiHandler = new UserApiHandler();
         this.groupHandler = groupHandler;
     }
 
@@ -95,7 +95,7 @@ public class AddUserToGroupController {
         }
 
         // Retrieve User
-        Optional<User> optionalUser = getUser(usernameInput);
+        Optional<User> optionalUser = userApiHandler.getUser(usernameInput);
         if (optionalUser.isEmpty()) {
             displayFeedback(USER_RETRIEVAL_FAILED_MSG, Color.RED);
             return;
@@ -130,7 +130,7 @@ public class AddUserToGroupController {
             return USERNAME_EMPTY_MSG;
         }
 
-        if (!userExists(username)) {
+        if (!this.userApiHandler.userExists(username)) {
             return USER_NOT_EXIST_MSG;
         }
 
@@ -155,60 +155,9 @@ public class AddUserToGroupController {
         feedbackLabel.setTextFill(color);
     }
 
-    /**
-     * Checks if a user exists by making an HTTP GET request to the API.
-     *
-     * @param username The username to check.
-     * @return true if the user exists; false otherwise.
-     */
-    protected boolean userExists(String username) {
-        String url = "http://localhost:8080/api/v1/users/exists/" + username;
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .GET()
-                .build();
-        try {
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println(response.statusCode());
-            if (response.statusCode() == 200) {
-                return Boolean.parseBoolean(response.body().trim());
-            } else {
-                // Handle error responses as needed
-                return false;
-            }
-        } catch(IOException | InterruptedException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+    
 
-    /**
-     * Retrieves a user by making an HTTP GET request to the API.
-     *
-     * @param username The username of the user to retrieve.
-     * @return An Optional containing the User if found; otherwise, an empty Optional.
-     */
-    protected Optional<User> getUser(String username) {
-        String url = "http://localhost:8080/api/v1/users/" + username;
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .GET()
-                .build();
-        try {
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() == 200) {
-                String responseBody = response.body();
-                ObjectMapper objectMapper = new ObjectMapper();
-                User user = objectMapper.readValue(responseBody, User.class);
-                return Optional.of(user);
-            } else {
-                return Optional.empty();
-            }
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-            return Optional.empty();
-        }
-    }
+    
 
 
 }

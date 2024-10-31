@@ -25,7 +25,6 @@ public class UserController {
         return userOpt.map(ResponseEntity::ok)
                       .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
-
     
    // POST /users
     @PostMapping

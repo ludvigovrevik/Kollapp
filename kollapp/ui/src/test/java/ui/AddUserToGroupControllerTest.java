@@ -17,6 +17,7 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
+import api.UserApiHandler;
 import core.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -25,6 +26,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import persistence.GroupHandler;
+import java.lang.reflect.Field;
 
 /**
  * Unit tests for the AddUserToGroupController class.
@@ -34,23 +36,52 @@ import persistence.GroupHandler;
 public class AddUserToGroupControllerTest {
 
     private AddUserToGroupController controller;
+    private UserApiHandler mockUserApiHandler;
     private GroupHandler mockGroupHandler;
     private User mockUser;
 
-    /**
-     * Initializes the test environment by loading the AddUserToGroup.fxml and injecting mock dependencies.
-     *
-     * @param stage the primary stage for JavaFX tests
-     * @throws Exception if FXML loading fails
-     */
+    @BeforeEach
+    public void setUp(FxRobot robot) throws Exception {
+        mockGroupHandler = mock(GroupHandler.class);
+        mockUser = mock(User.class);
+        mockUserApiHandler = mock(UserApiHandler.class);
+
+        when(mockUser.getUserGroups()).thenReturn(Arrays.asList("Group1", "Group2"));
+
+        controller = spy(new AddUserToGroupController(mockGroupHandler));
+
+        // Inject mockUserApiHandler
+        Field userApiHandlerField = AddUserToGroupController.class.getDeclaredField("userApiHandler");
+        userApiHandlerField.setAccessible(true);
+        userApiHandlerField.set(controller, mockUserApiHandler);
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/AddUserToGroup.fxml"));
+        loader.setControllerFactory(param -> controller);
+        Parent root = loader.load();
+
+        controller.initializeAddToUserGroup(mockUser);
+
+        Stage stage = (Stage) robot.window(0);
+        robot.interact(() -> {
+            stage.setScene(new Scene(root));
+            stage.show();
+        });
+    }
+
     @Start
     public void start(Stage stage) throws Exception {
         mockGroupHandler = mock(GroupHandler.class);
         mockUser = mock(User.class);
+        mockUserApiHandler = mock(UserApiHandler.class);
 
         when(mockUser.getUserGroups()).thenReturn(Arrays.asList("Group1", "Group2"));
 
         controller = new AddUserToGroupController(mockGroupHandler);
+
+        // Inject mockUserApiHandler
+        Field userApiHandlerField = AddUserToGroupController.class.getDeclaredField("userApiHandler");
+        userApiHandlerField.setAccessible(true);
+        userApiHandlerField.set(controller, mockUserApiHandler);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/AddUserToGroup.fxml"));
         loader.setControllerFactory(param -> controller);
@@ -60,36 +91,6 @@ public class AddUserToGroupControllerTest {
 
         stage.setScene(new Scene(root));
         stage.show();
-    }
-
-    /**
-     * Initializes the test environment by loading the AddUserToGroup.fxml and injecting mock dependencies.
-     *
-     * @param robot the FxRobot instance for simulating user interactionglpat-KgP9XTTkqT3V8HVxHaqr
-s
-     * @throws Exception if FXML loading fails
-     */
-    @BeforeEach
-    public void setUp(FxRobot robot) throws Exception {
-        mockGroupHandler = mock(GroupHandler.class);
-        mockUser = mock(User.class);
-        when(mockUser.getUserGroups()).thenReturn(Arrays.asList("Group1", "Group2"));
-
-        // Create a spy of the controller
-        controller = spy(new AddUserToGroupController(mockGroupHandler));
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/AddUserToGroup.fxml"));
-        loader.setControllerFactory(param -> controller);
-        Parent root = loader.load();
-
-        controller.initializeAddToUserGroup(mockUser);
-
-        // Get the primary stage and set the scene
-        Stage stage = (Stage) robot.window(0);
-        robot.interact(() -> {
-            stage.setScene(new Scene(root));
-            stage.show();
-        });
     }
 
      /**
@@ -106,8 +107,8 @@ s
 
         // Set up mocks for successful user retrieval and group assignment
         User newUser = mock(User.class);
-        when(controller.userExists(inputUsername)).thenReturn(true);
-        when(controller.getUser(inputUsername)).thenReturn(Optional.of(newUser));
+        when(mockUserApiHandler.userExists(inputUsername)).thenReturn(true);
+        when(mockUserApiHandler.getUser(inputUsername)).thenReturn(Optional.of(newUser));
         doNothing().when(mockGroupHandler).assignUserToGroup(newUser, selectedGroup);
 
         // Simulate user input and interaction
@@ -119,8 +120,8 @@ s
         robot.clickOn("Add user");
 
         // Verify interactions with mocks
-        verify(controller).userExists(inputUsername);
-        verify(controller).getUser(inputUsername);
+        verify(mockUserApiHandler).userExists(inputUsername);
+        verify(mockUserApiHandler).getUser(inputUsername);
         verify(mockGroupHandler).assignUserToGroup(newUser, selectedGroup);
 
         // Assert feedback label
@@ -151,8 +152,8 @@ s
         robot.clickOn("Add user");
 
         // Verify that no interactions with handlers occur
-        verify(controller, never()).userExists(anyString());
-        verify(controller, never()).getUser(anyString());
+        verify(mockUserApiHandler, never()).userExists(anyString());
+        verify(mockUserApiHandler, never()).getUser(anyString());
         verify(mockGroupHandler, never()).assignUserToGroup(any(User.class), anyString());
 
         Label feedbackLabel = robot.lookup("#feedbackLabel").queryAs(Label.class);
@@ -172,7 +173,7 @@ s
         String inputUsername = "nonExistingUser";
         String selectedGroup = "Group1";
 
-        when(controller.userExists(inputUsername)).thenReturn(false);
+        when(mockUserApiHandler.userExists(inputUsername)).thenReturn(false);
 
         robot.clickOn("#usernameField").write(inputUsername);
         
@@ -181,8 +182,8 @@ s
         robot.interact(() -> listView.getSelectionModel().select(selectedGroup));
         robot.clickOn("Add user");
 
-        verify(controller).userExists(inputUsername);
-        verify(controller, never()).getUser(anyString());
+        verify(mockUserApiHandler).userExists(inputUsername);
+        verify(mockUserApiHandler, never()).getUser(anyString());
         verify(mockGroupHandler, never()).assignUserToGroup(any(User.class), anyString());
 
         Label feedbackLabel = robot.lookup("#feedbackLabel").queryAs(Label.class);
@@ -201,15 +202,15 @@ s
     void testAddUserToGroup_NoGroupSelected(FxRobot robot) throws Exception {
         String inputUsername = "existingUser";
 
-        when(controller.userExists(inputUsername)).thenReturn(true);
+        when(mockUserApiHandler.userExists(inputUsername)).thenReturn(true);
         User newUser = mock(User.class);
-        when(controller.getUser(inputUsername)).thenReturn(Optional.of(newUser));
+        when(mockUserApiHandler.getUser(inputUsername)).thenReturn(Optional.of(newUser));
 
         robot.clickOn("#usernameField").write(inputUsername);
         robot.clickOn("Add user");
 
-        verify(controller).userExists(inputUsername);
-        verify(controller).getUser(inputUsername);
+        verify(mockUserApiHandler).userExists(inputUsername);
+        verify(mockUserApiHandler).getUser(inputUsername);
         verify(mockGroupHandler, never()).assignUserToGroup(any(User.class), anyString());
 
         Label feedbackLabel = robot.lookup("#feedbackLabel").queryAs(Label.class);
@@ -229,9 +230,9 @@ s
         String inputUsername = "existingUser";
         String selectedGroup = "Group1";
 
-        when(controller.userExists(inputUsername)).thenReturn(true);
+        when(mockUserApiHandler.userExists(inputUsername)).thenReturn(true);
         User newUser = mock(User.class);
-        when(controller.getUser(inputUsername)).thenReturn(Optional.of(newUser));
+        when(mockUserApiHandler.getUser(inputUsername)).thenReturn(Optional.of(newUser));
         doThrow(new RuntimeException("Assignment failed")).when(mockGroupHandler).assignUserToGroup(newUser, selectedGroup);
 
         robot.clickOn("#usernameField").write(inputUsername);
@@ -241,8 +242,8 @@ s
         robot.interact(() -> listView.getSelectionModel().select(selectedGroup));
         robot.clickOn("Add user");
 
-        verify(controller).userExists(inputUsername);
-        verify(controller).getUser(inputUsername);
+        verify(mockUserApiHandler).userExists(inputUsername);
+        verify(mockUserApiHandler).getUser(inputUsername);
         verify(mockGroupHandler).assignUserToGroup(newUser, selectedGroup);
 
         Label feedbackLabel = robot.lookup("#feedbackLabel").queryAs(Label.class);
@@ -262,8 +263,8 @@ s
         String inputUsername = "existingUser";
         String selectedGroup = "Group1";
 
-        when(controller.userExists(inputUsername)).thenReturn(true);
-        when(controller.getUser(inputUsername)).thenReturn(Optional.empty());
+        when(mockUserApiHandler.userExists(inputUsername)).thenReturn(true);
+        when(mockUserApiHandler.getUser(inputUsername)).thenReturn(Optional.empty());
 
         robot.clickOn("#usernameField").write(inputUsername);
         
@@ -272,8 +273,8 @@ s
         robot.interact(() -> listView.getSelectionModel().select(selectedGroup));
         robot.clickOn("Add user");
 
-        verify(controller).userExists(inputUsername);
-        verify(controller).getUser(inputUsername);
+        verify(mockUserApiHandler).userExists(inputUsername);
+        verify(mockUserApiHandler).getUser(inputUsername);
         verify(mockGroupHandler, never()).assignUserToGroup(any(User.class), anyString());
 
         Label feedbackLabel = robot.lookup("#feedbackLabel").queryAs(Label.class);
