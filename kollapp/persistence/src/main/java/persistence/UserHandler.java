@@ -1,5 +1,6 @@
 package persistence;
 
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -8,8 +9,11 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import core.User;
 
+@Component
 public class UserHandler {
     private final String userPath;
     private final ObjectMapper mapper = new ObjectMapper();
@@ -19,6 +23,7 @@ public class UserHandler {
      * Initializes the paths for user data and to-do list data storage.
      * Registers the JavaTimeModule with the ObjectMapper to handle Java 8 date and time types.
      */
+    @Autowired
     public UserHandler() {
         this.userPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "users") + File.separator;
         this.mapper.registerModule(new JavaTimeModule());
@@ -47,6 +52,27 @@ public class UserHandler {
 
         File file = new File(userPath + user.getUsername() + ".json");
         mapper.writeValue(file, user);
+    }
+
+    /**
+     * Updates the user information in the corresponding JSON file.
+     * If the user does not exist, an IllegalArgumentException is thrown.
+     *
+     * @param user The User object containing updated information.
+     * @throws IllegalArgumentException if the user file does not exist.
+     * @throws RuntimeException if there is an error writing to the user file.
+     */
+    public void updateUser(User user) {
+        if (!userExists(user.getUsername())) {
+            throw new IllegalArgumentException("User file does not exist for user: " + user.getUsername());
+        }
+
+        File file = new File(userPath + user.getUsername() + ".json");
+        try {
+            mapper.writeValue(file, user);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to update user file for user: " + user.getUsername());
+        }
     }
 
     /**
@@ -95,26 +121,7 @@ public class UserHandler {
         }
     }
 
-    /**
-     * Updates the user information in the corresponding JSON file.
-     * If the user does not exist, an IllegalArgumentException is thrown.
-     *
-     * @param user The User object containing updated information.
-     * @throws IllegalArgumentException if the user file does not exist.
-     * @throws RuntimeException if there is an error writing to the user file.
-     */
-    public void updateUser(User user) {
-        if (!userExists(user.getUsername())) {
-            throw new IllegalArgumentException("User file does not exist for user: " + user.getUsername());
-        }
-
-        File file = new File(userPath + user.getUsername() + ".json");
-        try {
-            mapper.writeValue(file, user);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to update user file for user: " + user.getUsername());
-        }
-    }
+    
 
     /**
      * Checks if a user exists by verifying the presence of a corresponding JSON file.
@@ -123,7 +130,10 @@ public class UserHandler {
      * @return true if the user file exists, false otherwise
      */
     public boolean userExists(String username) {
+        System.out.println("Checking if " + username + " exist");
         File file = new File(userPath + username + ".json");
+        System.out.println("Absolute path: " + file.getAbsolutePath()); 
+        System.out.println(file.exists());
         return file.exists();
     }
 

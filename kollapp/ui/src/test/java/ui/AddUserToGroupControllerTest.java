@@ -25,7 +25,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import persistence.GroupHandler;
-import persistence.UserHandler;
 
 /**
  * Unit tests for the AddUserToGroupController class.
@@ -36,7 +35,6 @@ public class AddUserToGroupControllerTest {
 
     private AddUserToGroupController controller;
     private GroupHandler mockGroupHandler;
-    private UserHandler mockUserHandler;
     private User mockUser;
 
     /**
@@ -48,12 +46,11 @@ public class AddUserToGroupControllerTest {
     @Start
     public void start(Stage stage) throws Exception {
         mockGroupHandler = mock(GroupHandler.class);
-        mockUserHandler = mock(UserHandler.class);
         mockUser = mock(User.class);
 
         when(mockUser.getUserGroups()).thenReturn(Arrays.asList("Group1", "Group2"));
 
-        controller = new AddUserToGroupController(mockUserHandler, mockGroupHandler);
+        controller = new AddUserToGroupController(mockGroupHandler);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/AddUserToGroup.fxml"));
         loader.setControllerFactory(param -> controller);
@@ -66,16 +63,35 @@ public class AddUserToGroupControllerTest {
     }
 
     /**
-     * Resets mocks before each test to ensure test isolation.
+     * Initializes the test environment by loading the AddUserToGroup.fxml and injecting mock dependencies.
      *
-     * @throws Exception if resetting fails
+     * @param robot the FxRobot instance for simulating user interactions
+     * @throws Exception if FXML loading fails
      */
     @BeforeEach
-    public void setUp() throws Exception {
-        reset(mockGroupHandler, mockUserHandler, mockUser);
+    public void setUp(FxRobot robot) throws Exception {
+        mockGroupHandler = mock(GroupHandler.class);
+        mockUser = mock(User.class);
+        when(mockUser.getUserGroups()).thenReturn(Arrays.asList("Group1", "Group2"));
+
+        // Create a spy of the controller
+        controller = spy(new AddUserToGroupController(mockGroupHandler));
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/AddUserToGroup.fxml"));
+        loader.setControllerFactory(param -> controller);
+        Parent root = loader.load();
+
+        controller.initializeAddToUserGroup(mockUser);
+
+        // Get the primary stage and set the scene
+        Stage stage = (Stage) robot.window(0);
+        robot.interact(() -> {
+            stage.setScene(new Scene(root));
+            stage.show();
+        });
     }
 
-    /**
+     /**
      * Tests adding a user to a group successfully.
      *
      * @param robot the FxRobot instance for simulating user interactions
@@ -89,21 +105,21 @@ public class AddUserToGroupControllerTest {
 
         // Set up mocks for successful user retrieval and group assignment
         User newUser = mock(User.class);
-        when(mockUserHandler.userExists(inputUsername)).thenReturn(true);
-        when(mockUserHandler.getUser(inputUsername)).thenReturn(Optional.of(newUser));
+        when(controller.userExists(inputUsername)).thenReturn(true);
+        when(controller.getUser(inputUsername)).thenReturn(Optional.of(newUser));
         doNothing().when(mockGroupHandler).assignUserToGroup(newUser, selectedGroup);
 
         // Simulate user input and interaction
         robot.clickOn("#usernameField").write(inputUsername);
-        
+
         @SuppressWarnings("unchecked")
         ListView<String> listView = robot.lookup("#groupsListView").queryAs(ListView.class);
         robot.interact(() -> listView.getSelectionModel().select(selectedGroup));
         robot.clickOn("Add user");
 
         // Verify interactions with mocks
-        verify(mockUserHandler).userExists(inputUsername);
-        verify(mockUserHandler).getUser(inputUsername);
+        verify(controller).userExists(inputUsername);
+        verify(controller).getUser(inputUsername);
         verify(mockGroupHandler).assignUserToGroup(newUser, selectedGroup);
 
         // Assert feedback label
@@ -134,8 +150,8 @@ public class AddUserToGroupControllerTest {
         robot.clickOn("Add user");
 
         // Verify that no interactions with handlers occur
-        verify(mockUserHandler, never()).userExists(anyString());
-        verify(mockUserHandler, never()).getUser(anyString());
+        verify(controller, never()).userExists(anyString());
+        verify(controller, never()).getUser(anyString());
         verify(mockGroupHandler, never()).assignUserToGroup(any(User.class), anyString());
 
         Label feedbackLabel = robot.lookup("#feedbackLabel").queryAs(Label.class);
@@ -155,7 +171,7 @@ public class AddUserToGroupControllerTest {
         String inputUsername = "nonExistingUser";
         String selectedGroup = "Group1";
 
-        when(mockUserHandler.userExists(inputUsername)).thenReturn(false);
+        when(controller.userExists(inputUsername)).thenReturn(false);
 
         robot.clickOn("#usernameField").write(inputUsername);
         
@@ -164,8 +180,8 @@ public class AddUserToGroupControllerTest {
         robot.interact(() -> listView.getSelectionModel().select(selectedGroup));
         robot.clickOn("Add user");
 
-        verify(mockUserHandler).userExists(inputUsername);
-        verify(mockUserHandler, never()).getUser(anyString());
+        verify(controller).userExists(inputUsername);
+        verify(controller, never()).getUser(anyString());
         verify(mockGroupHandler, never()).assignUserToGroup(any(User.class), anyString());
 
         Label feedbackLabel = robot.lookup("#feedbackLabel").queryAs(Label.class);
@@ -184,15 +200,15 @@ public class AddUserToGroupControllerTest {
     void testAddUserToGroup_NoGroupSelected(FxRobot robot) throws Exception {
         String inputUsername = "existingUser";
 
-        when(mockUserHandler.userExists(inputUsername)).thenReturn(true);
+        when(controller.userExists(inputUsername)).thenReturn(true);
         User newUser = mock(User.class);
-        when(mockUserHandler.getUser(inputUsername)).thenReturn(Optional.of(newUser));
+        when(controller.getUser(inputUsername)).thenReturn(Optional.of(newUser));
 
         robot.clickOn("#usernameField").write(inputUsername);
         robot.clickOn("Add user");
 
-        verify(mockUserHandler).userExists(inputUsername);
-        verify(mockUserHandler).getUser(inputUsername);
+        verify(controller).userExists(inputUsername);
+        verify(controller).getUser(inputUsername);
         verify(mockGroupHandler, never()).assignUserToGroup(any(User.class), anyString());
 
         Label feedbackLabel = robot.lookup("#feedbackLabel").queryAs(Label.class);
@@ -212,9 +228,9 @@ public class AddUserToGroupControllerTest {
         String inputUsername = "existingUser";
         String selectedGroup = "Group1";
 
-        when(mockUserHandler.userExists(inputUsername)).thenReturn(true);
+        when(controller.userExists(inputUsername)).thenReturn(true);
         User newUser = mock(User.class);
-        when(mockUserHandler.getUser(inputUsername)).thenReturn(Optional.of(newUser));
+        when(controller.getUser(inputUsername)).thenReturn(Optional.of(newUser));
         doThrow(new RuntimeException("Assignment failed")).when(mockGroupHandler).assignUserToGroup(newUser, selectedGroup);
 
         robot.clickOn("#usernameField").write(inputUsername);
@@ -224,8 +240,8 @@ public class AddUserToGroupControllerTest {
         robot.interact(() -> listView.getSelectionModel().select(selectedGroup));
         robot.clickOn("Add user");
 
-        verify(mockUserHandler).userExists(inputUsername);
-        verify(mockUserHandler).getUser(inputUsername);
+        verify(controller).userExists(inputUsername);
+        verify(controller).getUser(inputUsername);
         verify(mockGroupHandler).assignUserToGroup(newUser, selectedGroup);
 
         Label feedbackLabel = robot.lookup("#feedbackLabel").queryAs(Label.class);
@@ -245,8 +261,8 @@ public class AddUserToGroupControllerTest {
         String inputUsername = "existingUser";
         String selectedGroup = "Group1";
 
-        when(mockUserHandler.userExists(inputUsername)).thenReturn(true);
-        when(mockUserHandler.getUser(inputUsername)).thenReturn(Optional.empty());
+        when(controller.userExists(inputUsername)).thenReturn(true);
+        when(controller.getUser(inputUsername)).thenReturn(Optional.empty());
 
         robot.clickOn("#usernameField").write(inputUsername);
         
@@ -255,8 +271,8 @@ public class AddUserToGroupControllerTest {
         robot.interact(() -> listView.getSelectionModel().select(selectedGroup));
         robot.clickOn("Add user");
 
-        verify(mockUserHandler).userExists(inputUsername);
-        verify(mockUserHandler).getUser(inputUsername);
+        verify(controller).userExists(inputUsername);
+        verify(controller).getUser(inputUsername);
         verify(mockGroupHandler, never()).assignUserToGroup(any(User.class), anyString());
 
         Label feedbackLabel = robot.lookup("#feedbackLabel").queryAs(Label.class);

@@ -33,7 +33,6 @@ public class ToDoListHandler {
         this.mapper = new ObjectMapper();
         this.mapper.registerModule(new JavaTimeModule());
     }
-
     
     /**
      * Constructs a new ToDoListHandler with the specified file paths for the to-do list and group to-do list.

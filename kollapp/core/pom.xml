@@ -63,6 +63,12 @@
             <artifactId>mockito-core</artifactId>
             <!-- Version will be inherited from the parent POM -->
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>5.3.23</version>
+        </dependency>
     </dependencies>
     <build>
         <!-- Inherits plugins from parent -->

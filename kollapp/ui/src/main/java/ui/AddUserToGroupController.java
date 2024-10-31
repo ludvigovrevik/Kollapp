@@ -1,15 +1,23 @@
 package ui;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpRequest;
+import java.net.http.HttpClient;
+import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Optional;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import core.User;
 import persistence.GroupHandler;
-import persistence.UserHandler;
 
 /**
  * Controller class for adding a user to an existing group.
@@ -27,7 +35,7 @@ public class AddUserToGroupController {
     @FXML
     private Label feedbackLabel;
     
-    private final UserHandler userHandler;
+    private final HttpClient httpClient;
     private final GroupHandler groupHandler;
 
     // Constants for Feedback Messages
@@ -41,18 +49,13 @@ public class AddUserToGroupController {
 
     // Constructor with Dependency Injection for Testability
     public AddUserToGroupController() {
-        this.userHandler = new UserHandler();
+        this.httpClient = HttpClient.newHttpClient();
         this.groupHandler = new GroupHandler();
     }
 
-    /**
-     * Constructs a new AddUserToGroupController with the specified user and group handlers.
-     *
-     * @param userHandler the user handler
-     * @param groupHandler the group handler
-     */
-    public AddUserToGroupController(UserHandler userHandler, GroupHandler groupHandler) {
-        this.userHandler = userHandler;
+    // Constructor with Dependency Injection for Testability
+    public AddUserToGroupController(GroupHandler groupHandler) {
+        this.httpClient = HttpClient.newHttpClient();
         this.groupHandler = groupHandler;
     }
 
@@ -92,7 +95,7 @@ public class AddUserToGroupController {
         }
 
         // Retrieve User
-        Optional<User> optionalUser = userHandler.getUser(usernameInput);
+        Optional<User> optionalUser = getUser(usernameInput);
         if (optionalUser.isEmpty()) {
             displayFeedback(USER_RETRIEVAL_FAILED_MSG, Color.RED);
             return;
@@ -127,7 +130,7 @@ public class AddUserToGroupController {
             return USERNAME_EMPTY_MSG;
         }
 
-        if (!userHandler.userExists(username)) {
+        if (!userExists(username)) {
             return USER_NOT_EXIST_MSG;
         }
 
@@ -151,4 +154,61 @@ public class AddUserToGroupController {
         feedbackLabel.setText(message);
         feedbackLabel.setTextFill(color);
     }
+
+    /**
+     * Checks if a user exists by making an HTTP GET request to the API.
+     *
+     * @param username The username to check.
+     * @return true if the user exists; false otherwise.
+     */
+    protected boolean userExists(String username) {
+        String url = "http://localhost:8080/api/v1/users/exists/" + username;
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .GET()
+                .build();
+        try {
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println(response.statusCode());
+            if (response.statusCode() == 200) {
+                return Boolean.parseBoolean(response.body().trim());
+            } else {
+                // Handle error responses as needed
+                return false;
+            }
+        } catch(IOException | InterruptedException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Retrieves a user by making an HTTP GET request to the API.
+     *
+     * @param username The username of the user to retrieve.
+     * @return An Optional containing the User if found; otherwise, an empty Optional.
+     */
+    protected Optional<User> getUser(String username) {
+        String url = "http://localhost:8080/api/v1/users/" + username;
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .GET()
+                .build();
+        try {
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                String responseBody = response.body();
+                ObjectMapper objectMapper = new ObjectMapper();
+                User user = objectMapper.readValue(responseBody, User.class);
+                return Optional.of(user);
+            } else {
+                return Optional.empty();
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+
 }
