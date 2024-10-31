@@ -4,6 +4,7 @@ import core.Task;
 import core.ToDoList;
 import core.User;
 import core.UserGroup;
+import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -12,12 +13,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import persistence.GroupHandler;
 import persistence.ToDoListHandler;
 
@@ -45,6 +49,27 @@ public class KollAppController {
 
     @FXML
     private Button groupChatButton;
+
+    @FXML
+    private Button addButton;
+
+    @FXML
+    private TableView<Task> taskTable;
+
+    @FXML
+    private TableColumn<Task, Boolean> checkBoxColumn;
+
+    @FXML
+    private TableColumn<Task, String> tableColumn;
+
+    @FXML
+    private TableColumn<Task, String> dateColumn;
+
+    @FXML
+    private TableColumn<Task, String> descriptionColumn;
+
+    @FXML
+    private TableColumn<Task, String> priorityColumn;
     
     private ToDoList toDoList;
     private User user;
@@ -59,9 +84,8 @@ public class KollAppController {
         personal.setOnMouseClicked(event -> handleGroupClick(this.user.getUsername()));
     }
 
-     /**
-     * Initializes the controller, setting event handlers for labels 
-     * and preparing the interface for interaction.
+    /**
+     * Initializes the KollAppController by setting up the view and loading the user's to-do list.
      */
     public void initialize() {
         // Set the label to act like a button
@@ -74,7 +98,40 @@ public class KollAppController {
         VBox.setVgrow(vBoxContainer, Priority.ALWAYS);
         groupInView = null;
 
+        // Set the style for the "Add" button
+        addButton.setOnMouseEntered(event -> handleAddButtonHover());
+        addButton.setOnMouseExited(event -> handleAddButtonHoverExit());
+
+        // Hide the group chat button by default
         groupChatButton.setVisible(false);
+    }
+
+    /**
+     * Handles the hover effect for the "Add" button.
+     */
+    @FXML
+    private void handleAddButtonHover() {
+        addButton.setStyle("-fx-background-color: #096800; -fx-background-radius: 50%; -fx-cursor: hand; -fx-text-fill: #9df084;");
+        animateButton(addButton, 1.05);
+    }
+
+    @FXML
+    private void handleAddButtonHoverExit() {
+        addButton.setStyle("-fx-background-color: #9df084; -fx-background-radius: 50%; -fx-text-fill: #096800;");
+        animateButton(addButton, 1.0);
+    }
+
+    /**
+     * Animates the button size change.
+     *
+     * @param button the button to animate
+     * @param scale  the target scale
+     */
+    private void animateButton(Button button, double scale) {
+        ScaleTransition st = new ScaleTransition(Duration.millis(200), button);
+        st.setToX(scale);
+        st.setToY(scale);
+        st.play();
     }
 
     /**
@@ -108,9 +165,12 @@ public class KollAppController {
         Label groupLabel = new Label(groupName);
 
         // Set style to make the label look like a button
-        groupLabel.setStyle("-fx-cursor: hand; -fx-background-color: #7aadff; -fx-text-fill: white; -fx-padding: 10px; -fx-alignment: center;");
+        groupLabel.setStyle("-fx-cursor: hand; -fx-font-size: 15px; -fx-background-color: #7aadff; -fx-text-fill: white; -fx-padding: 15px; -fx-alignment: center;");
+        groupLabel.setOnMouseEntered(event -> groupLabel.setStyle("-fx-cursor: hand; -fx-font-size: 15px; -fx-background-color:#6999e6; -fx-text-fill: white; -fx-padding: 15px; -fx-alignment: center;"));
+        groupLabel.setOnMouseExited(event -> groupLabel.setStyle("-fx-cursor: hand; -fx-font-size: 15px; -fx-background-color:#7aadff; -fx-text-fill: white; -fx-padding: 15px; -fx-alignment: center;"));
+        
         groupLabel.setPrefHeight(50);
-        groupLabel.setPrefWidth(200);
+        groupLabel.setPrefWidth(209);
         groupLabel.setAlignment(Pos.CENTER); // Center the text
 
         // Set up the click event
@@ -157,12 +217,12 @@ public class KollAppController {
      */
     @FXML
     private void handleLabelClick(MouseEvent event) {
-        if (completedLabel.getText().equals("Completed")) {
+        if (completedLabel.getText().equals("Completed Tasks")) {
             this.updateGridViewCompletedTasks();
-            completedLabel.setText("Tasks");
-        } else if (completedLabel.getText().equals("Tasks")) {
+            completedLabel.setText("Pending Tasks");
+        } else if (completedLabel.getText().equals("Pending Tasks")) {
             this.updateGrid();
-            completedLabel.setText("Completed");
+            completedLabel.setText("Completed Tasks");
         }
     }
     

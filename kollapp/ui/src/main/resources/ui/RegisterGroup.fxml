@@ -9,7 +9,7 @@
    <children>
       <Label layoutX="28.0" layoutY="31.0" text="Create a new group" />
       <TextField fx:id="groupNameField" layoutX="28.0" layoutY="59.0" prefHeight="25.0" prefWidth="252.0" promptText="Enter group name" />
-      <Button layoutX="294.0" layoutY="59.0" mnemonicParsing="false" onAction="#createGroup" prefHeight="25.0" prefWidth="122.0" text="Create group" />
+      <Button layoutX="294.0" layoutY="59.0" mnemonicParsing="false" onAction="#createGroup" prefHeight="25.0" prefWidth="122.0" stylesheets="@css/styles.css" text="Create group" />
       <Label fx:id="errorLabel" layoutX="183.0" layoutY="27.0" prefHeight="25.0" prefWidth="233.0" textAlignment="RIGHT" textFill="RED" />
    </children>
 </Pane>
