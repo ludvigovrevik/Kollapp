@@ -65,7 +65,8 @@ public class AddUserToGroupControllerTest {
     /**
      * Initializes the test environment by loading the AddUserToGroup.fxml and injecting mock dependencies.
      *
-     * @param robot the FxRobot instance for simulating user interactions
+     * @param robot the FxRobot instance for simulating user interactionglpat-KgP9XTTkqT3V8HVxHaqr
+s
      * @throws Exception if FXML loading fails
      */
     @BeforeEach

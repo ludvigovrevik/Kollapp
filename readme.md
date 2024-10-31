@@ -105,6 +105,11 @@ To build and launch **KollApp**, follow these steps:
    mvn javafx:run
    ```
 
+**4. Run Springboot**
+```bash
+cd /kollapp/api/src/main/java/com/gr2409/kollapp/api/
+mvn springboot:run
+```
 ---
 
 ## **🧪 Testing and Code Quality**
