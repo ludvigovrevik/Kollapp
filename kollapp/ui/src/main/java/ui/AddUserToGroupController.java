@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import api.GroupApiHandler;
 import api.UserApiHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
@@ -36,7 +37,7 @@ public class AddUserToGroupController {
     @FXML
     private Label feedbackLabel;
     
-    private final GroupHandler groupHandler;
+    private final GroupApiHandler groupApiHandler;
     private final UserApiHandler userApiHandler;
     // Constants for Feedback Messages
     private static final String USERNAME_EMPTY_MSG = "Username is empty.";
@@ -50,13 +51,7 @@ public class AddUserToGroupController {
     // Constructor with Dependency Injection for Testability
     public AddUserToGroupController() {
         this.userApiHandler = new UserApiHandler();
-        this.groupHandler = new GroupHandler();
-    }
-
-    // Constructor with Dependency Injection for Testability
-    public AddUserToGroupController(GroupHandler groupHandler) {
-        this.userApiHandler = new UserApiHandler();
-        this.groupHandler = groupHandler;
+        this.groupApiHandler = new GroupApiHandler();
     }
 
     /**
@@ -88,6 +83,7 @@ public class AddUserToGroupController {
         String usernameInput = usernameField.getText().trim();
 
         // Validate Username
+        System.out.println("Username: " + usernameInput);
         String validationError = validateUsername(usernameInput);
         if (validationError != null) {
             displayFeedback(validationError, Color.RED);
@@ -111,12 +107,14 @@ public class AddUserToGroupController {
         }
 
         // Assign User to Group
-        try {
-            groupHandler.assignUserToGroup(userToAdd, selectedGroup);
+        // Assign User to Group via API
+        boolean success = groupApiHandler.assignUserToGroup(usernameInput, selectedGroup);
+        if (success) {
             displayFeedback(ADD_USER_SUCCESS_MSG, Color.GREEN);
-        } catch (Exception e) {
+        } else {
             displayFeedback(ADD_USER_FAILURE_MSG, Color.RED);
         }
+
     }
 
     /**

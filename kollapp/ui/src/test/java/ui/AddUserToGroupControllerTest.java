@@ -48,7 +48,7 @@ public class AddUserToGroupControllerTest {
 
         when(mockUser.getUserGroups()).thenReturn(Arrays.asList("Group1", "Group2"));
 
-        controller = spy(new AddUserToGroupController(mockGroupHandler));
+        controller = spy(new AddUserToGroupController());
 
         // Inject mockUserApiHandler
         Field userApiHandlerField = AddUserToGroupController.class.getDeclaredField("userApiHandler");
@@ -76,7 +76,7 @@ public class AddUserToGroupControllerTest {
 
         when(mockUser.getUserGroups()).thenReturn(Arrays.asList("Group1", "Group2"));
 
-        controller = new AddUserToGroupController(mockGroupHandler);
+        controller = new AddUserToGroupController();
 
         // Inject mockUserApiHandler
         Field userApiHandlerField = AddUserToGroupController.class.getDeclaredField("userApiHandler");

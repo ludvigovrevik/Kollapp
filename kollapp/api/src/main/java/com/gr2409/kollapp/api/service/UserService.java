@@ -14,7 +14,7 @@ import core.User;
 public class UserService {
     private final UserHandler userHandler;
     
-    private String userPath = Paths.get("Prosjektet", "gr2409", "kollapp", "persistence", "src", "main", "java",
+    private String userPath = Paths.get("kollapp", "persistence", "src", "main", "java",
             "persistence", "users") + File.separator;
 
     @Autowired

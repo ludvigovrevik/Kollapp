@@ -8,6 +8,7 @@ module ui {
     requires java.net.http;
     requires transitive com.fasterxml.jackson.databind;
     
+    opens api to com.fasterxml.jackson.databind;
     opens ui to javafx.graphics, javafx.fxml;
 
     exports ui;

@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -11,6 +14,7 @@ import core.ToDoList;
 import core.User;
 import core.UserGroup;
 
+@Component
 public class GroupHandler {
     private final String groupPath;
     private final String groupToDoListPath;
@@ -29,6 +33,7 @@ public class GroupHandler {
      * 
      * Registers the JavaTimeModule with the ObjectMapper and initializes the UserHandler instance.
      */
+    @Autowired
     public GroupHandler() {
         this.groupPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "groups") + File.separator;
         this.groupToDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists") + File.separator;
@@ -117,6 +122,25 @@ public class GroupHandler {
             mapper.writeValue(fileForGroup, group);
         } catch (IOException e) {
             throw new RuntimeException("Failed to update group file");
+        }
+    }
+
+    /**
+     * Updates the group information in the corresponding JSON file.
+     *
+     * @param group the UserGroup object containing updated information
+     * @throws IllegalArgumentException if the group file does not exist
+     */
+    public void updateGroup(UserGroup group) {
+        if (!groupExists(group.getGroupName())) {
+            throw new IllegalArgumentException("Group does not exist: " + group.getGroupName());
+        }
+
+        File groupFile = new File(groupPath + group.getGroupName() + ".json");
+        try {
+            mapper.writeValue(groupFile, group);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to update group file: " + groupFile.getAbsolutePath());
         }
     }
 

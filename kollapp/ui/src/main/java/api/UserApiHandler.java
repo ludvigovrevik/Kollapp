@@ -54,6 +54,7 @@ public class UserApiHandler {
                 .build();
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println(response.body());
             System.out.println(response.statusCode());
             if (response.statusCode() == 200) {
                 return Boolean.parseBoolean(response.body().trim());

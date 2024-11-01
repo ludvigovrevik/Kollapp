@@ -130,10 +130,7 @@ public class UserHandler {
      * @return true if the user file exists, false otherwise
      */
     public boolean userExists(String username) {
-        System.out.println("Checking if " + username + " exist");
         File file = new File(userPath + username + ".json");
-        System.out.println("Absolute path: " + file.getAbsolutePath()); 
-        System.out.println(file.exists());
         return file.exists();
     }
 
