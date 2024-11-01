@@ -111,7 +111,7 @@ public class KollAppController {
         groupChatButton.setVisible(false);
 
         // Set the initial view path to personal tasks
-        currentlyViewingPath.setText("Currently Viewing: " + this.user.getUsername() + " → Pending Tasks");
+        currentlyViewingPath.setText("Currently Viewing: My Pending Tasks");
     }
 
     /**

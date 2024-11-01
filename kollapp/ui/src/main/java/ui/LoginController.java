@@ -77,6 +77,7 @@ public class LoginController {
             stage.show();
 
         } catch (IOException e) {
+            System.out.println(e.getMessage());
             loginErrorMessage.setText("Failed to load the next scene.");
         }
     }
