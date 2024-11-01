@@ -72,6 +72,9 @@ public class KollAppController {
 
     @FXML
     private TableColumn<Task, Boolean> checkBoxColumn;
+
+    @FXML
+    private Label currentlyViewingPath;
     
     private ToDoList toDoList;
     private User user;
@@ -195,11 +198,13 @@ public class KollAppController {
         if (groupName.equals(this.user.getUsername())) {
             changeCurrentTaskView(this.user.getUsername());
             groupChatButton.setVisible(false);
+            currentlyViewingPath.setText("Currently Viewing: " + this.user.getUsername() + " → Pending Tasks"); // Short format for personal tasks
         } else if (groupNames.contains(groupName)) {
             this.groupNameChat = groupName;
             groupChatButton.setVisible(true);
             System.out.println("Perform action for " + groupName);
             changeCurrentTaskView(groupName);
+            currentlyViewingPath.setText("Currently Viewing: " + this.user.getUsername() + " → " + groupName + " → Pending Tasks"); // Short format for group tasks
         }
         updateGrid();
         updateTableView();
@@ -221,17 +226,32 @@ public class KollAppController {
      */
     @FXML
     private void handleLabelClick(MouseEvent event) {
-        if (completedLabel.getText().equals("Completed Tasks")) {
+        boolean isViewingCompletedTasks = completedLabel.getText().equals("Completed Tasks");
+
+        // Toggle task view based on current label state
+        if (isViewingCompletedTasks) {
+            // Switch to Completed Tasks view
             this.updateGridViewCompletedTasks();
             this.updateTableViewCompletedTasks();
             completedLabel.setText("Pending Tasks");
-        } else if (completedLabel.getText().equals("Pending Tasks")) {
+        } else {
+            // Switch to Pending Tasks view
             this.updateGrid();
             this.updateTableView();
             completedLabel.setText("Completed Tasks");
         }
+
+        // Update currentlyViewingPath based on group or personal view
+        String viewType = isViewingCompletedTasks ? "Completed Tasks" : "Pending Tasks";
+        if (groupInView == null) {
+            // Personal task view
+            currentlyViewingPath.setText("Currently Viewing: " + this.user.getUsername() + " → " + viewType);
+        } else {
+            // Group task view
+            currentlyViewingPath.setText("Currently Viewing: " + this.user.getUsername() + " → " + groupInView.getGroupName() + " → " + viewType);
+        }
     }
-    
+
     /**
      * Updates the task grid view by clearing existing tasks and populating it with
      * tasks from the to-do list that are not completed. Each task is displayed with
