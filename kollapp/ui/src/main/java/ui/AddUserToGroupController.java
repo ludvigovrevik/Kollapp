@@ -106,7 +106,6 @@ public class AddUserToGroupController {
         } else {
             displayFeedback(ADD_USER_FAILURE_MSG, Color.RED);
         }
-
     }
 
     /**

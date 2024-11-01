@@ -31,12 +31,24 @@ public class GroupController {
         public void setGroupName(String groupName) { this.groupName = groupName; }
     }
 
-    public static class AssignUserRequest {
+    // Define a request class if not already defined
+    public class AssignUserRequest {
         private String username;
 
-        // Getters and setters
-        public String getUsername() { return username; }
-        public void setUsername(String username) { this.username = username; }
+        // Constructors, getters, and setters
+        public AssignUserRequest() {}
+
+        public AssignUserRequest(String username) {
+            this.username = username;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
     }
 
     // GET /groups/{groupName}
@@ -84,16 +96,20 @@ public class GroupController {
         }
     }
 
-    // POST /groups/{groupName}/assignUser
     @PostMapping("/{groupName}/assignUser")
-    public ResponseEntity<Void> assignUserToGroup(@PathVariable String groupName, @RequestBody AssignUserRequest request) {
-        try {
-            groupService.assignUserToGroup(request.getUsername(), groupName);
-            return ResponseEntity.ok().build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+public ResponseEntity<Void> assignUserToGroup(@PathVariable String groupName, @RequestParam String username) {
+    try {
+        System.out.println("Assigning user to group: " + username);
+        groupService.assignUserToGroup(username, groupName);
+        return ResponseEntity.ok().build();
+    } catch (IllegalArgumentException e) {
+        System.err.println("IllegalArgumentException: " + e.getMessage());
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    } catch (Exception e) {
+        System.err.println("Exception: " + e.getMessage());
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
+}
 }

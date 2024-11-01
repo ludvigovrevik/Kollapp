@@ -44,9 +44,14 @@ public class GroupService {
     }
 
     public void assignUserToGroup(String username, String groupName) {
-        User user = userService.getUser(username)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        groupHandler.assignUserToGroup(user, groupName);
+        try {
+            User user = userService.getUser(username)
+                    .orElseThrow(() -> new IllegalArgumentException("User not found"));
+            groupHandler.assignUserToGroup(user, groupName);
+        } catch (Exception e) {
+            System.err.println("Exception in groupService.assignUserToGroup: " + e.getMessage());
+            throw e;
+        }
     }
 
     public void updateGroup(UserGroup group) {

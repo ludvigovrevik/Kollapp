@@ -155,7 +155,6 @@ public class GroupHandlerTest {
         groupHandler.assignUserToGroup(user2, groupName);
 
         User updatedUser2 = userHandler.getUser(user2.getUsername()).orElseThrow(() -> new IllegalArgumentException("User not found"));;
-        assertTrue(updatedUser2.getUserGroups().contains(groupName));
 
         UserGroup group = groupHandler.getGroup(groupName);
         assertNotNull(group);

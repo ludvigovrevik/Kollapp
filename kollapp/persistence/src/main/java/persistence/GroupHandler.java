@@ -115,15 +115,14 @@ public class GroupHandler {
      * @throws RuntimeException if there is an error updating the group file
      */
     public void assignUserToGroup(User user, String groupName) {
-        UserGroup group = getGroup(groupName);
-        group.addUser(user.getUsername());
-        user.addUserGroup(groupName);
-        userHandler.updateUser(user);
-        
-        File fileForGroup = new File(groupPath + groupName + ".json");
         try {
+            UserGroup group = getGroup(groupName);
+            group.addUser(user.getUsername());
+    
+            File fileForGroup = new File(groupPath + groupName + ".json");
             mapper.writeValue(fileForGroup, group);
-        } catch (IOException e) {
+        } catch (Exception e) {
+            System.err.println("Exception in groupHandler.assignUserToGroup: " + e.getMessage());
             throw new RuntimeException("Failed to update group file");
         }
     }

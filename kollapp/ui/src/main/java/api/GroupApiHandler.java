@@ -2,9 +2,11 @@ package api;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,24 +31,24 @@ public class GroupApiHandler {
      */
     public boolean assignUserToGroup(String username, String groupName) {
         String url = "http://localhost:8080/api/v1/groups/" + groupName + "/assignUser";
+        
+        // Encode the form data
+        String formData = "username=" + URLEncoder.encode(username, StandardCharsets.UTF_8);
 
-        // Create the request body
-        AssignUserRequest requestBody = new AssignUserRequest(username);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .POST(HttpRequest.BodyPublishers.ofString(formData))
+                .build();
 
         try {
-            String jsonBody = objectMapper.writeValueAsString(requestBody);
-
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(url))
-                    .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
-                    .header("Content-Type", "application/json")
-                    .build();
-
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-            // Check if the response status code indicates success
-            return response.statusCode() == 200 || response.statusCode() == 201;
+            // Log response code for debugging
+            System.out.println("Response status code: " + response.statusCode());
+            System.out.println("Response body: " + response.body());
 
+            return response.statusCode() == 200 || response.statusCode() == 201;
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             return false;
