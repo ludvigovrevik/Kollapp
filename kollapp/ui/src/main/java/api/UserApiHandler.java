@@ -160,12 +160,11 @@ public class UserApiHandler {
                 String message = String.valueOf(responseBody);
                 return message; 
             } else {
-                return "Error: " + response.statusCode() + " - " + response.body());
+                return "Error: " + response.statusCode() + " - " + response.body();
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return "An error occurred while validating the user.";
         }
     }
-
-    
 }
