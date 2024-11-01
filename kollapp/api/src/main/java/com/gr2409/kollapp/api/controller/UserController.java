@@ -26,11 +26,11 @@ public class UserController {
                       .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
     
-   // POST /users
+    // POST /users
     @PostMapping
-    public ResponseEntity<Void> createUser(@RequestBody User user) {
+    public ResponseEntity<Void> saveUser(@RequestParam User user) {
         try {
-            userService.createUser(user);
+            userService.saveUser(user);
             return ResponseEntity.ok().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
@@ -78,23 +78,25 @@ public class UserController {
         }
     }
 
-    // // POST /users/login
-    // @PostMapping("/login")
-    // public User loadUser(@RequestBody LoginRequest loginRequest) {
-    //     return userService.loadUser(loginRequest.getUsername(), loginRequest.getPassword());
-    // }
-
-    
+    // POST /users/login
+    @PostMapping("/login")
+    public ResponseEntity<User> loadUser(@RequestParam String username, @RequestParam String password) {
+        return userService.loadUser(username, password)
+            .map(user -> ResponseEntity.ok(user))
+            .orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+    }
 
     // POST /users/validate
-    // @PostMapping("/validate")
-    // public boolean confirmNewValidUser(@RequestBody UserValidationRequest userValidationRequest) {
-    //     return userService.confirmNewValidUser(
-    //         userValidationRequest.getUsername(),
-    //         userValidationRequest.getPassword(),
-    //         userValidationRequest.getConfirmPassword()
-    //     );
-    // }
+    @PostMapping("/validate")
+    public boolean confirmNewValidUser(@RequestParam String username, @RequestParam String password, @RequestParam String confirmPassword) {
+        return userService.confirmNewValidUser(username, password, confirmPassword);
+    }
+
+    // POST /users/validate/message
+    @PostMapping("validate/message")
+    public String getUserValidationErrorMessage(@RequestParam String username, @RequestParam String password, @RequestParam String confirmPassword) {
+        return userService.getUserValidationErrorMessage(username, password, confirmPassword);
+    }
 }
 
 

@@ -26,7 +26,7 @@ public class UserService {
         return userHandler.getUser(username);
     }
 
-    public void createUser(User user) {
+    public void saveUser(User user) {
         try {
             userHandler.saveUser(user);
         } catch (IOException e) {
@@ -40,7 +40,6 @@ public class UserService {
         } catch (Exception e) {
             throw new IllegalArgumentException();
         }
-        
     }
 
     public void updateUser(String username) {
@@ -50,10 +49,9 @@ public class UserService {
         } catch (Exception e) {
             throw new IllegalArgumentException();
         }
-        
     }
 
-    public User loadUser(String username, String password) {
+    public Optional<User> loadUser(String username, String password) {
         return userHandler.loadUser(username, password);
     }
 
@@ -68,5 +66,4 @@ public class UserService {
     public String getUserValidationErrorMessage(String username, String password, String confirmPassword) {
         return userHandler.getUserValidationErrorMessage(username, password, confirmPassword);
     }
-
 }
