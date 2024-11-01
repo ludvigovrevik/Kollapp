@@ -5,6 +5,7 @@ import core.ToDoList;
 import core.User;
 import core.UserGroup;
 import javafx.animation.ScaleTransition;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -13,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
@@ -54,13 +56,10 @@ public class KollAppController {
     private Button addButton;
 
     @FXML
-    private TableView<Task> taskTable;
+    private TableView<Task> tableView;
 
     @FXML
-    private TableColumn<Task, Boolean> checkBoxColumn;
-
-    @FXML
-    private TableColumn<Task, String> tableColumn;
+    private TableColumn<Task, String> taskNameColumn;
 
     @FXML
     private TableColumn<Task, String> dateColumn;
@@ -70,6 +69,9 @@ public class KollAppController {
 
     @FXML
     private TableColumn<Task, String> priorityColumn;
+
+    @FXML
+    private TableColumn<Task, Boolean> checkBoxColumn;
     
     private ToDoList toDoList;
     private User user;
@@ -111,13 +113,13 @@ public class KollAppController {
      */
     @FXML
     private void handleAddButtonHover() {
-        addButton.setStyle("-fx-background-color: #096800; -fx-background-radius: 50%; -fx-cursor: hand; -fx-text-fill: #9df084;");
+        addButton.setStyle("-fx-background-color: #096800; -fx-cursor: hand; -fx-text-fill: #9df084;");
         animateButton(addButton, 1.05);
     }
 
     @FXML
     private void handleAddButtonHoverExit() {
-        addButton.setStyle("-fx-background-color: #9df084; -fx-background-radius: 50%; -fx-text-fill: #096800;");
+        addButton.setStyle("-fx-background-color: #9df084; -fx-text-fill: #096800;");
         animateButton(addButton, 1.0);
     }
 
@@ -143,6 +145,7 @@ public class KollAppController {
         this.toDoList = toDoListHandler.loadToDoList(user);
         this.user = user;
         updateGrid();
+        updateTableView();
     }
 
     /**
@@ -199,6 +202,7 @@ public class KollAppController {
             changeCurrentTaskView(groupName);
         }
         updateGrid();
+        updateTableView();
     }
 
     /**
@@ -219,9 +223,11 @@ public class KollAppController {
     private void handleLabelClick(MouseEvent event) {
         if (completedLabel.getText().equals("Completed Tasks")) {
             this.updateGridViewCompletedTasks();
+            this.updateTableViewCompletedTasks();
             completedLabel.setText("Pending Tasks");
         } else if (completedLabel.getText().equals("Pending Tasks")) {
             this.updateGrid();
+            this.updateTableView();
             completedLabel.setText("Completed Tasks");
         }
     }
@@ -271,6 +277,7 @@ public class KollAppController {
                         toDoListHandler.updateGroupToDoList(groupInView, toDoList);
                     }
                     updateGrid();
+                    updateTableView();
                 }
             });
 
@@ -282,6 +289,117 @@ public class KollAppController {
             GridPane.setVgrow(taskLabel, Priority.ALWAYS);
             row++;
         }
+    }
+
+    @FXML
+    public void updateTableView() {
+        // Clear the current items in the TableView
+        tableView.getItems().clear();
+    
+        // Get the list of incomplete tasks and add them to the TableView
+        List<Task> tasks = toDoList.getTasks();
+        for (Task task : tasks) {
+            if (!task.isCompleted()) { // Only add incomplete tasks
+                tableView.getItems().add(task);
+            }
+        }
+    
+        // Set up the CheckBox column to mark tasks as completed when checked
+        checkBoxColumn.setCellFactory(column -> new TableCell<>() {
+            private final CheckBox completeCheckBox = new CheckBox();
+    
+            @Override
+            protected void updateItem(Boolean item, boolean empty) {
+                super.updateItem(item, empty);
+    
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    Task task = getTableView().getItems().get(getIndex());
+    
+                    // Set the CheckBox state to reflect the task's completion status
+                    completeCheckBox.setSelected(task.isCompleted());
+    
+                    // Set action listener on the CheckBox
+                    completeCheckBox.setOnAction(event -> {
+                        if (completeCheckBox.isSelected()) {
+                            // Mark the task as completed
+                            task.setCompleted(true);
+    
+                            // Update the persistence layer
+                            if (groupInView == null) {
+                                toDoListHandler.updateToDoList(user, toDoList);
+                            } else {
+                                toDoListHandler.updateGroupToDoList(groupInView, toDoList);
+                            }
+    
+                            // Remove the task from the table directly without calling updateTableView
+                            tableView.getItems().remove(task);
+                        }
+                    });
+    
+                    // Display the CheckBox in the cell
+                    setGraphic(completeCheckBox);
+                }
+            }
+        });
+    
+        // Configure Task Name column
+        taskNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTaskName()));
+    
+        // Configure Date column with centered alignment
+        dateColumn.setCellValueFactory(cellData -> {
+            LocalDate dateTime = cellData.getValue().getDateTime();
+            String date = dateTime != null ? dateTime.format(DateTimeFormatter.ofPattern("MMM dd, yyyy")) : "";
+            return new SimpleStringProperty(date);
+        });
+        dateColumn.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER); // Center-align text in the cell
+                }
+            }
+        });
+    
+        // Configure Description column
+        descriptionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescription()));
+    
+        // Configure Priority column with centered alignment and color coding
+        priorityColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPriority()));
+        priorityColumn.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setStyle(""); // Clear any style if the cell is empty
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER); // Center-align text in the cell
+                    
+                    // Apply color based on priority level
+                    switch (item) {
+                        case "Low":
+                            setStyle("-fx-text-fill: green;"); // Green for Low
+                            break;
+                        case "Medium":
+                            setStyle("-fx-text-fill: orange;"); // Yellow for Medium
+                            break;
+                        case "High":
+                            setStyle("-fx-text-fill: red;"); // Red for High
+                            break;
+                        default:
+                            setStyle(""); // Clear style for unexpected values
+                            break;
+                    }
+                }
+            }
+        });
     }
 
     @FXML
@@ -337,6 +455,66 @@ public class KollAppController {
         }
     }
 
+    @FXML
+    public void updateTableViewCompletedTasks() {
+        // Clear the current items in the TableView
+        tableView.getItems().clear();
+    
+        // Get the list of completed tasks
+        List<Task> tasks = toDoList.getTasks();
+        for (Task task : tasks) {
+            if (task.isCompleted()) {
+                tableView.getItems().add(task);
+            }
+        }
+    
+        // Set up the CheckBox column to remove tasks when checked
+        checkBoxColumn.setCellFactory(column -> new TableCell<>() {
+            private final CheckBox removeCheckBox = new CheckBox();
+    
+            @Override
+            protected void updateItem(Boolean item, boolean empty) {
+                super.updateItem(item, empty);
+    
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(removeCheckBox);
+                    Task task = getTableView().getItems().get(getIndex());
+    
+                    // Set CheckBox state and action
+                    removeCheckBox.setSelected(false); // Unchecked by default
+                    removeCheckBox.setOnAction(event -> {
+                        if (removeCheckBox.isSelected()) {
+                            // Remove task from ToDoList
+                            toDoList.removeTask(task);
+    
+                            // Update persistence layer
+                            if (groupInView == null) {
+                                toDoListHandler.updateToDoList(user, toDoList);
+                            } else {
+                                toDoListHandler.updateGroupToDoList(groupInView, toDoList);
+                            }
+    
+                            // Refresh the TableView to reflect the task removal
+                            updateTableViewCompletedTasks();
+                        }
+                    });
+                }
+            }
+        });
+    
+        // Configure other columns to display task data
+        taskNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTaskName()));
+        dateColumn.setCellValueFactory(cellData -> {
+            LocalDate dateTime = cellData.getValue().getDateTime();
+            String date = dateTime != null ? dateTime.format(DateTimeFormatter.ofPattern("MMM dd, yyyy")) : "";
+            return new SimpleStringProperty(date);
+        });
+        descriptionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescription()));
+        priorityColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPriority()));
+    }
+
     private CheckBox getCheckBox(Task currentTask) {
         CheckBox checkBox = new CheckBox();
 
@@ -349,6 +527,7 @@ public class KollAppController {
                 toDoListHandler.updateGroupToDoList(groupInView, toDoList);
             }
             updateGrid(); // Refresh the grid
+            updateTableView();
         });
         return checkBox;
     }

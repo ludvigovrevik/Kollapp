@@ -15,10 +15,11 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.KollAppController">
    <children>
+      <Label fx:id="currentlyViewingPath" layoutX="232.0" layoutY="445.0" prefHeight="28.0" prefWidth="317.0" text="Currently Viewing: kristin → Completed Tasks" textFill="#7aadff" />
        
-                        <Button fx:id="addButton" layoutX="672.0" layoutY="453.0" mnemonicParsing="false" onAction="#showDialog" prefHeight="44.0" prefWidth="44.0" style="-fx-background-color: #9df084; -fx-background-radius: 50%;" text="+" textFill="#096800">
+                        <Button fx:id="addButton" layoutX="682.0" layoutY="459.0" mnemonicParsing="false" onAction="#showDialog" prefHeight="50.0" prefWidth="61.0" style="-fx-background-color: #9df084; -fx-background-radius: 10;" text="+" textFill="#096800">
          <font>
-            <Font size="36.0" />
+            <Font size="21.0" />
          </font>
       </Button>
       <Pane layoutX="-3.0" layoutY="-2.0" prefHeight="529.0" prefWidth="216.0" style="-fx-background-color: #e8e8e8;">
@@ -47,19 +48,20 @@
             </Label>
          </children>
       </Pane>
-      <TableView layoutX="232.0" layoutY="35.0" prefHeight="409.0" prefWidth="511.0">
+      <TableView fx:id="tableView" layoutX="232.0" layoutY="35.0" prefHeight="409.0" prefWidth="511.0">
         <columns>
-          <TableColumn prefWidth="108.0" resizable="false" text="Task" />
-          <TableColumn prefWidth="93.0" resizable="false" text="Date" />
-            <TableColumn prefWidth="229.0" resizable="false" text="Description" />
-            <TableColumn minWidth="0.0" resizable="false" text="Priority" />
+          <TableColumn fx:id="taskNameColumn" prefWidth="100.0" resizable="false" text="Task" />
+          <TableColumn fx:id="dateColumn" prefWidth="93.0" resizable="false" text="Date" />
+            <TableColumn fx:id="descriptionColumn" prefWidth="221.0" resizable="false" text="Description" />
+            <TableColumn fx:id="priorityColumn" maxWidth="200.0" minWidth="0.0" prefWidth="71.0" resizable="false" text="Priority" />
+            <TableColumn fx:id="checkBoxColumn" prefWidth="24.0" resizable="false" sortable="false" text="✓" />
         </columns>
       </TableView>
-      <ScrollPane hbarPolicy="NEVER" hmax="10.0" layoutX="233.0" layoutY="448.0" prefHeight="68.0" prefWidth="360.0">
+      <ScrollPane hbarPolicy="NEVER" hmax="10.0" layoutX="303.0" layoutY="639.0" prefHeight="68.0" prefWidth="160.0">
          <content>
-            <AnchorPane prefHeight="141.0" prefWidth="267.0">
+            <AnchorPane prefHeight="150.0" prefWidth="71.0">
                <children>
-                  <GridPane fx:id="taskGridView" alignment="CENTER" layoutY="2.0" prefHeight="148.0" prefWidth="286.0" scaleShape="false">
+                  <GridPane fx:id="taskGridView" alignment="CENTER" layoutY="2.0" prefHeight="61.0" prefWidth="152.0" scaleShape="false">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="181.5321044921875" minWidth="10.0" prefWidth="21.0" />
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="252.26705932617188" minWidth="10.0" prefWidth="130.0" />
