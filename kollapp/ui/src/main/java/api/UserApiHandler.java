@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -54,7 +55,6 @@ public class UserApiHandler {
                 .build();
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println(response.statusCode());
             if (response.statusCode() == 200) {
                 return Boolean.parseBoolean(response.body().trim());
             } else {
@@ -66,4 +66,106 @@ public class UserApiHandler {
             return false;
         }
     }
+
+    public User loadUser(String username, String password) {
+        String url = "http://localhost:8080/api/v1/users/login";
+        String jsonInputString = "{ \"username\": \"" + username + "\", \"password\": \"" + password + "\" }";
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .POST(HttpRequest.BodyPublishers.ofString(jsonInputString))
+                .build();
+        try {
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                String responseBody = response.body();
+                ObjectMapper objectMapper = new ObjectMapper();
+                User user = objectMapper.readValue(responseBody, User.class);
+                return user;
+            } else {
+                System.err.println("Error: " + response.statusCode() + " - " + response.body());
+                return null;
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public boolean confirmNewValidUser(String username, String password, String confirmPassword) {
+        String url = "http://localhost:8080/api/v1/users/validate";
+        String jsonInputString = "{ \"username\": \"" + username + "\", \"password\": \"" + password + "\", \"confirmPassword\": \"" + confirmPassword;
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .POST(HttpRequest.BodyPublishers.ofString(jsonInputString))
+                .build();
+        try {
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                String responseBody = response.body();
+                Boolean bool = Boolean.valueOf(responseBody);
+                return bool; 
+            } else {
+                System.err.println("Error: " + response.statusCode() + " - " + response.body());
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public void saveUser(User user) {
+        String url = "http://localhost:8080/api/v1/users/";
+        
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonInputString;
+        try {
+            jsonInputString = objectMapper.writeValueAsString(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .POST(HttpRequest.BodyPublishers.ofString(jsonInputString))
+                .build();
+        try {
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                String responseBody = response.body();
+                System.out.println(responseBody);
+            } else {
+                System.err.println("Error: " + response.statusCode() + " - " + response.body());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getUserValidationErrorMessage(String username, String password, String confirmPassword) {
+        String url = "http://localhost:8080/api/v1/users/validate/message"; 
+        String jsonInputString = "{ \"username\": \"" + username + "\", \"password\": \"" + password + "\", \"confirmPassword\": \"" + confirmPassword;
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .POST(HttpRequest.BodyPublishers.ofString(jsonInputString))
+                .build();
+        try {
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                String responseBody = response.body();
+                String message = String.valueOf(responseBody);
+                return message; 
+            } else {
+                return "Error: " + response.statusCode() + " - " + response.body());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    
 }

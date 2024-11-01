@@ -13,6 +13,7 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
+import api.UserApiHandler;
 import core.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,7 +21,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import persistence.UserHandler;
 
 /**
  * Unit tests for the LoginController class.
@@ -30,7 +30,7 @@ import persistence.UserHandler;
 public class LoginControllerTest {
 
     private LoginController controller;
-    private UserHandler mockUserHandler;
+    private UserApiHandler mockUserHandler;
 
     /**
      * Sets up the test environment by loading the LoginScreen.fxml and initializing the controller.
@@ -43,7 +43,7 @@ public class LoginControllerTest {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/LoginScreen.fxml"));
         Parent root = loader.load();
         controller = loader.getController();
-        mockUserHandler = Mockito.mock(UserHandler.class);
+        mockUserHandler = Mockito.mock(UserApiHandler.class);
         controller.setUserHandler(mockUserHandler);
         stage.setScene(new Scene(root));
         stage.show();

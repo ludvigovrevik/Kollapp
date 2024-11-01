@@ -49,7 +49,7 @@ public class UserHandler {
         if (userExists(user.getUsername())) {
             throw new IllegalArgumentException("User already exists");
         }
-
+        
         File file = new File(userPath + user.getUsername() + ".json");
         mapper.writeValue(file, user);
     }

@@ -26,7 +26,7 @@ public class UserService {
         return userHandler.getUser(username);
     }
 
-    public void createUser(User user) {
+    public void saveUser(User user) {
         try {
             userHandler.saveUser(user);
         } catch (IOException e) {

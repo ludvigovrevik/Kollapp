@@ -2,6 +2,7 @@ package ui;
 
 import java.io.IOException;
 
+import api.UserApiHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,7 +30,7 @@ public class LoginController {
     @FXML
     private Label loginErrorMessage;
 
-    private UserHandler userHandler = new UserHandler();
+    private UserApiHandler userApiHandler = new UserApiHandler();
 
     /**
      * Handles the action event triggered by the login button.
@@ -43,8 +44,8 @@ public class LoginController {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        if (userHandler.userExists(username)) {
-            User user = userHandler.loadUser(username, password);
+        if (userApiHandler.userExists(username)) {
+            User user = userApiHandler.loadUser(username, password);
 
             if (user != null) {
                 loadKollektivScene(user);
@@ -103,7 +104,7 @@ public class LoginController {
      *
      * @param userHandler the user handler to be used
      */
-    public void setUserHandler(UserHandler userHandler) {
-        this.userHandler = userHandler;
+    public void setUserHandler(UserApiHandler userApiHandler) {
+        this.userApiHandler = userApiHandler;
     }
 }

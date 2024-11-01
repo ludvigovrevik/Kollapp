@@ -2,6 +2,7 @@ package ui;
 
 import java.io.IOException;
 
+import api.UserApiHandler;
 import core.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,7 +15,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import persistence.ToDoListHandler;
-import persistence.UserHandler;
 
 /**
  * Controller class for the registration screen.
@@ -35,7 +35,7 @@ public class RegisterController {
     @FXML
     private PasswordField confirmPasswordField;
 
-    private final UserHandler userHandler = new UserHandler();
+    private final UserApiHandler userApiHandler = new UserApiHandler();
 
     /**
      * Handles the registration process by validating the user's input.
@@ -50,21 +50,19 @@ public class RegisterController {
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
         
-        if (!userHandler.userExists(username) && userHandler.confirmNewValidUser(username, password, confirmPassword)) {
+        if (!userApiHandler.userExists(username) && userApiHandler.confirmNewValidUser(username, password, confirmPassword)) {
             User user = new User(username, password);
             try {
-                userHandler.saveUser(user); // Save user to JSON file
+                userApiHandler.saveUser(user); // Save user to JSON file
                 ToDoListHandler handler = new ToDoListHandler();
                 handler.assignToDoList(user); // Assign ToDo-list to JSON file
     
                 switchToKollektivScene(event, user); // Switch to main screen
             } catch (IllegalArgumentException e) {
                 errorMessage.setText("User creation failed: " + e.getMessage());
-            } catch (IOException e) {
-                errorMessage.setText("An unexpected error occurred: " + e.getMessage());
-            }
+            } 
         } else {
-            errorMessage.setText(userHandler.getUserValidationErrorMessage(username, password, confirmPassword));
+            errorMessage.setText(userApiHandler.getUserValidationErrorMessage(username, password, confirmPassword));
         }
     }
 
