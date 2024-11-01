@@ -1,5 +1,6 @@
 package core;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * Represents a user in the system, containing a username, password, 
  * associated groups, and a to-do list.
  */
-public class User implements java.io.Serializable {
+public class User implements Serializable {
     private String username;
     private String password;
     private List<String> userGroups = new ArrayList<>();
