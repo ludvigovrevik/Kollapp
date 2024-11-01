@@ -2,6 +2,7 @@ package api;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -69,11 +70,12 @@ public class UserApiHandler {
 
     public User loadUser(String username, String password) {
         String url = "http://localhost:8080/api/v1/users/login";
-        String jsonInputString = "{ \"username\": \"" + username + "\", \"password\": \"" + password + "\" }";
-
+        String formData = "username=" + URLEncoder.encode(username, StandardCharsets.UTF_8) +
+                  "&password=" + URLEncoder.encode(password, StandardCharsets.UTF_8);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
-                .POST(HttpRequest.BodyPublishers.ofString(jsonInputString))
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .POST(HttpRequest.BodyPublishers.ofString(formData))
                 .build();
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -94,11 +96,14 @@ public class UserApiHandler {
 
     public boolean confirmNewValidUser(String username, String password, String confirmPassword) {
         String url = "http://localhost:8080/api/v1/users/validate";
-        String jsonInputString = "{ \"username\": \"" + username + "\", \"password\": \"" + password + "\", \"confirmPassword\": \"" + confirmPassword;
+        String formData = "username=" + URLEncoder.encode(username, StandardCharsets.UTF_8) +
+                      "&password=" + URLEncoder.encode(password, StandardCharsets.UTF_8) +
+                      "&confirmPassword=" + URLEncoder.encode(confirmPassword, StandardCharsets.UTF_8);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
-                .POST(HttpRequest.BodyPublishers.ofString(jsonInputString))
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .POST(HttpRequest.BodyPublishers.ofString(formData))
                 .build();
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -127,7 +132,6 @@ public class UserApiHandler {
             e.printStackTrace();
             return;
         }
-
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .POST(HttpRequest.BodyPublishers.ofString(jsonInputString))
@@ -147,11 +151,14 @@ public class UserApiHandler {
 
     public String getUserValidationErrorMessage(String username, String password, String confirmPassword) {
         String url = "http://localhost:8080/api/v1/users/validate/message"; 
-        String jsonInputString = "{ \"username\": \"" + username + "\", \"password\": \"" + password + "\", \"confirmPassword\": \"" + confirmPassword;
+        String formData = "username=" + URLEncoder.encode(username, StandardCharsets.UTF_8) +
+                      "&password=" + URLEncoder.encode(password, StandardCharsets.UTF_8) +
+                      "&confirmPassword=" + URLEncoder.encode(confirmPassword, StandardCharsets.UTF_8);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
-                .POST(HttpRequest.BodyPublishers.ofString(jsonInputString))
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .POST(HttpRequest.BodyPublishers.ofString(formData))
                 .build();
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());

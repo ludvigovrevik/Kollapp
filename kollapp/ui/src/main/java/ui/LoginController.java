@@ -45,6 +45,7 @@ public class LoginController {
         String password = passwordField.getText();
 
         if (userApiHandler.userExists(username)) {
+            System.out.println("Load User");
             User user = userApiHandler.loadUser(username, password);
 
             if (user != null) {

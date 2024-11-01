@@ -81,7 +81,7 @@ public class UserController {
     // POST /users/login
     @PostMapping("/login")
     public User loadUser(@RequestParam String username, @RequestParam String password) {
-        return userService.loadUser(username, username);
+        return userService.loadUser(username, password);
     }
 
     // POST /users/validate
@@ -92,7 +92,7 @@ public class UserController {
 
     // POST /users/validate/message
     @PostMapping("validate/message")
-    public String getUserValidationErrorMessage(@RequestParam String username, @RequestParam String password,@RequestParam String confirmPassword) {
+    public String getUserValidationErrorMessage(@RequestParam String username, @RequestParam String password, @RequestParam String confirmPassword) {
         return userService.getUserValidationErrorMessage(username, password, confirmPassword);
     }
 }

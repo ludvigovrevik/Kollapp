@@ -40,7 +40,6 @@ public class UserService {
         } catch (Exception e) {
             throw new IllegalArgumentException();
         }
-        
     }
 
     public void updateUser(String username) {
@@ -50,7 +49,6 @@ public class UserService {
         } catch (Exception e) {
             throw new IllegalArgumentException();
         }
-        
     }
 
     public User loadUser(String username, String password) {
