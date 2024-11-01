@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationTest;
 
+import api.UserApiHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -37,8 +38,8 @@ class RegisterControllerTest extends ApplicationTest {
     private Label errorMessage;
     private Button registerButton;
 
-    private UserHandler userHandlerMock;
-    private UserHandler userHandler = new UserHandler();
+    private UserApiHandler userHandlerMock;
+    private UserApiHandler userApiHandler = new UserApiHandler();
 
     /**
      * Sets up the test environment by loading the RegisterScreen.fxml and initializing the scene.
@@ -63,7 +64,7 @@ class RegisterControllerTest extends ApplicationTest {
         errorMessage = lookup("#errorMessage").query();
         registerButton = lookup("#registerButton").query();
 
-        userHandlerMock = Mockito.mock(UserHandler.class);
+        userHandlerMock = Mockito.mock(UserApiHandler.class);
     }
 
     /**
@@ -130,7 +131,7 @@ class RegisterControllerTest extends ApplicationTest {
     @AfterEach
     @DisplayName("Remove test user after each test")
     void removeUser() {
-        userHandler.removeUser("newUser");
+        userApiHandler.removeUser("newUser");
         // Remove user's todo list if required, not yet implemented in toDoListHandler.
     }
 }

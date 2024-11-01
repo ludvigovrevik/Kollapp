@@ -66,5 +66,4 @@ public class UserService {
     public String getUserValidationErrorMessage(String username, String password, String confirmPassword) {
         return userHandler.getUserValidationErrorMessage(username, password, confirmPassword);
     }
-
 }

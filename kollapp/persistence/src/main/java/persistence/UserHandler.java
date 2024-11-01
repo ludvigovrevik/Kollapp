@@ -205,4 +205,18 @@ public class UserHandler {
         }
         return null;
     }
+
+    /**
+     * Assigns a group to a user.
+     * Updates the user file with the new group added to the user's group list.
+     *
+     * @param username the username of the user
+     * @param groupName the name of the group to assign
+     * @throws RuntimeException if there is an error updating the user file
+     */
+    public void assignGroupToUser(String username, String groupName) {
+        User user = getUser(username).get();
+        user.addUserGroup(groupName);
+        updateUser(user);
+    }
 }

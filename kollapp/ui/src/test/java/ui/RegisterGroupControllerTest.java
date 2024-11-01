@@ -25,7 +25,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import persistence.GroupHandler;
-import persistence.UserHandler;
 
 /**
  * Unit tests for the RegisterGroupController class.
@@ -36,7 +35,6 @@ public class RegisterGroupControllerTest {
 
     private RegisterGroupController controller;
     private GroupHandler mockGroupHandler;
-    private UserHandler mockUserHandler;
     private KollAppController mockKollAppController;
     private User mockUser;
 

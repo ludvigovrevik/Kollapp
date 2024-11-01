@@ -26,7 +26,7 @@ public class UserController {
                       .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
     
-   // POST /users
+    // POST /users
     @PostMapping
     public ResponseEntity<Void> saveUser(@RequestParam User user) {
         try {

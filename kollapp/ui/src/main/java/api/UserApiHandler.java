@@ -174,4 +174,30 @@ public class UserApiHandler {
             return "An error occurred while validating the user.";
         }
     }
+
+    public boolean removeUser(String username) {
+        String url = "http://localhost:8080/api/v1/users/" + URLEncoder.encode(username, StandardCharsets.UTF_8);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .DELETE()
+                .build();
+        try {
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                return true;
+            } else if (response.statusCode() == 400) {
+                System.err.println("Bad Request: The server could not understand the request due to invalid syntax.");
+                return false;
+            } else if (response.statusCode() == 500) {
+                System.err.println("Internal Server Error: The server encountered an unexpected condition.");
+                return false;
+            } else {
+                System.err.println("Error: " + response.statusCode() + " - " + response.body());
+                return false;
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
