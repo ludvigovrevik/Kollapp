@@ -15,7 +15,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.KollAppController">
    <children>
-      <Label fx:id="currentlyViewingPath" layoutX="232.0" layoutY="445.0" prefHeight="28.0" prefWidth="317.0" text="Currently Viewing: kristin → Completed Tasks" textFill="#7aadff" />
+      <Label fx:id="currentlyViewingPath" layoutX="232.0" layoutY="445.0" prefHeight="28.0" prefWidth="317.0" text="" textFill="#7aadff" />
        
                         <Button fx:id="addButton" layoutX="682.0" layoutY="459.0" mnemonicParsing="false" onAction="#showDialog" prefHeight="50.0" prefWidth="61.0" style="-fx-background-color: #9df084; -fx-background-radius: 10;" text="+" textFill="#096800">
          <font>
