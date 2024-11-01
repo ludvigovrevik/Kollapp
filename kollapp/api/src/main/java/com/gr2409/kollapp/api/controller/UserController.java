@@ -80,8 +80,10 @@ public class UserController {
 
     // POST /users/login
     @PostMapping("/login")
-    public User loadUser(@RequestParam String username, @RequestParam String password) {
-        return userService.loadUser(username, password);
+    public ResponseEntity<User> loadUser(@RequestParam String username, @RequestParam String password) {
+        return userService.loadUser(username, password)
+            .map(user -> ResponseEntity.ok(user))
+            .orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
 
     // POST /users/validate

@@ -83,21 +83,21 @@ public class UserHandler {
      * @return the User object if the username exists and the password matches; 
      *         null if the user does not exist or the password does not match
      */
-    public User loadUser(String username, String password) {
+    public Optional<User> loadUser(String username, String password) {
         File file = new File(userPath + username + ".json");
         if (!userExists(username)) {
-            return null;
+            return Optional.empty();
         }
-
+    
         try {
             User user = mapper.readValue(file, User.class);
             if (user.getPassword().equals(password)) {
-                return user;
+                return Optional.of(user);
             } else {
-                return null;
+                return Optional.empty();
             }
         } catch (IOException e) {
-            throw new IllegalArgumentException("Failed to read user file");
+            throw new IllegalArgumentException("Failed to read user file", e);
         }
     }
 

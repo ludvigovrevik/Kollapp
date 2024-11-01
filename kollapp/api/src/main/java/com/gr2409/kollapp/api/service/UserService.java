@@ -51,7 +51,7 @@ public class UserService {
         }
     }
 
-    public User loadUser(String username, String password) {
+    public Optional<User> loadUser(String username, String password) {
         return userHandler.loadUser(username, password);
     }
 
