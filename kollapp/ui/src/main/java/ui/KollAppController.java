@@ -109,6 +109,9 @@ public class KollAppController {
 
         // Hide the group chat button by default
         groupChatButton.setVisible(false);
+
+        // Set the initial view path to personal tasks
+        currentlyViewingPath.setText("Currently Viewing: " + this.user.getUsername() + " → Pending Tasks");
     }
 
     /**
