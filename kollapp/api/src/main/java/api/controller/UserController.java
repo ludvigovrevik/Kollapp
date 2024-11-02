@@ -1,11 +1,13 @@
-package com.gr2409.kollapp.api.controller;
+package api.controller;
 
-import com.gr2409.kollapp.api.service.UserService;
 import core.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import api.service.UserService;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
@@ -26,9 +28,8 @@ public class UserController {
                       .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
     
-    // POST /users
-    @PostMapping
-    public ResponseEntity<Void> saveUser(@RequestParam User user) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> saveUser(@RequestBody User user) {
         try {
             userService.saveUser(user);
             return ResponseEntity.ok().build();
@@ -93,9 +94,26 @@ public class UserController {
     }
 
     // POST /users/validate/message
-    @PostMapping("validate/message")
+    @PostMapping("/validate/message")
     public String getUserValidationErrorMessage(@RequestParam String username, @RequestParam String password, @RequestParam String confirmPassword) {
         return userService.getUserValidationErrorMessage(username, password, confirmPassword);
+    }
+
+    @PostMapping(value = "/{username}/assignGroup", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public ResponseEntity<Void> assignGroupToUser(@PathVariable String username, @RequestParam String groupName) {
+        try {
+            System.out.println("Assigning group to user: " + groupName + " for user: " + username);
+            userService.assignGroupToUser(username, groupName);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            System.err.println("IllegalArgumentException: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            System.err.println("Exception: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
     }
 }
 

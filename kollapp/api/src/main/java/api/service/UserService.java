@@ -1,4 +1,4 @@
-package com.gr2409.kollapp.api.service;
+package api.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,5 +65,9 @@ public class UserService {
     
     public String getUserValidationErrorMessage(String username, String password, String confirmPassword) {
         return userHandler.getUserValidationErrorMessage(username, password, confirmPassword);
+    }
+
+    public void assignGroupToUser(String username, String groupName) {
+        userHandler.assignGroupToUser(username, groupName);
     }
 }

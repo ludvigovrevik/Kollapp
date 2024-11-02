@@ -1,9 +1,9 @@
-package com.gr2409.kollapp.api;
+package api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = {"com.gr2409", "core", "persistence"})
+@SpringBootApplication(scanBasePackages = {"api", "core", "persistence"})
 public class KollAppSpringApplication {
 
     public static void main(String[] args) {

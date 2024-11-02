@@ -1,11 +1,13 @@
-package com.gr2409.kollapp.api.controller;
+package api.controller;
 
-import com.gr2409.kollapp.api.service.GroupService;
 import core.UserGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import api.service.GroupService;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
@@ -96,20 +98,20 @@ public class GroupController {
         }
     }
 
-    @PostMapping("/{groupName}/assignUser")
-public ResponseEntity<Void> assignUserToGroup(@PathVariable String groupName, @RequestParam String username) {
-    try {
-        System.out.println("Assigning user to group: " + username);
-        groupService.assignUserToGroup(username, groupName);
-        return ResponseEntity.ok().build();
-    } catch (IllegalArgumentException e) {
-        System.err.println("IllegalArgumentException: " + e.getMessage());
-        e.printStackTrace();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-    } catch (Exception e) {
-        System.err.println("Exception: " + e.getMessage());
-        e.printStackTrace();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    @PostMapping(value = "/{groupName}/assignUser", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public ResponseEntity<Void> assignUserToGroup(@PathVariable String groupName, @RequestParam String username) {
+        try {
+            System.out.println("Assigning user to group: " + username + " in group: " + groupName);
+            groupService.assignUserToGroup(username, groupName);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            System.err.println("IllegalArgumentException: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (Exception e) {
+            System.err.println("Exception: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
-}
 }
