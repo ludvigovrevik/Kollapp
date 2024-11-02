@@ -37,7 +37,7 @@ public class UserApiHandler {
                 return Optional.empty();
             }
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            System.out.println("An error occurred while retrieving user data: " + e.getMessage());
             return Optional.empty();
         }
     }
@@ -62,8 +62,8 @@ public class UserApiHandler {
                 // Handle error responses as needed
                 return false;
             }
-        } catch(IOException | InterruptedException e) {
-            e.printStackTrace();
+        } catch (IOException | InterruptedException e) {
+            System.out.println("An error occurred while retrieving user data: " + e.getMessage());
             return false;
         }
     }
@@ -82,14 +82,13 @@ public class UserApiHandler {
             if (response.statusCode() == 200) {
                 String responseBody = response.body();
                 ObjectMapper objectMapper = new ObjectMapper();
-                User user = objectMapper.readValue(responseBody, User.class);
-                return user;
+                return objectMapper.readValue(responseBody, User.class);
             } else {
                 System.err.println("Error: " + response.statusCode() + " - " + response.body());
                 return null;
             }
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            System.out.println("An error occurred while retrieving user data: " + e.getMessage());
             return null;
         }
     }
@@ -109,14 +108,13 @@ public class UserApiHandler {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
                 String responseBody = response.body();
-                Boolean bool = Boolean.valueOf(responseBody);
-                return bool; 
+                return Boolean.parseBoolean(responseBody);
             } else {
                 System.err.println("Error: " + response.statusCode() + " - " + response.body());
                 return false;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("An error occurred while retrieving user data: " + e.getMessage());
             return false;
         }
     }
@@ -129,7 +127,7 @@ public class UserApiHandler {
         try {
             jsonInputString = objectMapper.writeValueAsString(user);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("An error occurred while retrieving user data: " + e.getMessage());
             return;
         }
     
@@ -149,7 +147,7 @@ public class UserApiHandler {
                 System.err.println("Error: " + response.statusCode() + " - " + response.body());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("An error occurred while retrieving user data: " + e.getMessage());
         }
     }
 
@@ -168,13 +166,12 @@ public class UserApiHandler {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
                 String responseBody = response.body();
-                String message = String.valueOf(responseBody);
-                return message; 
+                return String.valueOf(responseBody);
             } else {
                 return "Error: " + response.statusCode() + " - " + response.body();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("An error occurred while retrieving user data: " + e.getMessage());
             return "An error occurred while validating the user.";
         }
     }
@@ -200,7 +197,7 @@ public class UserApiHandler {
                 return false;
             }
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            System.out.println("An error occurred while retrieving user data: " + e.getMessage());
             return false;
         }
     }
@@ -226,7 +223,7 @@ public class UserApiHandler {
     
             return response.statusCode() == 200 || response.statusCode() == 201;
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            System.out.println("An error occurred while retrieving user data: " + e.getMessage());
             return false;
         }
     }
