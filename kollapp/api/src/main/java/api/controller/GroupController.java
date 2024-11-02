@@ -33,26 +33,6 @@ public class GroupController {
         public void setGroupName(String groupName) { this.groupName = groupName; }
     }
 
-    // Define a request class if not already defined
-    public class AssignUserRequest {
-        private String username;
-
-        // Constructors, getters, and setters
-        public AssignUserRequest() {}
-
-        public AssignUserRequest(String username) {
-            this.username = username;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public void setUsername(String username) {
-            this.username = username;
-        }
-    }
-
     // GET /groups/{groupName}
     @GetMapping("/{groupName}")
     public ResponseEntity<UserGroup> getGroup(@PathVariable String groupName) {
