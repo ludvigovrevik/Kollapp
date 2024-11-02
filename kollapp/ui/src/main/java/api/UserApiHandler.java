@@ -132,10 +132,14 @@ public class UserApiHandler {
             e.printStackTrace();
             return;
         }
+    
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
+                .header("Content-Type", "application/json")
+                .header("Accept", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(jsonInputString))
                 .build();
+    
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
@@ -195,6 +199,32 @@ public class UserApiHandler {
                 System.err.println("Error: " + response.statusCode() + " - " + response.body());
                 return false;
             }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public boolean assignGroupToUser(String username, String groupName) {
+        String url = "http://localhost:8080/api/v1/users/" + username + "/assignGroup";
+        
+        // Encode the form data
+        String formData = "groupName=" + URLEncoder.encode(groupName, StandardCharsets.UTF_8);
+    
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .POST(HttpRequest.BodyPublishers.ofString(formData))
+                .build();
+    
+        try {
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    
+            // Log response code for debugging
+            System.out.println("Response status code: " + response.statusCode());
+            System.out.println("Response body: " + response.body());
+    
+            return response.statusCode() == 200 || response.statusCode() == 201;
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             return false;

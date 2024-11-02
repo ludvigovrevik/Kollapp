@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Represents a group chat containing a list of messages.
  */
-public class GroupChat implements Serializable{
+public class GroupChat implements Serializable {
     private static final long serialVersionUID = 1L;
     private List<Message> messages;    
     

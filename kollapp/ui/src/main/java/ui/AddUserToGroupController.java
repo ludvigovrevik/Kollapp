@@ -143,10 +143,4 @@ public class AddUserToGroupController {
         feedbackLabel.setText(message);
         feedbackLabel.setTextFill(color);
     }
-
-    
-
-    
-
-
 }

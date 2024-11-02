@@ -94,7 +94,7 @@ public class GroupChatController {
             messageTextArea.clear();
         }
          // Scroll to the bottom to show the latest message
-         viewMessagePane.setVvalue(1.0);
+        viewMessagePane.setVvalue(1.0);
     }
 }
 
