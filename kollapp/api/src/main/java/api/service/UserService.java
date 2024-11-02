@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import persistence.UserHandler;
 import core.User;
@@ -13,13 +14,12 @@ import core.User;
 @Service
 public class UserService {
     private final UserHandler userHandler;
-    
-    private String userPath = Paths.get("kollapp", "persistence", "src", "main", "java",
-            "persistence", "users") + File.separator;
 
     @Autowired
     public UserService() {
-        this.userHandler = new UserHandler(this.userPath);
+        String userPath = Paths.get("kollapp", "persistence", "src", "main", "java",
+                "persistence", "users") + File.separator;
+        this.userHandler = new UserHandler(userPath);
     }
 
     public Optional<User> getUser(String username) {
@@ -44,7 +44,7 @@ public class UserService {
 
     public void updateUser(String username) {
         try {
-            User user = userHandler.getUser(username).get();
+            User user = userHandler.getUser(username).orElseThrow(() -> new NoSuchElementException("User not found."));
             userHandler.updateUser(user);
         } catch (Exception e) {
             throw new IllegalArgumentException();
