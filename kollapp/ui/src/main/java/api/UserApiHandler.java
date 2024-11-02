@@ -114,7 +114,7 @@ public class UserApiHandler {
                 return false;
             }
         } catch (Exception e) {
-            System.out.println("An error occurred while retrieving user data: " + e.getMessage());
+            System.out.println("An error occurred while validating user data: " + e.getMessage());
             return false;
         }
     }
@@ -147,7 +147,7 @@ public class UserApiHandler {
                 System.err.println("Error: " + response.statusCode() + " - " + response.body());
             }
         } catch (Exception e) {
-            System.out.println("An error occurred while retrieving user data: " + e.getMessage());
+            System.out.println("An error occurred while saving user data: " + e.getMessage());
         }
     }
 
@@ -171,7 +171,7 @@ public class UserApiHandler {
                 return "Error: " + response.statusCode() + " - " + response.body();
             }
         } catch (Exception e) {
-            System.out.println("An error occurred while retrieving user data: " + e.getMessage());
+            System.out.println("An error occurred while validating user: " + e.getMessage());
             return "An error occurred while validating the user.";
         }
     }
@@ -197,7 +197,7 @@ public class UserApiHandler {
                 return false;
             }
         } catch (IOException | InterruptedException e) {
-            System.out.println("An error occurred while retrieving user data: " + e.getMessage());
+            System.out.println("An error occurred while trying to remove user: " + e.getMessage());
             return false;
         }
     }
@@ -223,7 +223,7 @@ public class UserApiHandler {
     
             return response.statusCode() == 200 || response.statusCode() == 201;
         } catch (IOException | InterruptedException e) {
-            System.out.println("An error occurred while retrieving user data: " + e.getMessage());
+            System.out.println("An error occurred assigning group to user: " + e.getMessage());
             return false;
         }
     }
