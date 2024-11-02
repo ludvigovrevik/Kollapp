@@ -17,13 +17,12 @@ public class GroupService {
     private final GroupHandler groupHandler;
     private final UserService userService;
 
-    private String groupToDoList = Paths.get("kollapp", "persistence", "src", "main", "java",
-            "persistence", "grouptodolists") + File.separator;
-    private String groupPath = Paths.get("kollapp", "persistence", "src", "main", "java",
-            "persistence", "groups") + File.separator;
-
     @Autowired
     public GroupService() {
+        String groupToDoList = Paths.get("kollapp", "persistence", "src", "main", "java",
+                "persistence", "grouptodolists") + File.separator;
+        String groupPath = Paths.get("kollapp", "persistence", "src", "main", "java",
+                "persistence", "groups") + File.separator;
         this.groupHandler = new GroupHandler(groupPath, groupToDoList, new UserHandler());
         this.userService = new UserService();
     }
