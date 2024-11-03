@@ -2,6 +2,8 @@ package api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import core.ToDoList;
+import core.User;
+import core.UserGroup;
 
 import java.io.IOException;
 import java.net.URI;
@@ -72,12 +74,13 @@ public class ToDoListApiHandler {
     /**
      * Updates the to-do list for a specific user.
      *
-     * @param username the username of the user
+     * @param user The user whose to-do list is being updated.
      * @param toDoList the updated ToDoList object
      * @return true if successful, false otherwise
      */
-    public boolean updateToDoList(String username, ToDoList toDoList) {
-        String url = baseUrl + "/" + URLEncoder.encode(username, StandardCharsets.UTF_8);
+    public boolean updateToDoList(User user, ToDoList toDoList) {
+
+        String url = baseUrl + "/" + URLEncoder.encode(user.getUsername(), StandardCharsets.UTF_8);
         try {
             String jsonBody = objectMapper.writeValueAsString(toDoList);
             HttpRequest request = HttpRequest.newBuilder()
@@ -122,12 +125,12 @@ public class ToDoListApiHandler {
     /**
      * Updates the to-do list for a specific user group.
      *
-     * @param groupName the name of the user group
+     * @param userGroup the user group whose to-do list is to be updated
      * @param toDoList  the updated ToDoList object
      * @return true if successful, false otherwise
      */
-    public boolean updateGroupToDoList(String groupName, ToDoList toDoList) {
-        String url = baseUrl + "/groups/" + URLEncoder.encode(groupName, StandardCharsets.UTF_8);
+    public boolean updateGroupToDoList(UserGroup userGroup, ToDoList toDoList) {
+        String url = baseUrl + "/groups/" + URLEncoder.encode(userGroup.getGroupName(), StandardCharsets.UTF_8);
         try {
             String jsonBody = objectMapper.writeValueAsString(toDoList);
             HttpRequest request = HttpRequest.newBuilder()
