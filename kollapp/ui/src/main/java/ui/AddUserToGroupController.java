@@ -11,7 +11,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import core.User;
-import persistence.GroupHandler;
 
 /**
  * Controller class for adding a user to an existing group.
@@ -100,8 +99,10 @@ public class AddUserToGroupController {
 
         // Assign User to Group
         // Assign User to Group via API
-        boolean success = groupApiHandler.assignUserToGroup(usernameInput, selectedGroup);
-        if (success) {
+        boolean groupAssigningSuccessful = groupApiHandler.assignUserToGroup(usernameInput, selectedGroup);
+        boolean userAssigningSuccessful = userApiHandler.assignGroupToUser(usernameInput, selectedGroup);
+
+        if (groupAssigningSuccessful && userAssigningSuccessful) {
             displayFeedback(ADD_USER_SUCCESS_MSG, Color.GREEN);
         } else {
             displayFeedback(ADD_USER_FAILURE_MSG, Color.RED);

@@ -34,20 +34,20 @@ public class GroupApiHandler {
         
         // Encode the form data
         String formData = "username=" + URLEncoder.encode(username, StandardCharsets.UTF_8);
-
+    
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .header("Content-Type", "application/x-www-form-urlencoded")
                 .POST(HttpRequest.BodyPublishers.ofString(formData))
                 .build();
-
+    
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
+    
             // Log response code for debugging
             System.out.println("Response status code: " + response.statusCode());
             System.out.println("Response body: " + response.body());
-
+    
             return response.statusCode() == 200 || response.statusCode() == 201;
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();

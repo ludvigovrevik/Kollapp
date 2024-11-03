@@ -113,9 +113,6 @@ public class GroupHandlerTest {
         Path groupToDoListFilePath = groupToDoListPath.resolve(groupName + ".json");
         assertTrue(Files.exists(groupToDoListFilePath));
 
-        User updatedUser = userHandler.getUser(user.getUsername()).orElseThrow(() -> new IllegalArgumentException("User not found"));
-        assertTrue(updatedUser.getUserGroups().contains(groupName));
-
         UserGroup group = groupHandler.getGroup(groupName);
         assertNotNull(group);
         assertEquals(groupName, group.getGroupName());
@@ -153,8 +150,6 @@ public class GroupHandlerTest {
 
         groupHandler.createGroup(user, groupName);
         groupHandler.assignUserToGroup(user2, groupName);
-
-        User updatedUser2 = userHandler.getUser(user2.getUsername()).orElseThrow(() -> new IllegalArgumentException("User not found"));;
 
         UserGroup group = groupHandler.getGroup(groupName);
         assertNotNull(group);
