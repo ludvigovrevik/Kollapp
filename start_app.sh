@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#script to start the application
 # Clean and install the project without running tests
 echo "Running 'mvn clean install -DskipTests'..."
 mvn -f ./kollapp clean install -DskipTests
