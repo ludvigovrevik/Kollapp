@@ -1,4 +1,4 @@
-package com.gr2409.kollapp.api.service;
+package api.service;
 
 import core.ToDoList;
 import core.User;
@@ -18,11 +18,11 @@ public class ToDoListService {
     private final ToDoListHandler toDoListHandler;
     private final UserHandler userHandler;
 
-    private final String toDoListPath = Paths.get("Prosjektet", "gr2409", "kollapp", "persistence", "src", "main", "java",
+    private final String toDoListPath = Paths.get("kollapp", "persistence", "src", "main", "java",
             "persistence", "todolists") + File.separator;
-    private final String groupToDoListPath = Paths.get("Prosjektet", "gr2409", "kollapp", "persistence", "src", "main", "java",
+    private final String groupToDoListPath = Paths.get("kollapp", "persistence", "src", "main", "java",
             "persistence", "grouptodolists") + File.separator;
-    private final String userPath = Paths.get("Prosjektet", "gr2409", "kollapp", "persistence", "src", "main", "java",
+    private final String userPath = Paths.get("kollapp", "persistence", "src", "main", "java",
             "persistence", "users") + File.separator;
 
     @Autowired

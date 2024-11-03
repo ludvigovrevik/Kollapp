@@ -1,6 +1,6 @@
-package com.gr2409.kollapp.api.controller;
+package api.controller;
 
-import com.gr2409.kollapp.api.service.ToDoListService;
+import api.service.ToDoListService;
 import core.ToDoList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
