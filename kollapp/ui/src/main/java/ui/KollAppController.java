@@ -26,7 +26,14 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import persistence.ToDoListHandler;
+import persistence.GroupHandler;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import api.ToDoListApiHandler;
 
 /**
  * Controller class for the KollApp application.
@@ -53,7 +60,7 @@ public class KollAppController {
     private String groupNameChat;
     private UserGroup groupInView;
 
-    private final ToDoListHandler toDoListHandler = new ToDoListHandler();
+    private final ToDoListApiHandler toDoListApiHandler = new ToDoListApiHandler();
     private final GroupApiHandler groupApiHandler = new GroupApiHandler();
     private final UserApiHandler userApiHandler = new UserApiHandler();
 
@@ -86,7 +93,7 @@ public class KollAppController {
      * @param user The user whose to-do list is to be displayed
      */
     public void initializeToDoList(User user) {
-        this.toDoList = toDoListHandler.loadToDoList(user);
+        this.toDoList = toDoListApiHandler.loadToDoList(user);
         this.user = user;
         updateGrid();
     }
@@ -218,9 +225,9 @@ public class KollAppController {
                 if (checkBox.isSelected()) {
                     task.setCompleted(true);
                     if (groupInView == null) {
-                        toDoListHandler.updateToDoList(user, toDoList);
+                        toDoListApiHandler.updateToDoList(user, toDoList);
                     } else {
-                        toDoListHandler.updateGroupToDoList(groupInView, toDoList);
+                        toDoListApiHandler.updateGroupToDoList(groupInView, toDoList);
                     }
                     updateGrid();
                 }
@@ -296,9 +303,9 @@ public class KollAppController {
         checkBox.setOnAction(event -> {
             toDoList.removeTask(currentTask);
             if (groupInView == null) {
-                toDoListHandler.updateToDoList(user, toDoList);
+                toDoListApiHandler.updateToDoList(user, toDoList);
             } else {
-                toDoListHandler.updateGroupToDoList(groupInView, toDoList);
+                toDoListApiHandler.updateGroupToDoList(groupInView, toDoList);
             }
             updateGrid(); // Refresh the grid
         });
@@ -313,7 +320,7 @@ public class KollAppController {
     public void changeCurrentTaskView(String taskOwner) {
         if (taskOwner.equals(this.user.getUsername())) {
             groupInView = null;
-            this.toDoList = toDoListHandler.loadToDoList(this.user);
+            this.toDoList = toDoListApiHandler.loadToDoList(this.user);
         } else {
             Optional<UserGroup> groupOptional = groupApiHandler.getGroup(taskOwner);
 
@@ -322,7 +329,7 @@ public class KollAppController {
                 this.groupNameChat = group.getGroupName();
                 groupInView = group;
                 try {
-                    this.toDoList = toDoListHandler.loadGroupToDoList(group);
+                    this.toDoList = toDoListApiHandler.loadGroupToDoList(group);
                 } catch (IllegalArgumentException e) {
                     System.out.println("Error loading group tasks: " + e.getMessage());
                 }

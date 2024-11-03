@@ -17,7 +17,7 @@ public class UserService {
 
     @Autowired
     public UserService() {
-        String userPath = Paths.get("Prosjektet", "gr2409", "kollapp", "persistence", "src", "main", "java",
+        String userPath = Paths.get("kollapp", "persistence", "src", "main", "java",
                 "persistence", "users") + File.separator;
         this.userHandler = new UserHandler(userPath);
     }
