@@ -26,11 +26,11 @@ public class ToDoListApiHandler {
     /**
      * Loads the to-do list for a specific user.
      *
-     * @param username the username of the user
+     * @param user the user whose to-do list is to be loaded
      * @return the ToDoList object if successful, null otherwise
      */
-    public ToDoList loadToDoList(String username) {
-        String url = baseUrl + "/" + URLEncoder.encode(username, StandardCharsets.UTF_8);
+    public ToDoList loadToDoList(User user) {
+        String url = baseUrl + "/" + URLEncoder.encode(user.getUsername(), StandardCharsets.UTF_8);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .GET()
@@ -52,11 +52,11 @@ public class ToDoListApiHandler {
     /**
      * Assigns a new to-do list to a specific user.
      *
-     * @param username the username of the user
+     * @param user the user to whom the ToDoList will be assigned
      * @return true if successful, false otherwise
      */
-    public boolean assignToDoList(String username) {
-        String url = baseUrl + "/" + URLEncoder.encode(username, StandardCharsets.UTF_8);
+    public boolean assignToDoList(User user) {
+        String url = baseUrl + "/" + URLEncoder.encode(user.getUsername(), StandardCharsets.UTF_8);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .POST(HttpRequest.BodyPublishers.noBody())
@@ -99,11 +99,11 @@ public class ToDoListApiHandler {
     /**
      * Loads the to-do list for a specific user group.
      *
-     * @param groupName the name of the user group
+     * @param userGroup the user group whose to-do list is to be loaded
      * @return the ToDoList object if successful, null otherwise
      */
-    public ToDoList loadGroupToDoList(String groupName) {
-        String url = baseUrl + "/groups/" + URLEncoder.encode(groupName, StandardCharsets.UTF_8);
+    public ToDoList loadGroupToDoList(UserGroup userGroup) {
+        String url = baseUrl + "/groups/" + URLEncoder.encode(userGroup.getGroupName(), StandardCharsets.UTF_8);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .GET()
