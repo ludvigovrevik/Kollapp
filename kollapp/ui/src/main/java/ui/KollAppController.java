@@ -87,6 +87,7 @@ public class KollAppController {
     public void setUser(User user) {
         this.user = user;
         personal.setOnMouseClicked(event -> handleGroupClick(this.user.getUsername()));
+        currentlyViewingPath.setText("Currently Viewing: " + user.getUsername() + " → My Pending Tasks");
     }
 
     /**
@@ -109,9 +110,6 @@ public class KollAppController {
 
         // Hide the group chat button by default
         groupChatButton.setVisible(false);
-
-        // Set the initial view path to personal tasks
-        currentlyViewingPath.setText("Currently Viewing: My Pending Tasks");
     }
 
     /**
@@ -150,7 +148,6 @@ public class KollAppController {
     public void initializeToDoList(User user) {
         this.toDoList = toDoListHandler.loadToDoList(user);
         this.user = user;
-        updateGrid();
         updateTableView();
     }
 
@@ -209,7 +206,6 @@ public class KollAppController {
             changeCurrentTaskView(groupName);
             currentlyViewingPath.setText("Currently Viewing: " + this.user.getUsername() + " → " + groupName + " → Pending Tasks"); // Short format for group tasks
         }
-        updateGrid();
         updateTableView();
     }
 
@@ -234,12 +230,11 @@ public class KollAppController {
         // Toggle task view based on current label state
         if (isViewingCompletedTasks) {
             // Switch to Completed Tasks view
-            this.updateGridViewCompletedTasks();
+            // this.updateGridViewCompletedTasks();
             this.updateTableViewCompletedTasks();
             completedLabel.setText("Pending Tasks");
         } else {
             // Switch to Pending Tasks view
-            this.updateGrid();
             this.updateTableView();
             completedLabel.setText("Completed Tasks");
         }
@@ -262,57 +257,57 @@ public class KollAppController {
      * to each task, allowing the user to mark it as completed. When a task is marked
      * as completed, the to-do list is updated accordingly, and the grid is refreshed.
      */
-    @FXML
-    public void updateGrid() {
-        taskGridView.getChildren().clear();
-        List<Task> tasks = toDoList.getTasks();
+    // @FXML
+    // public void updateGrid() {
+    //     taskGridView.getChildren().clear();
+    //     List<Task> tasks = toDoList.getTasks();
 
-        int row = 0;
+    //     int row = 0;
 
-        for (Task task : tasks) {
-            if (task.isCompleted()) {
-                continue; // Skip completed tasks
-            }
+    //     for (Task task : tasks) {
+    //         if (task.isCompleted()) {
+    //             continue; // Skip completed tasks
+    //         }
 
-            String taskName = task.getTaskName();
-            String taskDescription = task.getDescription();
-            String priority = task.getPriority();
+    //         String taskName = task.getTaskName();
+    //         String taskDescription = task.getDescription();
+    //         String priority = task.getPriority();
 
-            Label dateLabel = new Label("");
-            if (task.getDateTime() != null) {
-                LocalDate dateTime = task.getDateTime();
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
-                dateLabel.setText(dateTime.format(formatter));
-            }
+    //         Label dateLabel = new Label("");
+    //         if (task.getDateTime() != null) {
+    //             LocalDate dateTime = task.getDateTime();
+    //             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
+    //             dateLabel.setText(dateTime.format(formatter));
+    //         }
 
-            CheckBox checkBox = new CheckBox();
-            Label taskLabel = new Label(taskName);
-            Label taskDescriptionLabel = new Label(taskDescription);
-            Label priorityLabel = new Label(priority);
+    //         CheckBox checkBox = new CheckBox();
+    //         Label taskLabel = new Label(taskName);
+    //         Label taskDescriptionLabel = new Label(taskDescription);
+    //         Label priorityLabel = new Label(priority);
 
-            // Add event listener to the CheckBox
-            checkBox.setOnAction(event -> {
-                if (checkBox.isSelected()) {
-                    task.setCompleted(true);
-                    if (groupInView == null) {
-                        toDoListHandler.updateToDoList(user, toDoList);
-                    } else {
-                        toDoListHandler.updateGroupToDoList(groupInView, toDoList);
-                    }
-                    updateGrid();
-                    updateTableView();
-                }
-            });
+    //         // Add event listener to the CheckBox
+    //         checkBox.setOnAction(event -> {
+    //             if (checkBox.isSelected()) {
+    //                 task.setCompleted(true);
+    //                 if (groupInView == null) {
+    //                     toDoListHandler.updateToDoList(user, toDoList);
+    //                 } else {
+    //                     toDoListHandler.updateGroupToDoList(groupInView, toDoList);
+    //                 }
+    //                 updateGrid();
+    //                 updateTableView();
+    //             }
+    //         });
 
-            taskGridView.add(checkBox, 0, row);
-            taskGridView.add(taskLabel, 1, row);
-            taskGridView.add(dateLabel, 2, row);
-            taskGridView.add(taskDescriptionLabel, 3, row);
-            taskGridView.add(priorityLabel, 4, row);
-            GridPane.setVgrow(taskLabel, Priority.ALWAYS);
-            row++;
-        }
-    }
+    //         taskGridView.add(checkBox, 0, row);
+    //         taskGridView.add(taskLabel, 1, row);
+    //         taskGridView.add(dateLabel, 2, row);
+    //         taskGridView.add(taskDescriptionLabel, 3, row);
+    //         taskGridView.add(priorityLabel, 4, row);
+    //         GridPane.setVgrow(taskLabel, Priority.ALWAYS);
+    //         row++;
+    //     }
+    // }
 
     @FXML
     public void updateTableView() {
@@ -450,33 +445,33 @@ public class KollAppController {
      * task description, and date (if available). The checkbox allows for the
      * removal of the task from the to-do list.
      */
-    @FXML
-    public void updateGridViewCompletedTasks() {
-        taskGridView.getChildren().clear();
-        List<Task> tasks = toDoList.getTasks();
-        int row = 0;
+    // @FXML
+    // public void updateGridViewCompletedTasks() {
+    //     taskGridView.getChildren().clear();
+    //     List<Task> tasks = toDoList.getTasks();
+    //     int row = 0;
 
-        for (Task currentTask : tasks) {
-            if (currentTask.isCompleted()) {
-                String taskDescription = currentTask.getTaskName();
+    //     for (Task currentTask : tasks) {
+    //         if (currentTask.isCompleted()) {
+    //             String taskDescription = currentTask.getTaskName();
 
-                Label dateLabel = new Label("");
-                if (currentTask.getDateTime() != null) {
-                    LocalDate dateTime = currentTask.getDateTime();
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
-                    dateLabel.setText(dateTime.format(formatter));
-                }
+    //             Label dateLabel = new Label("");
+    //             if (currentTask.getDateTime() != null) {
+    //                 LocalDate dateTime = currentTask.getDateTime();
+    //                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
+    //                 dateLabel.setText(dateTime.format(formatter));
+    //             }
 
-                Label taskLabel = new Label(taskDescription);
-                CheckBox checkBox = getCheckBox(currentTask);
+    //             Label taskLabel = new Label(taskDescription);
+    //             CheckBox checkBox = getCheckBox(currentTask);
 
-                taskGridView.add(checkBox, 0, row);
-                taskGridView.add(taskLabel, 1, row);
-                taskGridView.add(dateLabel, 2, row);
-                row++;
-            }
-        }
-    }
+    //             taskGridView.add(checkBox, 0, row);
+    //             taskGridView.add(taskLabel, 1, row);
+    //             taskGridView.add(dateLabel, 2, row);
+    //             row++;
+    //         }
+    //     }
+    // }
 
     @FXML
     public void updateTableViewCompletedTasks() {
@@ -549,7 +544,6 @@ public class KollAppController {
             } else {
                 toDoListHandler.updateGroupToDoList(groupInView, toDoList);
             }
-            updateGrid(); // Refresh the grid
             updateTableView();
         });
         return checkBox;

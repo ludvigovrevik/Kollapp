@@ -87,7 +87,6 @@ public class AddNewTaskController {
                 toDoListHandler.updateToDoList(user, toDoList);
                 System.out.println("Updated to-do list for user: " + user.getUsername());
             }
-            kollAppController.updateGrid();
             kollAppController.updateTableView();
 
             // Close the current window
