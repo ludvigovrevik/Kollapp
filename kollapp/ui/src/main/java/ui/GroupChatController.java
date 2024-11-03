@@ -26,9 +26,6 @@ public class GroupChatController {
     private TextArea messageTextArea;
 
     @FXML
-    private Button sendMessage;
-
-    @FXML
     private VBox vboxMessages;
 
     private User user;

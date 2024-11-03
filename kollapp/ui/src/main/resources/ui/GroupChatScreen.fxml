@@ -14,6 +14,6 @@
          </content>
       </ScrollPane>
       <TextArea fx:id="messageTextArea" layoutX="22.0" layoutY="16.0" prefHeight="303.0" prefWidth="220.0" promptText="Enter your message..." />
-      <Button fx:id="sendMessage" layoutX="22.0" layoutY="333.0" mnemonicParsing="false" onAction="#handleSendMessage" prefHeight="25.0" prefWidth="220.0" text="Send" />
+      <Button layoutX="22.0" layoutY="333.0" mnemonicParsing="false" onAction="#handleSendMessage" prefHeight="25.0" prefWidth="220.0" text="Send" />
    </children>
 </AnchorPane>
