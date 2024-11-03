@@ -30,7 +30,6 @@ import javafx.stage.Stage;
 @Tag("ui")
 public class LoginControllerTest {
 
-    private LoginController controller;
     private UserApiHandler mockUserHandler;
 
     /**
@@ -43,7 +42,7 @@ public class LoginControllerTest {
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/LoginScreen.fxml"));
         Parent root = loader.load();
-        controller = loader.getController();
+        LoginController controller = loader.getController();
         mockUserHandler = Mockito.mock(UserApiHandler.class);
         controller.setUserHandler(mockUserHandler);
         stage.setScene(new Scene(root));
@@ -63,7 +62,7 @@ public class LoginControllerTest {
     @Test
     @DisplayName("Test successful login")
     @Tag("login")
-    void testSuccessfulLogin(FxRobot robot) throws Exception {
+    void testSuccessfulLogin(FxRobot robot) {
         User TestUserDoNotDelete = new User("TestUserDoNotDelete", "password");
 
         when(mockUserHandler.userExists("TestUserDoNotDelete")).thenReturn(true);
@@ -85,7 +84,7 @@ public class LoginControllerTest {
     @Test
     @DisplayName("Test login with incorrect password")
     @Tag("login")
-    void testLoginIncorrectPassword(FxRobot robot) throws Exception {
+    void testLoginIncorrectPassword(FxRobot robot) {
         when(mockUserHandler.userExists("TestUserDoNotDelete")).thenReturn(true);
         when(mockUserHandler.loadUser("TestUserDoNotDelete", "wrongPassword")).thenReturn(null);
 
@@ -108,7 +107,7 @@ public class LoginControllerTest {
     @Test
     @DisplayName("Test login with non-existent user")
     @Tag("login")
-    void testLoginUserDoesNotExist(FxRobot robot) throws Exception {
+    void testLoginUserDoesNotExist(FxRobot robot) {
         when(mockUserHandler.userExists("nonTestUserDoNotDelete")).thenReturn(false);
 
         robot.clickOn("#usernameField").write("nonTestUserDoNotDelete");
@@ -129,7 +128,7 @@ public class LoginControllerTest {
     @Test
     @DisplayName("Test navigation to register screen")
     @Tag("navigation")
-    void testNavigateToRegisterScreen(FxRobot robot) throws Exception {
+    void testNavigateToRegisterScreen(FxRobot robot) {
         robot.clickOn("#registerButton");
 
         Button navigateToLoginScreenButton = robot.lookup("#navigateToLoginScreenButton").queryAs(Button.class);

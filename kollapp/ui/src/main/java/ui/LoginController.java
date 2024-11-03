@@ -101,13 +101,4 @@ public class LoginController {
         stage.setTitle("Register");
         stage.show();
     }
-
-    /**
-     * Sets the {@link UserHandler} to manage user data. Primarily used for testing purposes.
-     *
-     * @param userHandler the user handler to be used
-     */
-    public void setUserHandler(UserApiHandler userApiHandler) {
-        this.userApiHandler = userApiHandler;
-    }
 }

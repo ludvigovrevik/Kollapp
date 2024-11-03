@@ -77,9 +77,18 @@ public class RegisterGroupController {
         }
 
         try {
-            groupApiHandler.createGroup(this.user.getUsername(), groupName);
-            userApiHandler.assignGroupToUser(this.user.getUsername(), groupName);
-            
+            boolean groupCreated = groupApiHandler.createGroup(this.user.getUsername(), groupName);
+            if (!groupCreated) {
+                errorLabel.setText("Failed to create group. Please try again.");
+                return;
+            }
+
+            boolean userAssigned = userApiHandler.assignGroupToUser(this.user.getUsername(), groupName);
+            if (!userAssigned) {
+                errorLabel.setText("Failed to assign user to group. Please try again.");
+                return;
+            }
+
             kollAppController.populateGroupView();
 
             // Close the current window
@@ -88,9 +97,10 @@ public class RegisterGroupController {
             groupChatHandler.createGroupChat(groupName);
 
         } catch (Exception e) {
-            errorLabel.setText("Failed to create group. Please try again.");
+            errorLabel.setText("An unexpected error occurred. Please try again.");
         }
     }
+
 
     /**
      * Confirms if the provided group details are valid for creating a new group.

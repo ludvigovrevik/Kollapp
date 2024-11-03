@@ -38,7 +38,7 @@ class RegisterControllerTest extends ApplicationTest {
     private Button registerButton;
 
     private UserApiHandler userHandlerMock;
-    private UserApiHandler userApiHandler = new UserApiHandler();
+    private final UserApiHandler userApiHandler = new UserApiHandler();
 
     /**
      * Sets up the test environment by loading the RegisterScreen.fxml and initializing the scene.
@@ -117,7 +117,7 @@ class RegisterControllerTest extends ApplicationTest {
     @Test
     @DisplayName("Test navigation to login screen")
     @Tag("navigation")
-    void testNavigateToLoginScreen(FxRobot robot) throws Exception {
+    void testNavigateToLoginScreen(FxRobot robot) {
         robot.clickOn("#navigateToLoginScreenButton");
 
         Button loginButton = robot.lookup("#loginButton").queryAs(Button.class);

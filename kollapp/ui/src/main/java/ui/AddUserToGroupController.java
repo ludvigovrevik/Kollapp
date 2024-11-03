@@ -1,7 +1,6 @@
 package ui;
 
 import java.util.List;
-import java.util.Optional;
 
 import api.GroupApiHandler;
 import api.UserApiHandler;
@@ -33,7 +32,6 @@ public class AddUserToGroupController {
     // Constants for Feedback Messages
     private static final String USERNAME_EMPTY_MSG = "Username is empty.";
     private static final String USER_NOT_EXIST_MSG = "User does not exist.";
-    private static final String USER_RETRIEVAL_FAILED_MSG = "User retrieval failed.";
     private static final String NO_GROUP_SELECTED_MSG = "No group selected.";
     private static final String ADD_USER_SUCCESS_MSG = "User added to group successfully.";
     private static final String ADD_USER_FAILURE_MSG = "Failed to add user to group.";
