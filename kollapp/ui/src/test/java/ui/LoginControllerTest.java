@@ -70,7 +70,7 @@ public class LoginControllerTest {
 
         robot.clickOn("#usernameField").write("TestUserDoNotDelete");
         robot.clickOn("#passwordField").write("password");
-        robot.clickOn("#loginButton");
+        robot.clickOn("Login");
 
         verify(mockUserHandler).userExists("TestUserDoNotDelete");
         verify(mockUserHandler).loadUser("TestUserDoNotDelete", "password");

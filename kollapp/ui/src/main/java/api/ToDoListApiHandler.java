@@ -6,6 +6,7 @@ import core.User;
 import core.UserGroup;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -41,6 +42,10 @@ public class ToDoListApiHandler {
                 .build();
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println("Request URL: " + url);
+            System.out.println("Response status code: " + response.statusCode());
+            System.out.println("Response body: " + response.body()); // Add this for better debugging
+        
             if (response.statusCode() == 200) {
                 return objectMapper.readValue(response.body(), ToDoList.class);
             } else {
@@ -49,6 +54,7 @@ public class ToDoListApiHandler {
             }
         } catch (IOException | InterruptedException e) {
             System.err.println("An error occurred while loading the to-do list: " + e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }
@@ -83,8 +89,25 @@ public class ToDoListApiHandler {
      * @return true if successful, false otherwise
      */
     public boolean updateToDoList(User user, ToDoList toDoList) {
+        if (user == null) {
+            System.err.println("User is null.");
+            return false;
+        }
+        
+        String username = user.getUsername();
+        if (username == null || username.isEmpty()) {
+            System.err.println("Username is null or empty.");
+            return false;
+        }
 
-        String url = baseUrl + "/" + URLEncoder.encode(user.getUsername(), StandardCharsets.UTF_8);
+        String url;
+        try {
+            url = baseUrl + "/" + URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            System.err.println("Encoding not supported: " + e.getMessage());
+            return false;
+        }
+
         try {
             String jsonBody = objectMapper.writeValueAsString(toDoList);
             HttpRequest request = HttpRequest.newBuilder()

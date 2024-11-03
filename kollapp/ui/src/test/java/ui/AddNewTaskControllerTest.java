@@ -73,10 +73,12 @@ public class AddNewTaskControllerTest {
         robot.clickOn("#taskDescriptionField").write("This is a test description.");
         robot.clickOn("#priorityField").clickOn("High");
 
+        LocalDate fixedDate = LocalDate.of(2024, 4, 27);
         robot.interact(() -> {
             DatePicker datePicker = robot.lookup("#datePicker").queryAs(DatePicker.class);
-            datePicker.setValue(LocalDate.now());
+            datePicker.setValue(fixedDate);
         });
+
 
         robot.clickOn("Add task");
 
@@ -87,7 +89,7 @@ public class AddNewTaskControllerTest {
         assertEquals("Test Task", addedTask.getTaskName());
         assertEquals("This is a test description.", addedTask.getDescription());
         assertEquals("High", addedTask.getPriority());
-        assertEquals(LocalDate.now(), addedTask.getDateTime());
+        assertEquals(fixedDate, addedTask.getDateTime());
 
         verify(mockKollAppController).updateGrid();
     }

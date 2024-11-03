@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
-
+import api.ToDoListApiHandler;
 import api.GroupApiHandler;
 import api.UserApiHandler;
 import core.Task;
@@ -26,14 +26,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import persistence.GroupHandler;
-
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-
-import api.ToDoListApiHandler;
 
 /**
  * Controller class for the KollApp application.
@@ -60,9 +52,9 @@ public class KollAppController {
     private String groupNameChat;
     private UserGroup groupInView;
 
-    private final ToDoListApiHandler toDoListApiHandler = new ToDoListApiHandler();
-    private final GroupApiHandler groupApiHandler = new GroupApiHandler();
-    private final UserApiHandler userApiHandler = new UserApiHandler();
+    private ToDoListApiHandler toDoListApiHandler = new ToDoListApiHandler();
+    private GroupApiHandler groupApiHandler = new GroupApiHandler();
+    private UserApiHandler userApiHandler = new UserApiHandler();
 
     public void setUser(User user) {
         this.user = user;
