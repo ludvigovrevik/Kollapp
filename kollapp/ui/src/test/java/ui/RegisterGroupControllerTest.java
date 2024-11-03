@@ -18,13 +18,14 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
+import api.GroupApiHandler;
+import api.UserApiHandler;
 import core.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import persistence.GroupHandler;
 
 /**
  * Unit tests for the RegisterGroupController class.
@@ -34,9 +35,11 @@ import persistence.GroupHandler;
 public class RegisterGroupControllerTest {
 
     private RegisterGroupController controller;
-    private GroupHandler mockGroupHandler;
+    private GroupApiHandler mockGroupApiHandler;
+    private UserApiHandler mockUserApiHandler;
     private KollAppController mockKollAppController;
     private User mockUser;
+    private String mockUsername;
 
     /**
      * Initializes the test environment by loading the RegisterGroup.fxml and setting up dependencies.
@@ -46,30 +49,41 @@ public class RegisterGroupControllerTest {
      */
     @Start
     public void start(Stage stage) throws Exception {
-        URL fxmlUrl = getClass().getResource("/ui/RegisterGroup.fxml");
-        assertNotNull(fxmlUrl, "FXML file not found! Check the resource path.");
-        FXMLLoader loader = new FXMLLoader(fxmlUrl);
-        Parent root = loader.load();
+            URL fxmlUrl = getClass().getResource("/ui/RegisterGroup.fxml");
+            assertNotNull(fxmlUrl, "FXML file not found! Check the resource path.");
+            FXMLLoader loader = new FXMLLoader(fxmlUrl);
+            Parent root = loader.load();
 
-        controller = loader.getController();
+            controller = loader.getController();
 
-        mockGroupHandler = mock(GroupHandler.class);
-        mockKollAppController = mock(KollAppController.class);
-        mockUser = mock(User.class);
+            mockGroupApiHandler = mock(GroupApiHandler.class);
+            mockKollAppController = mock(KollAppController.class);
+            mockUserApiHandler = mock(UserApiHandler.class);
+            mockUser = mock(User.class);
+            mockUsername = "testUser";
 
-        setPrivateField(controller, "groupHandler", mockGroupHandler);
-        setPrivateField(controller, "kollAppController", mockKollAppController);
-        setPrivateField(controller, "user", mockUser);
+            setPrivateField(controller, "groupApiHandler", mockGroupApiHandler);
+            setPrivateField(controller, "kollAppController", mockKollAppController);
+            setPrivateField(controller, "user", mockUser);
 
-        when(mockUser.getUsername()).thenReturn("testUser");
+            when(mockUser.getUsername()).thenReturn("testUser");
 
-        stage.setScene(new Scene(root));
-        stage.show();
+            controller.setKollAppController(mockKollAppController);
+            controller.setGroupApiHandler(mockGroupApiHandler);
+            controller.setUserApiHandler(mockUserApiHandler);
+
+            stage.setScene(new Scene(root));
+            stage.show();
     }
 
     @BeforeEach
     public void setUp(FxRobot robot) {
-        // Initialization before each test is handled in the start method
+        when(mockUser.getUsername()).thenReturn("testUser");
+        when(mockGroupApiHandler.createGroup("testUser", "NewGroup")).thenReturn(true);
+        when(mockUserApiHandler.assignGroupToUser("testUser", "NewGroup")).thenReturn(true);
+
+        // Set the user in the controller
+        controller.setUser(mockUser);
     }
 
     /**
@@ -97,12 +111,12 @@ public class RegisterGroupControllerTest {
     void testCreateGroup_Success(FxRobot robot) throws Exception {
         String groupName = "NewGroup";
 
-        doNothing().when(mockGroupHandler).createGroup(mockUser, groupName);
+        when(mockGroupApiHandler.createGroup(mockUser.getUsername(), groupName)).thenReturn(true);
 
         robot.clickOn("#groupNameField").write(groupName);
         robot.clickOn("Create group");
 
-        verify(mockGroupHandler, times(1)).createGroup(mockUser, groupName);
+        verify(mockGroupApiHandler, times(1)).createGroup(mockUser.getUsername(), groupName);
         verify(mockKollAppController, times(1)).populateGroupView();
     }
 
@@ -120,7 +134,7 @@ public class RegisterGroupControllerTest {
         robot.clickOn("#groupNameField").write(groupName);
         robot.clickOn("Create group");
 
-        verify(mockGroupHandler, never()).createGroup(any(User.class), anyString());
+        verify(mockGroupApiHandler, never()).createGroup(anyString(), anyString());
 
         Label errorLabel = robot.lookup("#errorLabel").queryAs(Label.class);
         assertNotNull(errorLabel, "Error label not found!");
@@ -138,16 +152,16 @@ public class RegisterGroupControllerTest {
     void testCreateGroup_ExceptionDuringCreation(FxRobot robot) throws Exception {
         String groupName = "ExceptionGroup";
 
-        doThrow(new RuntimeException("Creation failed")).when(mockGroupHandler).createGroup(mockUser, groupName);
+        doThrow(new RuntimeException("Creation failed")).when(mockGroupApiHandler).createGroup(mockUsername, groupName);
 
         robot.clickOn("#groupNameField").write(groupName);
         robot.clickOn("Create group");
 
-        verify(mockGroupHandler, times(1)).createGroup(mockUser, groupName);
+        verify(mockGroupApiHandler, times(1)).createGroup(mockUsername, groupName);
         verify(mockKollAppController, never()).populateGroupView();
 
         Label errorLabel = robot.lookup("#errorLabel").queryAs(Label.class);
         assertNotNull(errorLabel, "Error label not found!");
-        assertEquals("Failed to create group. Please try again.", errorLabel.getText());
+        assertEquals("An unexpected error occurred. Please try again.", errorLabel.getText());
     }
 }

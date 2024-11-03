@@ -23,8 +23,8 @@ public class UserController {
     // GET /users/{username}
     @GetMapping("/{username}")
     public ResponseEntity<User> getUser(@PathVariable String username) {
-        Optional<User> userOpt = userService.getUser(username);
-        return userOpt.map(ResponseEntity::ok)
+    Optional<User> userOpt = userService.getUser(username);
+    return userOpt.map(ResponseEntity::ok)
                       .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
     

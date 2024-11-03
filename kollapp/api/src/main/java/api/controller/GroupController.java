@@ -41,11 +41,13 @@ public class GroupController {
                        .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    // POST /groups
-    @PostMapping
-    public ResponseEntity<Void> createGroup(@RequestBody GroupCreationRequest request) {
+    // POST /groups/{username}/{groupName}
+    @PostMapping("/{username}/{groupName}")
+    public ResponseEntity<Void> createGroup(
+            @PathVariable String username, 
+            @PathVariable String groupName) {
         try {
-            groupService.createGroup(request.getUsername(), request.getGroupName());
+            groupService.createGroup(username, groupName);
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

@@ -19,9 +19,9 @@ public class GroupService {
 
     @Autowired
     public GroupService() {
-        String groupToDoList = Paths.get("kollapp", "persistence", "src", "main", "java",
+        String groupToDoList = Paths.get("Prosjektet", "gr2409", "kollapp", "persistence", "src", "main", "java",
                 "persistence", "grouptodolists") + File.separator;
-        String groupPath = Paths.get("kollapp", "persistence", "src", "main", "java",
+        String groupPath = Paths.get("Prosjektet", "gr2409", "kollapp", "persistence", "src", "main", "java",
                 "persistence", "groups") + File.separator;
         this.groupHandler = new GroupHandler(groupPath, groupToDoList, new UserHandler());
         this.userService = new UserService();

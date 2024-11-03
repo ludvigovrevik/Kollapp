@@ -56,6 +56,33 @@ public class RegisterGroupController {
     }
 
     /**
+     * Setter for KollAppController to allow injection of mock in tests.
+     *
+     * @param kollAppController The mocked KollAppController
+     */
+    public void setKollAppController(KollAppController kollAppController) {
+        this.kollAppController = kollAppController;
+    }
+
+    /**
+     * Setter for GroupApiHandler to allow injection of mock in tests.
+     *
+     * @param groupApiHandler The mocked GroupApiHandler
+     */
+    public void setGroupApiHandler(GroupApiHandler groupApiHandler) {
+        this.groupApiHandler = groupApiHandler;
+    }
+
+    /**
+     * Setter for UserApiHandler to allow injection of mock in tests.
+     *
+     * @param userApiHandler The mocked UserApiHandler
+     */
+    public void setUserApiHandler(UserApiHandler userApiHandler) {
+        this.userApiHandler = userApiHandler;
+    }
+
+    /**
      * Handles the creation of a new group.
      * <p>
      * This method retrieves the group name from the input field and performs

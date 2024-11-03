@@ -29,7 +29,7 @@ import javafx.stage.Stage;
 @ExtendWith(ApplicationExtension.class)
 @Tag("ui")
 public class LoginControllerTest {
-
+    
     private UserApiHandler mockUserHandler;
 
     /**
@@ -44,7 +44,7 @@ public class LoginControllerTest {
         Parent root = loader.load();
         LoginController controller = loader.getController();
         mockUserHandler = Mockito.mock(UserApiHandler.class);
-        controller.setUserHandler(mockUserHandler);
+        controller.setUserApiHandler(mockUserHandler);
         stage.setScene(new Scene(root));
         stage.show();
     }

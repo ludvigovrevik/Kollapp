@@ -14,7 +14,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import persistence.UserHandler;
 
 /**
  * Controller class for handling user login and navigation to other scenes.
@@ -32,6 +31,11 @@ public class LoginController {
 
     private UserApiHandler userApiHandler = new UserApiHandler();
 
+    // Setter for injecting a mock during testing
+    public void setUserApiHandler(UserApiHandler userApiHandler) {
+        this.userApiHandler = userApiHandler;
+    }
+
     /**
      * Handles the action event triggered by the login button.
      * Retrieves the username and password from the respective input fields,
@@ -43,11 +47,19 @@ public class LoginController {
     public void handleLoginButtonAction() {
         String username = usernameField.getText();
         String password = passwordField.getText();
+        
+        if (username == null || username.trim().isEmpty()) {
+            loginErrorMessage.setText("Username cannot be empty.");
+            return;
+        }
+        
+        if (password == null || password.isEmpty()) {
+            loginErrorMessage.setText("Password cannot be empty.");
+            return;
+        }
 
         if (userApiHandler.userExists(username)) {
-            System.out.println("Load User");
             User user = userApiHandler.loadUser(username, password);
-
             if (user != null) {
                 loadKollektivScene(user);
             } else {

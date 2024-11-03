@@ -57,20 +57,28 @@ public class GroupApiHandler {
      * @return true if the operation was successful; false otherwise.
      */
     public boolean createGroup(String username, String groupName) {
-        String url = "http://localhost:8080/api/v1/groups";
-
-        // Create JSON request body
-        String jsonBody = String.format("{\"username\":\"%s\", \"groupName\":\"%s\"}", username, groupName);
-
+        // Encode the path variables to ensure the URL is valid
+        String encodedUsername = URLEncoder.encode(username, StandardCharsets.UTF_8);
+        String encodedGroupName = URLEncoder.encode(groupName, StandardCharsets.UTF_8);
+        
+        String url = String.format("http://localhost:8080/api/v1/groups/%s/%s", 
+                                    encodedUsername, encodedGroupName);
+    
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
+                .POST(HttpRequest.BodyPublishers.noBody())
+                .header("Accept", "application/json") 
                 .build();
-
+    
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            return response.statusCode() == 201;
+            if (response.statusCode() == 201) {
+                System.out.println("Group created successfully.");
+                return true;
+            } else {
+                System.out.println("Failed to create group. Status Code: " + response.statusCode());
+                return false;
+            }
         } catch (IOException | InterruptedException e) {
             System.out.println("An error occurred while creating group: " + e.getMessage());
             return false;
