@@ -67,7 +67,8 @@ public class LoginController {
             Parent parent = fxmlLoader.load();
 
             KollAppController controller = fxmlLoader.getController();
-            controller.initializeToDoList(user); 
+            controller.initializeToDoList(user);
+            controller.setUser(user);
             controller.populateGroupView();
             
             Scene scene = new Scene(parent);
@@ -77,6 +78,7 @@ public class LoginController {
             stage.show();
 
         } catch (IOException e) {
+            System.out.println(e.getMessage());
             loginErrorMessage.setText("Failed to load the next scene.");
         }
     }
