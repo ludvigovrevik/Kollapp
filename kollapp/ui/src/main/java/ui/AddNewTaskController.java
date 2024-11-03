@@ -1,5 +1,7 @@
 package ui;
 
+import java.time.LocalDate;
+
 import core.Task;
 import core.ToDoList;
 import core.User;
@@ -7,11 +9,13 @@ import core.UserGroup;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import persistence.ToDoListHandler;
-
-import java.time.LocalDate;
 
 /**
  * Controller class for managing the addition of new tasks to a to-do list.

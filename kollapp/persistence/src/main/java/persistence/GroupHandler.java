@@ -70,7 +70,7 @@ public class GroupHandler {
     public void createGroup(User user, String groupName) {
         UserGroup userGroup = new UserGroup(groupName);
         userGroup.addUser(user.getUsername());
-        user.addUserGroup(groupName);
+        
         ToDoList toDoList = new ToDoList();
 
         File fileForGroup = new File(groupPath + groupName + ".json");
@@ -82,7 +82,6 @@ public class GroupHandler {
         } catch (IOException e) {
             throw new RuntimeException("Failed to create group");
         }
-        userHandler.updateUser(user);
     }
 
     /**
@@ -124,25 +123,6 @@ public class GroupHandler {
         } catch (Exception e) {
             System.err.println("Exception in groupHandler.assignUserToGroup: " + e.getMessage());
             throw new RuntimeException("Failed to update group file");
-        }
-    }
-
-    /**
-     * Updates the group information in the corresponding JSON file.
-     *
-     * @param group the UserGroup object containing updated information
-     * @throws IllegalArgumentException if the group file does not exist
-     */
-    public void updateGroup(UserGroup group) {
-        if (!groupExists(group.getGroupName())) {
-            throw new IllegalArgumentException("Group does not exist: " + group.getGroupName());
-        }
-
-        File groupFile = new File(groupPath + group.getGroupName() + ".json");
-        try {
-            mapper.writeValue(groupFile, group);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to update group file: " + groupFile.getAbsolutePath());
         }
     }
 

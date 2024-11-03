@@ -1,5 +1,7 @@
 package ui;
 
+import api.GroupApiHandler;
+import api.UserApiHandler;
 import core.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -7,7 +9,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import persistence.GroupHandler;
 import persistence.GroupChatHandler;
 
 /**
@@ -25,8 +26,9 @@ public class RegisterGroupController {
 
     private User user;
     private KollAppController kollAppController;
-    private GroupHandler groupHandler;
     private GroupChatHandler groupChatHandler;
+    private GroupApiHandler groupApiHandler;
+    private UserApiHandler userApiHandler;
 
     /**
      * Sets the user for the group registration process.
@@ -48,8 +50,9 @@ public class RegisterGroupController {
     public void initialize(User user, KollAppController kollAppController) {
         this.user = user;
         this.kollAppController = kollAppController;
-        this.groupHandler = new GroupHandler();
         this.groupChatHandler = new GroupChatHandler();
+        this.groupApiHandler = new GroupApiHandler();
+        this.userApiHandler = new UserApiHandler();
     }
 
     /**
@@ -74,7 +77,9 @@ public class RegisterGroupController {
         }
 
         try {
-            groupHandler.createGroup(this.user, groupName);
+            groupApiHandler.createGroup(this.user.getUsername(), groupName);
+            userApiHandler.assignGroupToUser(this.user.getUsername(), groupName);
+            
             kollAppController.populateGroupView();
 
             // Close the current window
@@ -100,7 +105,7 @@ public class RegisterGroupController {
         if (groupName == null || groupName.isEmpty()) {
             return false;
         }
-        return !groupHandler.groupExists(groupName);
+        return !groupApiHandler.groupExists(groupName);
     }
 
     /**
@@ -114,7 +119,7 @@ public class RegisterGroupController {
         if (groupName == null || groupName.isEmpty()) {
             return "Group Name cannot be empty";
         }
-        if (groupHandler.groupExists(groupName)) {
+        if (groupApiHandler.groupExists(groupName)) {
             return "Group already exists";
         }
         return null;

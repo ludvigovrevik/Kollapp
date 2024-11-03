@@ -5,12 +5,12 @@ import java.util.Optional;
 
 import api.GroupApiHandler;
 import api.UserApiHandler;
+import core.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
-import core.User;
 
 /**
  * Controller class for adding a user to an existing group.
@@ -73,22 +73,11 @@ public class AddUserToGroupController {
 
         String usernameInput = usernameField.getText().trim();
 
-        // Validate Username
-        System.out.println("Username: " + usernameInput);
         String validationError = validateUsername(usernameInput);
         if (validationError != null) {
             displayFeedback(validationError, Color.RED);
             return;
         }
-
-        // Retrieve User
-        Optional<User> optionalUser = userApiHandler.getUser(usernameInput);
-        if (optionalUser.isEmpty()) {
-            displayFeedback(USER_RETRIEVAL_FAILED_MSG, Color.RED);
-            return;
-        }
-
-        User userToAdd = optionalUser.get();
 
         // Validate Group Selection
         String selectedGroup = groupsListView.getSelectionModel().getSelectedItem();
@@ -97,8 +86,6 @@ public class AddUserToGroupController {
             return;
         }
 
-        // Assign User to Group
-        // Assign User to Group via API
         boolean groupAssigningSuccessful = groupApiHandler.assignUserToGroup(usernameInput, selectedGroup);
         boolean userAssigningSuccessful = userApiHandler.assignGroupToUser(usernameInput, selectedGroup);
 

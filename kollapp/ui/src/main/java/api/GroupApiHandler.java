@@ -23,6 +23,61 @@ public class GroupApiHandler {
     }
 
     /**
+     * Retrieves a UserGroup from the API.
+     *
+     * @param groupName The name of the group to retrieve.
+     * @return An Optional containing the UserGroup if found; otherwise, Optional.empty().
+     */
+    public Optional<UserGroup> getGroup(String groupName) {
+        String url = "http://localhost:8080/api/v1/groups/" + groupName;
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .GET()
+                .build();
+        try {
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                String responseBody = response.body();
+                UserGroup group = objectMapper.readValue(responseBody, UserGroup.class);
+                return Optional.of(group);
+            } else {
+                return Optional.empty();
+            }
+        } catch (IOException | InterruptedException e) {
+            System.out.println("An error occurred while retrieving group: " + e.getMessage());
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Creates a UserGroup by making an HTTP POST request to the API.
+     *
+     * @param username  The username of the user who creates the group.
+     * @param groupName The name of the group to be created.
+     * @return true if the operation was successful; false otherwise.
+     */
+    public boolean createGroup(String username, String groupName) {
+        String url = "http://localhost:8080/api/v1/groups";
+
+        // Create JSON request body
+        String jsonBody = String.format("{\"username\":\"%s\", \"groupName\":\"%s\"}", username, groupName);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
+                .build();
+
+        try {
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.statusCode() == 201;
+        } catch (IOException | InterruptedException e) {
+            System.out.println("An error occurred while creating group: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
      * Assigns a user to a group by making an HTTP POST request to the API.
      *
      * @param username  The username of the user to assign.
@@ -50,48 +105,29 @@ public class GroupApiHandler {
     
             return response.statusCode() == 200 || response.statusCode() == 201;
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            System.out.println("An error occurred while assigning user to group: " + e.getMessage());
             return false;
         }
     }
 
     /**
-     * Retrieves a UserGroup from the API.
+     * Checks if a group exists by making an HTTP GET request to the API.
      *
-     * @param groupName The name of the group to retrieve.
-     * @return An Optional containing the UserGroup if found; otherwise, Optional.empty().
+     * @param groupName The name of the group to check.
+     * @return true if the group exists; false otherwise.
      */
-    public Optional<UserGroup> getGroup(String groupName) {
-        String url = "http://localhost:8080/api/v1/groups/" + groupName;
+    public boolean groupExists(String groupName) {
+        String url = "http://localhost:8080/api/v1/groups/exists/" + groupName;
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .GET()
                 .build();
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() == 200) {
-                String responseBody = response.body();
-                UserGroup group = objectMapper.readValue(responseBody, UserGroup.class);
-                return Optional.of(group);
-            } else {
-                return Optional.empty();
-            }
+            return response.statusCode() == 200 && Boolean.parseBoolean(response.body());
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-            return Optional.empty();
+            System.out.println("An error occurred while checking if group exists: " + e.getMessage());
+            return false;
         }
-    }
-
-    // Inner class for the request body
-    public static class AssignUserRequest {
-        private String username;
-
-        public AssignUserRequest(String username) {
-            this.username = username;
-        }
-
-        // Getter and setter
-        public String getUsername() { return username; }
-        public void setUsername(String username) { this.username = username; }
     }
 }

@@ -53,14 +53,6 @@ public class GroupService {
         }
     }
 
-    public void updateGroup(UserGroup group) {
-        try {
-            groupHandler.updateGroup(group);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Failed to update group");
-        }
-    }
-
     public boolean groupExists(String groupName) {
         return groupHandler.groupExists(groupName);
     }

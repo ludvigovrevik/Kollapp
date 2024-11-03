@@ -54,30 +54,6 @@ public class GroupController {
         }
     }
 
-    // PUT /groups/{groupName}
-    @PutMapping("/{groupName}")
-    public ResponseEntity<Void> updateGroup(@PathVariable String groupName, @RequestBody UserGroup group) {
-        try {
-            groupService.updateGroup(group);
-            return ResponseEntity.ok().build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    // GET /groups/exists/{groupName}
-    @GetMapping(value = "/exists/{groupName}", produces = MediaType.TEXT_PLAIN_VALUE)
-    public String groupExists(@PathVariable String groupName) {
-        try {
-            boolean exists = groupService.groupExists(groupName);
-            return String.valueOf(exists);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
-        }
-    }
-
     @PostMapping(value = "/{groupName}/assignUser", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ResponseEntity<Void> assignUserToGroup(@PathVariable String groupName, @RequestParam String username) {
         try {
@@ -92,6 +68,17 @@ public class GroupController {
             System.err.println("Exception: " + e.getMessage());
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    // GET /groups/exists/{groupName}
+    @GetMapping(value = "/exists/{groupName}", produces = MediaType.TEXT_PLAIN_VALUE)
+    public String groupExists(@PathVariable String groupName) {
+        try {
+            boolean exists = groupService.groupExists(groupName);
+            return String.valueOf(exists);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
     }
 }

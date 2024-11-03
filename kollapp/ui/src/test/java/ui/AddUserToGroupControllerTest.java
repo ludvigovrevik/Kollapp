@@ -1,10 +1,18 @@
 package ui;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -26,7 +34,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import persistence.GroupHandler;
-import java.lang.reflect.Field;
 
 /**
  * Unit tests for the AddUserToGroupController class.
@@ -101,7 +108,7 @@ public class AddUserToGroupControllerTest {
     @Test
     @DisplayName("Test adding user to group successfully")
     @Tag("group")
-    void testAddUserToGroup_Success(FxRobot robot) throws Exception {
+    void testAddUserToGroup_Success(FxRobot robot) {
         String inputUsername = "existingUser";
         String selectedGroup = "Group1";
 
@@ -130,7 +137,7 @@ public class AddUserToGroupControllerTest {
     @Test
     @DisplayName("Test adding user with empty username")
     @Tag("group")
-    void testAddUserToGroup_EmptyUsername(FxRobot robot) throws Exception {
+    void testAddUserToGroup_EmptyUsername(FxRobot robot) {
         String inputUsername = "";
         String selectedGroup = "Group1";
 
@@ -160,7 +167,7 @@ public class AddUserToGroupControllerTest {
     @Test
     @DisplayName("Test adding non-existent user to group")
     @Tag("group")
-    void testAddUserToGroup_UserDoesNotExist(FxRobot robot) throws Exception {
+    void testAddUserToGroup_UserDoesNotExist(FxRobot robot) {
         String inputUsername = "nonExistingUser";
         String selectedGroup = "Group1";
 
@@ -190,7 +197,7 @@ public class AddUserToGroupControllerTest {
     @Test
     @DisplayName("Test adding user without selecting a group")
     @Tag("group")
-    void testAddUserToGroup_NoGroupSelected(FxRobot robot) throws Exception {
+    void testAddUserToGroup_NoGroupSelected(FxRobot robot) {
         String inputUsername = "existingUser";
 
         when(mockUserApiHandler.userExists(inputUsername)).thenReturn(true);
@@ -217,7 +224,7 @@ public class AddUserToGroupControllerTest {
     @Test
     @DisplayName("Test exception during user assignment to group")
     @Tag("group")
-    void testAddUserToGroup_ExceptionDuringAssignment(FxRobot robot) throws Exception {
+    void testAddUserToGroup_ExceptionDuringAssignment(FxRobot robot) {
         String inputUsername = "existingUser";
         String selectedGroup = "Group1";
 
@@ -249,7 +256,7 @@ public class AddUserToGroupControllerTest {
     @Test
     @DisplayName("Test user retrieval failure during user assignment")
     @Tag("group")
-    void testAddUserToGroup_UserRetrievalFailed(FxRobot robot) throws Exception {
+    void testAddUserToGroup_UserRetrievalFailed(FxRobot robot) {
         String inputUsername = "existingUser";
         String selectedGroup = "Group1";
 
