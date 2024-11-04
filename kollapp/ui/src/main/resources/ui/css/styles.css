@@ -1,0 +1,12 @@
+.personal-label, .completedTask-label {
+    -fx-background-color: #7aadff;
+}
+
+.personal-label:hover, .completedTask-label:hover, .group-label {
+    -fx-background-color:#6999e6;
+}
+
+.button:hover {
+    -fx-cursor:hand;
+}
+

@@ -6,15 +6,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="372.0"
-            prefWidth="540.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ui.GroupChatController">
-   <ScrollPane fx:id="viewMessagePane" fitToWidth="true" layoutX="263.0" layoutY="16.0" prefHeight="343.0"
-               prefWidth="258.0">
-      <VBox fx:id="vboxMessages" prefHeight="341.0" prefWidth="256.0" spacing="10.0"/>
-   </ScrollPane>
-   <TextArea fx:id="messageTextArea" layoutX="22.0" layoutY="16.0" prefHeight="303.0" prefWidth="220.0"
-             promptText="Enter your message..."/>
-   <Button layoutX="22.0" layoutY="333.0" mnemonicParsing="false" onAction="#handleSendMessage" prefHeight="25.0"
-           prefWidth="220.0" text="Send"/>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="372.0" prefWidth="540.0" xmlns="http://javafx.com/javafx/17.012" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.GroupChatController">
+   <children>
+      <ScrollPane fx:id="viewMessagePane" fitToWidth="true" layoutX="263.0" layoutY="16.0" prefHeight="343.0" prefWidth="258.0">
+         <content>
+            <VBox fx:id="vboxMessages" alignment="TOP_LEFT" prefHeight="341.0" prefWidth="256.0" spacing="10.0" />
+         </content>
+      </ScrollPane>
+      <TextArea fx:id="messageTextArea" layoutX="22.0" layoutY="16.0" prefHeight="303.0" prefWidth="220.0" promptText="Enter your message..." />
+      <Button fx:id="sendMessage" layoutX="22.0" layoutY="333.0" mnemonicParsing="false" onAction="#handleSendMessage" prefHeight="25.0" prefWidth="220.0" stylesheets="@css/styles.css" text="Send" />
+   </children>
 </AnchorPane>
