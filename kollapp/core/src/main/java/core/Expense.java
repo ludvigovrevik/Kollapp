@@ -1,7 +1,6 @@
 package core;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
 /**
  * Represents an expense in the application.
@@ -23,9 +22,8 @@ public class Expense implements Serializable {
      * @param description The description of the expense.
      * @param amount      The amount of the expense.
      * @param paidBy      The username of the person who paid.
-     * @param date        The date of the expense.
      */
-    public Expense(String description, double amount, String paidBy, LocalDate date) {
+    public Expense(String description, double amount, String paidBy) {
         this.description = description;
         this.amount = amount;
         this.paidBy = paidBy;

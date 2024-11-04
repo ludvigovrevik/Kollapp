@@ -13,7 +13,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import api.ToDoListApiHandler;
 import core.Expense;
@@ -58,6 +57,15 @@ public class ExpenseController {
     }
 
     /**
+     * Returns the group associated with this controller.
+     *
+     * @return The UserGroup object.
+     */
+    public UserGroup getGroup() {
+        return this.group;
+    }
+
+    /**
      * Displays the list of expenses in the VBox.
      */
     private void displayExpenses() {
@@ -83,7 +91,7 @@ public class ExpenseController {
         hbox.setPrefHeight(50.0);
 
         Label descriptionLabel = new Label(expense.getDescription());
-        descriptionLabel.setPrefWidth(200);
+        descriptionLabel.setPrefWidth(250);
 
         Label amountLabel = new Label(String.format("%.2f", expense.getAmount()));
         amountLabel.setPrefWidth(80);
@@ -105,7 +113,7 @@ public class ExpenseController {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddExpense.fxml"));
             Parent root = fxmlLoader.load();
 
-            AddExpenseController addExpenseController = fxmlLoader.getController();
+            AddNewExpenseController addExpenseController = fxmlLoader.getController();
             addExpenseController.initializeAddExpenseController(user, toDoList, this);
 
             Stage stage = new Stage();
