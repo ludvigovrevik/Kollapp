@@ -1,7 +1,7 @@
 package ui;
 
+import api.ExpenseApiHandler;
 import core.Expense;
-import core.ToDoList;
 import core.User;
 import core.UserGroup;
 import javafx.event.ActionEvent;
@@ -11,11 +11,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import api.ToDoListApiHandler;
+import java.util.List;
 
-/**
- * Controller class for adding a new expense.
- */
 public class AddNewExpenseController {
 
     @FXML
@@ -28,29 +25,17 @@ public class AddNewExpenseController {
     private Label errorLabel;
 
     private User user;
-    private ToDoList toDoList;
+    private UserGroup group;
+    private ExpenseApiHandler expenseApiHandler;
     private ExpenseController expenseController;
-    private ToDoListApiHandler toDoListApiHandler;
 
-    /**
-     * Initializes the controller with necessary data.
-     *
-     * @param user              The current user
-     * @param toDoList          The ToDoList to which the expense will be added
-     * @param expenseController The parent controller to refresh after adding
-     */
-    public void initializeAddExpenseController(User user, ToDoList toDoList, ExpenseController expenseController) {
+    public void initializeAddExpenseController(User user, UserGroup group, ExpenseController expenseController) {
         this.user = user;
-        this.toDoList = toDoList;
+        this.group = group;
         this.expenseController = expenseController;
-        this.toDoListApiHandler = new ToDoListApiHandler();
+        this.expenseApiHandler = new ExpenseApiHandler();
     }
 
-    /**
-     * Handles the action of adding a new expense.
-     *
-     * @param event The event triggered by clicking the "Add Expense" button.
-     */
     @FXML
     public void handleAddExpense(ActionEvent event) {
         String description = expenseNameField.getText();
@@ -73,17 +58,24 @@ public class AddNewExpenseController {
         }
 
         Expense newExpense = new Expense(description, amount, user.getUsername());
-        toDoList.addExpense(newExpense);
 
-        // Debugging: Print the expenses in the ToDoList
-        System.out.println("Expenses in ToDoList after adding new expense:");
-        for (Expense expense : toDoList.getExpenses()) {
-            System.out.println(expense.getDescription() + " - " + expense.getAmount());
+        // Load existing expenses
+        List<Expense> expenses;
+        if (group != null) {
+            expenses = expenseApiHandler.loadGroupExpenses(group);
+        } else {
+            expenses = expenseApiHandler.loadUserExpenses(user);
         }
 
-        // Save the updated ToDoList
-        UserGroup group = expenseController.getGroup();
-        toDoListApiHandler.updateGroupToDoList(group, toDoList);
+        // Add new expense
+        expenses.add(newExpense);
+
+        // Save updated expenses
+        if (group != null) {
+            expenseApiHandler.updateGroupExpenses(group, expenses);
+        } else {
+            expenseApiHandler.updateUserExpenses(user, expenses);
+        }
 
         // Refresh the expense list in the parent controller
         expenseController.refreshExpenses();
