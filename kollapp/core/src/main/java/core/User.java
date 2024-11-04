@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class User implements Serializable {
     private String username;
-    private String password;
+    private String hashedPassword;
     private List<String> userGroups = new ArrayList<>();
 
     /**
@@ -26,9 +26,9 @@ public class User implements Serializable {
      * @param username the username of the user
      * @param password the password of the user
      */
-    public User(String username, String password) {
+    public User(String username, String hashedPassword) {
         this.username = username;
-        this.password = password;
+        this.hashedPassword = hashedPassword;
     }
 
     /**
@@ -45,8 +45,8 @@ public class User implements Serializable {
      *
      * @return the password
      */
-    public String getPassword() {
-        return password;
+    public String getHashedPassword() {
+        return hashedPassword;
     }
 
     /**

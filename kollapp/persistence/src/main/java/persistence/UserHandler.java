@@ -9,12 +9,15 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Optional;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import core.User;
 
 @Component
 public class UserHandler {
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private final String userPath;
     private final ObjectMapper mapper = new ObjectMapper();
     
@@ -49,30 +52,13 @@ public class UserHandler {
         if (userExists(user.getUsername())) {
             throw new IllegalArgumentException("User already exists");
         }
+
+        // Hash the password before saving the user
+        String hashedPassword = passwordEncoder.encode(user.getHashedPassword());
+        User userWithHashedPassword = new User(user.getUsername(), hashedPassword);
         
-        File file = new File(userPath + user.getUsername() + ".json");
-        mapper.writeValue(file, user);
-    }
-
-    /**
-     * Updates the user information in the corresponding JSON file.
-     * If the user does not exist, an IllegalArgumentException is thrown.
-     *
-     * @param user The User object containing updated information.
-     * @throws IllegalArgumentException if the user file does not exist.
-     * @throws RuntimeException if there is an error writing to the user file.
-     */
-    public void updateUser(User user) {
-        if (!userExists(user.getUsername())) {
-            throw new IllegalArgumentException("User file does not exist for user: " + user.getUsername());
-        }
-
-        File file = new File(userPath + user.getUsername() + ".json");
-        try {
-            mapper.writeValue(file, user);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to update user file for user: " + user.getUsername());
-        }
+        File file = new File(userPath + userWithHashedPassword.getUsername() + ".json");
+        mapper.writeValue(file, userWithHashedPassword);
     }
 
     /**
@@ -91,7 +77,9 @@ public class UserHandler {
     
         try {
             User user = mapper.readValue(file, User.class);
-            if (user.getPassword().equals(password)) {
+            
+            // Check if the provided password matches the hashed password
+            if (passwordEncoder.matches(password, user.getHashedPassword())) {
                 return Optional.of(user);
             } else {
                 return Optional.empty();
@@ -99,39 +87,6 @@ public class UserHandler {
         } catch (IOException e) {
             throw new IllegalArgumentException("Failed to read user file", e);
         }
-    }
-
-    /**
-     * Retrieves a user by their username.
-     *
-     * @param username the username of the user to retrieve
-     * @return an Optional containing the User if found, or an empty Optional if the user does not exist or an error occurs
-     */
-    public Optional<User> getUser(String username) {
-        if (!userExists(username)) {
-            return Optional.empty();
-        }
-
-        File file = new File(userPath + username + ".json");
-        try {
-            User user = mapper.readValue(file, User.class);
-            return Optional.of(user);
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Failed to retrieve user");
-        }
-    }
-
-    
-
-    /**
-     * Checks if a user exists by verifying the presence of a corresponding JSON file.
-     *
-     * @param username the username to check for existence
-     * @return true if the user file exists, false otherwise
-     */
-    public boolean userExists(String username) {
-        File file = new File(userPath + username + ".json");
-        return file.exists();
     }
 
     /**
@@ -215,5 +170,57 @@ public class UserHandler {
         User user = getUser(username).get();
         user.addUserGroup(groupName);
         updateUser(user);
+    }
+
+    /**
+     * Updates the user information in the corresponding JSON file.
+     * If the user does not exist, an IllegalArgumentException is thrown.
+     *
+     * @param user The User object containing updated information.
+     * @throws IllegalArgumentException if the user file does not exist.
+     * @throws RuntimeException if there is an error writing to the user file.
+     */
+    private void updateUser(User user) {
+        if (!userExists(user.getUsername())) {
+            throw new IllegalArgumentException("User file does not exist for user: " + user.getUsername());
+        }
+
+        File file = new File(userPath + user.getUsername() + ".json");
+        try {
+            mapper.writeValue(file, user);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to update user file for user: " + user.getUsername());
+        }
+    }
+
+     /**
+     * Helper method. Retrieves a user by their username.
+     *
+     * @param username the username of the user to retrieve
+     * @return an Optional containing the User if found, or an empty Optional if the user does not exist or an error occurs
+     */
+    public Optional<User> getUser(String username) {
+        if (!userExists(username)) {
+            return Optional.empty();
+        }
+
+        File file = new File(userPath + username + ".json");
+        try {
+            User user = mapper.readValue(file, User.class);
+            return Optional.of(user);
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Failed to retrieve user");
+        }
+    }
+
+    /**
+     * Checks if a user exists by verifying the presence of a corresponding JSON file.
+     *
+     * @param username the username to check for existence
+     * @return true if the user file exists, false otherwise
+     */
+    public boolean userExists(String username) {
+        File file = new File(userPath + username + ".json");
+        return file.exists();
     }
 }

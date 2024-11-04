@@ -67,7 +67,7 @@ public class UserTest {
     @DisplayName("Test password retrieval")
     @Tag("getter")
     void testGetPassword() {
-        String password = user.getPassword();
+        String password = user.getHashedPassword();
         assertEquals("testPassword", password, "Password should match the initialized value");
     }
 
