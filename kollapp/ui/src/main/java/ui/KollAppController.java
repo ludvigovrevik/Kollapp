@@ -14,9 +14,11 @@ import core.User;
 import core.UserGroup;
 import javafx.animation.ScaleTransition;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -84,7 +86,6 @@ public class KollAppController {
 
     private ToDoListApiHandler toDoListApiHandler = new ToDoListApiHandler();
     private GroupApiHandler groupApiHandler = new GroupApiHandler();
-    private UserApiHandler userApiHandler = new UserApiHandler();
 
     public void setUser(User user) {
         this.user = user;
@@ -157,19 +158,11 @@ public class KollAppController {
      * Populates the view with the user's group names, displaying them as clickable labels.
      * Ensures the user exists and handles potential missing data gracefully.
      */
-    public void populateGroupView() {
+    public void populateGroupView(List<String> groupNames) {
         vBoxContainer.getChildren().clear();
-
-        Optional<User> optionalUser = userApiHandler.getUser(this.user.getUsername());
-        if (optionalUser.isPresent()) {
-            User currentUser = optionalUser.get();
-            
-            this.user = currentUser;
-
-            List<String> groupNames = currentUser.getUserGroups();
+        if (groupNames != null) {
             groupNames.forEach(this::addGroupLabel);
-        } else {
-            System.err.println("User not found in populateGroupView: " + this.user.getUsername());
+            return;
         }
     }
 
@@ -261,70 +254,14 @@ public class KollAppController {
         }
     }
 
-    /**
-     * Updates the task grid view by clearing existing tasks and populating it with
-     * tasks from the to-do list that are not completed. Each task is displayed with
-     * its name, description, priority, and date (if available). A checkbox is added
-     * to each task, allowing the user to mark it as completed. When a task is marked
-     * as completed, the to-do list is updated accordingly, and the grid is refreshed.
-     */
-    // @FXML
-    // public void updateGrid() {
-    //     taskGridView.getChildren().clear();
-    //     List<Task> tasks = toDoList.getTasks();
-
-    //     int row = 0;
-
-    //     for (Task task : tasks) {
-    //         if (task.isCompleted()) {
-    //             continue; // Skip completed tasks
-    //         }
-
-    //         String taskName = task.getTaskName();
-    //         String taskDescription = task.getDescription();
-    //         String priority = task.getPriority();
-
-    //         Label dateLabel = new Label("");
-    //         if (task.getDateTime() != null) {
-    //             LocalDate dateTime = task.getDateTime();
-    //             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
-    //             dateLabel.setText(dateTime.format(formatter));
-    //         }
-
-    //         CheckBox checkBox = new CheckBox();
-    //         Label taskLabel = new Label(taskName);
-    //         Label taskDescriptionLabel = new Label(taskDescription);
-    //         Label priorityLabel = new Label(priority);
-
-    //         // Add event listener to the CheckBox
-    //         checkBox.setOnAction(event -> {
-    //             if (checkBox.isSelected()) {
-    //                 task.setCompleted(true);
-    //                 if (groupInView == null) {
-    //                     toDoListHandler.updateToDoList(user, toDoList);
-    //                 } else {
-    //                     toDoListHandler.updateGroupToDoList(groupInView, toDoList);
-    //                 }
-    //                 updateGrid();
-    //                 updateTableView();
-    //             }
-    //         });
-
-    //         taskGridView.add(checkBox, 0, row);
-    //         taskGridView.add(taskLabel, 1, row);
-    //         taskGridView.add(dateLabel, 2, row);
-    //         taskGridView.add(taskDescriptionLabel, 3, row);
-    //         taskGridView.add(priorityLabel, 4, row);
-    //         GridPane.setVgrow(taskLabel, Priority.ALWAYS);
-    //         row++;
-    //     }
-    // }
-
     @FXML
     public void updateTableView() {
         // Clear the current items in the TableView
         tableView.getItems().clear();
-    
+        if (toDoList == null) {
+            toDoList = new ToDoList(); // Ensure toDoList is initialized
+        }
+        
         // Get the list of incomplete tasks and add them to the TableView
         List<Task> tasks = toDoList.getTasks();
         for (Task task : tasks) {
@@ -432,7 +369,7 @@ public class KollAppController {
     }
 
     @FXML
-    public void logOut() {
+    public void logOut(ActionEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LoginScreen.fxml"));
             Parent root = fxmlLoader.load();
@@ -442,47 +379,12 @@ public class KollAppController {
             stage.setScene(new Scene(root));
 
             stage.show();
-            Stage currentStage = (Stage) taskGridView.getScene().getWindow();
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentStage.close();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error loading login screen: " + e.getMessage());
         }
     }
-
-    /**
-     * Updates the grid view to display only the completed tasks.
-     * This method clears the current grid view and repopulates it with tasks
-     * that are marked as completed. Each task is displayed with a checkbox,
-     * task description, and date (if available). The checkbox allows for the
-     * removal of the task from the to-do list.
-     */
-    // @FXML
-    // public void updateGridViewCompletedTasks() {
-    //     taskGridView.getChildren().clear();
-    //     List<Task> tasks = toDoList.getTasks();
-    //     int row = 0;
-
-    //     for (Task currentTask : tasks) {
-    //         if (currentTask.isCompleted()) {
-    //             String taskDescription = currentTask.getTaskName();
-
-    //             Label dateLabel = new Label("");
-    //             if (currentTask.getDateTime() != null) {
-    //                 LocalDate dateTime = currentTask.getDateTime();
-    //                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
-    //                 dateLabel.setText(dateTime.format(formatter));
-    //             }
-
-    //             Label taskLabel = new Label(taskDescription);
-    //             CheckBox checkBox = getCheckBox(currentTask);
-
-    //             taskGridView.add(checkBox, 0, row);
-    //             taskGridView.add(taskLabel, 1, row);
-    //             taskGridView.add(dateLabel, 2, row);
-    //             row++;
-    //         }
-    //     }
-    // }
 
     @FXML
     public void updateTableViewCompletedTasks() {
@@ -542,22 +444,6 @@ public class KollAppController {
         });
         descriptionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescription()));
         priorityColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPriority()));
-    }
-
-    private CheckBox getCheckBox(Task currentTask) {
-        CheckBox checkBox = new CheckBox();
-
-        // Add event listener to the CheckBox for task removal
-        checkBox.setOnAction(event -> {
-            toDoList.removeTask(currentTask);
-            if (groupInView == null) {
-                toDoListApiHandler.updateToDoList(user, toDoList);
-            } else {
-                toDoListApiHandler.updateGroupToDoList(groupInView, toDoList);
-            }
-            updateTableView();
-        });
-        return checkBox;
     }
 
     /**

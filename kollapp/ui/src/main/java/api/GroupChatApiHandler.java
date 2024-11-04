@@ -163,7 +163,7 @@ public class GroupChatApiHandler {
 
             if (response.statusCode() == 200) {
                 String responseBody = response.body();
-                List<Message> messages = objectMapper.readValue(responseBody, new TypeReference<List<Message>>() {});
+                List<Message> messages = objectMapper.readValue(responseBody, new TypeReference<List<Message>>() { });
                 return Optional.of(messages);
             } else {
                 System.out.println("Failed to retrieve messages. Status Code: " + response.statusCode());

@@ -37,7 +37,7 @@ public class KollAppControllerTest {
         KollAppController controller = loader.getController();
         User user = new User("KollAppControllerUserTest", "passwordd");
         controller.initializeToDoList(user);
-        controller.populateGroupView();
+        controller.populateGroupView(user.getUserGroups());
 
         stage.setScene(new Scene(root));
         stage.show();

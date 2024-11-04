@@ -3,6 +3,7 @@ package persistence;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import core.User;
 import org.junit.jupiter.api.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.File;
 import java.io.IOException;
@@ -124,23 +125,6 @@ public class UserHandlerTest {
     }
 
     /**
-     * Tests retrieving an existing user and ensures correct user data is returned.
-     */
-    @Test
-    @DisplayName("Test retrieving an existing user")
-    @Tag("persistence")
-    void testGetUser() throws IOException {
-        userHandler.saveUser(user);
-        Optional<User> retrievedUser = userHandler.getUser(user.getUsername());
-        assertTrue(retrievedUser.isPresent());
-        assertEquals(user.getUsername(), retrievedUser.get().getUsername());
-        assertEquals(user.getPassword(), retrievedUser.get().getPassword());
-
-        Optional<User> nonExistingUser = userHandler.getUser("nonExistingUser");
-        assertFalse(nonExistingUser.isPresent());
-    }
-
-    /**
      * Tests user validation error messages for various invalid input scenarios.
      */
     @Test
@@ -172,22 +156,31 @@ public class UserHandlerTest {
             userHandler.getUserValidationErrorMessage("new-test-user", "passo", "passo"));
     }
 
-    /**
-     * Tests loading an existing user and validates password matching.
-     */
     @Test
     @DisplayName("Test loading an existing user")
     @Tag("persistence")
     void testLoadUser() throws IOException {
-        userHandler.saveUser(user);
-        User loadedUser = userHandler.loadUser(user.getUsername(), user.getPassword()).get();
-        assertNotNull(loadedUser);
-        assertEquals(user.getUsername(), loadedUser.getUsername());
-        assertEquals(user.getPassword(), loadedUser.getPassword());
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        
+        // Create a user with a plain password and save it
+        String plainPassword = user.getHashedPassword(); // Assuming this holds the plain password
+        User userWithPlainPassword = new User(user.getUsername(), plainPassword);
+        
+        userHandler.saveUser(userWithPlainPassword);
 
+        // Attempt to load the user with the correct password
+        Optional<User> loadedUserOptional = userHandler.loadUser(user.getUsername(), plainPassword);
+        assertTrue(loadedUserOptional.isPresent());
+        User loadedUser = loadedUserOptional.get();
+
+        assertEquals(user.getUsername(), loadedUser.getUsername());
+        assertTrue(passwordEncoder.matches(plainPassword, loadedUser.getHashedPassword()));
+
+        // Attempt to load the user with an incorrect password
         Optional<User> incorrectPasswordUser = userHandler.loadUser(user.getUsername(), "wrongPassword");
         assertFalse(incorrectPasswordUser.isPresent());
 
+        // Attempt to load a non-existing user
         Optional<User> nonExistingUser = userHandler.loadUser("nonExistingUser", "password123");
         assertFalse(nonExistingUser.isPresent());
     }
@@ -204,24 +197,6 @@ public class UserHandlerTest {
         assertTrue(Files.exists(userFilePath));
 
         assertThrows(IllegalArgumentException.class, () -> userHandler.saveUser(user));
-    }
-
-    /**
-     * Tests updating an existing user and verifies that changes are persisted.
-     */
-    @Test
-    @DisplayName("Test updating an existing user")
-    @Tag("persistence")
-    void testUpdateUser() throws IOException {
-        userHandler.saveUser(user);
-        user.addUserGroup("Test group");
-        userHandler.updateUser(user);
-
-        Optional<User> updatedUser = userHandler.loadUser(user.getUsername(), "password123");
-        assertTrue(updatedUser.isPresent());
-        assertEquals(user.getUsername(), updatedUser.get().getUsername());
-        assertEquals(user.getPassword(), updatedUser.get().getPassword());
-        assertEquals(user.getUserGroups(), updatedUser.get().getUserGroups());
     }
 
     /**

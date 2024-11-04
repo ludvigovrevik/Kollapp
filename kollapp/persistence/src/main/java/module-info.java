@@ -6,6 +6,7 @@ module persistence {
     requires java.base;
     requires spring.context;
     requires spring.beans;
+    requires spring.security.crypto;
 
     exports persistence;
 }
