@@ -54,6 +54,6 @@
             <TableColumn fx:id="checkBoxColumn" prefWidth="24.0" resizable="false" sortable="false" text="✓" />
         </columns>
       </TableView>
-      <Button fx:id="addExpenseButton" layoutX="549.0" layoutY="456.0" mnemonicParsing="false" onAction="#showExpense" prefHeight="50.0" prefWidth="117.0" stylesheets="@css/styles.css" text="Add expense" />
+      <Button fx:id="openExpenseButton" layoutX="549.0" layoutY="456.0" mnemonicParsing="false" onAction="#showExpense" prefHeight="50.0" prefWidth="117.0" stylesheets="@css/styles.css" text="Show expenses" />
    </children>
 </AnchorPane>
