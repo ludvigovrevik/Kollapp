@@ -700,10 +700,10 @@ public class KollAppController {
             Parent root = fxmlLoader.load();
 
             ExpenseController expenseController = fxmlLoader.getController();
-            // Initialize the expense controller if needed
+            expenseController.initializeExpenseController(this.user, this.groupInView);
 
             Stage stage = new Stage();
-            stage.setTitle("Add Expense");
+            stage.setTitle("Expenses");
             stage.setScene(new Scene(root));
 
             // Set the stage as modal, blocking user input to other windows
