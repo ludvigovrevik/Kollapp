@@ -11,40 +11,17 @@ import api.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
-
-    // GET /users/{username}
-    @GetMapping("/{username}")
-    public ResponseEntity<User> getUser(@PathVariable String username) {
-    Optional<User> userOpt = userService.getUser(username);
-    return userOpt.map(ResponseEntity::ok)
-                      .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-    }
     
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveUser(@RequestBody User user) {
         try {
             userService.saveUser(user);
-            return ResponseEntity.ok().build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
-    // PUT /users/{username}
-    @PutMapping("/{username}")
-    public ResponseEntity<Void> updateUser(@PathVariable String username) {
-        try {
-            userService.updateUser(username);
             return ResponseEntity.ok().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();

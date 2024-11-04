@@ -258,7 +258,10 @@ public class KollAppController {
     public void updateTableView() {
         // Clear the current items in the TableView
         tableView.getItems().clear();
-    
+        if (toDoList == null) {
+            toDoList = new ToDoList(); // Ensure toDoList is initialized
+        }
+        
         // Get the list of incomplete tasks and add them to the TableView
         List<Task> tasks = toDoList.getTasks();
         for (Task task : tasks) {

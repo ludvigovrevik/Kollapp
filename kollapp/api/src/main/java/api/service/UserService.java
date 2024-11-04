@@ -1,14 +1,15 @@
 package api.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.NoSuchElementException;
 import java.util.Optional;
-import persistence.UserHandler;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import core.User;
+import persistence.UserHandler;
 
 
 @Service
@@ -37,15 +38,6 @@ public class UserService {
     public void removeUser(String username) {
         try {
             userHandler.removeUser(username);
-        } catch (Exception e) {
-            throw new IllegalArgumentException();
-        }
-    }
-
-    public void updateUser(String username) {
-        try {
-            User user = userHandler.getUser(username).orElseThrow(() -> new NoSuchElementException("User not found."));
-            userHandler.updateUser(user);
         } catch (Exception e) {
             throw new IllegalArgumentException();
         }
