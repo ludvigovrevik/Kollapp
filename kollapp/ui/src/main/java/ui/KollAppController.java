@@ -57,7 +57,7 @@ public class KollAppController {
     private Button addButton;
 
     @FXML
-    private Button addExpenseButton;
+    private Button openExpenseButton;
 
     @FXML
     private TableView<Task> tableView;
@@ -115,6 +115,9 @@ public class KollAppController {
 
         // Hide the group chat button by default
         groupChatButton.setVisible(false);
+
+        // Hide the expense button by default
+        openExpenseButton.setVisible(false);
     }
 
     /**
@@ -212,12 +215,12 @@ public class KollAppController {
         if (groupName.equals(this.user.getUsername())) {
             changeCurrentTaskView(this.user.getUsername());
             groupChatButton.setVisible(false);
-            addExpenseButton.setVisible(false);
+            openExpenseButton.setVisible(false);
             currentlyViewingPath.setText("Currently Viewing: " + this.user.getUsername() + " → Pending Tasks"); // Short format for personal tasks
         } else if (groupNames.contains(groupName)) {
             this.groupNameChat = groupName;
             groupChatButton.setVisible(true);
-            addExpenseButton.setVisible(true);
+            openExpenseButton.setVisible(true);
             System.out.println("Perform action for " + groupName);
             changeCurrentTaskView(groupName);
             currentlyViewingPath.setText("Currently Viewing: " + this.user.getUsername() + " → " + groupName + " → Pending Tasks"); // Short format for group tasks
@@ -690,25 +693,25 @@ public class KollAppController {
         }
     }
 
-    // @FXML
-    // public void showAddExpense() {
-    //     try {
-    //         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddExpense.fxml"));
-    //         Parent root = fxmlLoader.load();
+    @FXML
+    public void showExpense() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ExpenseScreen.fxml"));
+            Parent root = fxmlLoader.load();
 
-    //         AddExpenseController addExpenseController = fxmlLoader.getController();
-    //         addExpenseController.initializeAddExpenseWindow(this.user, this);
+            ExpenseController expenseController = fxmlLoader.getController();
+            // Initialize the expense controller if needed
 
-    //         Stage stage = new Stage();
-    //         stage.setTitle("Add Expense");
-    //         stage.setScene(new Scene(root));
+            Stage stage = new Stage();
+            stage.setTitle("Add Expense");
+            stage.setScene(new Scene(root));
 
-    //         // Set the stage as modal, blocking user input to other windows
-    //         stage.initModality(Modality.APPLICATION_MODAL);
-    //         stage.showAndWait();
+            // Set the stage as modal, blocking user input to other windows
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
 
-    //     } catch (IOException e) {
-    //         System.out.println(e.getMessage());
-    //     }
-    // }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
