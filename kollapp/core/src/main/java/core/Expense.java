@@ -10,7 +10,6 @@ public class Expense implements Serializable {
     private String description;
     private double amount;
     private String paidBy;
-    private LocalDate date;
 
     /**
      * Default constructor.
@@ -30,7 +29,6 @@ public class Expense implements Serializable {
         this.description = description;
         this.amount = amount;
         this.paidBy = paidBy;
-        this.date = date;
     }
 
     /**
@@ -42,7 +40,6 @@ public class Expense implements Serializable {
         this.description = expense.description;
         this.amount = expense.amount;
         this.paidBy = expense.paidBy;
-        this.date = expense.date;
     }
 
     // Getters and setters
@@ -69,13 +66,5 @@ public class Expense implements Serializable {
   
     public void setPaidBy(String paidBy) {
         this.paidBy = paidBy;
-    }
-  
-    public LocalDate getDate() {
-        return date;
-    }
-  
-    public void setDate(LocalDate date) {
-        this.date = date;
     }
 }
