@@ -59,6 +59,9 @@ public class KollAppController {
     private Button addButton;
 
     @FXML
+    private Button addExpenseButton;
+
+    @FXML
     private TableView<Task> tableView;
 
     @FXML
@@ -202,10 +205,12 @@ public class KollAppController {
         if (groupName.equals(this.user.getUsername())) {
             changeCurrentTaskView(this.user.getUsername());
             groupChatButton.setVisible(false);
+            addExpenseButton.setVisible(false);
             currentlyViewingPath.setText("Currently Viewing: " + this.user.getUsername() + " → Pending Tasks"); // Short format for personal tasks
         } else if (groupNames.contains(groupName)) {
             this.groupNameChat = groupName;
             groupChatButton.setVisible(true);
+            addExpenseButton.setVisible(true);
             System.out.println("Perform action for " + groupName);
             changeCurrentTaskView(groupName);
             currentlyViewingPath.setText("Currently Viewing: " + this.user.getUsername() + " → " + groupName + " → Pending Tasks"); // Short format for group tasks
@@ -570,4 +575,26 @@ public class KollAppController {
             System.out.println(e.getMessage());
         }
     }
+
+    // @FXML
+    // public void showAddExpense() {
+    //     try {
+    //         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddExpense.fxml"));
+    //         Parent root = fxmlLoader.load();
+
+    //         AddExpenseController addExpenseController = fxmlLoader.getController();
+    //         addExpenseController.initializeAddExpenseWindow(this.user, this);
+
+    //         Stage stage = new Stage();
+    //         stage.setTitle("Add Expense");
+    //         stage.setScene(new Scene(root));
+
+    //         // Set the stage as modal, blocking user input to other windows
+    //         stage.initModality(Modality.APPLICATION_MODAL);
+    //         stage.showAndWait();
+
+    //     } catch (IOException e) {
+    //         System.out.println(e.getMessage());
+    //     }
+    // }
 }
