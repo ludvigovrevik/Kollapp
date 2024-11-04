@@ -116,7 +116,7 @@ public class RegisterGroupController {
                 return;
             }
 
-            kollAppController.populateGroupView();
+            kollAppController.populateGroupView(user.getUserGroups());
 
             // Close the current window
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

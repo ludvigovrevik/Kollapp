@@ -4,10 +4,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -110,14 +116,16 @@ public class RegisterGroupControllerTest {
     @Tag("group")
     void testCreateGroup_Success(FxRobot robot) throws Exception {
         String groupName = "NewGroup";
+        List<String> mockGroups = List.of("Group1", "Group2", groupName);
 
         when(mockGroupApiHandler.createGroup(mockUser.getUsername(), groupName)).thenReturn(true);
+        when(mockUser.getUserGroups()).thenReturn(mockGroups);
 
         robot.clickOn("#groupNameField").write(groupName);
         robot.clickOn("Create group");
 
         verify(mockGroupApiHandler, times(1)).createGroup(mockUser.getUsername(), groupName);
-        verify(mockKollAppController, times(1)).populateGroupView();
+        verify(mockKollAppController, times(1)).populateGroupView(mockGroups);
     }
 
     /**
@@ -158,10 +166,10 @@ public class RegisterGroupControllerTest {
         robot.clickOn("Create group");
 
         verify(mockGroupApiHandler, times(1)).createGroup(mockUsername, groupName);
-        verify(mockKollAppController, never()).populateGroupView();
+        verify(mockKollAppController, never()).populateGroupView(any());
 
         Label errorLabel = robot.lookup("#errorLabel").queryAs(Label.class);
-        assertNotNull(errorLabel, "Error label not found!");
+        assertNotNull(errorLabel);
         assertEquals("An unexpected error occurred. Please try again.", errorLabel.getText());
     }
 }
