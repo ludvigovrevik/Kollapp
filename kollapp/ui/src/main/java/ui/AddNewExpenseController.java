@@ -75,6 +75,12 @@ public class AddNewExpenseController {
         Expense newExpense = new Expense(description, amount, user.getUsername());
         toDoList.addExpense(newExpense);
 
+        // Debugging: Print the expenses in the ToDoList
+        System.out.println("Expenses in ToDoList after adding new expense:");
+        for (Expense expense : toDoList.getExpenses()) {
+            System.out.println(expense.getDescription() + " - " + expense.getAmount());
+        }
+
         // Save the updated ToDoList
         UserGroup group = expenseController.getGroup();
         toDoListApiHandler.updateGroupToDoList(group, toDoList);

@@ -2,12 +2,14 @@ package ui;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.CheckBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -53,7 +55,7 @@ public class ExpenseController {
         this.toDoList = toDoListApiHandler.loadGroupToDoList(group);
 
         // Display expenses
-        displayExpenses();
+        updateExpenseView();
     }
 
     /**
@@ -66,14 +68,17 @@ public class ExpenseController {
     }
 
     /**
-     * Displays the list of expenses in the VBox.
+     * Updates the expense view by populating the VBox with expense items.
      */
-    private void displayExpenses() {
+    @FXML
+    public void updateExpenseView() {
+        // Clear the current items in the VBox
         vboxMessages.getChildren().clear();
 
-        List<Expense> expenseList = toDoList.getExpenses();
+        // Get the list of expenses
+        List<Expense> expenses = toDoList.getExpenses();
 
-        for (Expense expense : expenseList) {
+        for (Expense expense : expenses) {
             HBox expenseItem = createExpenseItem(expense);
             vboxMessages.getChildren().add(expenseItem);
         }
@@ -88,18 +93,33 @@ public class ExpenseController {
     private HBox createExpenseItem(Expense expense) {
         HBox hbox = new HBox(10);
         hbox.setAlignment(Pos.CENTER_LEFT);
-        hbox.setPrefHeight(50.0);
+        hbox.setPadding(new Insets(5));
+        hbox.setStyle("-fx-border-color: lightgrey; -fx-border-width: 0 0 1 0;"); // Add a bottom border
 
+        // Create labels for expense details
         Label descriptionLabel = new Label(expense.getDescription());
-        descriptionLabel.setPrefWidth(250);
+        descriptionLabel.setPrefWidth(200);
 
-        Label amountLabel = new Label(String.format("%.2f", expense.getAmount()));
+        Label amountLabel = new Label(String.format("$%.2f", expense.getAmount()));
         amountLabel.setPrefWidth(80);
 
-        Label paidByLabel = new Label(expense.getPaidBy());
+        Label paidByLabel = new Label("Paid by: " + expense.getPaidBy());
         paidByLabel.setPrefWidth(100);
 
-        hbox.getChildren().addAll(descriptionLabel, amountLabel, paidByLabel);
+        // Optional: Add a remove button
+        Button removeButton = new Button("Remove");
+        removeButton.setOnAction(event -> {
+            // Remove the expense from the ToDoList
+            toDoList.removeExpense(expense);
+
+            // Update the persistence layer
+            toDoListApiHandler.updateGroupToDoList(group, toDoList);
+
+            // Refresh the expense view
+            updateExpenseView();
+        });
+
+        hbox.getChildren().addAll(descriptionLabel, amountLabel, paidByLabel, removeButton);
 
         return hbox;
     }
@@ -136,6 +156,6 @@ public class ExpenseController {
     public void refreshExpenses() {
         // Reload the ToDoList to get the updated expenses
         this.toDoList = toDoListApiHandler.loadGroupToDoList(group);
-        displayExpenses();
+        updateExpenseView();
     }
 }

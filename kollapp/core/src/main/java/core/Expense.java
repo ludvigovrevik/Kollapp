@@ -2,9 +2,12 @@ package core;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Represents an expense in the application.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Expense implements Serializable {
     private String description;
     private double amount;

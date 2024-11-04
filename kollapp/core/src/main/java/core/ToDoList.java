@@ -5,13 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents a to-do list that contains multiple tasks and expenses.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ToDoList implements Serializable {
+    @JsonProperty
     private List<Task> tasks = new ArrayList<>();
+    @JsonProperty
     private List<Expense> expenses = new ArrayList<>();
 
     /**
