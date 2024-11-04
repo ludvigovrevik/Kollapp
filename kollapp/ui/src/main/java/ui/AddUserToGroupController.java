@@ -1,7 +1,6 @@
 package ui;
 
 import java.util.List;
-import java.util.Optional;
 
 import api.GroupApiHandler;
 import api.UserApiHandler;
@@ -77,17 +76,11 @@ public class AddUserToGroupController {
                 return;
             }
 
-            // Get user details - this is the step that was missing
-            Optional<User> userOpt = userApiHandler.getUser(username);
-            if (!userOpt.isPresent()) {
-                setFeedback("User retrieval failed.", true);
-                return;
-            }
+            boolean groupAssigningSuccessful = groupApiHandler.assignUserToGroup(username, selectedGroup);
+            boolean userAssigningSuccessful = userApiHandler.assignGroupToUser(username, selectedGroup);
 
-            // Attempt to assign user to group
-            if (groupApiHandler.assignUserToGroup(username, selectedGroup)) {
-                setFeedback("User successfully added to group.", false);
-                clearFields();
+            if (groupAssigningSuccessful && userAssigningSuccessful) {
+                setFeedback("User added successfully", false);
             } else {
                 setFeedback("Failed to add user to group.", true);
             }
@@ -113,10 +106,5 @@ public class AddUserToGroupController {
     private void setFeedback(String message, boolean isError) {
         feedbackLabel.setText(message);
         feedbackLabel.setTextFill(isError ? Color.RED : Color.GREEN);
-    }
-
-    private void clearFields() {
-        usernameField.clear();
-        groupsListView.getSelectionModel().clearSelection();
     }
 }
