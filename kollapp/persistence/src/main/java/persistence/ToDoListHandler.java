@@ -1,5 +1,6 @@
 package persistence;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import core.ToDoList;
@@ -32,6 +33,9 @@ public class ToDoListHandler {
         this.groupToDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists") + File.separator;
         this.mapper = new ObjectMapper();
         this.mapper.registerModule(new JavaTimeModule());
+        // Print the paths for debugging
+        System.out.println("ToDoList Path: " + toDoListPath);
+        System.out.println("Group ToDoList Path: " + groupToDoListPath);
     }
     
     /**
@@ -125,15 +129,25 @@ public class ToDoListHandler {
      *
      * @param userGroup the user group whose to-do list is to be updated
      * @param toDoList the new to-do list to be saved for the user group
+     * @throws JsonProcessingException 
      * @throws IllegalArgumentException if the to-do list file does not exist for the specified group
      */
-    public void updateGroupToDoList(UserGroup userGroup, ToDoList toDoList) {
+    public void updateGroupToDoList(UserGroup userGroup, ToDoList toDoList) throws JsonProcessingException {
         File file = new File(groupToDoListPath + userGroup.getGroupName() + ".json");
         if (!file.exists()) {
             throw new IllegalArgumentException("To-do list file does not exist for group: " + userGroup.getGroupName());
         }
         try {
+            // Convert ToDoList to JSON string for debugging
+            String jsonString = mapper.writeValueAsString(toDoList);
+            System.out.println("Serialized ToDoList JSON:");
+            System.out.println(jsonString);
+
+            // Write the ToDoList to the file
             mapper.writeValue(file, toDoList);
+
+            // Confirm successful write
+            System.out.println("ToDoList saved successfully for group: " + userGroup.getGroupName());
         } catch (IOException e) {
             throw new IllegalArgumentException("Couldn't update to-do list");
         }
