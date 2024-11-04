@@ -2,6 +2,8 @@ package ui;
 
 import java.io.IOException;
 
+import api.UserApiHandler;
+import core.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,8 +14,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import persistence.UserHandler;
-import core.User;
 
 /**
  * Controller class for handling user login and navigation to other scenes.
@@ -29,7 +29,12 @@ public class LoginController {
     @FXML
     private Label loginErrorMessage;
 
-    private UserHandler userHandler = new UserHandler();
+    private UserApiHandler userApiHandler = new UserApiHandler();
+
+    // Setter for injecting a mock during testing
+    public void setUserApiHandler(UserApiHandler userApiHandler) {
+        this.userApiHandler = userApiHandler;
+    }
 
     /**
      * Handles the action event triggered by the login button.
@@ -42,10 +47,19 @@ public class LoginController {
     public void handleLoginButtonAction() {
         String username = usernameField.getText();
         String password = passwordField.getText();
+        
+        if (username == null || username.trim().isEmpty()) {
+            loginErrorMessage.setText("Username cannot be empty.");
+            return;
+        }
+        
+        if (password == null || password.isEmpty()) {
+            loginErrorMessage.setText("Password cannot be empty.");
+            return;
+        }
 
-        if (userHandler.userExists(username)) {
-            User user = userHandler.loadUser(username, password);
-
+        if (userApiHandler.userExists(username)) {
+            User user = userApiHandler.loadUser(username, password);
             if (user != null) {
                 loadKollektivScene(user);
             } else {
@@ -100,14 +114,5 @@ public class LoginController {
         stage.setScene(scene);
         stage.setTitle("Register");
         stage.show();
-    }
-
-    /**
-     * Sets the {@link UserHandler} to manage user data. Primarily used for testing purposes.
-     *
-     * @param userHandler the user handler to be used
-     */
-    public void setUserHandler(UserHandler userHandler) {
-        this.userHandler = userHandler;
     }
 }

@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.KollAppController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.KollAppController">
    <children>
       <Label fx:id="currentlyViewingPath" layoutX="232.0" layoutY="445.0" prefHeight="28.0" prefWidth="317.0" text="" textFill="#7aadff" />
        
@@ -22,7 +22,7 @@
       <Pane layoutX="-3.0" layoutY="-2.0" prefHeight="529.0" prefWidth="216.0" style="-fx-background-color: #e8e8e8;">
          <children>
             <Button fx:id="createGroupButton" layoutX="92.0" layoutY="493.0" mnemonicParsing="false" onAction="#openRegisterGroupWindow" prefHeight="28.0" prefWidth="117.0" stylesheets="@css/styles.css" text="New group" />
-            <ScrollPane layoutX="4.0" layoutY="98.0" prefHeight="295.0" prefWidth="211.0">
+            <ScrollPane layoutX="4.0" layoutY="98.0" prefHeight="295.0" prefWidth="211.0" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" fitToWidth="true">
                <content>
                   <VBox fx:id="vBoxContainer" prefHeight="293.0" prefWidth="209.0">
                      <children>

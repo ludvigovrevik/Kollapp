@@ -1,5 +1,7 @@
 package ui;
 
+import java.time.LocalDate;
+
 import core.Task;
 import core.ToDoList;
 import core.User;
@@ -7,11 +9,16 @@ import core.UserGroup;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import persistence.ToDoListHandler;
 
 import java.time.LocalDate;
+
+import api.ToDoListApiHandler;
 
 /**
  * Controller class for managing the addition of new tasks to a to-do list.
@@ -36,7 +43,7 @@ public class AddNewTaskController {
     private TextArea taskDescriptionField;
     
     private ToDoList toDoList;
-    private ToDoListHandler toDoListHandler;
+    private ToDoListApiHandler toDoListApiHandler;
     private User user;
     private KollAppController kollAppController;
 
@@ -53,7 +60,7 @@ public class AddNewTaskController {
         this.toDoList = toDoList;
         this.user = user;
         this.kollAppController = kollAppController;
-        this.toDoListHandler = new ToDoListHandler();
+        this.toDoListApiHandler = new ToDoListApiHandler();
         priorityField.getItems().addAll(Task.PRIORITY_NAMES);
     }
 
@@ -80,11 +87,11 @@ public class AddNewTaskController {
             UserGroup groupInView = kollAppController.getGroupInView();
             if (groupInView != null) {
                 // Add task to the group's to-do list
-                toDoListHandler.updateGroupToDoList(groupInView, toDoList);
+                toDoListApiHandler.updateGroupToDoList(groupInView, toDoList);
                 System.out.println("Updated to-do list for group: " + groupInView.getGroupName());
             } else {
                 // Add task to the user's personal to-do list
-                toDoListHandler.updateToDoList(user, toDoList);
+                toDoListApiHandler.updateToDoList(user, toDoList);
                 System.out.println("Updated to-do list for user: " + user.getUsername());
             }
             kollAppController.updateTableView();

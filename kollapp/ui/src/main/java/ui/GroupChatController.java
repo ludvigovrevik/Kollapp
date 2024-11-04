@@ -1,18 +1,17 @@
 package ui;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import api.GroupChatApiHandler;
 import core.GroupChat;
 import core.Message;
 import core.User;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
-import persistence.GroupChatHandler;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 /**
  * Controller class for handling the group chat UI.
@@ -26,13 +25,10 @@ public class GroupChatController {
     private TextArea messageTextArea;
 
     @FXML
-    private Button sendMessage;
-
-    @FXML
     private VBox vboxMessages;
 
     private User user;
-    private GroupChatHandler groupChatHandler;
+    private GroupChatApiHandler groupChatApiHandler;
     private String groupName; 
 
     /**
@@ -45,7 +41,7 @@ public class GroupChatController {
     public void initializeGroupChatWindow(User user, String groupName) {
         this.user = user;
         this.groupName = groupName;
-        this.groupChatHandler = new GroupChatHandler(); // Initialize the handler
+        this.groupChatApiHandler = new GroupChatApiHandler(); // Initialize the handler
         updateMessageView();
     }
 
@@ -56,7 +52,7 @@ public class GroupChatController {
     private void handleSendMessage() {
         String text = messageTextArea.getText();
         Message message = new Message(this.user.getUsername(), text);
-        groupChatHandler.sendMessage(this.groupName, message);
+        groupChatApiHandler.sendMessage(this.groupName, message);
 
         updateMessageView();
     }
@@ -65,7 +61,7 @@ public class GroupChatController {
      * Updates the message view with the latest messages.
      */
     private void updateMessageView() {
-        GroupChat groupChat = groupChatHandler.getGroupChat(this.groupName);
+        GroupChat groupChat = groupChatApiHandler.getGroupChat(this.groupName).get();
         List<Message> messages = groupChat.getMessages();
 
         // Clear the VBox before adding updated messages
@@ -94,7 +90,7 @@ public class GroupChatController {
             messageTextArea.clear();
         }
          // Scroll to the bottom to show the latest message
-         viewMessagePane.setVvalue(1.0);
+        viewMessagePane.setVvalue(1.0);
     }
 }
 

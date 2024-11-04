@@ -1,5 +1,13 @@
 package ui;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Optional;
+import api.ToDoListApiHandler;
+import api.GroupApiHandler;
+import api.UserApiHandler;
 import core.Task;
 import core.ToDoList;
 import core.User;
@@ -24,13 +32,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import persistence.GroupHandler;
-import persistence.ToDoListHandler;
-
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 /**
  * Controller class for the KollApp application.
@@ -81,8 +82,9 @@ public class KollAppController {
     private String groupNameChat;
     private UserGroup groupInView;
 
-    private final ToDoListHandler toDoListHandler = new ToDoListHandler();
-    private final GroupHandler groupHandler = new GroupHandler();
+    private ToDoListApiHandler toDoListApiHandler = new ToDoListApiHandler();
+    private GroupApiHandler groupApiHandler = new GroupApiHandler();
+    private UserApiHandler userApiHandler = new UserApiHandler();
 
     public void setUser(User user) {
         this.user = user;
@@ -146,19 +148,28 @@ public class KollAppController {
      * @param user The user whose to-do list is to be displayed
      */
     public void initializeToDoList(User user) {
-        this.toDoList = toDoListHandler.loadToDoList(user);
+        this.toDoList = toDoListApiHandler.loadToDoList(user);
         this.user = user;
         updateTableView();
     }
 
     /**
      * Populates the view with the user's group names, displaying them as clickable labels.
+     * Ensures the user exists and handles potential missing data gracefully.
      */
     public void populateGroupView() {
         vBoxContainer.getChildren().clear();
-        List<String> groupNames = this.user.getUserGroups();
-        for (String groupName : groupNames) {
-            addGroupLabel(groupName);
+
+        Optional<User> optionalUser = userApiHandler.getUser(this.user.getUsername());
+        if (optionalUser.isPresent()) {
+            User currentUser = optionalUser.get();
+            
+            this.user = currentUser;
+
+            List<String> groupNames = currentUser.getUserGroups();
+            groupNames.forEach(this::addGroupLabel);
+        } else {
+            System.err.println("User not found in populateGroupView: " + this.user.getUsername());
         }
     }
 
@@ -346,9 +357,9 @@ public class KollAppController {
     
                             // Update the persistence layer
                             if (groupInView == null) {
-                                toDoListHandler.updateToDoList(user, toDoList);
+                                toDoListApiHandler.updateToDoList(user, toDoList);
                             } else {
-                                toDoListHandler.updateGroupToDoList(groupInView, toDoList);
+                                toDoListApiHandler.updateGroupToDoList(groupInView, toDoList);
                             }
     
                             // Remove the task from the table directly without calling updateTableView
@@ -509,9 +520,9 @@ public class KollAppController {
     
                             // Update persistence layer
                             if (groupInView == null) {
-                                toDoListHandler.updateToDoList(user, toDoList);
+                                toDoListApiHandler.updateToDoList(user, toDoList);
                             } else {
-                                toDoListHandler.updateGroupToDoList(groupInView, toDoList);
+                                toDoListApiHandler.updateGroupToDoList(groupInView, toDoList);
                             }
     
                             // Refresh the TableView to reflect the task removal
@@ -540,9 +551,9 @@ public class KollAppController {
         checkBox.setOnAction(event -> {
             toDoList.removeTask(currentTask);
             if (groupInView == null) {
-                toDoListHandler.updateToDoList(user, toDoList);
+                toDoListApiHandler.updateToDoList(user, toDoList);
             } else {
-                toDoListHandler.updateGroupToDoList(groupInView, toDoList);
+                toDoListApiHandler.updateGroupToDoList(groupInView, toDoList);
             }
             updateTableView();
         });
@@ -557,19 +568,24 @@ public class KollAppController {
     public void changeCurrentTaskView(String taskOwner) {
         if (taskOwner.equals(this.user.getUsername())) {
             groupInView = null;
-            this.toDoList = toDoListHandler.loadToDoList(this.user);
+            this.toDoList = toDoListApiHandler.loadToDoList(this.user);
         } else {
-            UserGroup group = groupHandler.getGroup(taskOwner);
-            this.groupNameChat = group.getGroupName();
-            groupInView = group;
-            try {
-                this.toDoList = toDoListHandler.loadGroupToDoList(group);
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+            Optional<UserGroup> groupOptional = groupApiHandler.getGroup(taskOwner);
+
+            if (groupOptional.isPresent()) {
+                UserGroup group = groupOptional.get();
+                this.groupNameChat = group.getGroupName();
+                groupInView = group;
+                try {
+                    this.toDoList = toDoListApiHandler.loadGroupToDoList(group);
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Error loading group tasks: " + e.getMessage());
+                }
+            } else {
+                System.out.println("Group not found: " + taskOwner);
             }
         }
     }
-    
 
     /**
      * Opens the "Register Group" window, allowing the user to create a new group.

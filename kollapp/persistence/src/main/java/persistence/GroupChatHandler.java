@@ -1,20 +1,18 @@
 package persistence;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import core.Message;
 import core.GroupChat;
-import core.User;
-import core.UserGroup;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class GroupChatHandler {
     private final ObjectMapper mapper;
     private final String groupChatPath;
@@ -26,12 +24,19 @@ public class GroupChatHandler {
         this.mapper.registerModule(new JavaTimeModule());
     }
 
+    public GroupChatHandler(String path) {
+        this.groupChatPath = path;
+        this.mapper = new ObjectMapper();
+        this.mapper.registerModule(new JavaTimeModule());
+    }
+
     public void createGroupChat(String groupName) {
         GroupChat groupChat = new GroupChat();
         File groupChatFile = new File(groupChatPath + groupName + ".json");
         try {
             mapper.writeValue(groupChatFile, groupChat);
         } catch (IOException e) {
+            System.out.println(groupChat + groupChatFile.getAbsolutePath());
             throw new RuntimeException("Failed to create group chat");
         }
     }

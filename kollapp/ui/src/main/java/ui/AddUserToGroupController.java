@@ -2,14 +2,15 @@ package ui;
 
 import java.util.List;
 import java.util.Optional;
+
+import api.GroupApiHandler;
+import api.UserApiHandler;
+import core.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
-import core.User;
-import persistence.GroupHandler;
-import persistence.UserHandler;
 
 /**
  * Controller class for adding a user to an existing group.
@@ -17,43 +18,28 @@ import persistence.UserHandler;
  * selected groups in the application.
  */
 public class AddUserToGroupController {
-
     @FXML
     private TextField usernameField;
-
     @FXML
     private ListView<String> groupsListView;
-
     @FXML
     private Label feedbackLabel;
-    
-    private final UserHandler userHandler;
-    private final GroupHandler groupHandler;
 
-    // Constants for Feedback Messages
-    private static final String USERNAME_EMPTY_MSG = "Username is empty.";
-    private static final String USER_NOT_EXIST_MSG = "User does not exist.";
-    private static final String USER_RETRIEVAL_FAILED_MSG = "User retrieval failed.";
-    private static final String NO_GROUP_SELECTED_MSG = "No group selected.";
-    private static final String ADD_USER_SUCCESS_MSG = "User added to group successfully.";
-    private static final String ADD_USER_FAILURE_MSG = "Failed to add user to group.";
-
+    private UserApiHandler userApiHandler;
+    private GroupApiHandler groupApiHandler;
 
     // Constructor with Dependency Injection for Testability
     public AddUserToGroupController() {
-        this.userHandler = new UserHandler();
-        this.groupHandler = new GroupHandler();
+        this.userApiHandler = new UserApiHandler();
+        this.groupApiHandler = new GroupApiHandler();
     }
 
-    /**
-     * Constructs a new AddUserToGroupController with the specified user and group handlers.
-     *
-     * @param userHandler the user handler
-     * @param groupHandler the group handler
-     */
-    public AddUserToGroupController(UserHandler userHandler, GroupHandler groupHandler) {
-        this.userHandler = userHandler;
-        this.groupHandler = groupHandler;
+    public void setUserApiHandler(UserApiHandler userApiHandler) {
+        this.userApiHandler = userApiHandler;
+    }
+
+    public void setGroupApiHandler(GroupApiHandler groupApiHandler) {
+        this.groupApiHandler = groupApiHandler;
     }
 
     /**
@@ -74,81 +60,63 @@ public class AddUserToGroupController {
         groupsListView.getItems().setAll(groups);
     }
 
-    /**
-     * Handles the action of adding a user to the selected group.
-     * Validates the input and performs the group assignment.
-     */
-    @FXML
-    private void handleAddUserToGroup() {
-        clearFeedback();
 
-        String usernameInput = usernameField.getText().trim();
-
-        // Validate Username
-        String validationError = validateUsername(usernameInput);
-        if (validationError != null) {
-            displayFeedback(validationError, Color.RED);
-            return;
-        }
-
-        // Retrieve User
-        Optional<User> optionalUser = userHandler.getUser(usernameInput);
-        if (optionalUser.isEmpty()) {
-            displayFeedback(USER_RETRIEVAL_FAILED_MSG, Color.RED);
-            return;
-        }
-
-        User userToAdd = optionalUser.get();
-
-        // Validate Group Selection
+    public void handleAddUserToGroup() {
+        String username = usernameField.getText();
         String selectedGroup = groupsListView.getSelectionModel().getSelectedItem();
-        if (selectedGroup == null || selectedGroup.isEmpty()) {
-            displayFeedback(NO_GROUP_SELECTED_MSG, Color.RED);
+
+        // First validate basic inputs
+        if (!validateInputs(username, selectedGroup)) {
             return;
         }
 
-        // Assign User to Group
         try {
-            groupHandler.assignUserToGroup(userToAdd, selectedGroup);
-            displayFeedback(ADD_USER_SUCCESS_MSG, Color.GREEN);
+            // Check if user exists
+            if (!userApiHandler.userExists(username)) {
+                setFeedback("User does not exist.", true);
+                return;
+            }
+
+            // Get user details - this is the step that was missing
+            Optional<User> userOpt = userApiHandler.getUser(username);
+            if (!userOpt.isPresent()) {
+                setFeedback("User retrieval failed.", true);
+                return;
+            }
+
+            // Attempt to assign user to group
+            if (groupApiHandler.assignUserToGroup(username, selectedGroup)) {
+                setFeedback("User successfully added to group.", false);
+                clearFields();
+            } else {
+                setFeedback("Failed to add user to group.", true);
+            }
         } catch (Exception e) {
-            displayFeedback(ADD_USER_FAILURE_MSG, Color.RED);
+            setFeedback("Failed to add user to group.", true);
         }
     }
 
-    /**
-     * Validates the input username.
-     *
-     * @param username The username input.
-     * @return An error message if validation fails; otherwise, null.
-     */
-    private String validateUsername(String username) {
-        if (username.isEmpty()) {
-            return USERNAME_EMPTY_MSG;
+    private boolean validateInputs(String username, String selectedGroup) {
+        if (username == null || username.trim().isEmpty()) {
+            setFeedback("Username is empty.", true);
+            return false;
         }
 
-        if (!userHandler.userExists(username)) {
-            return USER_NOT_EXIST_MSG;
+        if (selectedGroup == null) {
+            setFeedback("No group selected.", true);
+            return false;
         }
 
-        return null;
+        return true;
     }
 
-    /**
-     * Clears any existing feedback messages.
-     */
-    private void clearFeedback() {
-        feedbackLabel.setText("");
-    }
-
-    /**
-     * Displays a feedback message with the specified color.
-     *
-     * @param message The message to display.
-     * @param color   The color of the text.
-     */
-    private void displayFeedback(String message, Color color) {
+    private void setFeedback(String message, boolean isError) {
         feedbackLabel.setText(message);
-        feedbackLabel.setTextFill(color);
+        feedbackLabel.setTextFill(isError ? Color.RED : Color.GREEN);
+    }
+
+    private void clearFields() {
+        usernameField.clear();
+        groupsListView.getSelectionModel().clearSelection();
     }
 }

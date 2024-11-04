@@ -21,7 +21,6 @@ import core.UserGroup;
 public class GroupHandlerTest {
 
     private GroupHandler groupHandler;
-    private UserHandler userHandler;
     private User user;
     private User user2;
     private Path groupPath;
@@ -44,7 +43,7 @@ public class GroupHandlerTest {
         createDirectory(userPath);
         createDirectory(toDoListPath);
 
-        this.userHandler = new UserHandler(
+        UserHandler userHandler = new UserHandler(
                 userPath.toString() + File.separator
         );
         this.groupHandler = new GroupHandler(
@@ -113,9 +112,6 @@ public class GroupHandlerTest {
         Path groupToDoListFilePath = groupToDoListPath.resolve(groupName + ".json");
         assertTrue(Files.exists(groupToDoListFilePath));
 
-        User updatedUser = userHandler.getUser(user.getUsername()).orElseThrow(() -> new IllegalArgumentException("User not found"));
-        assertTrue(updatedUser.getUserGroups().contains(groupName));
-
         UserGroup group = groupHandler.getGroup(groupName);
         assertNotNull(group);
         assertEquals(groupName, group.getGroupName());
@@ -153,9 +149,6 @@ public class GroupHandlerTest {
 
         groupHandler.createGroup(user, groupName);
         groupHandler.assignUserToGroup(user2, groupName);
-
-        User updatedUser2 = userHandler.getUser(user2.getUsername()).orElseThrow(() -> new IllegalArgumentException("User not found"));;
-        assertTrue(updatedUser2.getUserGroups().contains(groupName));
 
         UserGroup group = groupHandler.getGroup(groupName);
         assertNotNull(group);

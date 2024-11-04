@@ -4,20 +4,21 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import core.GroupChat;
 import core.ToDoList;
 import core.User;
 import core.UserGroup;
 
+@Component
 public class GroupHandler {
     private final String groupPath;
     private final String groupToDoListPath;
-    private final String groupChatPath;
     private final ObjectMapper mapper = new ObjectMapper();
-    private final UserHandler userHandler;
 
     /**
      * Constructs a new GroupHandler instance.
@@ -31,12 +32,11 @@ public class GroupHandler {
      * 
      * Registers the JavaTimeModule with the ObjectMapper and initializes the UserHandler instance.
      */
+    @Autowired
     public GroupHandler() {
         this.groupPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "groups") + File.separator;
         this.groupToDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists") + File.separator;
-        this.groupChatPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "groupchat") + File.separator;
         this.mapper.registerModule(new JavaTimeModule());
-        this.userHandler = new UserHandler();   
     }
 
     /**
@@ -49,9 +49,7 @@ public class GroupHandler {
     public GroupHandler(String groupPath, String groupToDoListPath, UserHandler userHandler) {
         this.groupPath = groupPath;
         this.groupToDoListPath = groupToDoListPath;
-        this.groupChatPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "groupchat") + File.separator;
         this.mapper.registerModule(new JavaTimeModule());
-        this.userHandler = userHandler;
     }
 
     /**
@@ -65,7 +63,7 @@ public class GroupHandler {
     public void createGroup(User user, String groupName) {
         UserGroup userGroup = new UserGroup(groupName);
         userGroup.addUser(user.getUsername());
-        user.addUserGroup(groupName);
+        
         ToDoList toDoList = new ToDoList();
 
         File fileForGroup = new File(groupPath + groupName + ".json");
@@ -77,7 +75,6 @@ public class GroupHandler {
         } catch (IOException e) {
             throw new RuntimeException("Failed to create group");
         }
-        userHandler.updateUser(user);
     }
 
     /**
@@ -110,15 +107,14 @@ public class GroupHandler {
      * @throws RuntimeException if there is an error updating the group file
      */
     public void assignUserToGroup(User user, String groupName) {
-        UserGroup group = getGroup(groupName);
-        group.addUser(user.getUsername());
-        user.addUserGroup(groupName);
-        userHandler.updateUser(user);
-        
-        File fileForGroup = new File(groupPath + groupName + ".json");
         try {
+            UserGroup group = getGroup(groupName);
+            group.addUser(user.getUsername());
+    
+            File fileForGroup = new File(groupPath + groupName + ".json");
             mapper.writeValue(fileForGroup, group);
-        } catch (IOException e) {
+        } catch (Exception e) {
+            System.err.println("Exception in groupHandler.assignUserToGroup: " + e.getMessage());
             throw new RuntimeException("Failed to update group file");
         }
     }

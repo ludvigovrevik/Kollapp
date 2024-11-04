@@ -180,16 +180,16 @@ public class UserHandlerTest {
     @Tag("persistence")
     void testLoadUser() throws IOException {
         userHandler.saveUser(user);
-        User loadedUser = userHandler.loadUser(user.getUsername(), user.getPassword());
+        User loadedUser = userHandler.loadUser(user.getUsername(), user.getPassword()).get();
         assertNotNull(loadedUser);
         assertEquals(user.getUsername(), loadedUser.getUsername());
         assertEquals(user.getPassword(), loadedUser.getPassword());
 
-        User incorrectPasswordUser = userHandler.loadUser(user.getUsername(), "wrongPassword");
-        assertNull(incorrectPasswordUser);
+        Optional<User> incorrectPasswordUser = userHandler.loadUser(user.getUsername(), "wrongPassword");
+        assertFalse(incorrectPasswordUser.isPresent());
 
-        User nonExistingUser = userHandler.loadUser("nonExistingUser", "password123");
-        assertNull(nonExistingUser);
+        Optional<User> nonExistingUser = userHandler.loadUser("nonExistingUser", "password123");
+        assertFalse(nonExistingUser.isPresent());
     }
 
     /**
@@ -217,11 +217,11 @@ public class UserHandlerTest {
         user.addUserGroup("Test group");
         userHandler.updateUser(user);
 
-        User updatedUser = userHandler.loadUser(user.getUsername(), "password123");
-        assertNotNull(updatedUser);
-        assertEquals(user.getUsername(), updatedUser.getUsername());
-        assertEquals(user.getPassword(), updatedUser.getPassword());
-        assertEquals(user.getUserGroups(), updatedUser.getUserGroups());
+        Optional<User> updatedUser = userHandler.loadUser(user.getUsername(), "password123");
+        assertTrue(updatedUser.isPresent());
+        assertEquals(user.getUsername(), updatedUser.get().getUsername());
+        assertEquals(user.getPassword(), updatedUser.get().getPassword());
+        assertEquals(user.getUserGroups(), updatedUser.get().getUserGroups());
     }
 
     /**

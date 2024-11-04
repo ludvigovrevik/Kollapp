@@ -8,10 +8,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.testfx.api.FxRobot;
+import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.ApplicationTest;
 
+import api.UserApiHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -20,9 +23,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import persistence.UserHandler;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.testfx.framework.junit5.ApplicationExtension;
 
 /**
  * Unit tests for the RegisterController class.
@@ -37,8 +37,8 @@ class RegisterControllerTest extends ApplicationTest {
     private Label errorMessage;
     private Button registerButton;
 
-    private UserHandler userHandlerMock;
-    private UserHandler userHandler = new UserHandler();
+    private UserApiHandler userHandlerMock;
+    private final UserApiHandler userApiHandler = new UserApiHandler();
 
     /**
      * Sets up the test environment by loading the RegisterScreen.fxml and initializing the scene.
@@ -63,7 +63,7 @@ class RegisterControllerTest extends ApplicationTest {
         errorMessage = lookup("#errorMessage").query();
         registerButton = lookup("#registerButton").query();
 
-        userHandlerMock = Mockito.mock(UserHandler.class);
+        userHandlerMock = Mockito.mock(UserApiHandler.class);
     }
 
     /**
@@ -117,7 +117,7 @@ class RegisterControllerTest extends ApplicationTest {
     @Test
     @DisplayName("Test navigation to login screen")
     @Tag("navigation")
-    void testNavigateToLoginScreen(FxRobot robot) throws Exception {
+    void testNavigateToLoginScreen(FxRobot robot) {
         robot.clickOn("#navigateToLoginScreenButton");
 
         Button loginButton = robot.lookup("#loginButton").queryAs(Button.class);
@@ -130,7 +130,7 @@ class RegisterControllerTest extends ApplicationTest {
     @AfterEach
     @DisplayName("Remove test user after each test")
     void removeUser() {
-        userHandler.removeUser("newUser");
+        userApiHandler.removeUser("newUser");
         // Remove user's todo list if required, not yet implemented in toDoListHandler.
     }
 }

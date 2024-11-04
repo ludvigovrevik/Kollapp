@@ -42,6 +42,16 @@
     <!-- Centralized dependency management -->
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>gr2409</groupId>
+                <artifactId>core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>gr2409</groupId>
+                <artifactId>persistence</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <!-- JavaFX dependencies -->
             <dependency>
                 <groupId>org.openjfx</groupId>
@@ -154,7 +164,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.1.2</version>
+                <version>3.5.1</version>
                 <configuration>
                     <argLine>-javaagent:${settings.localRepository}/org/jacoco/org.jacoco.agent/0.8.10/org.jacoco.agent-0.8.10-runtime.jar=destfile=${project.build.directory}/jacoco.exec,append=true</argLine>
                     <!-- Ensure JavaFX internal modules are accessible -->
@@ -211,6 +221,7 @@
     </build>
 
     <modules>
+        <module>api</module>
         <module>core</module>
         <module>persistence</module>
         <module>ui</module>

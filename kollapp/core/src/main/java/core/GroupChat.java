@@ -1,5 +1,7 @@
 package core;
 
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +9,10 @@ import java.util.List;
 /**
  * Represents a group chat containing a list of messages.
  */
-public class GroupChat implements Serializable{
+public class GroupChat implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
-    private List<Message> messages;    
+    private final List<Message> messages;
     
     /**
      * Constructs an empty GroupChat.

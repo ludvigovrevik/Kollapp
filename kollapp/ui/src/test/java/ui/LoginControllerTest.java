@@ -1,7 +1,8 @@
 package ui;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +14,7 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
+import api.UserApiHandler;
 import core.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,7 +22,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import persistence.UserHandler;
 
 /**
  * Unit tests for the LoginController class.
@@ -28,9 +29,8 @@ import persistence.UserHandler;
 @ExtendWith(ApplicationExtension.class)
 @Tag("ui")
 public class LoginControllerTest {
-
-    private LoginController controller;
-    private UserHandler mockUserHandler;
+    
+    private UserApiHandler mockUserHandler;
 
     /**
      * Sets up the test environment by loading the LoginScreen.fxml and initializing the controller.
@@ -42,9 +42,9 @@ public class LoginControllerTest {
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/LoginScreen.fxml"));
         Parent root = loader.load();
-        controller = loader.getController();
-        mockUserHandler = Mockito.mock(UserHandler.class);
-        controller.setUserHandler(mockUserHandler);
+        LoginController controller = loader.getController();
+        mockUserHandler = Mockito.mock(UserApiHandler.class);
+        controller.setUserApiHandler(mockUserHandler);
         stage.setScene(new Scene(root));
         stage.show();
     }
@@ -62,7 +62,7 @@ public class LoginControllerTest {
     @Test
     @DisplayName("Test successful login")
     @Tag("login")
-    void testSuccessfulLogin(FxRobot robot) throws Exception {
+    void testSuccessfulLogin(FxRobot robot) {
         User TestUserDoNotDelete = new User("TestUserDoNotDelete", "password");
 
         when(mockUserHandler.userExists("TestUserDoNotDelete")).thenReturn(true);
@@ -70,7 +70,7 @@ public class LoginControllerTest {
 
         robot.clickOn("#usernameField").write("TestUserDoNotDelete");
         robot.clickOn("#passwordField").write("password");
-        robot.clickOn("#loginButton");
+        robot.clickOn("Login");
 
         verify(mockUserHandler).userExists("TestUserDoNotDelete");
         verify(mockUserHandler).loadUser("TestUserDoNotDelete", "password");
@@ -84,7 +84,7 @@ public class LoginControllerTest {
     @Test
     @DisplayName("Test login with incorrect password")
     @Tag("login")
-    void testLoginIncorrectPassword(FxRobot robot) throws Exception {
+    void testLoginIncorrectPassword(FxRobot robot) {
         when(mockUserHandler.userExists("TestUserDoNotDelete")).thenReturn(true);
         when(mockUserHandler.loadUser("TestUserDoNotDelete", "wrongPassword")).thenReturn(null);
 
@@ -107,7 +107,7 @@ public class LoginControllerTest {
     @Test
     @DisplayName("Test login with non-existent user")
     @Tag("login")
-    void testLoginUserDoesNotExist(FxRobot robot) throws Exception {
+    void testLoginUserDoesNotExist(FxRobot robot) {
         when(mockUserHandler.userExists("nonTestUserDoNotDelete")).thenReturn(false);
 
         robot.clickOn("#usernameField").write("nonTestUserDoNotDelete");
@@ -128,7 +128,7 @@ public class LoginControllerTest {
     @Test
     @DisplayName("Test navigation to register screen")
     @Tag("navigation")
-    void testNavigateToRegisterScreen(FxRobot robot) throws Exception {
+    void testNavigateToRegisterScreen(FxRobot robot) {
         robot.clickOn("#registerButton");
 
         Button navigateToLoginScreenButton = robot.lookup("#navigateToLoginScreenButton").queryAs(Button.class);
