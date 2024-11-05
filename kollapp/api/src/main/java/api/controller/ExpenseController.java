@@ -38,7 +38,7 @@ public class ExpenseController {
         }
     }
 
-    // Similar methods for groups
+    // Load expenses for a group
     @GetMapping("/groups/{groupName}")
     public ResponseEntity<List<Expense>> loadGroupExpenses(@PathVariable String groupName) {
         try {
@@ -49,6 +49,7 @@ public class ExpenseController {
         }
     }
 
+    // Update expenses for a group
     @PutMapping("/groups/{groupName}")
     public ResponseEntity<Void> updateGroupExpenses(@PathVariable String groupName, @RequestBody List<Expense> expenses) {
         try {

@@ -601,5 +601,4 @@ public class KollAppController {
         }
     }
 
-
 }

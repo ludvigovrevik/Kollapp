@@ -5,103 +5,104 @@ import core.Expense;
 import core.User;
 import core.UserGroup;
 
+import java.io.IOException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Arrays;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class ExpenseApiHandler {
-    private final String baseUrl = "http://localhost:8080/api/v1/expenses";
-    private final ObjectMapper mapper;
     private final HttpClient httpClient;
+    private final ObjectMapper objectMapper;
+    private final String baseUrl = "http://localhost:8080/api/v1/expenses";
 
     public ExpenseApiHandler() {
-        this.mapper = new ObjectMapper();
         this.httpClient = HttpClient.newHttpClient();
+        this.objectMapper = new ObjectMapper();
     }
 
-    public List<Expense> loadGroupExpenses(UserGroup group) {
-        String url = baseUrl + "/groups/" + group.getGroupName();
-        try {
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(url))
-                    .GET()
-                    .build();
-
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-            Expense[] expensesArray = mapper.readValue(response.body(), Expense[].class);
-
-            return Arrays.asList(expensesArray);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to load group expenses: " + e.getMessage());
-        }
-    }
-
-    public void updateGroupExpenses(UserGroup group, List<Expense> expenses) {
-        String url = baseUrl + "/groups/" + group.getGroupName();
-        try {
-            String json = mapper.writeValueAsString(expenses);
-
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(url))
-                    .PUT(HttpRequest.BodyPublishers.ofString(json))
-                    .header("Content-Type", "application/json")
-                    .build();
-
-            HttpResponse<Void> response = httpClient.send(request, HttpResponse.BodyHandlers.discarding());
-
-            if (response.statusCode() != 200) {
-                throw new RuntimeException("Failed to update group expenses: HTTP error code " + response.statusCode());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to update group expenses: " + e.getMessage());
-        }
-    }
-
-    // Similar methods for user expenses
+    // Load expenses for a user
     public List<Expense> loadUserExpenses(User user) {
-        String url = baseUrl + "/" + user.getUsername();
+        String url = baseUrl + "/" + URLEncoder.encode(user.getUsername(), StandardCharsets.UTF_8);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .GET()
+                .build();
         try {
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(url))
-                    .GET()
-                    .build();
-
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-            Expense[] expensesArray = mapper.readValue(response.body(), Expense[].class);
-
-            return Arrays.asList(expensesArray);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to load user expenses: " + e.getMessage());
+            if (response.statusCode() == 200) {
+                List<Expense> expenses = objectMapper.readValue(response.body(),
+                        objectMapper.getTypeFactory().constructCollectionType(List.class, Expense.class));
+                return expenses;
+            } else {
+                System.err.println("Failed to load expenses. Status code: " + response.statusCode());
+                return null;
+            }
+        } catch (IOException | InterruptedException e) {
+            System.err.println("An error occurred while loading expenses: " + e.getMessage());
+            return null;
         }
     }
 
-    public void updateUserExpenses(User user, List<Expense> expenses) {
-        String url = baseUrl + "/" + user.getUsername();
+    // Update expenses for a user
+    public boolean updateUserExpenses(User user, List<Expense> expenses) {
+        String url = baseUrl + "/" + URLEncoder.encode(user.getUsername(), StandardCharsets.UTF_8);
         try {
-            String json = mapper.writeValueAsString(expenses);
-
+            String jsonBody = objectMapper.writeValueAsString(expenses);
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(url))
-                    .PUT(HttpRequest.BodyPublishers.ofString(json))
+                    .uri(URI.create(url))
+                    .PUT(HttpRequest.BodyPublishers.ofString(jsonBody))
                     .header("Content-Type", "application/json")
                     .build();
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.statusCode() == 200;
+        } catch (IOException | InterruptedException e) {
+            System.err.println("An error occurred while updating expenses: " + e.getMessage());
+            return false;
+        }
+    }
 
-            HttpResponse<Void> response = httpClient.send(request, HttpResponse.BodyHandlers.discarding());
-
-            if (response.statusCode() != 200) {
-                throw new RuntimeException("Failed to update user expenses: HTTP error code " + response.statusCode());
+    // Load expenses for a group
+    public List<Expense> loadGroupExpenses(UserGroup group) {
+        String url = baseUrl + "/groups/" + URLEncoder.encode(group.getGroupName(), StandardCharsets.UTF_8);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .GET()
+                .build();
+        try {
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                List<Expense> expenses = objectMapper.readValue(response.body(),
+                        objectMapper.getTypeFactory().constructCollectionType(List.class, Expense.class));
+                return expenses;
+            } else {
+                System.err.println("Failed to load group expenses. Status code: " + response.statusCode());
+                return null;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to update user expenses: " + e.getMessage());
+        } catch (IOException | InterruptedException e) {
+            System.err.println("An error occurred while loading group expenses: " + e.getMessage());
+            return null;
+        }
+    }
+
+    // Update expenses for a group
+    public boolean updateGroupExpenses(UserGroup group, List<Expense> expenses) {
+        String url = baseUrl + "/groups/" + URLEncoder.encode(group.getGroupName(), StandardCharsets.UTF_8);
+        try {
+            String jsonBody = objectMapper.writeValueAsString(expenses);
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .PUT(HttpRequest.BodyPublishers.ofString(jsonBody))
+                    .header("Content-Type", "application/json")
+                    .build();
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.statusCode() == 200;
+        } catch (IOException | InterruptedException e) {
+            System.err.println("An error occurred while updating group expenses: " + e.getMessage());
+            return false;
         }
     }
 }
