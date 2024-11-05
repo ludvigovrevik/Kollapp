@@ -205,6 +205,7 @@ public class UserHandler {
         }
 
         File file = new File(userPath + username + ".json");
+        System.out.println(file);
         try {
             User user = mapper.readValue(file, User.class);
             return Optional.of(user);
