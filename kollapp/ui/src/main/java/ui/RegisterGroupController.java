@@ -116,6 +116,7 @@ public class RegisterGroupController {
                 return;
             }
 
+            user.addUserGroup(groupName);
             kollAppController.populateGroupView(user.getUserGroups());
 
             // Close the current window

@@ -42,6 +42,25 @@ class TaskTest {
     }
 
     @Test
+    @DisplayName("Test task copy constructor")
+    @Tag("copy")
+    void testTaskCopyConstructor() {
+        // Arrange: Create a Task object with specific values using the parameterized constructor
+        Task originalTask = new Task("Original Task", LocalDate.of(2023, 11, 5), "Original description", "High");
+
+        // Act: Create a new Task using the copy constructor
+        Task copiedTask = new Task(originalTask);
+
+        // Assert: Verify that the copied Task has the same properties as the original
+        assertNotNull(copiedTask, "Copied Task object should not be null");
+        Assertions.assertEquals(originalTask.getTaskName(), copiedTask.getTaskName(), "Task name should match the original");
+        Assertions.assertEquals(originalTask.isCompleted(), copiedTask.isCompleted(), "Completion status should match the original");
+        Assertions.assertEquals(originalTask.getDateTime(), copiedTask.getDateTime(), "Date should match the original");
+        Assertions.assertEquals(originalTask.getDescription(), copiedTask.getDescription(), "Description should match the original");
+        Assertions.assertEquals(originalTask.getPriority(), copiedTask.getPriority(), "Priority should match the original");
+    }
+
+    @Test
     @DisplayName("Test task constructor with valid and invalid inputs")
     @Tag("constructor")
     public void testTaskConstructor() {

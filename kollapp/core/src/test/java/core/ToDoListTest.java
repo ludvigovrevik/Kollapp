@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.mock;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -37,6 +38,36 @@ class ToDoListTest {
     void testConstructorInitializesEmptyList() {
         assertNotNull(toDoList.getTasks(), "Tasks list should not be null after construction");
     }
+
+    @Test
+    @DisplayName("Test ToDoList copy constructor")
+    @Tag("copy")
+    void testToDoListCopyConstructor() {
+        ToDoList originalToDoList = new ToDoList();
+        originalToDoList.addTask(new Task("Task 1", LocalDate.of(2023, 11, 5), "Description 1", "High"));
+        originalToDoList.addTask(new Task("Task 2", LocalDate.of(2023, 11, 6), "Description 2", "Medium"));
+
+        ToDoList copiedToDoList = new ToDoList(originalToDoList);
+
+        List<Task> originalTasks = originalToDoList.getTasks();
+        List<Task> copiedTasks = copiedToDoList.getTasks();
+
+        assertNotNull(copiedToDoList, "Copied ToDoList should not be null");
+        assertEquals(originalTasks.size(), copiedTasks.size(), "Copied list should have the same number of tasks as the original");
+
+        for (int i = 0; i < originalTasks.size(); i++) {
+            Task originalTask = originalTasks.get(i);
+            Task copiedTask = copiedTasks.get(i);
+
+            assertNotSame(originalTask, copiedTask, "Copied task should be a separate instance");
+            assertEquals(originalTask.getTaskName(), copiedTask.getTaskName(), "Task names should match");
+            assertEquals(originalTask.getDateTime(), copiedTask.getDateTime(), "Dates should match");
+            assertEquals(originalTask.getDescription(), copiedTask.getDescription(), "Descriptions should match");
+            assertEquals(originalTask.getPriority(), copiedTask.getPriority(), "Priorities should match");
+            assertEquals(originalTask.isCompleted(), copiedTask.isCompleted(), "Completion status should match");
+        }
+    }
+
 
     @Test
     @DisplayName("Test adding tasks to the ToDoList")
