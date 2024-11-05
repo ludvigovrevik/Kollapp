@@ -110,7 +110,7 @@ public class ExpenseHandler {
         try {
             mapper.writeValue(file, expenses);
         } catch (IOException e) {
-            throw new IllegalArgumentException("Failed to update group expenses");
+            throw new IllegalArgumentException("Failed to update group expenses", e);
         }
     }
 }

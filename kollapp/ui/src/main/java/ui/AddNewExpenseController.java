@@ -1,12 +1,11 @@
 package ui;
 
-import api.ExpenseApiHandler;
 import core.Expense;
 import core.User;
 import core.UserGroup;
-import javafx.event.ActionEvent;
+import api.ExpenseApiHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -24,64 +23,59 @@ public class AddNewExpenseController {
     @FXML
     private Label errorLabel;
 
+    @FXML
+    private Button addExpenseButton;
+
     private User user;
     private UserGroup group;
     private ExpenseApiHandler expenseApiHandler;
     private ExpenseController expenseController;
 
-    public void initializeAddExpenseController(User user, UserGroup group, ExpenseController expenseController) {
-        this.user = user;
-        this.group = group;
-        this.expenseController = expenseController;
+    public AddNewExpenseController() {
         this.expenseApiHandler = new ExpenseApiHandler();
     }
 
-    @FXML
-    public void handleAddExpense(ActionEvent event) {
-        String description = expenseNameField.getText();
-        String amountText = expenseField.getText();
+    public void initializeAddNewExpenseController(User user, UserGroup group, ExpenseController expenseController) {
+        this.user = user;
+        this.group = group;
+        this.expenseController = expenseController;
+    }
 
-        if (description == null || description.isEmpty()) {
-            errorLabel.setText("Expense name cannot be empty.");
+    @FXML
+    public void handleAddExpense() {
+        String description = expenseNameField.getText();
+        String amountStr = expenseField.getText();
+
+        if (description.isEmpty() || amountStr.isEmpty()) {
+            errorLabel.setText("Please fill in all fields.");
             return;
         }
-        if (amountText == null || amountText.isEmpty()) {
-            errorLabel.setText("Expense amount cannot be empty.");
-            return;
-        }
+
         double amount;
         try {
-            amount = Double.parseDouble(amountText);
+            amount = Double.parseDouble(amountStr);
         } catch (NumberFormatException e) {
-            errorLabel.setText("Amount must be a valid number.");
+            errorLabel.setText("Invalid amount.");
             return;
         }
 
-        Expense newExpense = new Expense(description, amount, user.getUsername());
+        Expense expense = new Expense(description, amount, user.getUsername());
 
-        // Load existing expenses
-        List<Expense> expenses;
         if (group != null) {
-            expenses = expenseApiHandler.loadGroupExpenses(group);
-        } else {
-            expenses = expenseApiHandler.loadUserExpenses(user);
-        }
-
-        // Add new expense
-        expenses.add(newExpense);
-
-        // Save updated expenses
-        if (group != null) {
+            List<Expense> expenses = expenseApiHandler.loadGroupExpenses(group);
+            expenses.add(expense);
             expenseApiHandler.updateGroupExpenses(group, expenses);
         } else {
+            List<Expense> expenses = expenseApiHandler.loadUserExpenses(user);
+            expenses.add(expense);
             expenseApiHandler.updateUserExpenses(user, expenses);
         }
 
-        // Refresh the expense list in the parent controller
-        expenseController.refreshExpenses();
-
         // Close the window
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Stage stage = (Stage) addExpenseButton.getScene().getWindow();
         stage.close();
+
+        // Refresh expenses in the main controller
+        expenseController.refreshExpenses();
     }
 }
