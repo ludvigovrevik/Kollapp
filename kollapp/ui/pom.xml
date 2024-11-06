@@ -132,6 +132,11 @@
                         --add-exports javafx.graphics/com.sun.javafx.util=ALL-UNNAMED
                         --add-exports javafx.base/com.sun.javafx.logging=ALL-UNNAMED
                     </argLine>
+                    <skipTests>${skipTests}</skipTests> <!-- Skip all tests if 'skipTests' is true -->
+                    <excludes>
+                        <!-- Exclude UI tests if 'uiTestExcludePattern' is set -->
+                        <exclude>${uiTestExcludePattern}</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
 
