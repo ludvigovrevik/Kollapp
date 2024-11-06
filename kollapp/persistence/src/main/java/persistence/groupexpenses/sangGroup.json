@@ -1,1 +1,1 @@
-[{"description":"boligleie","amount":20000.0,"paidBy":"sang"},{"description":"reise","amount":30000.0,"paidBy":"sang2"},{"description":"youtube premium","amount":120.0,"paidBy":"sang2"},{"description":"oreo","amount":20.0,"paidBy":"sang"}]
+[{"description":"pizza","amount":200.0,"paidBy":"sang","participants":["sang","sang2"],"settlements":[{"username":"sang2","settled":false}]},{"description":"Oreo","amount":20.53,"paidBy":"sang","participants":["sang","sang2"],"settlements":[{"username":"sang2","settled":false}]}]
