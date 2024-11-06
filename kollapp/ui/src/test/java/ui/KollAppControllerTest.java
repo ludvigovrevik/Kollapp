@@ -79,6 +79,6 @@ public class KollAppControllerTest {
         // Verify that the "+" button is present
         Button addButton = robot.lookup("#addButton").queryAs(Button.class);
         Assertions.assertThat(addButton).isNotNull();
-        Assertions.assertThat(addButton).hasText("+");
+        Assertions.assertThat(addButton).hasText("+ Add task");
     }
 }
