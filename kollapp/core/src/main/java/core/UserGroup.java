@@ -54,6 +54,15 @@ public class UserGroup implements Serializable {
     }
 
     /**
+     * Sets the list of users for the UserGroup.
+     *
+     * @param users the list of user names to be set
+     */
+    public void setUsers(List<String> users) {
+        this.users = users;
+    }
+
+    /**
      * Adds a user to the group if the user is not already present.
      *
      * @param username the username to add

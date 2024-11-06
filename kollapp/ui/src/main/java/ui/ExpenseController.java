@@ -1,100 +1,150 @@
 package ui;
 
+import api.ExpenseApiHandler;
 import core.Expense;
 import core.User;
 import core.UserGroup;
-import api.ExpenseApiHandler;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
-import javafx.scene.Parent;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.stage.Modality;
-import java.io.IOException;
+
 import java.util.List;
 
 public class ExpenseController {
 
     @FXML
     private TableView<Expense> expenseTableView;
-
     @FXML
     private TableColumn<Expense, String> descriptionColumn;
-
     @FXML
     private TableColumn<Expense, Double> amountColumn;
-
     @FXML
     private TableColumn<Expense, String> paidByColumn;
+    @FXML
+    private TableColumn<Expense, Double> sharePerPersonColumn;
+    @FXML
+    private TableColumn<Expense, String> statusColumn;
 
-    private User user;
-    private UserGroup group;
-    private ExpenseApiHandler expenseApiHandler;
-    private ObservableList<Expense> expenseList;
+    @FXML
+    private Button addExpenseButton;
 
-    public ExpenseController() {
-        this.expenseApiHandler = new ExpenseApiHandler();
-    }
+    @FXML
+    private Label totalOwedLabel;
+
+    private User currentUser;
+    private UserGroup groupInView;
+    private ExpenseApiHandler expenseApiHandler = new ExpenseApiHandler();
+    private ObservableList<Expense> expenses = FXCollections.observableArrayList();
 
     public void initializeExpenseController(User user, UserGroup group) {
-        this.user = user;
-        this.group = group;
+        this.currentUser = user;
+        this.groupInView = group;
 
-        // Initialize columns
+        // Initialize table columns
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
         paidByColumn.setCellValueFactory(new PropertyValueFactory<>("paidBy"));
+        sharePerPersonColumn.setCellValueFactory(expense -> new SimpleDoubleProperty(expense.getValue().getSharePerPerson()).asObject());
 
-        // Load expenses
-        if (group != null) {
-            List<Expense> expenses = expenseApiHandler.loadGroupExpenses(group);
-            expenseList = FXCollections.observableArrayList(expenses);
+        // Custom cell for status and settlement
+        statusColumn.setCellFactory(column -> new TableCell<>() {
+            private final Button settleButton = new Button("Settle");
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty) {
+                    setGraphic(null);
+                    setText(null);
+                } else {
+                    Expense expense = getTableView().getItems().get(getIndex());
+                    if (expense.getPaidBy().equals(currentUser.getUsername())) {
+                        setText("You paid");
+                        setGraphic(null);
+                    } else if (expense.hasParticipantSettled(currentUser.getUsername())) {
+                        setText("Settled");
+                        setGraphic(null);
+                    } else {
+                        setText("Owe: $" + String.format("%.2f", expense.getSharePerPerson()));
+                        setGraphic(settleButton);
+                        settleButton.setOnAction(event -> {
+                            expense.settleParticipant(currentUser.getUsername());
+                            updateExpenses();
+                        });
+                    }
+                }
+            }
+        });
+
+        // Load expenses and populate table
+        loadExpenses();
+    }
+
+    private void loadExpenses() {
+        List<Expense> loadedExpenses = expenseApiHandler.loadGroupExpenses(groupInView);
+        if (loadedExpenses != null) {
+            expenses.setAll(loadedExpenses);
+            expenseTableView.setItems(expenses);
+            refreshTable();
+            updateTotalOwed();
         } else {
-            // Load user's personal expenses
-            List<Expense> expenses = expenseApiHandler.loadUserExpenses(user);
-            expenseList = FXCollections.observableArrayList(expenses);
+            expenses.clear();
+            expenseTableView.setItems(expenses);
+            updateTotalOwed();
         }
+    }
 
-        expenseTableView.setItems(expenseList);
+    private void updateExpenses() {
+        boolean success = expenseApiHandler.updateGroupExpenses(groupInView, expenses);
+        if (success) {
+            refreshTable();
+        } else {
+            // Handle update failure if necessary
+        }
+    }
+
+    private void refreshTable() {
+        expenseTableView.refresh();
+        updateTotalOwed();
+    }
+
+    private void updateTotalOwed() {
+        double totalOwed = 0.0;
+        for (Expense expense : expenses) {
+            if (expense.getParticipants().contains(currentUser.getUsername())
+                    && !expense.getPaidBy().equals(currentUser.getUsername())
+                    && !expense.hasParticipantSettled(currentUser.getUsername())) {
+                totalOwed += expense.getSharePerPerson();
+            }
+        }
+        totalOwedLabel.setText("Total Owed: $" + String.format("%.2f", totalOwed));
     }
 
     @FXML
-    public void addExpense() {
-        // Open AddNewExpense window
+    private void addExpense() {
+        // Open the AddNewExpense window
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddNewExpense.fxml"));
-            Parent root = fxmlLoader.load();
+            javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("AddNewExpense.fxml"));
+            javafx.scene.Parent root = fxmlLoader.load();
 
-            AddNewExpenseController controller = fxmlLoader.getController();
-            controller.initializeAddNewExpenseController(user, group, this);
+            AddNewExpenseController addNewExpenseController = fxmlLoader.getController();
+            addNewExpenseController.initializeController(currentUser, groupInView, this);
 
-            Stage stage = new Stage();
+            javafx.stage.Stage stage = new javafx.stage.Stage();
             stage.setTitle("Add New Expense");
-            stage.setScene(new Scene(root));
-
-            // Set the stage as modal
-            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new javafx.scene.Scene(root));
+            stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
             stage.showAndWait();
 
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-    }
+            // Refresh expenses after adding a new one
+            loadExpenses();
 
-    public void refreshExpenses() {
-        // Reload expenses and refresh table
-        if (group != null) {
-            List<Expense> expenses = expenseApiHandler.loadGroupExpenses(group);
-            expenseList.setAll(expenses);
-        } else {
-            List<Expense> expenses = expenseApiHandler.loadUserExpenses(user);
-            expenseList.setAll(expenses);
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
         }
-        expenseTableView.refresh();
     }
 }
