@@ -1,5 +1,6 @@
 package ui;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,29 @@ import javafx.stage.Stage;
 @ExtendWith(ApplicationExtension.class)
 @Tag("ui")
 public class KollAppControllerTest {
+
+     // Headless mode is enabled
+    static private boolean headless = true;
+
+    /**
+     * Sets up the environment for headless mode if the 'headless' flag is true.
+     * This method configures various system properties required for running
+     * JavaFX tests in a headless environment.
+     * 
+     * Properties set:
+     * - testfx.headless: Enables TestFX headless mode.
+     */
+    @BeforeAll
+    static void setupHeadlessMode() {
+        if(headless){
+            System.setProperty("testfx.headless", "true");
+
+            System.setProperty("java.awt.headless", "true");
+            System.setProperty("prism.order", "sw");
+            System.setProperty("prism.text", "t2k");
+            System.setProperty("testfx.robot", "glass");
+        }
+    }
 
     /**
      * Initializes the test environment by loading the Kollektiv.fxml and setting up the controller.

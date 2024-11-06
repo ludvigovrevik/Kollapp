@@ -3,12 +3,14 @@ package ui;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -45,6 +47,29 @@ public class GroupChatControllerTest {
     private User mockUser;
 
     private String groupName = "TestGroup";
+
+     // Headless mode is enabled
+    static private boolean headless = true;
+
+    /**
+     * Sets up the environment for headless mode if the 'headless' flag is true.
+     * This method configures various system properties required for running
+     * JavaFX tests in a headless environment.
+     * 
+     * Properties set:
+     * - testfx.headless: Enables TestFX headless mode.
+     */
+    @BeforeAll
+    static void setupHeadlessMode() {
+        if(headless){
+            System.setProperty("testfx.headless", "true");
+
+            System.setProperty("java.awt.headless", "true");
+            System.setProperty("prism.order", "sw");
+            System.setProperty("prism.text", "t2k");
+            System.setProperty("testfx.robot", "glass");
+        }
+    }
 
     /**
      * Initializes the test environment by loading the GroupChat.fxml and setting up dependencies.
