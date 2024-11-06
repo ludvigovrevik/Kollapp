@@ -16,28 +16,6 @@ public class ExpenseController {
     @Autowired
     private ExpenseService expenseService;
 
-    // Load expenses for a user
-    @GetMapping("/{username}")
-    public ResponseEntity<List<Expense>> loadUserExpenses(@PathVariable String username) {
-        try {
-            List<Expense> expenses = expenseService.loadUserExpenses(username);
-            return ResponseEntity.ok(expenses);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-    }
-
-    // Update expenses for a user
-    @PutMapping("/{username}")
-    public ResponseEntity<Void> updateUserExpenses(@PathVariable String username, @RequestBody List<Expense> expenses) {
-        try {
-            expenseService.updateUserExpenses(username, expenses);
-            return ResponseEntity.ok().build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-    }
-
     // Load expenses for a group
     @GetMapping("/groups/{groupName}")
     public ResponseEntity<List<Expense>> loadGroupExpenses(@PathVariable String groupName) {
@@ -45,7 +23,8 @@ public class ExpenseController {
             List<Expense> expenses = expenseService.loadGroupExpenses(groupName);
             return ResponseEntity.ok(expenses);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
@@ -56,6 +35,7 @@ public class ExpenseController {
             expenseService.updateGroupExpenses(groupName, expenses);
             return ResponseEntity.ok().build();
         } catch (IllegalArgumentException e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }

@@ -695,6 +695,10 @@ public class KollAppController {
 
     @FXML
     public void showExpense() {
+        if (groupInView == null) {
+            // No group selected, show error or disable the expense button
+            return;
+        }
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ExpenseScreen.fxml"));
             Parent root = fxmlLoader.load();
@@ -703,7 +707,7 @@ public class KollAppController {
             expenseController.initializeExpenseController(this.user, this.groupInView);
 
             Stage stage = new Stage();
-            stage.setTitle("Expenses");
+            stage.setTitle("Expenses for " + groupInView.getGroupName());
             stage.setScene(new Scene(root));
 
             // Set the stage as modal, blocking user input to other windows
