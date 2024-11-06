@@ -111,7 +111,12 @@ public class ToDoListService {
     public void updateGroupToDoList(String groupName, ToDoList toDoList) {
         UserGroup userGroup = new UserGroup(groupName);
         try {
-            toDoListHandler.updateGroupToDoList(userGroup, toDoList);
+            try {
+                toDoListHandler.updateGroupToDoList(userGroup, toDoList);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Failed to update group to-do list for group: " + groupName, e);
         }

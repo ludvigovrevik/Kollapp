@@ -59,6 +59,9 @@ public class KollAppController {
     private Button addButton;
 
     @FXML
+    private Button openExpenseButton;
+
+    @FXML
     private TableView<Task> tableView;
 
     @FXML
@@ -113,6 +116,9 @@ public class KollAppController {
 
         // Hide the group chat button by default
         groupChatButton.setVisible(false);
+
+        // Hide the expense button by default
+        openExpenseButton.setVisible(false);
     }
 
     /**
@@ -202,10 +208,12 @@ public class KollAppController {
         if (groupName.equals(this.user.getUsername())) {
             changeCurrentTaskView(this.user.getUsername());
             groupChatButton.setVisible(false);
+            openExpenseButton.setVisible(false);
             currentlyViewingPath.setText("Currently Viewing: " + this.user.getUsername() + " → Pending Tasks"); // Short format for personal tasks
         } else if (groupNames.contains(groupName)) {
             this.groupNameChat = groupName;
             groupChatButton.setVisible(true);
+            openExpenseButton.setVisible(true);
             System.out.println("Perform action for " + groupName);
             changeCurrentTaskView(groupName);
             currentlyViewingPath.setText("Currently Viewing: " + this.user.getUsername() + " → " + groupName + " → Pending Tasks"); // Short format for group tasks
@@ -570,4 +578,31 @@ public class KollAppController {
             System.out.println(e.getMessage());
         }
     }
+
+    @FXML
+    public void showExpense() {
+        if (groupInView == null) {
+            // No group selected, show error or disable the expense button
+            return;
+        }
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ExpenseScreen.fxml"));
+            Parent root = fxmlLoader.load();
+
+            ExpenseController expenseController = fxmlLoader.getController();
+            expenseController.initializeExpenseController(this.user, this.groupInView);
+
+            Stage stage = new Stage();
+            stage.setTitle("Expenses for " + groupInView.getGroupName());
+            stage.setScene(new Scene(root));
+
+            // Set the stage as modal, blocking user input to other windows
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 }
