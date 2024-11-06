@@ -18,11 +18,14 @@ public class ExpenseService {
     private final ObjectMapper mapper;
     private final String groupExpensePath;
 
+
+
     public ExpenseService() {
         this.mapper = new ObjectMapper();
         this.mapper.registerModule(new JavaTimeModule());
 
-        this.groupExpensePath = Paths.get("persistence", "groupexpenses") + File.separator;
+        this.groupExpensePath = Paths.get("kollapp", "persistence", "src", "main", "java",
+        "persistence", "groupexpenses") + File.separator;
     }
 
     // Load expenses for a group
@@ -53,6 +56,8 @@ public class ExpenseService {
     private void saveExpensesForGroup(UserGroup group, List<Expense> expenses) {
         File file = new File(groupExpensePath + group.getGroupName() + ".json");
         try {
+            // **Ensure parent directories exist**
+            file.getParentFile().mkdirs(); // This line ensures the directory is created
             mapper.writeValue(file, expenses);
         } catch (IOException e) {
             e.printStackTrace();

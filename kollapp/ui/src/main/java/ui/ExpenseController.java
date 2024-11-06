@@ -101,7 +101,7 @@ public class ExpenseController {
     private void updateExpenses() {
         boolean success = expenseApiHandler.updateGroupExpenses(groupInView, expenses);
         if (success) {
-            refreshTable();
+            loadExpenses(); // Reload expenses from the server
         } else {
             // Handle update failure if necessary
         }
