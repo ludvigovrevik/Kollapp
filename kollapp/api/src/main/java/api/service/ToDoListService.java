@@ -18,13 +18,15 @@ public class ToDoListService {
     private final ToDoListHandler toDoListHandler;
     private final UserHandler userHandler;
 
-    private final String toDoListPath = Paths.get("kollapp", "persistence", "src", "main", "java",
-            "persistence", "todolists") + File.separator;
-    private final String groupToDoListPath = Paths.get("kollapp", "persistence", "src", "main", "java",
-            "persistence", "grouptodolists") + File.separator;
+    private final String toDoListPath = Paths.get("..", "persistence", "src", "main", "java",
+            "persistence", "todolists").toAbsolutePath()
+            .normalize().toString() + File.separator;
+    private final String groupToDoListPath = Paths.get("..", "persistence", "src", "main", "java",
+            "persistence", "grouptodolists").toAbsolutePath()
+            .normalize().toString() + File.separator;
     private final String userPath = Paths.get("..", "persistence", "src", "main", "java",
-            "persistence", "users") + File.separator.toAbsolutePath()
-            .normalize().toString();;
+            "persistence", "users").toAbsolutePath()
+            .normalize().toString() + File.separator;
 
     @Autowired
     public ToDoListService() {
