@@ -15,8 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
-import api.ToDoListApiHandler;
+import ui.api.ToDoListApiHandler;
 
 /**
  * Controller class for managing the addition of new tasks to a to-do list.

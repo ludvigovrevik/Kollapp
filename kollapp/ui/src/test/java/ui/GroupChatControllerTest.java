@@ -20,7 +20,6 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
-import api.GroupChatApiHandler;
 import core.GroupChat;
 import core.Message;
 import core.User;
@@ -28,6 +27,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ui.api.GroupChatApiHandler;
 
 /**
  * Unit tests for the GroupChatController class.

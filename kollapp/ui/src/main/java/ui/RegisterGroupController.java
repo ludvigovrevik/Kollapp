@@ -1,7 +1,7 @@
 package ui;
 
-import api.GroupApiHandler;
-import api.UserApiHandler;
+import ui.api.GroupApiHandler;
+import ui.api.UserApiHandler;
 import core.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

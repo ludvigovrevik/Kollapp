@@ -14,7 +14,6 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.ApplicationTest;
 
-import api.UserApiHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -23,6 +22,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import ui.api.UserApiHandler;
 
 /**
  * Unit tests for the RegisterController class.

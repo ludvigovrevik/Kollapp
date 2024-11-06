@@ -18,17 +18,20 @@ public class ToDoListService {
     private final ToDoListHandler toDoListHandler;
     private final UserHandler userHandler;
 
-    private final String toDoListPath = Paths.get("kollapp", "persistence", "src", "main", "java",
-            "persistence", "todolists") + File.separator;
-    private final String groupToDoListPath = Paths.get("kollapp", "persistence", "src", "main", "java",
-            "persistence", "grouptodolists") + File.separator;
-    private final String userPath = Paths.get("kollapp", "persistence", "src", "main", "java",
-            "persistence", "users") + File.separator;
-
     @Autowired
     public ToDoListService() {
-        this.userHandler = new UserHandler(this.userPath);
-        this.toDoListHandler = new ToDoListHandler(this.toDoListPath, this.groupToDoListPath);
+        String baseDir = System.getProperty("user.dir");
+        String toDoListPath = Paths.get(baseDir, "persistence", "todolists").toString();
+        String groupToDoListPath = Paths.get(baseDir, "persistence", "grouptodolists").toString();
+        String userPath = Paths.get(baseDir, "persistence", "users").toString();
+        
+        // Ensure directories exist
+        new File(toDoListPath).mkdirs();
+        new File(groupToDoListPath).mkdirs();
+        new File(userPath).mkdirs();
+
+        this.userHandler = new UserHandler(userPath);
+        this.toDoListHandler = new ToDoListHandler(toDoListPath, groupToDoListPath);
     }
 
     /**

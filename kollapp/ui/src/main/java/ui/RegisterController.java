@@ -2,7 +2,6 @@ package ui;
 
 import java.io.IOException;
 
-import api.UserApiHandler;
 import core.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,6 +14,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import persistence.ToDoListHandler;
+import ui.api.UserApiHandler;
 
 /**
  * Controller class for the registration screen.

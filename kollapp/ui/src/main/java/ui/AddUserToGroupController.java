@@ -2,14 +2,14 @@ package ui;
 
 import java.util.List;
 
-import api.GroupApiHandler;
-import api.UserApiHandler;
 import core.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import ui.api.GroupApiHandler;
+import ui.api.UserApiHandler;
 
 /**
  * Controller class for adding a user to an existing group.

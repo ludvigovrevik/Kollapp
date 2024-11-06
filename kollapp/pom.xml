@@ -20,7 +20,6 @@
         <testfx.version>4.0.16-alpha</testfx.version>
         <hamcrest.version>2.2</hamcrest.version>
 
-        <uiTestExcludePattern></uiTestExcludePattern>
     </properties>
 
     <profiles>
@@ -50,6 +49,11 @@
             <dependency>
                 <groupId>gr2409</groupId>
                 <artifactId>persistence</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+                <dependency>
+                <groupId>gr2409</groupId>
+                <artifactId>api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <!-- JavaFX dependencies -->
@@ -210,9 +214,7 @@
                 </executions>
                 <configuration>
                     <configLocation>checkstyle.xml</configLocation>
-                    <encoding>UTF-8</encoding>
                     <consoleOutput>true</consoleOutput>
-                    <failsOnViolation>false</failsOnViolation>  <!-- Do not fail the build -->
                     <failsOnError>false</failsOnError>  <!-- Do not fail the build -->
                     <excludes>**/module-info.java</excludes>
                 </configuration>

@@ -5,9 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
-import api.ToDoListApiHandler;
-import api.GroupApiHandler;
-import api.UserApiHandler;
+
 import core.Task;
 import core.ToDoList;
 import core.User;
@@ -34,6 +32,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import ui.api.GroupApiHandler;
+import ui.api.ToDoListApiHandler;
+import ui.api.UserApiHandler;
 
 /**
  * Controller class for the KollApp application.
