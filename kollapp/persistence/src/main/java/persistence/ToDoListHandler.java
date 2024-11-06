@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class ToDoListHandler {
     private final String toDoListPath;
     private final String groupToDoListPath;
@@ -28,6 +30,7 @@ public class ToDoListHandler {
      * 
      * The ObjectMapper is configured to handle Java 8 date and time API classes by registering the JavaTimeModule.
      */
+    @Autowired
     public ToDoListHandler() {
         this.toDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "todolists") + File.separator;
         this.groupToDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists") + File.separator;
@@ -51,6 +54,8 @@ public class ToDoListHandler {
         this.groupToDoListPath = groupToDoListPath;
         this.mapper = new ObjectMapper();
         this.mapper.registerModule(new JavaTimeModule());
+        System.out.println("ToDoList Path: " + toDoListPath);
+        System.out.println("Group ToDoList Path: " + groupToDoListPath);
     }
 
     /**

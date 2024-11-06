@@ -9,4 +9,5 @@ module persistence {
     requires spring.security.crypto;
 
     exports persistence;
+    opens persistence to com.fasterxml.jackson.databind;
 }

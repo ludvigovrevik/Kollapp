@@ -37,6 +37,8 @@ public class GroupHandler {
         this.groupPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "groups") + File.separator;
         this.groupToDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists") + File.separator;
         this.mapper.registerModule(new JavaTimeModule());
+        System.out.println("ToDoList Path: " + groupPath);
+        System.out.println("Group ToDoList Path: " + groupToDoListPath);
     }
 
     /**
@@ -50,6 +52,8 @@ public class GroupHandler {
         this.groupPath = groupPath;
         this.groupToDoListPath = groupToDoListPath;
         this.mapper.registerModule(new JavaTimeModule());
+        System.out.println("ToDoList Path: " + groupPath);
+        System.out.println("Group ToDoList Path: " + groupToDoListPath);
     }
 
     /**

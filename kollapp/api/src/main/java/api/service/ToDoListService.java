@@ -114,7 +114,6 @@ public class ToDoListService {
             try {
                 toDoListHandler.updateGroupToDoList(userGroup, toDoList);
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         } catch (IllegalArgumentException e) {
