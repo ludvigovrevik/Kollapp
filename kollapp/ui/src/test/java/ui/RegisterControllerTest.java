@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -39,6 +40,29 @@ class RegisterControllerTest extends ApplicationTest {
 
     private UserApiHandler userHandlerMock;
     private final UserApiHandler userApiHandler = new UserApiHandler();
+
+     // Headless mode is enabled
+    static private boolean headless = true;
+
+    /**
+     * Sets up the environment for headless mode if the 'headless' flag is true.
+     * This method configures various system properties required for running
+     * JavaFX tests in a headless environment.
+     * 
+     * Properties set:
+     * - testfx.headless: Enables TestFX headless mode.
+     */
+    @BeforeAll
+    static void setupHeadlessMode() {
+        if(headless){
+            System.setProperty("testfx.headless", "true");
+
+            System.setProperty("java.awt.headless", "true");
+            System.setProperty("prism.order", "sw");
+            System.setProperty("prism.text", "t2k");
+            System.setProperty("testfx.robot", "glass");
+        }
+    }
 
     /**
      * Sets up the test environment by loading the RegisterScreen.fxml and initializing the scene.

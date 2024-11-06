@@ -15,6 +15,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -27,6 +28,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -55,6 +57,12 @@ public class KollAppController {
 
     @FXML
     private Button groupChatButton;
+
+    @FXML
+    private Pane groupOptionsPane;
+
+    @FXML
+    private Label groupOptionsLabel;
 
     @FXML
     private Button addButton;
@@ -115,10 +123,10 @@ public class KollAppController {
         addButton.setOnMouseEntered(event -> handleAddButtonHover());
         addButton.setOnMouseExited(event -> handleAddButtonHoverExit());
 
-        // Hide the group chat button by default
+        // Hide the group chat options by default
         groupChatButton.setVisible(false);
-
-        // Hide the expense button by default
+        groupOptionsPane.setVisible(false);
+        groupOptionsLabel.setVisible(false);
         openExpenseButton.setVisible(false);
     }
 
@@ -127,13 +135,13 @@ public class KollAppController {
      */
     @FXML
     private void handleAddButtonHover() {
-        addButton.setStyle("-fx-background-color: #096800; -fx-cursor: hand; -fx-text-fill: #9df084;");
+        addButton.setStyle("-fx-background-color: #19743F; -fx-background-radius: 10; -fx-cursor: hand;");
         animateButton(addButton, 1.05);
     }
 
     @FXML
     private void handleAddButtonHoverExit() {
-        addButton.setStyle("-fx-background-color: #9df084; -fx-text-fill: #096800;");
+        addButton.setStyle("-fx-background-color: #27AE60; -fx-background-radius: 10;");
         animateButton(addButton, 1.0);
     }
 
@@ -182,19 +190,21 @@ public class KollAppController {
         Label groupLabel = new Label(groupName);
 
         // Set style to make the label look like a button
-        groupLabel.setStyle("-fx-cursor: hand; -fx-font-size: 15px; -fx-background-color: #7aadff; -fx-text-fill: white; -fx-padding: 15px; -fx-alignment: center;");
-        groupLabel.setOnMouseEntered(event -> groupLabel.setStyle("-fx-cursor: hand; -fx-font-size: 15px; -fx-background-color:#6999e6; -fx-text-fill: white; -fx-padding: 15px; -fx-alignment: center;"));
-        groupLabel.setOnMouseExited(event -> groupLabel.setStyle("-fx-cursor: hand; -fx-font-size: 15px; -fx-background-color:#7aadff; -fx-text-fill: white; -fx-padding: 15px; -fx-alignment: center;"));
+        groupLabel.setStyle("-fx-cursor: hand; -fx-font-size: 15px; -fx-background-color: #7aadff; -fx-text-fill: white; -fx-padding: 10px; -fx-alignment: center; -fx-background-radius: 10; -fx-pref-width: 150px; -fx-pref-height: 40px;");
+        groupLabel.setOnMouseEntered(event -> groupLabel.setStyle("-fx-cursor: hand; -fx-font-size: 15px; -fx-background-color:#6999e6; -fx-text-fill: white; -fx-padding: 10px; -fx-alignment: center; -fx-background-radius: 10; -fx-pref-width: 150px; -fx-pref-height: 40px;"));
+        groupLabel.setOnMouseExited(event -> groupLabel.setStyle("-fx-cursor: hand; -fx-font-size: 15px; -fx-background-color:#7aadff; -fx-text-fill: white; -fx-padding: 10px; -fx-alignment: center; -fx-background-radius: 10; -fx-pref-width: 150px; -fx-pref-height: 40px;"));
         
         groupLabel.setPrefHeight(50);
         groupLabel.setPrefWidth(209);
         groupLabel.setAlignment(Pos.CENTER); // Center the text
-
+        
         // Set up the click event
         groupLabel.setOnMouseClicked(event -> handleGroupClick(groupName));
 
         // Add the clickable label to the VBox
         vBoxContainer.getChildren().add(groupLabel);
+        vBoxContainer.setPadding(new Insets(10, 0, 10, 0)); 
+        vBoxContainer.setSpacing(10);
     }
 
     /**
@@ -208,11 +218,15 @@ public class KollAppController {
 
         if (groupName.equals(this.user.getUsername())) {
             changeCurrentTaskView(this.user.getUsername());
+            groupOptionsPane.setVisible(false);
+            groupOptionsLabel.setVisible(false);
             groupChatButton.setVisible(false);
             openExpenseButton.setVisible(false);
             currentlyViewingPath.setText("Currently Viewing: " + this.user.getUsername() + " → Pending Tasks"); // Short format for personal tasks
         } else if (groupNames.contains(groupName)) {
             this.groupNameChat = groupName;
+            groupOptionsPane.setVisible(true);
+            groupOptionsLabel.setVisible(true);
             groupChatButton.setVisible(true);
             openExpenseButton.setVisible(true);
             System.out.println("Perform action for " + groupName);
@@ -415,7 +429,7 @@ public class KollAppController {
             @Override
             protected void updateItem(Boolean item, boolean empty) {
                 super.updateItem(item, empty);
-    
+                
                 if (empty) {
                     setGraphic(null);
                 } else {
