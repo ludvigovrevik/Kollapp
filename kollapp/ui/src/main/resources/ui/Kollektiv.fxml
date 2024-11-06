@@ -9,51 +9,62 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.KollAppController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="565.0" prefWidth="804.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.KollAppController">
    <children>
-      <Label fx:id="currentlyViewingPath" layoutX="232.0" layoutY="445.0" prefHeight="28.0" prefWidth="317.0" text="" textFill="#7aadff" />
-       
-                        <Button fx:id="addButton" layoutX="682.0" layoutY="459.0" mnemonicParsing="false" onAction="#showDialog" prefHeight="50.0" prefWidth="61.0" style="-fx-background-color: #9df084; -fx-background-radius: 10;" text="+" textFill="#096800">
+      <Label fx:id="currentlyViewingPath" layoutX="245.0" layoutY="440.0" prefHeight="28.0" prefWidth="317.0" text="" textFill="#7aadff">
          <font>
-            <Font size="21.0" />
+            <Font size="12.0" />
+         </font></Label>
+       
+                        <Button fx:id="addButton" layoutX="655.0" layoutY="493.0" mnemonicParsing="false" onAction="#showDialog" prefHeight="41.0" prefWidth="123.0" style="-fx-background-color: #27AE60; -fx-background-radius: 10;" text="+ Add task" textFill="WHITE">
+         <font>
+            <Font size="20.0" />
          </font>
       </Button>
-      <Pane layoutX="-3.0" layoutY="-2.0" prefHeight="529.0" prefWidth="216.0" style="-fx-background-color: #e8e8e8;">
+      <Pane layoutX="13.0" layoutY="15.0" prefHeight="369.0" prefWidth="206.0" style="-fx-background-color: #e8e8e8; -fx-background-radius: 10; -fx-border-radius: 10;">
          <children>
-            <Button fx:id="createGroupButton" layoutX="92.0" layoutY="493.0" mnemonicParsing="false" onAction="#openRegisterGroupWindow" prefHeight="28.0" prefWidth="117.0" stylesheets="@css/styles.css" text="New group" />
-            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutX="4.0" layoutY="98.0" prefHeight="295.0" prefWidth="211.0" vbarPolicy="AS_NEEDED">
-               <content>
-                  <VBox fx:id="vBoxContainer" prefHeight="293.0" prefWidth="209.0">
-                     <children>
-                     </children>
-                  </VBox>
-               </content>
-            </ScrollPane>
-            <Label fx:id="personal" alignment="CENTER" contentDisplay="CENTER" layoutX="-1.0" layoutY="37.0" prefHeight="50.0" prefWidth="216.0" style="-fx-background-color: #7aadff;" styleClass="personal-label" stylesheets="@css/styles.css" text="My Tasks" textAlignment="CENTER" textFill="WHITE">
+            <Button fx:id="addUserToGroupButton" layoutX="103.0" layoutY="328.0" mnemonicParsing="false" onAction="#openAddUserToGroupWindow" prefHeight="28.0" prefWidth="90.0" styleClass="addMember-label" stylesheets="@css/styles.css" text="Add member" />
+            <Button fx:id="createGroupButton" layoutX="14.0" layoutY="328.0" mnemonicParsing="false" onAction="#openRegisterGroupWindow" prefHeight="28.0" prefWidth="81.0" styleClass="addGroup-label" stylesheets="@css/styles.css" text="New group" />
+            <Pane layoutX="13.0" layoutY="85.0" prefHeight="230.0" prefWidth="178.0" style="-fx-background-color: #D9D9D9; -fx-background-radius: 10;">
+               <children>
+                  <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutY="-1.0" prefHeight="231.0" prefWidth="178.0" style="-fx-background-radius: 20; -fx-border-radius: 10;" stylesheets="@css/styles.css" vbarPolicy="NEVER">
+                     <content>
+                        <VBox fx:id="vBoxContainer" alignment="TOP_CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="177.0" style="-fx-border-radius: 10; -fx-background-radius: 10;" />
+                     </content>
+                  </ScrollPane>
+               </children>
+            </Pane>
+            <Label fx:id="personal" alignment="CENTER" contentDisplay="CENTER" layoutX="12.0" layoutY="10.0" prefHeight="45.0" prefWidth="182.0" style="-fx-background-color: #7aadff; -fx-background-radius: 10;" styleClass="personal-label" stylesheets="@css/styles.css" text="My tasks" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="Microsoft Sans Serif" size="21.0" />
                </font>
             </Label>
-            <Button layoutX="8.0" layoutY="493.0" mnemonicParsing="false" onAction="#logOut" prefHeight="28.0" prefWidth="79.0" stylesheets="@css/styles.css" text="Sign out" />
-            <Button fx:id="addUserToGroupButton" layoutX="9.0" layoutY="456.0" mnemonicParsing="false" onAction="#openAddUserToGroupWindow" prefHeight="28.0" prefWidth="103.0" stylesheets="@css/styles.css" text="Add member" />
-            <Button fx:id="groupChatButton" layoutX="117.0" layoutY="456.0" mnemonicParsing="false" onAction="#showGroupChat" prefHeight="28.0" prefWidth="92.0" stylesheets="@css/styles.css" text="Open chat" />
-            <Label fx:id="completedLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="3.0" layoutY="398.0" prefHeight="50.0" prefWidth="211.0" style="-fx-background-color: #7aadff;" styleClass="completedTask-label" stylesheets="@css/styles.css" text="Completed Tasks" textFill="WHITE">
-               <font>
-                  <Font name="Microsoft Sans Serif" size="21.0" />
-               </font>
-            </Label>
+            <Text fill="#333333" layoutX="21.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your groups" />
          </children>
       </Pane>
-      <TableView fx:id="tableView" layoutX="232.0" layoutY="35.0" prefHeight="409.0" prefWidth="511.0">
-        <columns>
-          <TableColumn fx:id="taskNameColumn" prefWidth="100.0" resizable="false" text="Task" />
-          <TableColumn fx:id="dateColumn" prefWidth="93.0" resizable="false" text="Date" />
-            <TableColumn fx:id="descriptionColumn" prefWidth="221.0" resizable="false" text="Description" />
-            <TableColumn fx:id="priorityColumn" maxWidth="200.0" minWidth="0.0" prefWidth="71.0" resizable="false" text="Priority" />
-            <TableColumn fx:id="checkBoxColumn" prefWidth="24.0" resizable="false" sortable="false" text="✓" />
-        </columns>
+      <TableView fx:id="tableView" layoutX="232.0" layoutY="11.0" prefHeight="442.0" prefWidth="558.0" style="-fx-background-radius: 10; -fx-border-radius: 10 0 10 0; -fx-padding: 10px;" stylesheets="@css/styles.css">
+          <columns>
+              <TableColumn fx:id="taskNameColumn" prefWidth="112.50839233398438" resizable="false" text="Task" />
+              <TableColumn fx:id="dateColumn" prefWidth="94.09359741210938" resizable="false" text="Date" />
+              <TableColumn fx:id="descriptionColumn" prefWidth="177.90640258789062" resizable="false" text="Description" />
+              <TableColumn fx:id="priorityColumn" prefWidth="123.48956298828125" resizable="false" text="Priority" />
+              <TableColumn fx:id="checkBoxColumn" prefWidth="28.51043701171875" resizable="false" sortable="false" text="✓" />
+          </columns>
       </TableView>
-      <Button fx:id="openExpenseButton" layoutX="549.0" layoutY="456.0" mnemonicParsing="false" onAction="#showExpense" prefHeight="50.0" prefWidth="117.0" stylesheets="@css/styles.css" text="Show expenses" />
+      <Label fx:id="completedLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="654.0" layoutY="453.0" prefHeight="26.0" prefWidth="125.0" style="-fx-background-color: #7aadff; -fx-background-radius: 10;" styleClass="completedTask-label" stylesheets="@css/styles.css" text="Completed tasks" textFill="WHITE">
+         <font>
+            <Font name="Microsoft Sans Serif" size="13.0" />
+         </font>
+      </Label>
+      <Button layoutX="11.0" layoutY="520.0" mnemonicParsing="false" onAction="#logOut" prefHeight="28.0" prefWidth="79.0" styleClass="signOut-label" stylesheets="@css/styles.css" text="Sign out" />
+      <Pane fx:id= "groupOptionsPane" layoutX="11.0" layoutY="416.0" prefHeight="88.0" prefWidth="207.0" style="-fx-background-color: #e8e8e8; -fx-background-radius: 10;">
+         <children> 
+            <Button fx:id="openExpenseButton" layoutX="9.0" layoutY="51.0" mnemonicParsing="false" onAction="#showExpense" prefHeight="26.0" prefWidth="187.0" styleClass="openExpense-label" stylesheets="@css/styles.css" text="Show expenses" textFill="WHITE" />
+            <Button fx:id="groupChatButton" layoutX="9.0" layoutY="12.0" mnemonicParsing="false" onAction="#showGroupChat" prefHeight="26.0" prefWidth="188.0" styleClass="groupChat-label" stylesheets="@css/styles.css" text="Open chat" textFill="WHITE" />
+            <Label fx:id= "groupOptionsLabel" layoutX="6.0" layoutY="-20.0" text="Group Options" textFill="#333333" />
+         </children>
+      </Pane>
    </children>
 </AnchorPane>
