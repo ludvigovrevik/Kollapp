@@ -22,8 +22,9 @@ public class ToDoListService {
             "persistence", "todolists") + File.separator;
     private final String groupToDoListPath = Paths.get("kollapp", "persistence", "src", "main", "java",
             "persistence", "grouptodolists") + File.separator;
-    private final String userPath = Paths.get("kollapp", "persistence", "src", "main", "java",
-            "persistence", "users") + File.separator;
+    private final String userPath = Paths.get("..", "persistence", "src", "main", "java",
+            "persistence", "users") + File.separator.toAbsolutePath()
+            .normalize().toString();;
 
     @Autowired
     public ToDoListService() {

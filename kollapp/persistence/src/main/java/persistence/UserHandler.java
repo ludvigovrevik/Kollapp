@@ -1,13 +1,14 @@
 package persistence;
 
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,85 +18,50 @@ import core.User;
 @Component
 public class UserHandler {
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    private final Path userPath;
+    private final String userPath;
     private final ObjectMapper mapper = new ObjectMapper();
     
     /**
      * Constructs a new UserHandler instance.
-     * Initializes the paths for user data storage.
+     * Initializes the paths for user data and to-do list data storage.
      * Registers the JavaTimeModule with the ObjectMapper to handle Java 8 date and time types.
      */
     @Autowired
     public UserHandler() {
-        // Define the base path within the user's home directory
-        String userHome = System.getProperty("user.home");
-        this.userPath = Paths.get(userHome, ".kollapp", "users");
-        
-        // Register the JavaTimeModule to handle Java 8 date and time types
+        this.userPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "users") + File.separator;
         this.mapper.registerModule(new JavaTimeModule());
-        
-        System.out.println("Initialized UserHandler with path: " + this.userPath.toAbsolutePath());
-        
-        // Ensure the directory exists
-        File directory = this.userPath.toFile();
-        if (!directory.exists()) {
-            if (directory.mkdirs()) {
-                System.out.println("Created directory: " + directory.getAbsolutePath());
-            } else {
-                System.err.println("Failed to create directory: " + directory.getAbsolutePath());
-            }
-        }
+        System.out.println("Bruker userHandler uten");
     }
 
+    /**
+     * Constructs a new UserHandler with the specified paths for user data and to-do list data.
+     *
+     * @param userPath the file path where user data is stored
+     */
     public UserHandler(String userPath) {
-        // Define the base path within the user's home directory
-        String userHome = System.getProperty("user.home");
-        this.userPath = Paths.get(userHome, ".kollapp", "users");
-        
-        // Register the JavaTimeModule to handle Java 8 date and time types
+        this.userPath = userPath;
         this.mapper.registerModule(new JavaTimeModule());
-        
-        System.out.println("Initialized UserHandler with path: " + this.userPath.toAbsolutePath());
-        
-        // Ensure the directory exists
-        File directory = this.userPath.toFile();
-        if (!directory.exists()) {
-            if (directory.mkdirs()) {
-                System.out.println("Created directory: " + directory.getAbsolutePath());
-            } else {
-                System.err.println("Failed to create directory: " + directory.getAbsolutePath());
-            }
-        }
+        System.out.println("Bruker userHandler med");
     }
-    
+
     /**
      * Saves the given user to a file in JSON format.
      * 
      * @param user The user object to be saved.
      * @throws IllegalArgumentException if a user with the same username already exists.
-     * @throws IOException if an I/O error occurs during saving.
      */
     public void saveUser(User user) throws IOException {
         if (userExists(user.getUsername())) {
             throw new IllegalArgumentException("User already exists");
         }
-    
+
         // Hash the password before saving the user
-        String hashedPassword = passwordEncoder.encode(user.getHashedPassword()); // Ensure this is the raw password
+        String hashedPassword = passwordEncoder.encode(user.getHashedPassword());
         User userWithHashedPassword = new User(user.getUsername(), hashedPassword);
-    
-        // Define the user file
-        Path userFilePath = userPath.resolve(userWithHashedPassword.getUsername() + ".json");
-        File userFile = userFilePath.toFile();
-        System.out.println("Saving user to path: " + userFile.getAbsolutePath());
-    
-        try {
-            mapper.writeValue(userFile, userWithHashedPassword);
-            System.out.println("User saved successfully.");
-        } catch (IOException e) {
-            System.err.println("Failed to save user: " + e.getMessage());
-            throw e;
-        }
+        
+        File file = new File(userPath + userWithHashedPassword.getUsername() + ".json");
+        System.out.println("Saving user to path: " + file.getAbsolutePath());
+        mapper.writeValue(file, userWithHashedPassword);
     }
 
     /**
@@ -103,13 +69,11 @@ public class UserHandler {
      *
      * @param username the username of the user to be loaded
      * @param password the password of the user to be loaded
-     * @return an Optional containing the User if the username exists and the password matches; 
-     *         Optional.empty() if the user does not exist or the password does not match
+     * @return the User object if the username exists and the password matches; 
+     *         null if the user does not exist or the password does not match
      */
     public Optional<User> loadUser(String username, String password) {
-        Path userFilePath = userPath.resolve(username + ".json");
-        File file = userFilePath.toFile();
-        
+        File file = new File(userPath + username + ".json");
         if (!userExists(username)) {
             return Optional.empty();
         }
@@ -124,7 +88,6 @@ public class UserHandler {
                 return Optional.empty();
             }
         } catch (IOException e) {
-            System.err.println("Failed to read user file: " + e.getMessage());
             throw new IllegalArgumentException("Failed to read user file", e);
         }
     }
@@ -142,13 +105,10 @@ public class UserHandler {
      */
     public void removeUser(String username) {
         if (userExists(username)) {
-            Path userFilePath = userPath.resolve(username + ".json");
-            File file = userFilePath.toFile();
+            File file = new File(userPath + username + ".json");
             if (file.exists()) {
                 boolean deleted = file.delete();
-                if (deleted) {
-                    System.out.println("Deleted user file: " + file.getAbsolutePath());
-                } else {
+                if (!deleted) {
                     throw new RuntimeException("Failed to delete user file: " + file.getAbsolutePath());
                 }
             }
@@ -210,14 +170,9 @@ public class UserHandler {
      * @throws RuntimeException if there is an error updating the user file
      */
     public void assignGroupToUser(String username, String groupName) {
-        Optional<User> optionalUser = getUser(username);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            user.addUserGroup(groupName);
-            updateUser(user);
-        } else {
-            throw new IllegalArgumentException("User does not exist: " + username);
-        }
+        User user = getUser(username).get();
+        user.addUserGroup(groupName);
+        updateUser(user);
     }
 
     /**
@@ -233,17 +188,15 @@ public class UserHandler {
             throw new IllegalArgumentException("User file does not exist for user: " + user.getUsername());
         }
 
-        Path userFilePath = userPath.resolve(user.getUsername() + ".json");
-        File file = userFilePath.toFile();
+        File file = new File(userPath + user.getUsername() + ".json");
         try {
             mapper.writeValue(file, user);
-            System.out.println("Updated user file: " + file.getAbsolutePath());
         } catch (IOException e) {
-            throw new RuntimeException("Failed to update user file for user: " + user.getUsername(), e);
+            throw new RuntimeException("Failed to update user file for user: " + user.getUsername());
         }
     }
 
-    /**
+     /**
      * Helper method. Retrieves a user by their username.
      *
      * @param username the username of the user to retrieve
@@ -254,15 +207,13 @@ public class UserHandler {
             return Optional.empty();
         }
 
-        Path userFilePath = userPath.resolve(username + ".json");
-        File file = userFilePath.toFile();
-        System.out.println("Retrieving user from file: " + file.getAbsolutePath());
+        File file = new File(userPath + username + ".json");
+        System.out.println(file);
         try {
             User user = mapper.readValue(file, User.class);
             return Optional.of(user);
         } catch (IOException e) {
-            System.err.println("Failed to retrieve user: " + e.getMessage());
-            throw new IllegalArgumentException("Failed to retrieve user", e);
+            throw new IllegalArgumentException("Failed to retrieve user");
         }
     }
 
@@ -273,8 +224,7 @@ public class UserHandler {
      * @return true if the user file exists, false otherwise
      */
     public boolean userExists(String username) {
-        Path userFilePath = userPath.resolve(username + ".json");
-        File file = userFilePath.toFile();
+        File file = new File(userPath + username + ".json");
         return file.exists();
     }
 }
