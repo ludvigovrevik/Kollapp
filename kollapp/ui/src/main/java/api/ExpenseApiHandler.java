@@ -19,13 +19,23 @@ public class ExpenseApiHandler {
     private final ObjectMapper objectMapper;
     private final String baseUrl = "http://localhost:8080/api/v1/expenses";
 
+    /**
+     * Constructs an instance of ExpenseApiHandler.
+     * Initializes the HttpClient and ObjectMapper.
+     * Registers the JavaTimeModule with the ObjectMapper to handle Java 8 date and time API.
+     */
     public ExpenseApiHandler() {
         this.httpClient = HttpClient.newHttpClient();
         this.objectMapper = new ObjectMapper();
         this.objectMapper.registerModule(new JavaTimeModule());
     }
 
-    // Load expenses for a group
+    /**
+     * Loads the expenses for a given user group from the server.
+     *
+     * @param group the user group whose expenses are to be loaded
+     * @return a list of expenses for the specified group, or null if no expenses are found or an error occurs
+     */
     public List<Expense> loadGroupExpenses(UserGroup group) {
         String url = baseUrl + "/groups/" + URLEncoder.encode(group.getGroupName(), StandardCharsets.UTF_8);
         HttpRequest request = HttpRequest.newBuilder()
@@ -51,7 +61,13 @@ public class ExpenseApiHandler {
         }
     }
 
-    // Update expenses for a group
+    /**
+     * Updates the expenses for a given user group by sending a PUT request to the server.
+     *
+     * @param group the user group whose expenses are to be updated
+     * @param expenses the list of expenses to be updated for the group
+     * @return true if the update was successful (HTTP status code 200), false otherwise
+     */
     public boolean updateGroupExpenses(UserGroup group, List<Expense> expenses) {
         String url = baseUrl + "/groups/" + URLEncoder.encode(group.getGroupName(), StandardCharsets.UTF_8);
         try {

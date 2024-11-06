@@ -16,7 +16,13 @@ public class ExpenseController {
     @Autowired
     private ExpenseService expenseService;
 
-    // Load expenses for a group
+    /**
+     * Handles GET requests to load expenses for a specific group.
+     *
+     * @param groupName the name of the group whose expenses are to be loaded
+     * @return a ResponseEntity containing a list of expenses for the specified group,
+     *         or an INTERNAL_SERVER_ERROR status if an exception occurs
+     */
     @GetMapping("/groups/{groupName}")
     public ResponseEntity<List<Expense>> loadGroupExpenses(@PathVariable String groupName) {
         try {
@@ -28,7 +34,14 @@ public class ExpenseController {
         }
     }
 
-    // Update expenses for a group
+    /**
+     * Updates the expenses for a specific group.
+     *
+     * @param groupName the name of the group whose expenses are to be updated
+     * @param expenses the list of expenses to update for the group
+     * @return a ResponseEntity with status 200 (OK) if the update is successful,
+     *         or status 400 (Bad Request) if there is an IllegalArgumentException
+     */
     @PutMapping("/groups/{groupName}")
     public ResponseEntity<Void> updateGroupExpenses(@PathVariable String groupName, @RequestBody List<Expense> expenses) {
         try {

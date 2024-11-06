@@ -39,6 +39,14 @@ public class ExpenseController {
     private ExpenseApiHandler expenseApiHandler = new ExpenseApiHandler();
     private ObservableList<Expense> expenses = FXCollections.observableArrayList();
 
+    /**
+     * Initializes the ExpenseController with the given user and user group.
+     * Sets up the table columns and their cell value factories, including a custom cell factory
+     * for the status and settlement column. Loads and populates the table with expenses.
+     *
+     * @param user  the current user
+     * @param group the user group in view
+     */
     public void initializeExpenseController(User user, UserGroup group) {
         this.currentUser = user;
         this.groupInView = group;
@@ -84,6 +92,12 @@ public class ExpenseController {
         loadExpenses();
     }
 
+    /**
+     * Loads the expenses for the current group in view.
+     * If expenses are successfully loaded, updates the expenses list and table view,
+     * refreshes the table, and updates the total amount owed.
+     * If no expenses are loaded, clears the expenses list and updates the total amount owed.
+     */
     private void loadExpenses() {
         List<Expense> loadedExpenses = expenseApiHandler.loadGroupExpenses(groupInView);
         if (loadedExpenses != null) {
@@ -98,6 +112,11 @@ public class ExpenseController {
         }
     }
 
+    /**
+     * Updates the expenses for the current group in view by calling the expense API handler.
+     * If the update is successful, it reloads the expenses from the server.
+     * If the update fails, it handles the failure as necessary.
+     */
     private void updateExpenses() {
         boolean success = expenseApiHandler.updateGroupExpenses(groupInView, expenses);
         if (success) {
@@ -107,11 +126,24 @@ public class ExpenseController {
         }
     }
 
+    /**
+     * Refreshes the expense table view and updates the total amount owed.
+     * This method should be called whenever the data in the table needs to be reloaded
+     * or when the total owed amount needs to be recalculated.
+     */
     private void refreshTable() {
         expenseTableView.refresh();
         updateTotalOwed();
     }
 
+    /**
+     * Updates the total amount owed by the current user.
+     * This method iterates through the list of expenses and calculates the total amount
+     * that the current user owes. It checks if the current user is a participant in the expense,
+     * if the expense was not paid by the current user, and if the current user has not settled
+     * the expense. If all conditions are met, the user's share of the expense is added to the total owed.
+     * The total owed amount is then displayed in the totalOwedLabel.
+     */
     private void updateTotalOwed() {
         double totalOwed = 0.0;
         for (Expense expense : expenses) {
@@ -124,6 +156,14 @@ public class ExpenseController {
         totalOwedLabel.setText("Total Owed: $" + String.format("%.2f", totalOwed));
     }
 
+    /**
+     * Opens the AddNewExpense window to allow the user to add a new expense.
+     * This method loads the AddNewExpense.fxml file, initializes the controller
+     * with the current user and group information, and displays the window in a 
+     * modal stage. After the window is closed, it refreshes the list of expenses.
+     *
+     * @FXML annotation indicates that this method is linked to an event handler in the FXML file.
+     */
     @FXML
     private void addExpense() {
         // Open the AddNewExpense window

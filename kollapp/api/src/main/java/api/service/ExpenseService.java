@@ -18,8 +18,15 @@ public class ExpenseService {
     private final ObjectMapper mapper;
     private final String groupExpensePath;
 
-
-
+    /**
+     * Service class for handling expenses.
+     * This class is responsible for managing the mapping of JSON data to Java objects
+     * and setting up the file path for group expenses persistence.
+     * 
+     * The constructor initializes the ObjectMapper with a JavaTimeModule to handle
+     * Java 8 date and time API serialization and deserialization.
+     * It also sets up the file path for storing group expenses data.
+     */
     public ExpenseService() {
         this.mapper = new ObjectMapper();
         this.mapper.registerModule(new JavaTimeModule());
@@ -28,18 +35,35 @@ public class ExpenseService {
         "persistence", "groupexpenses") + File.separator;
     }
 
-    // Load expenses for a group
+
+    /**
+     * Loads the list of expenses for a given user group.
+     *
+     * @param groupName the name of the user group whose expenses are to be loaded
+     * @return a list of expenses associated with the specified user group
+     */
     public List<Expense> loadGroupExpenses(String groupName) {
         UserGroup group = new UserGroup(groupName);
         return loadExpensesForGroup(group);
     }
 
-    // Update expenses for a group
+    /**
+     * Updates the expenses for a specified user group.
+     *
+     * @param groupName the name of the group whose expenses are to be updated
+     * @param expenses the list of expenses to be saved for the group
+     */
     public void updateGroupExpenses(String groupName, List<Expense> expenses) {
         UserGroup group = new UserGroup(groupName);
         saveExpensesForGroup(group, expenses);
     }
 
+    /**
+     * Loads the list of expenses for a given user group from a JSON file.
+     *
+     * @param group the user group for which to load expenses
+     * @return a list of expenses for the specified group, or an empty list if the file does not exist or an error occurs
+     */
     private List<Expense> loadExpensesForGroup(UserGroup group) {
         File file = new File(groupExpensePath + group.getGroupName() + ".json");
         if (!file.exists()) {
@@ -53,6 +77,15 @@ public class ExpenseService {
         }
     }
 
+    /**
+     * Saves the list of expenses for a given user group to a JSON file.
+     * The file is named after the group's name and stored in the directory specified by groupExpensePath.
+     * If the necessary directories do not exist, they will be created.
+     *
+     * @param group the user group for which the expenses are being saved
+     * @param expenses the list of expenses to save
+     * @throws IllegalArgumentException if an I/O error occurs during saving
+     */
     private void saveExpensesForGroup(UserGroup group, List<Expense> expenses) {
         File file = new File(groupExpensePath + group.getGroupName() + ".json");
         try {
