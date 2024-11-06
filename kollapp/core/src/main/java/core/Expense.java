@@ -1,10 +1,10 @@
-// File: core/Expense.java
-
 package core;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Represents an expense in the application.
@@ -57,30 +57,49 @@ public class Expense implements Serializable {
     public void setPaidBy(String paidBy) {
         this.paidBy = paidBy;
     }
-
+    
+    // Ensure participants and settlements are initialized
     public List<String> getParticipants() {
+        if (participants == null) {
+            participants = new ArrayList<>();
+        }
         return participants;
     }
+
     public void setParticipants(List<String> participants) {
         this.participants = participants;
     }
-
+    
     public List<Settlement> getSettlements() {
+        if (settlements == null) {
+            settlements = new ArrayList<>();
+            // Optionally initialize settlements based on participants
+            if (participants != null && paidBy != null) {
+                for (String participant : participants) {
+                    if (!participant.equals(paidBy)) {
+                        settlements.add(new Settlement(participant, false));
+                    }
+                }
+            }
+        }
         return settlements;
     }
+
     public void setSettlements(List<Settlement> settlements) {
         this.settlements = settlements;
     }
 
     // Method to calculate share per person
+    @JsonIgnore
     public double getSharePerPerson() {
-        int numParticipants = participants.size();
+        int numParticipants = getParticipants().size();
         return amount / numParticipants;
     }
 
     // Method to check if all participants have settled
+    @JsonIgnore
     public boolean isFullySettled() {
-        for (Settlement settlement : settlements) {
+        for (Settlement settlement : getSettlements()) {
             if (!settlement.isSettled()) {
                 return false;
             }
@@ -90,7 +109,7 @@ public class Expense implements Serializable {
 
     // Method to mark a participant's share as paid
     public void settleParticipant(String username) {
-        for (Settlement settlement : settlements) {
+        for (Settlement settlement : getSettlements()) {
             if (settlement.getUsername().equals(username)) {
                 settlement.setSettled(true);
                 break;
@@ -103,7 +122,7 @@ public class Expense implements Serializable {
         if (username.equals(paidBy)) {
             return true; // Payer is considered settled
         }
-        for (Settlement settlement : settlements) {
+        for (Settlement settlement : getSettlements()) {
             if (settlement.getUsername().equals(username)) {
                 return settlement.isSettled();
             }
@@ -111,3 +130,4 @@ public class Expense implements Serializable {
         return true; // Participants not in the settlement list are considered settled
     }
 }
+

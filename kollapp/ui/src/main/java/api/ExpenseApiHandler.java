@@ -1,5 +1,3 @@
-// File: api/ExpenseApiHandler.java
-
 package api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
