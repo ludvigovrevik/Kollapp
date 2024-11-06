@@ -17,6 +17,11 @@
         <!-- Depend on the other submodules -->
         <dependency>
             <groupId>gr2409</groupId>
+            <artifactId>api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>gr2409</groupId>
             <artifactId>core</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -48,11 +53,13 @@
                         </goals>
                         <configuration>
                             <dataFiles>
+                                <file>${project.parent.basedir}/api/target/jacoco.exec</file>
                                 <file>${project.parent.basedir}/core/target/jacoco.exec</file>
                                 <file>${project.parent.basedir}/persistence/target/jacoco.exec</file>
                                 <file>${project.parent.basedir}/ui/target/jacoco.exec</file>
                             </dataFiles>
                             <sourceDirectories>
+                                <directory>${project.parent.basedir}/api/src/main/java</directory>
                                 <directory>${project.parent.basedir}/core/src/main/java</directory>
                                 <directory>${project.parent.basedir}/persistence/src/main/java</directory>
                                 <directory>${project.parent.basedir}/ui/src/main/java</directory>
