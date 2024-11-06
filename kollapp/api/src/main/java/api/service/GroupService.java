@@ -20,7 +20,8 @@ public class GroupService {
     @Autowired
     public GroupService() {
         String groupToDoList = Paths.get("..", "persistence", "src", "main", "java",
-                "persistence", "grouptodolists") + File.separator;
+                "persistence", "grouptodolists").toAbsolutePath()
+                .normalize().toString() + File.separator;
         String groupPath = Paths.get("..", "persistence", "src", "main", "java",
                 "persistence", "groups").toAbsolutePath()
                 .normalize().toString() + File.separator;
