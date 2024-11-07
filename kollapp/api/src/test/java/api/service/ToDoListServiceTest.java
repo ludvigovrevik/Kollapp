@@ -1,8 +1,5 @@
-package api;
+package api.service;
 
-import api.service.GroupService;
-import api.service.ToDoListService;
-import api.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import core.Task;

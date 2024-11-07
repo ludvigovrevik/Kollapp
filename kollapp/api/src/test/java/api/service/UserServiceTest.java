@@ -1,8 +1,7 @@
-package api;
+package api.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import api.service.UserService;
 import core.User;
 import org.junit.jupiter.api.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

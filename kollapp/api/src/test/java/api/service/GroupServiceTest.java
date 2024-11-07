@@ -1,4 +1,4 @@
-package api;
+package api.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,8 +14,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import api.service.GroupService;
-import api.service.UserService;
 import core.User;
 import core.UserGroup;
 
