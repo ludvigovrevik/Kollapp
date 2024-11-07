@@ -31,8 +31,9 @@ public class ExpenseService {
         this.mapper = new ObjectMapper();
         this.mapper.registerModule(new JavaTimeModule());
 
-        this.groupExpensePath = Paths.get("kollapp", "persistence", "src", "main", "java",
-        "persistence", "groupexpenses") + File.separator;
+        this.groupExpensePath = Paths.get("..", "persistence", "src", "main", "java",
+        "persistence", "groupexpenses").toAbsolutePath()
+        .normalize().toString() + File.separator;
     }
 
 

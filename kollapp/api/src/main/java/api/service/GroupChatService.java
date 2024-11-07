@@ -17,8 +17,9 @@ import java.util.List;
 public class GroupChatService {
 
     private final GroupChatHandler groupChatHandler;
-    private final String groupChatPath = Paths.get("kollapp", "persistence", "src", "main", "java",
-                "persistence", "groupchat") + File.separator;
+    private final String groupChatPath = Paths.get("..", "persistence", "src", "main", "java",
+                "persistence", "groupchat").toAbsolutePath()
+                .normalize().toString() + File.separator;
     /**
      * Constructor for GroupChatService.
      *

@@ -20,15 +20,15 @@ public class ToDoListService {
 
     @Autowired
     public ToDoListService() {
-        String baseDir = System.getProperty("user.dir");
-        String toDoListPath = Paths.get(baseDir, "persistence", "todolists").toString();
-        String groupToDoListPath = Paths.get(baseDir, "persistence", "grouptodolists").toString();
-        String userPath = Paths.get(baseDir, "persistence", "users").toString();
-        
-        // Ensure directories exist
-        new File(toDoListPath).mkdirs();
-        new File(groupToDoListPath).mkdirs();
-        new File(userPath).mkdirs();
+        String toDoListPath = Paths.get("..", "persistence", "src", "main", "java",
+                "persistence", "todolists").toAbsolutePath()
+                .normalize().toString() + File.separator;
+        String groupToDoListPath = Paths.get("..", "persistence", "src", "main", "java",
+                "persistence", "grouptodolists").toAbsolutePath()
+                .normalize().toString() + File.separator;
+        String userPath = Paths.get("..", "persistence", "src", "main", "java",
+                "persistence", "users").toAbsolutePath()
+                .normalize().toString() + File.separator;
 
         this.userHandler = new UserHandler(userPath);
         this.toDoListHandler = new ToDoListHandler(toDoListPath, groupToDoListPath);
@@ -117,7 +117,6 @@ public class ToDoListService {
             try {
                 toDoListHandler.updateGroupToDoList(userGroup, toDoList);
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         } catch (IllegalArgumentException e) {

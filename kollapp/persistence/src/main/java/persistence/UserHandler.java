@@ -30,6 +30,7 @@ public class UserHandler {
     public UserHandler() {
         this.userPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "users") + File.separator;
         this.mapper.registerModule(new JavaTimeModule());
+        System.out.println("Bruker userHandler uten");
     }
 
     /**
@@ -40,6 +41,7 @@ public class UserHandler {
     public UserHandler(String userPath) {
         this.userPath = userPath;
         this.mapper.registerModule(new JavaTimeModule());
+        System.out.println("Bruker userHandler med");
     }
 
     /**
@@ -58,6 +60,7 @@ public class UserHandler {
         User userWithHashedPassword = new User(user.getUsername(), hashedPassword);
         
         File file = new File(userPath + userWithHashedPassword.getUsername() + ".json");
+        System.out.println("Saving user to path: " + file.getAbsolutePath());
         mapper.writeValue(file, userWithHashedPassword);
     }
 

@@ -18,8 +18,9 @@ public class UserService {
 
     @Autowired
     public UserService() {
-        String userPath = Paths.get("kollapp", "persistence", "src", "main", "java",
-                "persistence", "users") + File.separator;
+        String userPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "users")
+        .toAbsolutePath()
+        .normalize().toString() + File.separator;
         this.userHandler = new UserHandler(userPath);
     }
 
