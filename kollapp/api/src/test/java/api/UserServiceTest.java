@@ -2,24 +2,24 @@ package api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import api.service.GroupService;
 import api.service.UserService;
 import core.User;
 import org.junit.jupiter.api.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.Optional;
-import java.util.stream.Stream;
+import java.lang.reflect.Field;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.io.TempDir;
 
 /**
  * Unit tests for the {@link UserService} class.
@@ -29,7 +29,11 @@ public class UserServiceTest {
 
     private UserService userService;
     private User user;
-    private Path toDoListPath;
+    private String originalUserPath;
+
+    @TempDir
+    Path tempDir;
+
     private Path userPath;
 
     /**
@@ -37,61 +41,28 @@ public class UserServiceTest {
      */
     @BeforeEach
     public void setUp() throws IOException {
-        this.userPath = Paths.get("..", "..", "persistence","src", "main", "java", "persistence", "users", "tests").toAbsolutePath().normalize();
-        this.toDoListPath = Paths.get("..", "..", "persistence","src", "main", "java", "persistence", "todolists", "tests").toAbsolutePath().normalize();
+        this.userPath = tempDir.resolve("users");
 
-        createDirectory(userPath);
-        createDirectory(toDoListPath);
+        Files.createDirectories(userPath);
 
-        this.userService = new UserService(userPath);
+        this.userService = new UserService();
+        // Store the original path
+        originalUserPath = (String) ReflectionTestUtils.getField(userService, "userPath");
+        // Set the temporary directory for testing
+        ReflectionTestUtils.setField(userService, "userPath", userPath.toString() + File.separator);
 
         user = new User("testUser1", "password123");
         userService.saveUser(user);   // Ensure that this saves to the correct path
     }
 
     /**
-     * Creates a directory if it does not exist.
-     *
-     * @param path the path of the directory to create
-     * @throws IOException if an I/O error occurs
-     */
-    private void createDirectory(Path path) throws IOException {
-        if (!Files.exists(path)) {
-            Files.createDirectories(path);
-        }
-    }
-
-    /**
-     * Cleans up the test environment by deleting created directories after each test.
+     * Cleans up the test environment by restoring original path.
      */
     @AfterEach
     public void tearDown() throws IOException {
-        if (Files.exists(userPath)) {
-            try (Stream<Path> userStream = Files.walk(userPath)) {
-                userStream
-                        .sorted(Comparator.reverseOrder())
-                        .map(Path::toFile)
-                        .forEach(file -> {
-                            if (!file.delete()) {
-                                System.out.println("Failed to delete: " + file.getAbsolutePath());
-                            }
-                        });
-            }
-        }
-
-        if (Files.exists(toDoListPath)) {
-            try (Stream<Path> toDoListStream = Files.walk(toDoListPath)) {
-                toDoListStream
-                        .sorted(Comparator.reverseOrder())
-                        .map(Path::toFile)
-                        .forEach(file -> {
-                            if (!file.delete()) {
-                                System.out.println("Failed to delete: " + file.getAbsolutePath());
-                            }
-                        });
-                }
-            }
-        }
+        // Restore the original path
+        ReflectionTestUtils.setField(userService, "userPath", originalUserPath);
+    }
 
     /**
      * Tests the default constructor and ensures paths and ObjectMapper are correctly initialized.
@@ -151,20 +122,20 @@ public class UserServiceTest {
 
         userService.saveUser(new User(username, password));
         assertEquals("User already exists",
-            userService.getUserValidationErrorMessage(username, password, confirmPassword));
+                userService.getUserValidationErrorMessage(username, password, confirmPassword));
 
         assertEquals("Fields cannot be empty",
-            userService.getUserValidationErrorMessage("", password, confirmPassword));
+                userService.getUserValidationErrorMessage("", password, confirmPassword));
         assertEquals("Fields cannot be empty",
-            userService.getUserValidationErrorMessage(username, "", confirmPassword));
+                userService.getUserValidationErrorMessage(username, "", confirmPassword));
         assertEquals("Fields cannot be empty",
-            userService.getUserValidationErrorMessage(username, password, ""));
+                userService.getUserValidationErrorMessage(username, password, ""));
         assertEquals("Username must be at least 3 characters long",
-            userService.getUserValidationErrorMessage("us", password, confirmPassword));
+                userService.getUserValidationErrorMessage("us", password, confirmPassword));
         assertEquals("Passwords do not match",
-            userService.getUserValidationErrorMessage("new-test-user", password, "differentPassword"));
+                userService.getUserValidationErrorMessage("new-test-user", password, "differentPassword"));
         assertEquals("Password must be at least 6 characters long",
-            userService.getUserValidationErrorMessage("new-test-user", "passo", "passo"));
+                userService.getUserValidationErrorMessage("new-test-user", "passo", "passo"));
     }
 
     @Test
@@ -172,20 +143,14 @@ public class UserServiceTest {
     @Tag("persistence")
     void testLoadUser() throws IOException {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        
-        // Create a user with a plain password and save it
-        String plainPassword = user.getHashedPassword(); // Assuming this holds the plain password
-        User userWithPlainPassword = new User(user.getUsername(), plainPassword);
-        
-        userService.saveUser(userWithPlainPassword);
 
         // Attempt to load the user with the correct password
-        Optional<User> loadedUserOptional = userService.loadUser(user.getUsername(), plainPassword);
+        Optional<User> loadedUserOptional = userService.loadUser(user.getUsername(), "password123");
         assertTrue(loadedUserOptional.isPresent());
         User loadedUser = loadedUserOptional.get();
 
         assertEquals(user.getUsername(), loadedUser.getUsername());
-        assertTrue(passwordEncoder.matches(plainPassword, loadedUser.getHashedPassword()));
+        assertTrue(passwordEncoder.matches("password123", loadedUser.getHashedPassword()));
 
         // Attempt to load the user with an incorrect password
         Optional<User> incorrectPasswordUser = userService.loadUser(user.getUsername(), "wrongPassword");
@@ -203,7 +168,7 @@ public class UserServiceTest {
     @DisplayName("Test saving a new user")
     @Tag("persistence")
     void testSaveUser() throws IOException {
-        userService.saveUser(user);
+        // User already saved in setUp()
         Path userFilePath = userPath.resolve(user.getUsername() + ".json");
         assertTrue(Files.exists(userFilePath));
 
@@ -217,9 +182,7 @@ public class UserServiceTest {
     @DisplayName("Test checking if a user exists")
     @Tag("validation")
     void testUserExists() throws IOException {
-        assertFalse(userService.userExists(user.getUsername()));
-
-        userService.saveUser(user);
+        // Since we have already saved user in setUp()
         assertTrue(userService.userExists(user.getUsername()));
 
         assertFalse(userService.userExists("nonExistingUser"));

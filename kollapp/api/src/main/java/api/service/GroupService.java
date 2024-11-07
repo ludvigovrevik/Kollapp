@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
@@ -19,34 +20,29 @@ public class GroupService {
 
     private final UserService userService;
     private final ObjectMapper mapper;
-    private final String groupPath;
-    private final String groupToDoListPath;
+    private final Path groupPath;
+    private final Path groupToDoListPath;
 
     @Autowired
     public GroupService() {
-        this.groupPath = Paths.get("..", "persistence", "src", "main", "java",
-                "persistence", "groups").toAbsolutePath()
-                .normalize().toString() + File.separator;
-        this.groupToDoListPath = Paths.get("..", "persistence", "src", "main", "java",
-                "persistence", "grouptodolists").toAbsolutePath()
-                .normalize().toString() + File.separator;
-        this.userService = new UserService();
-        this.mapper = new ObjectMapper();
-        this.mapper.registerModule(new JavaTimeModule());
+        this(
+            Paths.get("..", "persistence", "src", "main", "java", "persistence", "groups").toAbsolutePath().normalize(),
+            Paths.get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists").toAbsolutePath().normalize(),
+            new UserService()
+        );
     }
 
-    public GroupService(Path groupPath, Path groupToDoListPath) {
-        this.groupPath = groupPath.toAbsolutePath()
-                .normalize().toString() + File.separator;
-        this.groupToDoListPath = groupToDoListPath.toAbsolutePath()
-                .normalize().toString() + File.separator;
-        this.userService = new UserService();
+    public GroupService(Path groupPath, Path groupToDoListPath, UserService userService) {
+        this.groupPath = groupPath;
+        this.groupToDoListPath = groupToDoListPath;
+        this.userService = userService;
         this.mapper = new ObjectMapper();
         this.mapper.registerModule(new JavaTimeModule());
     }
 
     public Optional<UserGroup> getGroup(String groupName) {
-        File file = new File(groupPath + groupName + ".json");
+        Path groupFilePath = groupPath.resolve(groupName + ".json");
+        File file = groupFilePath.toFile();
         if (!file.exists()) {
             return Optional.empty();
         }
@@ -64,12 +60,15 @@ public class GroupService {
         userGroup.addUser(user.getUsername());
 
         ToDoList toDoList = new ToDoList();
-        File groupFile = new File(groupPath + groupName + ".json");
-        File groupToDoListFile = new File(groupToDoListPath + groupName + ".json");
+        Path groupFilePath = groupPath.resolve(groupName + ".json");
+        Path groupToDoListFilePath = groupToDoListPath.resolve(groupName + ".json");
 
         try {
-            mapper.writeValue(groupFile, userGroup);
-            mapper.writeValue(groupToDoListFile, toDoList);
+            Files.createDirectories(groupPath);
+            Files.createDirectories(groupToDoListPath);
+
+            mapper.writeValue(groupFilePath.toFile(), userGroup);
+            mapper.writeValue(groupToDoListFilePath.toFile(), toDoList);
         } catch (IOException e) {
             throw new RuntimeException("Failed to create group: " + groupName, e);
         }
@@ -84,17 +83,17 @@ public class GroupService {
 
         userGroup.addUser(user.getUsername());
 
-        File groupFile = new File(groupPath + groupName + ".json");
+        Path groupFilePath = groupPath.resolve(groupName + ".json");
 
         try {
-            mapper.writeValue(groupFile, userGroup);
+            mapper.writeValue(groupFilePath.toFile(), userGroup);
         } catch (IOException e) {
             throw new RuntimeException("Failed to update group file for group: " + groupName, e);
         }
     }
 
     public boolean groupExists(String groupName) {
-        File file = new File(groupPath + groupName + ".json");
-        return file.exists();
+        Path groupFilePath = groupPath.resolve(groupName + ".json");
+        return groupFilePath.toFile().exists();
     }
 }

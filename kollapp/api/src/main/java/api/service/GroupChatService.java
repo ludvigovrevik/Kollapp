@@ -6,8 +6,9 @@ import core.GroupChat;
 import core.Message;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -18,11 +19,17 @@ import java.util.List;
 public class GroupChatService {
 
     private final ObjectMapper mapper;
-    private final String groupChatPath;
+    private final Path groupChatPath;
 
     public GroupChatService() {
-        this.groupChatPath = Paths.get("..", "persistence", "src", "main", "java",
-                "persistence", "groupchat").toAbsolutePath().normalize().toString() + File.separator;
+        this(
+            Paths.get("..", "persistence", "src", "main", "java",
+                    "persistence", "groupchat").toAbsolutePath().normalize()
+        );
+    }
+
+    public GroupChatService(Path groupChatPath) {
+        this.groupChatPath = groupChatPath;
         this.mapper = new ObjectMapper();
         this.mapper.registerModule(new JavaTimeModule());
     }
@@ -34,14 +41,15 @@ public class GroupChatService {
      * @throws IllegalArgumentException if the group chat already exists
      */
     public void createGroupChat(String groupName) {
-        File groupChatFile = new File(groupChatPath + groupName + ".json");
-        if (groupChatFile.exists()) {
+        Path groupChatFilePath = groupChatPath.resolve(groupName + ".json");
+        if (Files.exists(groupChatFilePath)) {
             throw new IllegalArgumentException("Group chat with name '" + groupName + "' already exists.");
         }
 
         GroupChat groupChat = new GroupChat();
         try {
-            mapper.writeValue(groupChatFile, groupChat);
+            Files.createDirectories(groupChatPath);
+            mapper.writeValue(groupChatFilePath.toFile(), groupChat);
         } catch (IOException e) {
             throw new RuntimeException("Failed to create group chat", e);
         }
@@ -55,13 +63,13 @@ public class GroupChatService {
      * @throws IllegalArgumentException if the group chat does not exist
      */
     public GroupChat getGroupChat(String groupName) {
-        File groupChatFile = new File(groupChatPath + groupName + ".json");
-        if (!groupChatFile.exists()) {
+        Path groupChatFilePath = groupChatPath.resolve(groupName + ".json");
+        if (!Files.exists(groupChatFilePath)) {
             throw new IllegalArgumentException("Group chat with name '" + groupName + "' does not exist.");
         }
 
         try {
-            return mapper.readValue(groupChatFile, GroupChat.class);
+            return mapper.readValue(groupChatFilePath.toFile(), GroupChat.class);
         } catch (IOException e) {
             throw new RuntimeException("Failed to load group chat", e);
         }
@@ -78,9 +86,9 @@ public class GroupChatService {
         GroupChat groupChat = getGroupChat(groupName);
         groupChat.addMessage(message);
 
-        File groupChatFile = new File(groupChatPath + groupName + ".json");
+        Path groupChatFilePath = groupChatPath.resolve(groupName + ".json");
         try {
-            mapper.writeValue(groupChatFile, groupChat);
+            mapper.writeValue(groupChatFilePath.toFile(), groupChat);
         } catch (IOException e) {
             throw new RuntimeException("Failed to update group chat file", e);
         }

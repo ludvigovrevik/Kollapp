@@ -1,40 +1,35 @@
 package api;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.stream.Stream;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
 import api.service.GroupService;
 import api.service.ToDoListService;
 import api.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import core.Task;
 import core.ToDoList;
 import core.User;
 import core.UserGroup;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.io.TempDir;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @Tag("unit")
 public class ToDoListServiceTest {
 
     private User user;
     private UserGroup userGroup;
-    
+
+    @TempDir
+    Path tempDir;
+
     private Path testToDoListFolderPath;
     private Path groupTestFolderPath;
     private Path userTestFolderPath;
@@ -45,30 +40,27 @@ public class ToDoListServiceTest {
 
     @BeforeEach
     public void setUp() throws IOException {
-        this.testToDoListFolderPath = Paths.get("..", "..", "persistence","src", "main", "java", "persistence", "todolists", "tests").toAbsolutePath()
-        .normalize();
-        this.groupTestFolderPath = Paths.get("..", "..", "persistence","src", "main", "java", "persistence", "grouptodolists", "tests").toAbsolutePath()
-        .normalize();
-        this.userTestFolderPath = Paths.get("..", "..", "persistence","src", "main", "java", "persistence", "users", "tests").toAbsolutePath()
-        .normalize();
-
-        toDoListService = new ToDoListService(testToDoListFolderPath, groupTestFolderPath);
-        userService = new UserService(userTestFolderPath);
-        groupService = new GroupService(groupTestFolderPath, groupTestFolderPath);
-
-        user = new User("testUser", "password123");
-        userGroup = new UserGroup("testGroup");
+        this.testToDoListFolderPath = tempDir.resolve("todolists");
+        this.groupTestFolderPath = tempDir.resolve("grouptodolists");
+        this.userTestFolderPath = tempDir.resolve("users");
 
         Files.createDirectories(testToDoListFolderPath);
         Files.createDirectories(groupTestFolderPath);
         Files.createDirectories(userTestFolderPath);
+
+        userService = new UserService(userTestFolderPath);
+        toDoListService = new ToDoListService(testToDoListFolderPath, groupTestFolderPath, userService);
+        groupService = new GroupService(groupTestFolderPath, groupTestFolderPath, userService);
+
+        user = new User("testUser", "password123");
+        userGroup = new UserGroup("testGroup");
+
+        userService.saveUser(user);
     }
 
     @AfterEach
     public void tearDown() throws IOException {
-        deleteDirectory(testToDoListFolderPath);
-        deleteDirectory(groupTestFolderPath);
-        deleteDirectory(userTestFolderPath);
+        deleteDirectory(tempDir);
     }
 
     private void deleteDirectory(Path path) throws IOException {
@@ -91,13 +83,13 @@ public class ToDoListServiceTest {
     public void testAssignToDoList_CreatesEmptyFile() {
         toDoListService.assignToDoList(user.getUsername());
 
-        File expectedFile = new File(testToDoListFolderPath.toString(), user.getUsername() + ".json");
-        assertTrue(expectedFile.exists());
+        Path expectedFile = testToDoListFolderPath.resolve(user.getUsername() + ".json");
+        assertTrue(Files.exists(expectedFile));
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         try {
-            ToDoList loadedList = mapper.readValue(expectedFile, ToDoList.class);
+            ToDoList loadedList = mapper.readValue(expectedFile.toFile(), ToDoList.class);
             assertNotNull(loadedList);
             assertTrue(loadedList.getTasks().isEmpty());
         } catch (IOException e) {
@@ -105,10 +97,6 @@ public class ToDoListServiceTest {
         }
     }
 
-    /**
-     * Tests loading a to-do list when the file exists.
-     * Verifies that the tasks are correctly loaded from the file.
-     */
     @Test
     @DisplayName("Load to-do list when file exists")
     @Tag("load")
@@ -131,16 +119,13 @@ public class ToDoListServiceTest {
         assertFalse(loadedList.getTasks().get(2).isCompleted());
     }
 
-    /**
-     * Tests that loading a to-do list that does not exist throws an exception with the correct message.
-     */
     @Test
     @DisplayName("Throw exception when loading a to-do list that does not exist")
     @Tag("exception")
     public void testLoadToDoList_FileDoesNotExist() {
-        File file = new File(testToDoListFolderPath.toString(), user.getUsername() + ".json");
-        if (file.exists()) {
-            file.delete();
+        Path file = testToDoListFolderPath.resolve(user.getUsername() + ".json");
+        if (Files.exists(file)) {
+            file.toFile().delete();
         }
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> toDoListService.loadToDoList(user.getUsername()));
@@ -149,17 +134,13 @@ public class ToDoListServiceTest {
         assertEquals(expectedMessage, exception.getMessage());
     }
 
-    /**
-     * Tests updating a to-do list when the file does not exist.
-     * Verifies that the file is created and tasks are saved correctly.
-     */
     @Test
     @DisplayName("Update to-do list when file does not exist")
     @Tag("update")
     public void testUpdateToDoList_FileDoesNotExist() {
-        File file = new File(testToDoListFolderPath.toString(), user.getUsername() + ".json");
-        if (file.exists()) {
-            file.delete();
+        Path file = testToDoListFolderPath.resolve(user.getUsername() + ".json");
+        if (Files.exists(file)) {
+            file.toFile().delete();
         }
 
         ToDoList toDoList = new ToDoList();
@@ -167,7 +148,7 @@ public class ToDoListServiceTest {
 
         toDoListService.updateToDoList(user.getUsername(), toDoList);
 
-        assertTrue(file.exists());
+        assertTrue(Files.exists(file));
 
         ToDoList loadedList = toDoListService.loadToDoList(user.getUsername());
         assertNotNull(loadedList);
@@ -175,9 +156,6 @@ public class ToDoListServiceTest {
         assertEquals("Simple task", loadedList.getTasks().get(0).getTaskName());
     }
 
-    /**
-     * Tests that assigning a to-do list overwrites the existing file.
-     */
     @Test
     @DisplayName("Assign to-do list overwrites existing file")
     @Tag("file")
@@ -194,10 +172,6 @@ public class ToDoListServiceTest {
         assertTrue(loadedList.getTasks().isEmpty());
     }
 
-    /**
-     * Tests updating a to-do list with an empty list.
-     * Verifies that the to-do list file is updated accordingly.
-     */
     @Test
     @DisplayName("Update to-do list with empty list")
     @Tag("update")
@@ -212,20 +186,15 @@ public class ToDoListServiceTest {
         assertTrue(loadedList.getTasks().isEmpty());
     }
 
-    /**
-     * Tests loading a group to-do list when the file does not exist.
-     * Verifies that an empty ToDoList is returned.
-     */
     @Test
     @DisplayName("Load group to-do list when file does not exist")
     @Tag("group")
-    public void testLoadGroupToDoList_FileDoesNotExist() throws IOException{
-        File file = new File(groupTestFolderPath.toString(), userGroup.getGroupName() + ".json");
-        if (file.exists()) {
-            file.delete();
+    public void testLoadGroupToDoList_FileDoesNotExist() throws IOException {
+        Path file = groupTestFolderPath.resolve(userGroup.getGroupName() + ".json");
+        if (Files.exists(file)) {
+            file.toFile().delete();
         }
 
-        userService.saveUser(user);
         groupService.createGroup(user.getUsername(), userGroup.getGroupName());
         ToDoList toDoList = toDoListService.loadGroupToDoList(userGroup.getGroupName());
 
@@ -233,10 +202,6 @@ public class ToDoListServiceTest {
         assertTrue(toDoList.getTasks().isEmpty());
     }
 
-    /**
-     * Tests updating and loading a group to-do list.
-     * Verifies that tasks are correctly saved and loaded.
-     */
     @Test
     @DisplayName("Update and load group to-do list")
     @Tag("group")
@@ -245,12 +210,11 @@ public class ToDoListServiceTest {
         toDoList.addTask(new Task("Group Task 1"));
         toDoList.addTask(new Task("Group Task 2", LocalDate.now(), "Group Description", "High"));
 
-        userService.saveUser(user);
         groupService.createGroup(user.getUsername(), userGroup.getGroupName());
         toDoListService.updateGroupToDoList(userGroup.getGroupName(), toDoList);
 
-        File file = new File(groupTestFolderPath.toString(), userGroup.getGroupName() + ".json");
-        assertTrue(file.exists());
+        Path file = groupTestFolderPath.resolve(userGroup.getGroupName() + ".json");
+        assertTrue(Files.exists(file));
 
         ToDoList loadedToDoList = toDoListService.loadGroupToDoList(userGroup.getGroupName());
 
@@ -260,22 +224,21 @@ public class ToDoListServiceTest {
         assertEquals(toDoList.getTasks().get(1).getDescription(), loadedToDoList.getTasks().get(1).getDescription());
     }
 
-    /**
-     * Tests loading a group to-do list when the file is corrupted.
-     * Verifies that an empty ToDoList is returned.
-     */
     @Test
     @DisplayName("Load group to-do list when file is corrupted")
     @Tag("group")
     public void testLoadGroupToDoList_FileIsCorrupted() throws IOException {
-        File file = new File(groupTestFolderPath.toString(), userGroup.getGroupName() + ".json");
-        Files.writeString(file.toPath(), "This is not valid JSON");
-
-        userService.saveUser(user);
+        // Step 1: Create the group
         groupService.createGroup(user.getUsername(), userGroup.getGroupName());
-        ToDoList toDoList = toDoListService.loadGroupToDoList(userGroup.getGroupName());
 
-        assertNotNull(toDoList);
-        assertTrue(toDoList.getTasks().isEmpty());
+        // Step 2: Corrupt the group to-do list file
+        Path file = groupTestFolderPath.resolve(userGroup.getGroupName() + ".json");
+        Files.writeString(file, "This is not valid JSON");
+
+        // Step 3: Attempt to load the corrupted group to-do list
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> toDoListService.loadGroupToDoList(userGroup.getGroupName()));
+
+        String expectedMessage = "Failed to load group to-do list for group: " + userGroup.getGroupName();
+        assertEquals(expectedMessage, exception.getMessage());
     }
 }

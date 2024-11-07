@@ -4,55 +4,46 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import core.ToDoList;
 import core.User;
-import core.UserGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import persistence.UserHandler;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Optional;
 
 @Service
 public class ToDoListService {
 
-    private final UserHandler userHandler;
+    private final UserService userService;
     private final ObjectMapper mapper;
-    private final String toDoListPath;
-    private final String groupToDoListPath;
+    private final Path toDoListPath;
+    private final Path groupToDoListPath;
 
     @Autowired
     public ToDoListService() {
-        this.userHandler = new UserHandler(
-                Paths.get("..", "persistence", "src", "main", "java", "persistence", "users").toAbsolutePath().normalize().toString() + File.separator);
-        
-        this.toDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "todolists").toAbsolutePath().normalize().toString() + File.separator;
-        this.groupToDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists").toAbsolutePath().normalize().toString() + File.separator;
-        
-        this.mapper = new ObjectMapper();
-        this.mapper.registerModule(new JavaTimeModule());
+        this(
+            Paths.get("..", "persistence", "src", "main", "java", "persistence", "todolists").toAbsolutePath().normalize(),
+            Paths.get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists").toAbsolutePath().normalize(),
+            new UserService()
+        );
     }
 
-    public ToDoListService(Path todolistPath, Path groupToDoListPath) {
-        this.userHandler = new UserHandler(
-                todolistPath.toAbsolutePath().normalize().toString() + File.separator);
-        
-        this.toDoListPath = groupToDoListPath.toAbsolutePath().normalize().toString() + File.separator;
-        this.groupToDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists").toAbsolutePath().normalize().toString() + File.separator;
-        
+    public ToDoListService(Path toDoListPath, Path groupToDoListPath, UserService userService) {
+        this.toDoListPath = toDoListPath;
+        this.groupToDoListPath = groupToDoListPath;
+        this.userService = userService;
         this.mapper = new ObjectMapper();
         this.mapper.registerModule(new JavaTimeModule());
     }
 
     public void assignToDoList(String username) {
-        Optional<User> userOpt = userHandler.getUser(username);
-        if (userOpt.isPresent()) {
+        if (userService.userExists(username)) {
             ToDoList toDoList = new ToDoList();
-            File file = new File(toDoListPath + username + ".json");
+            Path filePath = toDoListPath.resolve(username + ".json");
             try {
-                mapper.writeValue(file, toDoList);
+                Files.createDirectories(toDoListPath);
+                mapper.writeValue(filePath.toFile(), toDoList);
             } catch (IOException e) {
                 throw new IllegalArgumentException("Failed to assign to-do list to user: " + username, e);
             }
@@ -62,14 +53,13 @@ public class ToDoListService {
     }
 
     public ToDoList loadToDoList(String username) {
-        Optional<User> userOpt = userHandler.getUser(username);
-        if (userOpt.isPresent()) {
-            File file = new File(toDoListPath + username + ".json");
-            if (!file.exists()) {
+        if (userService.userExists(username)) {
+            Path filePath = toDoListPath.resolve(username + ".json");
+            if (!Files.exists(filePath)) {
                 throw new IllegalArgumentException("To-do list file does not exist for user: " + username);
             }
             try {
-                return mapper.readValue(file, ToDoList.class);
+                return mapper.readValue(filePath.toFile(), ToDoList.class);
             } catch (IOException e) {
                 throw new IllegalArgumentException("Failed to load to-do list for user: " + username, e);
             }
@@ -79,11 +69,11 @@ public class ToDoListService {
     }
 
     public void updateToDoList(String username, ToDoList toDoList) {
-        Optional<User> userOpt = userHandler.getUser(username);
-        if (userOpt.isPresent()) {
-            File file = new File(toDoListPath + username + ".json");
+        if (userService.userExists(username)) {
+            Path filePath = toDoListPath.resolve(username + ".json");
             try {
-                mapper.writeValue(file, toDoList);
+                Files.createDirectories(toDoListPath);
+                mapper.writeValue(filePath.toFile(), toDoList);
             } catch (IOException e) {
                 throw new IllegalArgumentException("Failed to update to-do list for user: " + username, e);
             }
@@ -93,21 +83,22 @@ public class ToDoListService {
     }
 
     public ToDoList loadGroupToDoList(String groupName) {
-        File file = new File(groupToDoListPath + groupName + ".json");
-        if (!file.exists()) {
+        Path filePath = groupToDoListPath.resolve(groupName + ".json");
+        if (!Files.exists(filePath)) {
             return new ToDoList();
         }
         try {
-            return mapper.readValue(file, ToDoList.class);
+            return mapper.readValue(filePath.toFile(), ToDoList.class);
         } catch (IOException e) {
             throw new IllegalArgumentException("Failed to load group to-do list for group: " + groupName, e);
         }
     }
 
     public void updateGroupToDoList(String groupName, ToDoList toDoList) {
-        File file = new File(groupToDoListPath + groupName + ".json");
+        Path filePath = groupToDoListPath.resolve(groupName + ".json");
         try {
-            mapper.writeValue(file, toDoList);
+            Files.createDirectories(groupToDoListPath);
+            mapper.writeValue(filePath.toFile(), toDoList);
         } catch (IOException e) {
             throw new IllegalArgumentException("Failed to update group to-do list for group: " + groupName, e);
         }

@@ -4,6 +4,10 @@
     <artifactId>api</artifactId>
     <packaging>jar</packaging>
 
+    <properties>
+        <spring.version>5.3.20</spring.version> <!-- Add the correct Spring version here -->
+    </properties>
+
     <parent>
         <groupId>gr2409</groupId>
         <artifactId>kollapp</artifactId>
@@ -44,6 +48,12 @@
             <groupId>gr2409</groupId>
             <artifactId>persistence</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
         </dependency>
         <!-- Jackson Core -->
         <dependency>
