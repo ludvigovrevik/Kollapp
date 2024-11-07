@@ -1,33 +1,30 @@
 package api.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import persistence.GroupChatHandler;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import core.GroupChat;
 import core.Message;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
 
 /**
- * Service class for handling group chat operations.
+ * Service class for handling group chat operations without a handler.
  */
 @Service
 public class GroupChatService {
 
-    private final GroupChatHandler groupChatHandler;
-    private final String groupChatPath = Paths.get("..", "persistence", "src", "main", "java",
-                "persistence", "groupchat").toAbsolutePath()
-                .normalize().toString() + File.separator;
-    /**
-     * Constructor for GroupChatService.
-     *
-     * @param groupChatHandler the handler for group chat persistence
-     */
-    @Autowired
+    private final ObjectMapper mapper;
+    private final String groupChatPath;
+
     public GroupChatService() {
-        this.groupChatHandler = new GroupChatHandler(this.groupChatPath);
+        this.groupChatPath = Paths.get("..", "persistence", "src", "main", "java",
+                "persistence", "groupchat").toAbsolutePath().normalize().toString() + File.separator;
+        this.mapper = new ObjectMapper();
+        this.mapper.registerModule(new JavaTimeModule());
     }
 
     /**
@@ -37,10 +34,17 @@ public class GroupChatService {
      * @throws IllegalArgumentException if the group chat already exists
      */
     public void createGroupChat(String groupName) {
-        if (!groupChatHandler.getGroupChat(groupName).getMessages().isEmpty()) {
+        File groupChatFile = new File(groupChatPath + groupName + ".json");
+        if (groupChatFile.exists()) {
             throw new IllegalArgumentException("Group chat with name '" + groupName + "' already exists.");
         }
-        groupChatHandler.createGroupChat(groupName);
+
+        GroupChat groupChat = new GroupChat();
+        try {
+            mapper.writeValue(groupChatFile, groupChat);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to create group chat", e);
+        }
     }
 
     /**
@@ -51,11 +55,16 @@ public class GroupChatService {
      * @throws IllegalArgumentException if the group chat does not exist
      */
     public GroupChat getGroupChat(String groupName) {
-        GroupChat groupChat = groupChatHandler.getGroupChat(groupName);
-        if (groupChat == null) {
+        File groupChatFile = new File(groupChatPath + groupName + ".json");
+        if (!groupChatFile.exists()) {
             throw new IllegalArgumentException("Group chat with name '" + groupName + "' does not exist.");
         }
-        return groupChat;
+
+        try {
+            return mapper.readValue(groupChatFile, GroupChat.class);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load group chat", e);
+        }
     }
 
     /**
@@ -66,11 +75,15 @@ public class GroupChatService {
      * @throws IllegalArgumentException if the group chat does not exist
      */
     public void sendMessage(String groupName, Message message) {
-        GroupChat groupChat = groupChatHandler.getGroupChat(groupName);
-        if (groupChat == null) {
-            throw new IllegalArgumentException("Group chat with name '" + groupName + "' does not exist.");
+        GroupChat groupChat = getGroupChat(groupName);
+        groupChat.addMessage(message);
+
+        File groupChatFile = new File(groupChatPath + groupName + ".json");
+        try {
+            mapper.writeValue(groupChatFile, groupChat);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to update group chat file", e);
         }
-        groupChatHandler.sendMessage(groupName, message);
     }
 
     /**
@@ -81,10 +94,6 @@ public class GroupChatService {
      * @throws IllegalArgumentException if the group chat does not exist
      */
     public List<Message> getMessages(String groupName) {
-        GroupChat groupChat = groupChatHandler.getGroupChat(groupName);
-        if (groupChat == null) {
-            throw new IllegalArgumentException("Group chat with name '" + groupName + "' does not exist.");
-        }
-        return groupChat.getMessages();
+        return getGroupChat(groupName).getMessages();
     }
 }
