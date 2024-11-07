@@ -44,6 +44,9 @@ public class ExpenseService {
      * @return a list of expenses associated with the specified user group
      */
     public List<Expense> loadGroupExpenses(String groupName) {
+        if (groupName == null) {
+            throw new IllegalArgumentException("Group name cannot be null");
+        }
         UserGroup group = new UserGroup(groupName);
         return loadExpensesForGroup(group);
     }
@@ -55,6 +58,12 @@ public class ExpenseService {
      * @param expenses the list of expenses to be saved for the group
      */
     public void updateGroupExpenses(String groupName, List<Expense> expenses) {
+        if (groupName == null) {
+            throw new IllegalArgumentException("Group name cannot be null");
+        }
+        if (expenses == null) {
+            throw new IllegalArgumentException("Expenses list cannot be null");
+        }
         UserGroup group = new UserGroup(groupName);
         saveExpensesForGroup(group, expenses);
     }
