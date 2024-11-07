@@ -3,6 +3,8 @@ package ui;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+import java.lang.reflect.Field;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,22 +43,20 @@ class RegisterControllerTest extends ApplicationTest {
     private UserApiHandler userHandlerMock;
     private final UserApiHandler userApiHandler = new UserApiHandler();
 
-     // Headless mode is enabled
+    private RegisterController controller; // Add this line
+
+    // Headless mode is enabled
     static private boolean headless = true;
 
     /**
      * Sets up the environment for headless mode if the 'headless' flag is true.
      * This method configures various system properties required for running
      * JavaFX tests in a headless environment.
-     * 
-     * Properties set:
-     * - testfx.headless: Enables TestFX headless mode.
      */
     @BeforeAll
     static void setupHeadlessMode() {
-        if(headless){
+        if (headless) {
             System.setProperty("testfx.headless", "true");
-
             System.setProperty("java.awt.headless", "true");
             System.setProperty("prism.order", "sw");
             System.setProperty("prism.text", "t2k");
@@ -65,7 +65,7 @@ class RegisterControllerTest extends ApplicationTest {
     }
 
     /**
-     * Sets up the test environment by loading the RegisterScreen.fxml and initializing the scene.
+     * Sets up the test environment by loading the RegisterScreen.fxml, initializing the scene, and injecting the mocked UserApiHandler.
      *
      * @param stage the primary stage for JavaFX tests
      * @throws Exception if FXML loading fails
@@ -75,8 +75,23 @@ class RegisterControllerTest extends ApplicationTest {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/RegisterScreen.fxml"));
         Parent root = loader.load();
 
+        // Get the controller instance
+        controller = loader.getController();
+
+        // Initialize the mocked UserApiHandler
+        userHandlerMock = Mockito.mock(UserApiHandler.class);
+
+        // Inject the mocked UserApiHandler into the controller
+        injectMockedUserApiHandler();
+
         stage.setScene(new Scene(root));
         stage.show();
+    }
+
+    private void injectMockedUserApiHandler() throws Exception {
+        Field userApiHandlerField = RegisterController.class.getDeclaredField("userApiHandler");
+        userApiHandlerField.setAccessible(true);
+        userApiHandlerField.set(controller, userHandlerMock);
     }
 
     @BeforeEach
@@ -86,8 +101,6 @@ class RegisterControllerTest extends ApplicationTest {
         confirmPasswordField = lookup("#confirmPasswordField").query();
         errorMessage = lookup("#errorMessage").query();
         registerButton = lookup("#registerButton").query();
-
-        userHandlerMock = Mockito.mock(UserApiHandler.class);
     }
 
     /**
@@ -99,6 +112,7 @@ class RegisterControllerTest extends ApplicationTest {
     @DisplayName("Test successful user registration")
     @Tag("register")
     void testRegisterUser_Success(FxRobot robot) {
+        // Set up the mocked behavior
         when(userHandlerMock.userExists("newUser")).thenReturn(false);
         when(userHandlerMock.confirmNewValidUser("newUser", "password", "password")).thenReturn(true);
 
@@ -120,6 +134,7 @@ class RegisterControllerTest extends ApplicationTest {
     @DisplayName("Test user registration with password mismatch")
     @Tag("register")
     void testRegisterUser_PasswordMismatch(FxRobot robot) {
+        // Set up the mocked behavior
         when(userHandlerMock.userExists("testUser")).thenReturn(false);
         when(userHandlerMock.confirmNewValidUser("testUser", "password", "mismatch")).thenReturn(false);
         when(userHandlerMock.getUserValidationErrorMessage("testUser", "password", "mismatch")).thenReturn("Passwords do not match.");
@@ -130,7 +145,7 @@ class RegisterControllerTest extends ApplicationTest {
 
         robot.clickOn(registerButton);
 
-        assertEquals("Passwords do not match", errorMessage.getText());
+        assertEquals("Passwords do not match.", errorMessage.getText());
     }
 
     /**
@@ -155,6 +170,5 @@ class RegisterControllerTest extends ApplicationTest {
     @DisplayName("Remove test user after each test")
     void removeUser() {
         userApiHandler.removeUser("newUser");
-        // Remove user's todo list if required, not yet implemented in toDoListHandler.
     }
 }

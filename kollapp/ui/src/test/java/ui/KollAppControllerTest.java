@@ -76,7 +76,6 @@ public class KollAppControllerTest {
     @DisplayName("Test presence of '+' button in KollAppController UI")
     @Tag("ui")
     public void shouldContainAddButton(FxRobot robot) {
-        // Verify that the "+" button is present
         Button addButton = robot.lookup("#addButton").queryAs(Button.class);
         Assertions.assertThat(addButton).isNotNull();
         Assertions.assertThat(addButton).hasText("+ Add task");
