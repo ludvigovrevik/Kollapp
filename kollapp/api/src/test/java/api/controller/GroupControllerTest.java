@@ -18,6 +18,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class GroupControllerTest {
@@ -30,10 +31,55 @@ class GroupControllerTest {
 
     private MockMvc mockMvc;
 
-
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(groupController).build();
+    }
+
+    // Add these new tests for GroupCreationRequest DTO
+
+    @Test
+    void groupCreationRequest_GettersAndSetters() {
+        // Create the DTO
+        GroupController.GroupCreationRequest request = new GroupController.GroupCreationRequest();
+        
+        // Test username getter and setter
+        String testUsername = "testUser";
+        request.setUsername(testUsername);
+        assertEquals(testUsername, request.getUsername(), "Username getter/setter should work correctly");
+        
+        // Test groupName getter and setter
+        String testGroupName = "testGroup";
+        request.setGroupName(testGroupName);
+        assertEquals(testGroupName, request.getGroupName(), "GroupName getter/setter should work correctly");
+    }
+
+    @Test
+    void groupCreationRequest_NullValues() {
+        GroupController.GroupCreationRequest request = new GroupController.GroupCreationRequest();
+        
+        // Test initial null values
+        assertNull(request.getUsername(), "Username should be null initially");
+        assertNull(request.getGroupName(), "GroupName should be null initially");
+        
+        // Test setting null values
+        request.setUsername(null);
+        request.setGroupName(null);
+        assertNull(request.getUsername(), "Username should allow null value");
+        assertNull(request.getGroupName(), "GroupName should allow null value");
+    }
+
+    @Test
+    void groupCreationRequest_EmptyValues() {
+        GroupController.GroupCreationRequest request = new GroupController.GroupCreationRequest();
+        
+        // Test empty string values
+        String emptyString = "";
+        request.setUsername(emptyString);
+        request.setGroupName(emptyString);
+        
+        assertEquals(emptyString, request.getUsername(), "Username should allow empty string");
+        assertEquals(emptyString, request.getGroupName(), "GroupName should allow empty string");
     }
 
     @Test

@@ -145,6 +145,24 @@ class UserControllerTest {
     }
 
     @Test
+    void userExists_BadRequest() throws Exception {
+        String username = "testUser";
+        when(userService.userExists(username)).thenThrow(new IllegalArgumentException("Invalid username"));
+
+        mockMvc.perform(get("/api/v1/users/exists/{username}", username))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void userExists_InternalServerError() throws Exception {
+        String username = "testUser";
+        when(userService.userExists(username)).thenThrow(new RuntimeException());
+
+        mockMvc.perform(get("/api/v1/users/exists/{username}", username))
+                .andExpect(status().isInternalServerError());
+    }
+
+    @Test
     void loadUser_Success() throws Exception {
         // Arrange
         String username = "testUser";
