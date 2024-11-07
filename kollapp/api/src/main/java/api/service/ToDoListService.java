@@ -11,6 +11,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * Service class for managing to-do lists for individual users and groups.
+ * This service allows for creating, loading, and updating user and group to-do lists,
+ * storing each to-do list as a JSON file.
+ * 
+ * <p>Uses Jackson for JSON handling and UserService for user validation.</p>
+ * 
+ * @see UserService
+ * @see ToDoList
+ */
 @Service
 public class ToDoListService {
 
@@ -19,6 +29,9 @@ public class ToDoListService {
     private final Path toDoListPath;
     private final Path groupToDoListPath;
 
+    /**
+     * Constructs a ToDoListService with default paths for user and group to-do lists.
+     */
     @Autowired
     public ToDoListService() {
         this(
@@ -28,6 +41,13 @@ public class ToDoListService {
         );
     }
 
+    /**
+     * Constructs a ToDoListService with specified paths for user and group to-do lists.
+     * 
+     * @param toDoListPath the path for storing user to-do lists
+     * @param groupToDoListPath the path for storing group to-do lists
+     * @param userService the UserService for validating user existence
+     */
     public ToDoListService(Path toDoListPath, Path groupToDoListPath, UserService userService) {
         this.toDoListPath = toDoListPath;
         this.groupToDoListPath = groupToDoListPath;
@@ -36,6 +56,12 @@ public class ToDoListService {
         this.mapper.registerModule(new JavaTimeModule());
     }
 
+    /**
+     * Assigns a new, empty to-do list to a user if the user exists.
+     * 
+     * @param username the username to assign the to-do list to
+     * @throws IllegalArgumentException if the user does not exist or assignment fails
+     */
     public void assignToDoList(String username) {
         if (userService.userExists(username)) {
             ToDoList toDoList = new ToDoList();
@@ -51,6 +77,13 @@ public class ToDoListService {
         }
     }
 
+    /**
+     * Loads an existing to-do list for a user if the user exists and has a to-do list file.
+     * 
+     * @param username the username whose to-do list is to be loaded
+     * @return the user's ToDoList
+     * @throws IllegalArgumentException if the user or to-do list file does not exist, or loading fails
+     */
     public ToDoList loadToDoList(String username) {
         if (userService.userExists(username)) {
             Path filePath = toDoListPath.resolve(username + ".json");
@@ -67,6 +100,13 @@ public class ToDoListService {
         }
     }
 
+    /**
+     * Updates the to-do list for a user if the user exists.
+     * 
+     * @param username the username whose to-do list is to be updated
+     * @param toDoList the ToDoList object to save
+     * @throws IllegalArgumentException if the user does not exist or updating fails
+     */
     public void updateToDoList(String username, ToDoList toDoList) {
         if (userService.userExists(username)) {
             Path filePath = toDoListPath.resolve(username + ".json");
@@ -81,6 +121,13 @@ public class ToDoListService {
         }
     }
 
+    /**
+     * Loads an existing to-do list for a group. Returns an empty to-do list if none exists.
+     * 
+     * @param groupName the group name whose to-do list is to be loaded
+     * @return the group's ToDoList
+     * @throws IllegalArgumentException if loading fails
+     */
     public ToDoList loadGroupToDoList(String groupName) {
         Path filePath = groupToDoListPath.resolve(groupName + ".json");
         if (!Files.exists(filePath)) {
@@ -93,6 +140,13 @@ public class ToDoListService {
         }
     }
 
+    /**
+     * Updates the to-do list for a group.
+     * 
+     * @param groupName the group name whose to-do list is to be updated
+     * @param toDoList the ToDoList object to save
+     * @throws IllegalArgumentException if updating fails
+     */
     public void updateGroupToDoList(String groupName, ToDoList toDoList) {
         Path filePath = groupToDoListPath.resolve(groupName + ".json");
         try {

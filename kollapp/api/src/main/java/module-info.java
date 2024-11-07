@@ -1,6 +1,5 @@
 module api {
     requires transitive core;
-    requires persistence;
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
     requires com.fasterxml.jackson.annotation;

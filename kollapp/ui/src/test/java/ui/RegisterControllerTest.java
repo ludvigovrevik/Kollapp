@@ -170,6 +170,5 @@ class RegisterControllerTest extends ApplicationTest {
     @DisplayName("Remove test user after each test")
     void removeUser() {
         userApiHandler.removeUser("newUser");
-        // Remove user's todo list if required, not yet implemented in toDoListHandler.
     }
 }
