@@ -219,6 +219,90 @@
                     <excludes>**/module-info.java</excludes>
                 </configuration>
             </plugin>
+
+            <build>
+    <plugins>
+        <!-- First, add this plugin to prepare the package directory -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>3.1.0</version>
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>run</goal>
+                    </goals>
+                    <configuration>
+                        <target>
+                            <mkdir dir="${project.build.directory}/package"/>
+                            <copy file="${project.build.directory}/kollapp-full.jar" todir="${project.build.directory}/package"/>
+                            <copy file="${project.basedir}/start_app.sh" todir="${project.build.directory}/package"/>
+                        </target>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+
+        <!-- Your existing shade plugin -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>3.5.0</version>
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>shade</goal>
+                    </goals>
+                    <configuration>
+                        <finalName>kollapp-full</finalName>
+                        <transformers>
+                            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <mainClass>ui.KollApp</mainClass>
+                            </transformer>
+                            <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                            <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                <resource>META-INF/spring.handlers</resource>
+                            </transformer>
+                            <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                <resource>META-INF/spring.schemas</resource>
+                            </transformer>
+                        </transformers>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+
+        <!-- Update your jpackage plugin configuration -->
+        <plugin>
+            <groupId>org.panteleyev</groupId>
+            <artifactId>jpackage-maven-plugin</artifactId>
+            <version>1.4.0</version>
+            <configuration>
+                <name>KollApp</name>
+                <appVersion>1.0.0</appVersion>
+                <vendor>gr2409</vendor>
+                <type>APP_IMAGE</type>
+                <runtimeImage>custom-runtime</runtimeImage>
+                <input>${project.build.directory}/package</input>
+                <destination>target/dist</destination>
+                <mainClass>ui.KollApp</mainClass>
+                <mainJar>kollapp-full.jar</mainJar>
+                <javaOptions>
+                    <option>--add-opens</option>
+                    <option>javafx.graphics/com.sun.javafx.application=ALL-UNNAMED</option>
+                    <option>--add-opens</option>
+                    <option>javafx.controls/com.sun.javafx.scene.control=ALL-UNNAMED</option>
+                    <option>--add-opens</option>
+                    <option>javafx.graphics/com.sun.javafx.stage=ALL-UNNAMED</option>
+                    <option>--add-opens</option>
+                    <option>javafx.base/com.sun.javafx.collections=ALL-UNNAMED</option>
+                </javaOptions>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
         </plugins>
     </build>
 

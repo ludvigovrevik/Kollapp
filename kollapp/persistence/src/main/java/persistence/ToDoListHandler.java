@@ -1,17 +1,18 @@
 package persistence;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import core.ToDoList;
-import core.User;
-import core.UserGroup;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
+import core.ToDoList;
+import core.User;
+import core.UserGroup;
 
 public class ToDoListHandler {
     private final String toDoListPath;
