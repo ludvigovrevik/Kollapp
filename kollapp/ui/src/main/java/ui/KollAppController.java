@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 import api.ToDoListApiHandler;
 import api.GroupApiHandler;
-import api.UserApiHandler;
 import core.Task;
 import core.ToDoList;
 import core.User;
