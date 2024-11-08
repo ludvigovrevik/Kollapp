@@ -1,5 +1,3 @@
-// File: ui/AddNewExpenseController.java
-
 package ui;
 
 import api.ExpenseApiHandler;
@@ -24,8 +22,15 @@ public class AddNewExpenseController {
 
     private User currentUser;
     private UserGroup groupInView;
-    private ExpenseApiHandler expenseApiHandler = new ExpenseApiHandler();
+    private ExpenseApiHandler expenseApiHandler;
 
+    public AddNewExpenseController() {
+        this.expenseApiHandler = new ExpenseApiHandler(); // default constructor
+    }
+    
+    public void setExpenseApiHandler(ExpenseApiHandler expenseApiHandler) {
+        this.expenseApiHandler = expenseApiHandler;
+    }
     /**
      * Initializes the controller with the specified user, user group, and parent expense controller.
      *
@@ -33,7 +38,7 @@ public class AddNewExpenseController {
      * @param group the user group in view
      * @param parentController the parent expense controller
      */
-    public void initializeController(User user, UserGroup group, ExpenseController parentController) {
+    public void initializeController(User user, UserGroup group) {
         this.currentUser = user;
         this.groupInView = group;
     }
