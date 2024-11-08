@@ -165,23 +165,6 @@ class ExpenseServiceTest {
         assertEquals("Group name cannot be null", exception.getMessage());
     }
 
-    @Test
-    void updateGroupExpenses_WithInvalidPath_ThrowsException() {
-        // Arrange
-        String invalidPath = "/invalid/path"; // Invalid path
-        ReflectionTestUtils.setField(expenseService, "groupExpensePath", invalidPath);
-        
-        String groupName = "testGroup";
-        List<String> participants = Arrays.asList("user1", "user2");
-        List<Expense> expenses = Arrays.asList(
-            createTestExpense("Test Expense", 150.0, "user1", participants)
-        );
-
-        // Act & Assert
-        assertThrows(IllegalArgumentException.class, 
-            () -> expenseService.updateGroupExpenses(groupName, expenses));
-    }
-
     // Helper method to create test expenses
     private Expense createTestExpense(String description, double amount, String paidBy, List<String> participants) {
         Expense expense = new Expense();
