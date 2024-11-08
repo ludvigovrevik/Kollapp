@@ -68,4 +68,8 @@ public class User implements Serializable {
             this.userGroups.add(userGroup);
         }
     }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }

@@ -16,8 +16,8 @@ public class GroupChatController {
     private final GroupChatService groupChatService;
 
     @Autowired
-    public GroupChatController() {
-        this.groupChatService = new GroupChatService();
+    public GroupChatController(GroupChatService groupChatService) {
+        this.groupChatService = groupChatService;
     }
 
     @PostMapping("/{groupName}")
