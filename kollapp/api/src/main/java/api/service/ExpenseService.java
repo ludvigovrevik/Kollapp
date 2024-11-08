@@ -99,8 +99,11 @@ public class ExpenseService {
     private void saveExpensesForGroup(UserGroup group, List<Expense> expenses) {
         File file = new File(groupExpensePath + group.getGroupName() + ".json");
         try {
-            // **Ensure parent directories exist**
-            file.getParentFile().mkdirs(); // This line ensures the directory is created
+            File parentDir = file.getParentFile();
+            // Check if parent directory exists or can be created
+            if (!parentDir.exists() && !parentDir.mkdirs()) {
+                throw new IllegalArgumentException("Failed to create directory structure for path: " + groupExpensePath);
+            }
             mapper.writeValue(file, expenses);
         } catch (IOException e) {
             e.printStackTrace();
