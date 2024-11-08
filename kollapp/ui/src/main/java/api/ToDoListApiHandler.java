@@ -22,10 +22,14 @@ public class ToDoListApiHandler {
     private final String baseUrl = "http://localhost:8080/api/v1/todolists";
 
     public ToDoListApiHandler() {
-        this.httpClient = HttpClient.newHttpClient();
+        this.httpClient = createHttpClient();
         this.objectMapper = new ObjectMapper();
         this.objectMapper.registerModule(new JavaTimeModule());
         this.objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS); // Optional
+    }
+
+    protected HttpClient createHttpClient() {
+        return HttpClient.newHttpClient();
     }
 
     /**
