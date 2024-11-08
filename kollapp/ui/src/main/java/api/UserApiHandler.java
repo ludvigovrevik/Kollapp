@@ -16,7 +16,11 @@ public class UserApiHandler {
     private final HttpClient httpClient;
 
     public UserApiHandler() {
-        this.httpClient = HttpClient.newHttpClient();
+        this.httpClient = createHttpClient();
+    }
+
+    protected HttpClient createHttpClient() {
+        return HttpClient.newHttpClient();
     }
 
     /**
