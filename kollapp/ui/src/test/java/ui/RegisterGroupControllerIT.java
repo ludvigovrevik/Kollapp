@@ -39,7 +39,7 @@ import javafx.stage.Stage;
  */
 @ExtendWith(ApplicationExtension.class)
 @Tag("ui")
-public class RegisterGroupControllerTest {
+public class RegisterGroupControllerIT {
 
     private RegisterGroupController controller;
     private GroupApiHandler mockGroupApiHandler;

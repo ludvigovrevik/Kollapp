@@ -36,7 +36,7 @@ import ui.api.GroupChatApiHandler;
  */
 @ExtendWith(ApplicationExtension.class)
 @Tag("ui")
-public class GroupChatControllerTest {
+public class GroupChatControllerIT {
 
     private GroupChatController controller;
 

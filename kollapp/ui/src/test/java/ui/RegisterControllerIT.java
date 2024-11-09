@@ -30,7 +30,7 @@ import ui.api.UserApiHandler;
  */
 @ExtendWith(ApplicationExtension.class)
 @Tag("ui")
-class RegisterControllerTest extends ApplicationTest {
+class RegisterControllerIT extends ApplicationTest {
 
     private TextField usernameField;
     private PasswordField passwordField;

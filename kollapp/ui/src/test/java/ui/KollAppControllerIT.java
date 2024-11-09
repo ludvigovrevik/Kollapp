@@ -22,7 +22,7 @@ import javafx.stage.Stage;
  */
 @ExtendWith(ApplicationExtension.class)
 @Tag("ui")
-public class KollAppControllerTest {
+public class KollAppControllerIT {
 
      // Headless mode is enabled
     static private boolean headless = true;
