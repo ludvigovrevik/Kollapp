@@ -1,15 +1,20 @@
 package ui;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.net.URL;
 import java.util.List;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.util.WaitForAsyncUtils;
@@ -39,14 +44,18 @@ class RegisterGroupControllerTest {
     private Stage stage;
     private TextField groupNameField;
     private Label errorLabel;
+    private static final boolean headless = true;
 
     @BeforeAll
     static void setupHeadlessMode() {
-        System.setProperty("testfx.headless", "true");
-        System.setProperty("java.awt.headless", "true");
-        System.setProperty("prism.order", "sw");
-        System.setProperty("prism.text", "t2k");
-        System.setProperty("testfx.robot", "glass");
+        if (headless) {
+            System.setProperty("testfx.headless", "true");
+            System.setProperty("java.awt.headless", "true");
+            System.setProperty("prism.order", "sw");
+            System.setProperty("prism.text", "t2k");
+            System.setProperty("testfx.robot", "glass");
+        }
+        
     }
 
     @Start
