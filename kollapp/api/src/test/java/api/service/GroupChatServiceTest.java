@@ -10,6 +10,7 @@ import org.junit.jupiter.api.io.TempDir;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
@@ -196,5 +197,58 @@ public class GroupChatServiceTest {
 
         String expectedMessage = "Failed to load group chat";
         assertTrue(exception.getMessage().contains(expectedMessage));
+    }
+
+    @Test
+@   DisplayName("Test constructor with default path")
+    @Tag("constructor")
+    void testDefaultConstructor() throws IOException {
+        // Create required default directory
+        Path defaultPath = Paths.get("..", "persistence", "src", "main", "java", 
+                "persistence", "groupchat").toAbsolutePath().normalize();
+        Files.createDirectories(defaultPath);
+
+        // Define test user file paths
+        String testUsername = "defaultTestUser";
+        Path userFile = defaultPath.resolve(testUsername + ".json");
+        
+        try {
+            // Create service with default constructor
+            GroupChatService defaultService = new GroupChatService();
+            
+            // Test functionality
+            String groupName = "defaultTestGroup";
+            defaultService.createGroupChat(groupName);
+            
+            // Verify file was created in default location
+            assertTrue(Files.exists(defaultPath.resolve(groupName + ".json")));
+            
+        } finally {
+            // Cleanup
+            if (Files.exists(userFile)) {
+                deleteDirectory(userFile);
+            }
+        }
+    }
+
+    @Test
+    @DisplayName("Test sending message persists correctly")
+    @Tag("groupchat")
+    void testSendMessagePersistence() throws IOException {
+        String groupName = "testGroup";
+        groupChatService.createGroupChat(groupName);
+        
+        Message message = new Message("testUser", "Test message");
+        groupChatService.sendMessage(groupName, message);
+        
+        // Read the file directly to verify persistence
+        Path groupChatFilePath = groupChatTestFolderPath.resolve(groupName + ".json");
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        
+        GroupChat savedChat = mapper.readValue(groupChatFilePath.toFile(), GroupChat.class);
+        assertEquals(1, savedChat.getMessages().size());
+        assertEquals(message.getAuthor(), savedChat.getMessages().get(0).getAuthor());
+        assertEquals(message.getText(), savedChat.getMessages().get(0).getText());
     }
 }

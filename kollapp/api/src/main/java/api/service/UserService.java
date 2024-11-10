@@ -156,6 +156,10 @@ public class UserService {
      * @throws IllegalArgumentException if the user is not found
      */
     public void assignGroupToUser(String username, String groupName) {
+        if (username == null || groupName == null || username.isEmpty() || groupName.isEmpty()) {
+            throw new IllegalArgumentException("Username or group name cannot be empty");
+        }
+        
         User user = getUser(username).orElseThrow(() -> new IllegalArgumentException("User not found"));
         user.addUserGroup(groupName);
         updateUser(user);
