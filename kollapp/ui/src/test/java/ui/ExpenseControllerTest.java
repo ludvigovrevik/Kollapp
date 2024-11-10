@@ -25,9 +25,6 @@ import api.ExpenseApiHandler;
 import core.Expense;
 import core.User;
 import core.UserGroup;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableView;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -49,7 +46,7 @@ public class ExpenseControllerTest {
     private Stage stage;
 
     // Headless mode configuration
-    static private boolean headless = false;
+    static private boolean headless = true;
 
     @BeforeAll
     static void setupHeadlessMode() {
@@ -125,61 +122,6 @@ public class ExpenseControllerTest {
         when(mockExpenseHandler.loadGroupExpenses(any(UserGroup.class))).thenReturn(testExpenses);
         when(mockExpenseHandler.updateGroupExpenses(any(UserGroup.class), any())).thenReturn(true);
     }
-
-    // @Test
-    // @DisplayName("Test settle expense button")
-    // void testSettleExpense(FxRobot robot) {
-    //     // Wait for table to be populated
-    //     WaitForAsyncUtils.waitForFxEvents();
-
-    //     // Get the table
-    //     TableView<Expense> table = robot.lookup("#expenseTableView").queryAs(TableView.class);
-    //     assertNotNull(table);
-
-    //     // Find the unsettled expense (Groceries)
-    //     Expense unsettledExpense = testExpenses.stream()
-    //         .filter(e -> e.getDescription().equals("Groceries"))
-    //         .findFirst()
-    //         .orElseThrow();
-
-    //     // Find the cell with the settle button
-    //     @SuppressWarnings("unchecked")
-    //     TableCell<Expense, String> cell = (TableCell<Expense, String>) robot.lookup(".table-cell")
-    //         .match(node -> {
-    //             if (node instanceof TableCell) {
-    //                 TableCell<?, ?> tableCell = (TableCell<?, ?>) node;
-    //                 Node graphic = tableCell.getGraphic();
-    //                 return graphic instanceof Button && 
-    //                        ((Button) graphic).getText().equals("Settle") &&
-    //                        tableCell.getText() != null &&
-    //                        tableCell.getText().contains("40.00");
-    //             }
-    //             return false;
-    //         })
-    //         .query();
-
-    //     assertNotNull(cell, "Could not find cell with settle button");
-        
-    //     // Get the settle button from the cell
-    //     Button settleButton = (Button) cell.getGraphic();
-    //     assertNotNull(settleButton, "Settle button not found");
-
-    //     // Click the button using its scene coordinates
-    //     robot.clickOn(settleButton);
-    //     WaitForAsyncUtils.waitForFxEvents();
-
-    //     // Verify the mock interactions
-    //     verify(mockExpenseHandler).updateGroupExpenses(eq(testGroup), argThat(expenses -> {
-    //         if (expenses == null) return false;
-    //         return expenses.stream()
-    //             .filter(e -> e.getDescription().equals("Groceries"))
-    //             .findFirst()
-    //             .map(e -> e.hasParticipantSettled("testUser"))
-    //             .orElse(false);
-    //     }));
-
-    //     verify(mockExpenseHandler, atLeastOnce()).loadGroupExpenses(any(UserGroup.class));
-    // }
 
     @Test
     @DisplayName("Test expense table initialization")
