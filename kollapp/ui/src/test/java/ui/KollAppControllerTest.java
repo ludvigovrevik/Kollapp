@@ -3,11 +3,10 @@ package ui;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import org.mockito.Mockito.*;
+
 import java.lang.reflect.Field;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import java.time.LocalDate;
+import java.util.Optional;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -20,10 +19,12 @@ import org.testfx.assertions.api.Assertions;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
+import api.GroupApiHandler;
 import api.ToDoListApiHandler;
 import core.Task;
 import core.ToDoList;
 import core.User;
+import core.UserGroup;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -89,28 +90,42 @@ public class KollAppControllerTest {
      */
     @Start
     private void start(Stage stage) throws Exception {
-        // Mock the API handler
+        // Mock the ToDoListApiHandler
         ToDoListApiHandler mockApiHandler = mock(ToDoListApiHandler.class);
-        when(mockApiHandler.loadToDoList(any(User.class))).thenReturn(new ToDoList());
-        
+        ToDoList toDoList = new ToDoList();
+        toDoList.addTask(new Task("Test Task", LocalDate.now(), "Test Description", "High"));
+        when(mockApiHandler.loadToDoList(any(User.class))).thenReturn(toDoList);
+
+        // Mock the GroupApiHandler
+        GroupApiHandler mockGroupApiHandler = mock(GroupApiHandler.class);
+        UserGroup testGroup = new UserGroup("TestGroup");
+        when(mockGroupApiHandler.getGroup("TestGroup")).thenReturn(Optional.of(testGroup));
+        when(mockApiHandler.loadGroupToDoList(testGroup)).thenReturn(new ToDoList());
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Kollektiv.fxml"));
         Parent root = loader.load();
 
         KollAppController controller = loader.getController();
-        // Set the mocked API handler
+
+        // Set the mocked API handlers
         Field apiHandlerField = KollAppController.class.getDeclaredField("toDoListApiHandler");
         apiHandlerField.setAccessible(true);
         apiHandlerField.set(controller, mockApiHandler);
-        
+
+        Field groupApiHandlerField = KollAppController.class.getDeclaredField("groupApiHandler");
+        groupApiHandlerField.setAccessible(true);
+        groupApiHandlerField.set(controller, mockGroupApiHandler);
+
         User user = new User("KollAppControllerUserTest", "passwordd");
         user.addUserGroup("TestGroup");
-        controller.setUser(user); 
+        controller.setUser(user);
         controller.initializeToDoList(user);
         controller.populateGroupView(user.getUserGroups());
 
         stage.setScene(new Scene(root));
         stage.show();
     }
+
 
     /**
      * Verifies that the "+" button is present and has the correct text.
@@ -375,4 +390,71 @@ public class KollAppControllerTest {
         Assertions.assertThat(groupOptionsPane.isVisible()).isFalse();
     }
 
+    @Test
+    @DisplayName("Test that clicking Open chat button opens Group Chat window")
+    public void shouldOpenGroupChatWindow(FxRobot robot) {
+        // Click on the group label
+        robot.clickOn("TestGroup");
+
+        // Click on the groupChatButton
+        robot.clickOn("#groupChatButton");
+
+        // Verify the Group Chat window appears
+        Assertions.assertThat(robot.window("TestGroup discussion")).isShowing();
+    }
+
+    @Test
+    @DisplayName("Test that clicking Show expenses button opens Expense window")
+    public void shouldOpenExpenseWindow(FxRobot robot) {
+        // Click on the group label
+        robot.clickOn("TestGroup");
+
+        // Click on the openExpenseButton
+        robot.clickOn("#openExpenseButton");
+
+        // Verify the Expense window appears
+        Assertions.assertThat(robot.window("Expenses for TestGroup")).isShowing();
+
+        // Close the Expense window
+        Platform.runLater(() -> {
+            Stage expenseStage = (Stage) robot.window("Expenses for TestGroup");
+            expenseStage.close();
+        });
+        robot.sleep(500);
+    }
+
+
+    @Test
+    @DisplayName("Test removing a completed task from Completed Tasks view")
+    public void shouldRemoveTaskWhenMarkedAsCompleted(FxRobot robot) {
+        // Ensure the task is present in the pending tasks
+        TableView<Task> tableView = robot.lookup("#tableView").queryAs(TableView.class);
+        Assertions.assertThat(tableView.getItems()).hasSize(1);
+
+        // Mark the task as completed
+        robot.clickOn(lookup -> lookup.getStyleClass().contains("check-box"));
+
+        // Wait for the action to complete
+        robot.sleep(500);
+
+        // Switch to Completed Tasks view
+        robot.clickOn("#completedLabel");
+
+        // Wait for the table to update
+        robot.sleep(500);
+
+        // Ensure the task is present in completed tasks
+        tableView = robot.lookup("#tableView").queryAs(TableView.class);
+        Assertions.assertThat(tableView.getItems()).hasSize(1);
+
+        // Click on the checkbox to remove the task
+        robot.clickOn(lookup -> lookup.getStyleClass().contains("check-box"));
+
+        // Wait for the action
+        robot.sleep(500);
+
+        // Verify the task is removed
+        Assertions.assertThat(tableView.getItems()).hasSize(0);
+    }
+    
 }
