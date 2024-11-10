@@ -142,4 +142,26 @@ public class GroupApiHandler {
             return false;
         }
     }
+
+    public String validateGroupAssignment(String username, String groupName) {
+        String url = "http://localhost:8080/api/v1/groups/validate-assignment?username=" 
+            + URLEncoder.encode(username, StandardCharsets.UTF_8)
+            + "&groupName=" + URLEncoder.encode(groupName, StandardCharsets.UTF_8);
+    
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .GET()
+                .build();
+    
+        try {
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                return null; // No validation errors
+            } else {
+                return response.body(); // Return the error message
+            }
+        } catch (IOException | InterruptedException e) {
+            return "An error occurred while validating group assignment: " + e.getMessage();
+        }
+    }
 }

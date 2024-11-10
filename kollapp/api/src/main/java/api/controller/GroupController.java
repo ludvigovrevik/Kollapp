@@ -83,4 +83,19 @@ public class GroupController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
     }
+
+    @GetMapping("/validate-assignment")
+    public ResponseEntity<String> validateGroupAssignment(
+            @RequestParam String username,
+            @RequestParam String groupName) {
+        try {
+            String validationError = groupService.validateGroupAssignment(username, groupName);
+            if (validationError != null) {
+                return ResponseEntity.badRequest().body(validationError);
+            }
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("An error occurred during validation");
+        }
+    }
 }

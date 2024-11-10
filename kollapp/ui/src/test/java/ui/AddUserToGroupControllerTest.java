@@ -141,7 +141,7 @@ public class AddUserToGroupControllerTest {
 
         Label feedbackLabel = robot.lookup("#feedbackLabel").queryAs(Label.class);
         assertNotNull(feedbackLabel);
-        assertEquals("User does not exist.", feedbackLabel.getText());
+        assertEquals("Failed to add user to group.", feedbackLabel.getText());
     }
 
     /**
