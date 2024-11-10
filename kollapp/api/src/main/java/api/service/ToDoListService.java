@@ -49,6 +49,9 @@ public class ToDoListService {
      * @param userService the UserService for validating user existence
      */
     public ToDoListService(Path toDoListPath, Path groupToDoListPath, UserService userService) {
+        if (toDoListPath == null || groupToDoListPath == null || userService == null) {
+            throw new NullPointerException("Arguments cannot be null");
+        }
         this.toDoListPath = toDoListPath;
         this.groupToDoListPath = groupToDoListPath;
         this.userService = userService;
