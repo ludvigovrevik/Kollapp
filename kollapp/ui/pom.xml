@@ -106,28 +106,24 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <!-- Version will be inherited from the parent POM -->
         </dependency>
 
         <!-- Jackson Core -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.18.0-rc1</version>
         </dependency>
 
         <!-- Jackson Databind: Core Jackson library for converting Java objects to/from JSON format -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.18.0-rc1</version>
         </dependency>
 
         <!-- Jackson Datatype JSR310: Adds support for Java 8 Date and Time API types (e.g., LocalDate) when using Jackson -->
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>2.18.0-rc1</version>
         </dependency>
 
         <!-- JavaFX Base: Provides the base components of JavaFX for creating desktop applications -->

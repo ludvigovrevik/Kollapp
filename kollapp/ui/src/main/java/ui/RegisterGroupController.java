@@ -1,6 +1,7 @@
 package ui;
 
 import ui.api.GroupApiHandler;
+import ui.api.GroupChatApiHandler;
 import ui.api.UserApiHandler;
 import core.User;
 import javafx.event.ActionEvent;
@@ -9,7 +10,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import persistence.GroupChatHandler;
 
 /**
  * Controller class for handling the creation of new user groups.
@@ -26,7 +26,7 @@ public class RegisterGroupController {
 
     private User user;
     private KollAppController kollAppController;
-    private GroupChatHandler groupChatHandler;
+    private GroupChatApiHandler groupChatHandler;
     private GroupApiHandler groupApiHandler;
     private UserApiHandler userApiHandler;
 
@@ -50,7 +50,7 @@ public class RegisterGroupController {
     public void initialize(User user, KollAppController kollAppController) {
         this.user = user;
         this.kollAppController = kollAppController;
-        this.groupChatHandler = new GroupChatHandler();
+        this.groupChatHandler = new GroupChatApiHandler();
         this.groupApiHandler = new GroupApiHandler();
         this.userApiHandler = new UserApiHandler();
     }

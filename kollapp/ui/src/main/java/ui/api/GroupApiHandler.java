@@ -18,8 +18,12 @@ public class GroupApiHandler {
     private final ObjectMapper objectMapper;
 
     public GroupApiHandler() {
-        this.httpClient = HttpClient.newHttpClient();
+        this.httpClient = createHttpClient();
         this.objectMapper = new ObjectMapper();
+    }
+
+    protected HttpClient createHttpClient() {
+        return HttpClient.newHttpClient();
     }
 
     /**

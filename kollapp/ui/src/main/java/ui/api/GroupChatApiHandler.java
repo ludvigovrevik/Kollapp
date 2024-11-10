@@ -32,7 +32,7 @@ public class GroupChatApiHandler {
      * @param baseUrl The base URL of the GroupChat REST API (e.g., "http://localhost:8080/api/v1/groupchats").
      */
     public GroupChatApiHandler() {
-        this.httpClient = HttpClient.newHttpClient();
+        this.httpClient = createHttpClient();
         this.objectMapper = new ObjectMapper();
 
         // Register the JavaTimeModule to handle Java 8 Date/Time API types
@@ -40,6 +40,10 @@ public class GroupChatApiHandler {
 
         // Optional: Configure the ObjectMapper to serialize dates as ISO-8601 strings instead of timestamps
         this.objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    }
+
+    protected HttpClient createHttpClient() {
+        return HttpClient.newHttpClient();
     }
 
     /**

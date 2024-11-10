@@ -2,6 +2,8 @@ package ui;
 
 import java.io.IOException;
 
+import ui.api.ToDoListApiHandler;
+import ui.api.UserApiHandler;
 import core.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,8 +15,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import persistence.ToDoListHandler;
-import ui.api.UserApiHandler;
 
 /**
  * Controller class for the registration screen.
@@ -54,7 +54,7 @@ public class RegisterController {
             User user = new User(username, password);
             try {
                 userApiHandler.saveUser(user); // Save user to JSON file
-                ToDoListHandler handler = new ToDoListHandler();
+                ToDoListApiHandler handler = new ToDoListApiHandler();
                 handler.assignToDoList(user); // Assign ToDo-list to JSON file
     
                 switchToKollektivScene(event, user); // Switch to main screen

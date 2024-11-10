@@ -25,9 +25,13 @@ public class ExpenseApiHandler {
      * Registers the JavaTimeModule with the ObjectMapper to handle Java 8 date and time API.
      */
     public ExpenseApiHandler() {
-        this.httpClient = HttpClient.newHttpClient();
+        this.httpClient = createHttpClient();
         this.objectMapper = new ObjectMapper();
         this.objectMapper.registerModule(new JavaTimeModule());
+    }
+
+    protected HttpClient createHttpClient() {
+        return HttpClient.newHttpClient();
     }
 
     /**
