@@ -32,9 +32,6 @@ public class GroupChatController {
     private GroupChatApiHandler groupChatApiHandler;
     private String groupName; 
 
-    public GroupChatController() {
-        setGroupChatApiHandler(groupChatApiHandler);
-    }
     public void setGroupChatApiHandler(GroupChatApiHandler groupChatApiHandler) {
         this.groupChatApiHandler = groupChatApiHandler;
     }
@@ -43,10 +40,15 @@ public class GroupChatController {
     public void initializeGroupChatWindow(User user, String groupName) {
         this.user = user;
         this.groupName = groupName;
-        this.groupChatApiHandler = new GroupChatApiHandler();
-        // Do not re-initialize groupChatApiHandler here
+
+        // Only initialize if it's null
+        if (this.groupChatApiHandler == null) {
+            this.groupChatApiHandler = new GroupChatApiHandler();
+        }
+
         updateMessageView();
     }
+
 
     @FXML
     protected void handleSendMessage() {
