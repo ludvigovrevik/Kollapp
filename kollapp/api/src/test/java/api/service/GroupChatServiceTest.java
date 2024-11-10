@@ -208,23 +208,22 @@ public class GroupChatServiceTest {
                 "persistence", "groupchat").toAbsolutePath().normalize();
         Files.createDirectories(defaultPath);
 
-        // Define test user file paths
-        String testUsername = "defaultTestUser";
-        Path userFile = defaultPath.resolve(testUsername + ".json");
+        String groupName = "defaultTestGroup";
+        Path userFile = defaultPath.resolve(groupName + ".json");
         
         try {
             // Create service with default constructor
             GroupChatService defaultService = new GroupChatService();
             
             // Test functionality
-            String groupName = "defaultTestGroup";
+            
             defaultService.createGroupChat(groupName);
             
             // Verify file was created in default location
             assertTrue(Files.exists(defaultPath.resolve(groupName + ".json")));
             
         } finally {
-            // Cleanup
+            //Cleanup
             if (Files.exists(userFile)) {
                 deleteDirectory(userFile);
             }
