@@ -176,49 +176,5 @@ public class GroupChatControllerTest {
         assertTrue(lastMessageArea.getText().contains("Test message"), "UI should display 'Test message'");
         assertTrue(lastMessageArea.getText().contains(testUser.getUsername()), "UI should display the test user's username");
     }
-
-    // @Test
-    // @DisplayName("Test message view initialization")
-    // void testMessageViewInitialization(FxRobot robot) {
-    //     WaitForAsyncUtils.waitForFxEvents();
-        
-    //     VBox messageBox = robot.lookup("#vboxMessages").queryAs(VBox.class);
-    //     assertNotNull(messageBox);
-    //     assertEquals(3, messageBox.getChildren().size());
-        
-    //     TextArea firstMessage = (TextArea) messageBox.getChildren().get(0);
-    //     assertTrue(firstMessage.getText().contains("Message 1"));
-    //     assertTrue(firstMessage.getText().contains("user1"));
-    // }
-
-    // @Test
-    // @DisplayName("Test message load failure")
-    // void testMessageLoadFailure(FxRobot robot) {
-    //     testApiHandler.setShouldReturnEmpty(true);
-        
-    //     Platform.runLater(() -> controller.updateMessageView());
-        
-    //     WaitForAsyncUtils.waitForFxEvents();
-        
-    //     VBox messageBox = robot.lookup("#vboxMessages").queryAs(VBox.class);
-    //     assertTrue(messageBox.getChildren().isEmpty());
-    // }
-
-    // @Test
-    // @DisplayName("Test message formatting")
-    // void testMessageFormatting(FxRobot robot) {
-    //     WaitForAsyncUtils.waitForFxEvents();
-        
-    //     VBox messageBox = robot.lookup("#vboxMessages").queryAs(VBox.class);
-    //     assertNotNull(messageBox);
-    //     assertFalse(messageBox.getChildren().isEmpty());
-        
-    //     TextArea messageArea = (TextArea) messageBox.getChildren().get(0);
-    //     assertNotNull(messageArea);
-        
-    //     assertFalse(messageArea.isEditable());
-    //     assertTrue(messageArea.isWrapText());
-    //     assertEquals(50, messageArea.getMinHeight());
-    //     assertEquals(50, messageArea.getMaxHeight());
-    // }
+    
 }
