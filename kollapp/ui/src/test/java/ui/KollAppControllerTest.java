@@ -31,6 +31,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
@@ -85,6 +86,7 @@ public class KollAppControllerTest {
         apiHandlerField.set(controller, mockApiHandler);
         
         User user = new User("KollAppControllerUserTest", "passwordd");
+        controller.setUser(user);  // Add this line to set the user
         controller.initializeToDoList(user);
         controller.populateGroupView(user.getUserGroups());
 
@@ -163,5 +165,95 @@ public class KollAppControllerTest {
         
         // Verify text returned to original
         Assertions.assertThat(completedLabel).hasText("Completed Tasks");
+    }
+
+    @Test
+    @DisplayName("Test group management buttons presence and state")
+    @Tag("ui")
+    public void shouldHaveGroupManagementButtons(FxRobot robot) {
+        // Get the buttons
+        Button createGroupButton = robot.lookup("#createGroupButton").queryAs(Button.class);
+        Button addUserToGroupButton = robot.lookup("#addUserToGroupButton").queryAs(Button.class);
+        
+        // Verify buttons exist
+        Assertions.assertThat(createGroupButton).isNotNull();
+        Assertions.assertThat(addUserToGroupButton).isNotNull();
+        
+        // Verify button text
+        Assertions.assertThat(createGroupButton).hasText("New group");
+        Assertions.assertThat(addUserToGroupButton).hasText("Add member");
+        
+        // Verify buttons are enabled
+        Assertions.assertThat(createGroupButton.isDisabled()).isFalse();
+        Assertions.assertThat(addUserToGroupButton.isDisabled()).isFalse();
+    }
+
+    @Test
+    @DisplayName("Test My tasks label functionality")
+    @Tag("ui")
+    public void shouldHandleMyTasksLabelCorrectly(FxRobot robot) {
+        // Get the personal tasks label and current view path label
+        Label personalLabel = robot.lookup("#personal").queryAs(Label.class);
+        Label currentlyViewingPath = robot.lookup("#currentlyViewingPath").queryAs(Label.class);
+        
+        // Verify personal label exists and has correct text
+        Assertions.assertThat(personalLabel).isNotNull();
+        Assertions.assertThat(personalLabel).hasText("My tasks");
+        
+        // Click the personal label
+        robot.clickOn("#personal");
+        
+        // Verify the current view path updates correctly
+        Assertions.assertThat(currentlyViewingPath)
+            .hasText("Currently Viewing: KollAppControllerUserTest → Pending Tasks");
+    }
+
+    @Test
+    @DisplayName("Test group options pane visibility management")
+    @Tag("ui")
+    public void shouldManageGroupOptionsPaneVisibility(FxRobot robot) {
+        // Get the group options components
+        Pane groupOptionsPane = robot.lookup("#groupOptionsPane").queryAs(Pane.class);
+        Button groupChatButton = robot.lookup("#groupChatButton").queryAs(Button.class);
+        Button openExpenseButton = robot.lookup("#openExpenseButton").queryAs(Button.class);
+        Label groupOptionsLabel = robot.lookup("#groupOptionsLabel").queryAs(Label.class);
+        
+        // Verify initial state - should be hidden
+        Assertions.assertThat(groupOptionsPane.isVisible()).isFalse();
+        Assertions.assertThat(groupChatButton.isVisible()).isFalse();
+        Assertions.assertThat(openExpenseButton.isVisible()).isFalse();
+        Assertions.assertThat(groupOptionsLabel.isVisible()).isFalse();
+        
+        // Verify button text when they exist (even if not visible)
+        Assertions.assertThat(groupChatButton).hasText("Open chat");
+        Assertions.assertThat(openExpenseButton).hasText("Show expenses");
+        Assertions.assertThat(groupOptionsLabel).hasText("Group Options");
+    }
+
+    @Test
+    @DisplayName("Test current viewing path updates when toggling task view")
+    @Tag("ui")
+    public void shouldUpdatePathWhenTogglingTaskView(FxRobot robot) {
+        // Get the labels
+        Label currentlyViewingPath = robot.lookup("#currentlyViewingPath").queryAs(Label.class);
+        Label completedLabel = robot.lookup("#completedLabel").queryAs(Label.class);
+        
+        // Verify initial state
+        String username = "KollAppControllerUserTest";
+        String initialPath = "Currently Viewing: " + username + " → Pending Tasks";
+        Assertions.assertThat(currentlyViewingPath).hasText(initialPath);
+        
+        // Click completed tasks label to switch view
+        robot.clickOn("#completedLabel");
+        
+        // Verify path updates for completed tasks view
+        String completedPath = "Currently Viewing: " + username + " → Completed Tasks";
+        Assertions.assertThat(currentlyViewingPath).hasText(completedPath);
+        
+        // Click again to switch back to pending tasks
+        robot.clickOn("#completedLabel");
+        
+        // Verify path returns to original state
+        Assertions.assertThat(currentlyViewingPath).hasText(initialPath);
     }
 }

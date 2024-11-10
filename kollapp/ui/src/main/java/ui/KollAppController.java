@@ -100,7 +100,7 @@ public class KollAppController {
     public void setUser(User user) {
         this.user = user;
         personal.setOnMouseClicked(event -> handleGroupClick(this.user.getUsername()));
-        currentlyViewingPath.setText("Currently Viewing: " + user.getUsername() + " → My Pending Tasks");
+        currentlyViewingPath.setText("Currently Viewing: " + user.getUsername() + " → Pending Tasks");
     }
 
     /**
