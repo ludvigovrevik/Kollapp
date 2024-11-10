@@ -9,6 +9,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -23,6 +24,7 @@ import api.ToDoListApiHandler;
 import core.Task;
 import core.ToDoList;
 import core.User;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -33,6 +35,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 /**
  * Unit tests for the KollAppController class.
@@ -64,6 +67,20 @@ public class KollAppControllerTest {
         }
     }
 
+    @AfterEach
+    public void tearDown(FxRobot robot) {
+        // Close all windows except the primary stage
+        Platform.runLater(() -> {
+            for (Window window : robot.robotContext().getWindowFinder().listWindows()) {
+                if (window instanceof Stage && ((Stage) window).isShowing() && window != robot.robotContext().getWindowFinder().window(0)) {
+                    ((Stage) window).close();
+                }
+            }
+        });
+        // Wait for windows to close
+        robot.sleep(500);
+    }
+
     /**
      * Initializes the test environment by loading the Kollektiv.fxml and setting up the controller.
      *
@@ -86,7 +103,8 @@ public class KollAppControllerTest {
         apiHandlerField.set(controller, mockApiHandler);
         
         User user = new User("KollAppControllerUserTest", "passwordd");
-        controller.setUser(user);  // Add this line to set the user
+        user.addUserGroup("TestGroup");
+        controller.setUser(user); 
         controller.initializeToDoList(user);
         controller.populateGroupView(user.getUserGroups());
 
@@ -256,4 +274,105 @@ public class KollAppControllerTest {
         // Verify path returns to original state
         Assertions.assertThat(currentlyViewingPath).hasText(initialPath);
     }
+
+    @Test
+    @DisplayName("Test that clicking Add Task button opens Add New Task dialog")
+    public void shouldOpenAddNewTaskDialog(FxRobot robot) {
+        // Click the addButton
+        robot.clickOn("#addButton");
+
+        // Verify that the Add New Task window appears
+        Assertions.assertThat(robot.window("Add New Task")).isShowing();
+    }
+
+    @Test
+    @DisplayName("Test that clicking New Group button opens Register Group window")
+    public void shouldOpenRegisterGroupWindow(FxRobot robot) {
+        // Click the createGroupButton
+        robot.clickOn("#createGroupButton");
+
+        // Verify that the Register Group window appears
+        Assertions.assertThat(robot.window("Register Group")).isShowing();
+    }
+
+    @Test
+    @DisplayName("Test that clicking Add Member button opens Add User to Group window")
+    public void shouldOpenAddUserToGroupWindow(FxRobot robot) {
+        // Click the addUserToGroupButton
+        robot.clickOn("#addUserToGroupButton");
+
+        // Verify that the Add User to Group window appears
+        Assertions.assertThat(robot.window("Add user to group")).isShowing();
+    }
+
+    @Test
+    @DisplayName("Test hover effect on Add Task button")
+    public void shouldChangeScaleOnHoverAddButton(FxRobot robot) {
+        Button addButton = robot.lookup("#addButton").queryAs(Button.class);
+
+        // Get the initial scale
+        double initialScaleX = addButton.getScaleX();
+        double initialScaleY = addButton.getScaleY();
+
+        // Move mouse over the addButton
+        robot.moveTo(addButton);
+
+        // Wait for the hover effect
+        robot.sleep(500);
+
+        // Get the scale after hover
+        double hoverScaleX = addButton.getScaleX();
+        double hoverScaleY = addButton.getScaleY();
+
+        // Verify that the scale has changed
+        Assertions.assertThat(hoverScaleX).isGreaterThan(initialScaleX);
+        Assertions.assertThat(hoverScaleY).isGreaterThan(initialScaleY);
+
+        // Move mouse away
+        robot.moveBy(100, 0);
+
+        // Wait for the hover exit effect
+        robot.sleep(500);
+
+        // Get the scale after moving away
+        double finalScaleX = addButton.getScaleX();
+        double finalScaleY = addButton.getScaleY();
+
+        // Verify that the scale has returned to initial
+        Assertions.assertThat(finalScaleX).isEqualTo(initialScaleX);
+        Assertions.assertThat(finalScaleY).isEqualTo(initialScaleY);
+    }
+
+    @Test
+    @DisplayName("Test clicking on a group label updates view and shows group options")
+    public void shouldHandleGroupLabelClick(FxRobot robot) {
+        // Click on the group label
+        robot.clickOn("TestGroup");
+
+        // Verify the currentlyViewingPath updates
+        Label currentlyViewingPath = robot.lookup("#currentlyViewingPath").queryAs(Label.class);
+        Assertions.assertThat(currentlyViewingPath).hasText("Currently Viewing: KollAppControllerUserTest → TestGroup → Pending Tasks");
+
+        // Verify group options pane becomes visible
+        Pane groupOptionsPane = robot.lookup("#groupOptionsPane").queryAs(Pane.class);
+        Assertions.assertThat(groupOptionsPane.isVisible()).isTrue();
+    }
+
+    @Test
+    @DisplayName("Test clicking on My tasks hides group options pane")
+    public void shouldHideGroupOptionsPaneWhenClickingPersonalLabel(FxRobot robot) {
+        // Click on the group label first
+        robot.clickOn("TestGroup");
+
+        // Ensure the pane is visible
+        Pane groupOptionsPane = robot.lookup("#groupOptionsPane").queryAs(Pane.class);
+        Assertions.assertThat(groupOptionsPane.isVisible()).isTrue();
+
+        // Click on the personal label
+        robot.clickOn("#personal");
+
+        // Verify the pane is hidden
+        Assertions.assertThat(groupOptionsPane.isVisible()).isFalse();
+    }
+
 }
