@@ -339,7 +339,7 @@ public class ToDoListServiceTest {
     @DisplayName("Test default constructor initialization")
     @Tag("constructor")
     void testDefaultConstructor() throws IOException {
-        // Create required default directories first
+        // Define default paths
         Path defaultToDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "todolists")
                 .toAbsolutePath().normalize();
         Path defaultGroupToDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists")
@@ -347,16 +347,22 @@ public class ToDoListServiceTest {
         Path defaultUserPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "users")
                 .toAbsolutePath().normalize();
                 
+        // Create directories if they don't exist
         Files.createDirectories(defaultToDoListPath);
         Files.createDirectories(defaultGroupToDoListPath);
         Files.createDirectories(defaultUserPath);
         
+        // Define test user file paths
+        String testUsername = "defaultTestUser";
+        Path userFile = defaultUserPath.resolve(testUsername + ".json");
+        Path todoListFile = defaultToDoListPath.resolve(testUsername + ".json");
+        
         try {
             // Save a test user in the default location
-            User testUser = new User("defaultTestUser", "password");
+            User testUser = new User(testUsername, "password");
             ObjectMapper mapper = new ObjectMapper();
             mapper.registerModule(new JavaTimeModule());
-            mapper.writeValue(defaultUserPath.resolve(testUser.getUsername() + ".json").toFile(), testUser);
+            mapper.writeValue(userFile.toFile(), testUser);
             
             // Create service with default constructor
             ToDoListService defaultService = new ToDoListService();
@@ -366,12 +372,16 @@ public class ToDoListServiceTest {
                 defaultService.assignToDoList(testUser.getUsername());
             });
             
-            assertTrue(Files.exists(defaultToDoListPath.resolve(testUser.getUsername() + ".json")));
+            assertTrue(Files.exists(todoListFile));
+            
         } finally {
-            // Cleanup
-            deleteDirectory(defaultToDoListPath);
-            deleteDirectory(defaultGroupToDoListPath);
-            deleteDirectory(defaultUserPath);
+            // Clean up only the test files, not the directories
+            if (Files.exists(userFile)) {
+                Files.delete(userFile);
+            }
+            if (Files.exists(todoListFile)) {
+                Files.delete(todoListFile);
+            }
         }
     }
 }
