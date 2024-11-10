@@ -59,7 +59,7 @@ public class AddUserToGroupController {
         groupsListView.getItems().setAll(groups);
     }
 
-
+    @FXML
     public void handleAddUserToGroup() {
         String username = usernameField.getText();
         String selectedGroup = groupsListView.getSelectionModel().getSelectedItem();
