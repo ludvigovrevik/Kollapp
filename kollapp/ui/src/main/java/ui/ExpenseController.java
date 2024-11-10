@@ -36,9 +36,17 @@ public class ExpenseController {
 
     private User currentUser;
     private UserGroup groupInView;
-    private ExpenseApiHandler expenseApiHandler = new ExpenseApiHandler();
+    private ExpenseApiHandler expenseApiHandler;
     private ObservableList<Expense> expenses = FXCollections.observableArrayList();
+    
+    // Add a constructor that initializes the handler
+    public ExpenseController() {
+        this.expenseApiHandler = new ExpenseApiHandler();
+    }
 
+    public void setExpenseApiHandler(ExpenseApiHandler expenseApiHandler) {
+        this.expenseApiHandler = expenseApiHandler;
+    }
     /**
      * Initializes the ExpenseController with the given user and user group.
      * Sets up the table columns and their cell value factories, including a custom cell factory
@@ -112,6 +120,10 @@ public class ExpenseController {
         }
     }
 
+    public void reloadExpenses() {
+        loadExpenses();
+    }
+
     /**
      * Updates the expenses for the current group in view by calling the expense API handler.
      * If the update is successful, it reloads the expenses from the server.
@@ -172,7 +184,7 @@ public class ExpenseController {
             javafx.scene.Parent root = fxmlLoader.load();
 
             AddNewExpenseController addNewExpenseController = fxmlLoader.getController();
-            addNewExpenseController.initializeController(currentUser, groupInView, this);
+            addNewExpenseController.initializeController(currentUser, groupInView);
 
             javafx.stage.Stage stage = new javafx.stage.Stage();
             stage.setTitle("Add New Expense");

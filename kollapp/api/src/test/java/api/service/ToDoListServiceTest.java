@@ -12,6 +12,7 @@ import org.junit.jupiter.api.io.TempDir;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.stream.Stream;
@@ -237,5 +238,150 @@ public class ToDoListServiceTest {
 
         String expectedMessage = "Failed to load group to-do list for group: " + userGroup.getGroupName();
         assertEquals(expectedMessage, exception.getMessage());
+    }
+
+    
+    @Test
+    @DisplayName("Test constructor initializes properly")
+    @Tag("constructor")
+    void testConstructorInitialization() throws IOException {
+        // Delete directories if they exist
+        if (Files.exists(testToDoListFolderPath)) {
+            deleteDirectory(testToDoListFolderPath);
+        }
+        if (Files.exists(groupTestFolderPath)) {
+            deleteDirectory(groupTestFolderPath);
+        }
+        
+        // Create new instance of ToDoListService
+        ToDoListService newToDoListService = new ToDoListService(
+            testToDoListFolderPath,
+            groupTestFolderPath,
+            userService
+        );
+        
+        // Verify the service is properly initialized by performing an operation
+        // that should create the directory
+        assertDoesNotThrow(() -> {
+            newToDoListService.assignToDoList(user.getUsername());
+            assertTrue(Files.exists(testToDoListFolderPath));
+        });
+        
+        // Verify the todo list was created
+        Path todoListFile = testToDoListFolderPath.resolve(user.getUsername() + ".json");
+        assertTrue(Files.exists(todoListFile));
+    }
+
+    @Test
+    @DisplayName("Test assignToDoList throws exception for non-existent user")
+    @Tag("assign")
+    void testAssignToDoListNonExistentUser() {
+        String nonExistentUsername = "nonExistentUser";
+        
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> toDoListService.assignToDoList(nonExistentUsername)
+        );
+        
+        assertEquals("User not found: " + nonExistentUsername, exception.getMessage());
+        
+        // Verify no file was created
+        Path todoListFile = testToDoListFolderPath.resolve(nonExistentUsername + ".json");
+        assertFalse(Files.exists(todoListFile));
+    }
+
+    @Test
+    @DisplayName("Test loadToDoList throws exception for non-existent user")
+    @Tag("load")
+    void testLoadToDoListNonExistentUser() {
+        String nonExistentUsername = "nonExistentUser";
+        
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> toDoListService.loadToDoList(nonExistentUsername)
+        );
+        
+        assertEquals("User not found: " + nonExistentUsername, exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Test updateToDoList throws exception for non-existent user")
+    @Tag("update")
+    void testUpdateToDoListNonExistentUser() {
+        String nonExistentUsername = "nonExistentUser";
+        ToDoList toDoList = new ToDoList();
+        toDoList.addTask(new Task("Test Task"));
+        
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> toDoListService.updateToDoList(nonExistentUsername, toDoList)
+        );
+        
+        assertEquals("User not found: " + nonExistentUsername, exception.getMessage());
+        
+        // Verify no file was created
+        Path todoListFile = testToDoListFolderPath.resolve(nonExistentUsername + ".json");
+        assertFalse(Files.exists(todoListFile));
+    }
+
+    @Test
+    @DisplayName("Test constructor with null paths")
+    @Tag("constructor")
+    void testConstructorWithNullPaths() {
+        assertThrows(NullPointerException.class, 
+            () -> new ToDoListService(null, groupTestFolderPath, userService));
+            
+        assertThrows(NullPointerException.class, 
+            () -> new ToDoListService(testToDoListFolderPath, null, userService));
+    }
+
+    @Test
+    @DisplayName("Test default constructor initialization")
+    @Tag("constructor")
+    void testDefaultConstructor() throws IOException {
+        // Define default paths
+        Path defaultToDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "todolists")
+                .toAbsolutePath().normalize();
+        Path defaultGroupToDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists")
+                .toAbsolutePath().normalize();
+        Path defaultUserPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "users")
+                .toAbsolutePath().normalize();
+                
+        // Create directories if they don't exist
+        Files.createDirectories(defaultToDoListPath);
+        Files.createDirectories(defaultGroupToDoListPath);
+        Files.createDirectories(defaultUserPath);
+        
+        // Define test user file paths
+        String testUsername = "defaultTestUser";
+        Path userFile = defaultUserPath.resolve(testUsername + ".json");
+        Path todoListFile = defaultToDoListPath.resolve(testUsername + ".json");
+        
+        try {
+            // Save a test user in the default location
+            User testUser = new User(testUsername, "password");
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JavaTimeModule());
+            mapper.writeValue(userFile.toFile(), testUser);
+            
+            // Create service with default constructor
+            ToDoListService defaultService = new ToDoListService();
+            
+            // Verify the service is functional
+            assertDoesNotThrow(() -> {
+                defaultService.assignToDoList(testUser.getUsername());
+            });
+            
+            assertTrue(Files.exists(todoListFile));
+            
+        } finally {
+            // Clean up only the test files, not the directories
+            if (Files.exists(userFile)) {
+                Files.delete(userFile);
+            }
+            if (Files.exists(todoListFile)) {
+                Files.delete(todoListFile);
+            }
+        }
     }
 }

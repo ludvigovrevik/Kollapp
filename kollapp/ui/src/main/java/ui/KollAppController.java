@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 import api.ToDoListApiHandler;
 import api.GroupApiHandler;
-import api.UserApiHandler;
 import core.Task;
 import core.ToDoList;
 import core.User;
@@ -101,7 +100,7 @@ public class KollAppController {
     public void setUser(User user) {
         this.user = user;
         personal.setOnMouseClicked(event -> handleGroupClick(this.user.getUsername()));
-        currentlyViewingPath.setText("Currently Viewing: " + user.getUsername() + " → My Pending Tasks");
+        currentlyViewingPath.setText("Currently Viewing: " + user.getUsername() + " → Pending Tasks");
     }
 
     /**

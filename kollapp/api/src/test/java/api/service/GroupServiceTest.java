@@ -133,4 +133,48 @@ public class GroupServiceTest {
             }
         }
     }
+
+    @Test
+    @DisplayName("Test getting a non-existent group returns empty Optional")
+    @Tag("group")
+    void testGetNonExistentGroup() {
+        String nonExistentGroupName = "nonExistentGroup";
+        
+        Optional<UserGroup> groupOptional = groupService.getGroup(nonExistentGroupName);
+        
+        assertTrue(groupOptional.isEmpty());
+    }
+
+    @Test
+    @DisplayName("Test groupExists returns true for existing group")
+    @Tag("group")
+    void testGroupExistsForExistingGroup() {
+        String groupName = "testGroup";
+        
+        // Create a group first
+        groupService.createGroup(user.getUsername(), groupName);
+        
+        // Verify the group exists
+        assertTrue(groupService.groupExists(groupName));
+    }
+
+    @Test
+    @DisplayName("Test getGroup returns correct group content")
+    @Tag("group")
+    void testGetGroupContent() {
+        String groupName = "testGroup";
+        String username = user.getUsername();
+        
+        // Create a group
+        groupService.createGroup(username, groupName);
+        
+        // Get the group and verify its contents
+        Optional<UserGroup> groupOptional = groupService.getGroup(groupName);
+        
+        assertTrue(groupOptional.isPresent());
+        UserGroup group = groupOptional.get();
+        assertEquals(groupName, group.getGroupName());
+        assertTrue(group.getUsers().contains(username));
+        assertEquals(1, group.getUsers().size());
+    }
 }
