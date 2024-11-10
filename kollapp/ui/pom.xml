@@ -35,6 +35,7 @@
             <groupId>gr2409</groupId>
             <artifactId>api</artifactId>
             <version>${project.version}</version>
+            <classifier>spring-boot</classifier>
             <scope>test</scope>
         </dependency>
 
@@ -200,6 +201,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.5.0</version>
+                <configuration>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                </configuration>
                 <executions>
                     <execution>
                         <phase>package</phase>
