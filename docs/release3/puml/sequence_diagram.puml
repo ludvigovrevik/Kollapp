@@ -6,7 +6,6 @@ skinparam defaultTextAlignment center
 
 left to right direction
 
-' UI Layer on the left
 folder "UI Layer" {
     folder "UI Controllers" {
         class AddNewExpenseController
