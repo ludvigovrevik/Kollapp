@@ -435,9 +435,9 @@ public class KollAppController {
                     Task task = getTableView().getItems().get(getIndex());
     
                     // Set CheckBox state and action
-                    removeCheckBox.setSelected(false); // Unchecked by default
+                    removeCheckBox.setSelected(true); // Checked by default
                     removeCheckBox.setOnAction(event -> {
-                        if (removeCheckBox.isSelected()) {
+                        if (!removeCheckBox.isSelected()) {
                             // Remove task from ToDoList
                             toDoList.removeTask(task);
     

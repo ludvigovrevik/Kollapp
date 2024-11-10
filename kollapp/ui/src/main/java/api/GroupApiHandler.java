@@ -145,8 +145,8 @@ public class GroupApiHandler {
 
     public String validateGroupAssignment(String username, String groupName) {
         String url = "http://localhost:8080/api/v1/groups/validate-assignment?username=" 
-            + URLEncoder.encode(username, StandardCharsets.UTF_8)
-            + "&groupName=" + URLEncoder.encode(groupName, StandardCharsets.UTF_8);
+                        + URLEncoder.encode(username, StandardCharsets.UTF_8)
+                        + "&groupName=" + URLEncoder.encode(groupName, StandardCharsets.UTF_8);
     
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
