@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.LoginController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.LoginController">
    <children>
       <TextField fx:id="usernameField" layoutX="261.0" layoutY="238.0" prefHeight="26.0" prefWidth="242.0" text="" />
       <PasswordField fx:id="passwordField" layoutX="261.0" layoutY="300.0" prefHeight="26.0" prefWidth="242.0" text="" />
@@ -16,9 +16,9 @@
       <Button fx:id="loginButton" layoutX="262.0" layoutY="344.0" mnemonicParsing="false" onAction="#handleLoginButtonAction" prefHeight="26.0" prefWidth="110.0" stylesheets="@css/styles.css" text="Login" />
       <Button fx:id="registerButton" layoutX="394.0" layoutY="344.0" mnemonicParsing="false" onAction="#handleRegisterButtonAction" prefHeight="26.0" prefWidth="109.0" stylesheets="@css/styles.css" text="Register" />
       <Label fx:id="loginErrorMessage" layoutX="260.0" layoutY="390.0" style="-fx-font-size: 16; -fx-text-fill: red;" />
-      <Label layoutX="337.0" layoutY="168.0" prefHeight="42.0" prefWidth="90.0" text="Login">
+      <Label layoutX="345.0" layoutY="168.0" prefHeight="42.0" prefWidth="75.0" style="-fx-font-weight: bold;" text="Login">
          <font>
-            <Font name="SansSerif Bold" size="33.0" />
+            <Font name="SansSerif Bold" size="26.0" />
          </font>
       </Label>
    </children>
