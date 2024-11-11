@@ -134,13 +134,13 @@ public class KollAppController {
      */
     @FXML
     private void handleAddButtonHover() {
-        addButton.setStyle("-fx-background-color: #19743F; -fx-background-radius: 10; -fx-cursor: hand;");
+        addButton.setStyle("-fx-font-size: 17; -fx-background-color: #19743F; -fx-background-radius: 10; -fx-cursor: hand;");
         animateButton(addButton, 1.05);
     }
 
     @FXML
     private void handleAddButtonHoverExit() {
-        addButton.setStyle("-fx-background-color: #27AE60; -fx-background-radius: 10;");
+        addButton.setStyle("-fx-font-size: 16; -fx-background-color: #27AE60; -fx-background-radius: 10;");
         animateButton(addButton, 1.0);
     }
 
