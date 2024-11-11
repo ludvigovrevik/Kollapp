@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -123,11 +124,12 @@ class RegisterGroupControllerTest {
     void testCreateGroup_Success() {
         // Arrange
         String groupName = "NewGroup";
-        List<String> mockGroups = List.of("Group1", "Group2", groupName);
+        List<String> mockGroups = new ArrayList<>(List.of("Group1", "Group2"));
         when(mockUser.getUserGroups()).thenReturn(mockGroups);
 
         // Act
         setGroupNameAndCreateGroup(groupName);
+        mockGroups.add(groupName);
 
         // Assert
         verify(mockGroupApiHandler).createGroup("testUser", groupName);

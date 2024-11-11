@@ -198,9 +198,6 @@ public class UserApiHandler {
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     
-            // Log response code for debugging
-            System.out.println("Response status code: " + response.statusCode());
-            System.out.println("Response body: " + response.body());
     
             return response.statusCode() == 200 || response.statusCode() == 201;
         } catch (IOException | InterruptedException e) {

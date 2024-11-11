@@ -196,7 +196,8 @@ public class ExpenseController {
             loadExpenses();
 
         } catch (java.io.IOException e) {
-            e.printStackTrace();
+            System.err.println("Error: Unable to open the 'Add New Expense' window. Please try again.");
+            System.err.println("Details: " + e.getMessage());
         }
     }
 }

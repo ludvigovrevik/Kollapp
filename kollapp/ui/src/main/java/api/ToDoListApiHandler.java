@@ -13,6 +13,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
+
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
@@ -38,28 +40,31 @@ public class ToDoListApiHandler {
      * @param user the user whose to-do list is to be loaded
      * @return the ToDoList object if successful, null otherwise
      */
-    public ToDoList loadToDoList(User user) {
+    public Optional<ToDoList> loadToDoList(User user) {
         String url = baseUrl + "/" + URLEncoder.encode(user.getUsername(), StandardCharsets.UTF_8);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .GET()
                 .build();
+
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            
+            // Debug information
             System.out.println("Request URL: " + url);
             System.out.println("Response status code: " + response.statusCode());
-            System.out.println("Response body: " + response.body()); // Add this for better debugging
-        
+            System.out.println("Response body: " + response.body());
+
             if (response.statusCode() == 200) {
-                return objectMapper.readValue(response.body(), ToDoList.class);
+                ToDoList toDoList = objectMapper.readValue(response.body(), ToDoList.class);
+                return Optional.of(toDoList);
             } else {
                 System.err.println("Failed to load to-do list. Status code: " + response.statusCode());
-                return null;
+                return Optional.empty();
             }
         } catch (IOException | InterruptedException e) {
             System.err.println("An error occurred while loading the to-do list: " + e.getMessage());
-            e.printStackTrace();
-            return null;
+            return Optional.empty();
         }
     }
 

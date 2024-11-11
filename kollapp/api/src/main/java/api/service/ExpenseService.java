@@ -77,12 +77,13 @@ public class ExpenseService {
     private List<Expense> loadExpensesForGroup(UserGroup group) {
         File file = new File(groupExpensePath + group.getGroupName() + ".json");
         if (!file.exists()) {
-            return new ArrayList<>(); // Return empty list if file doesn't exist
+            System.out.println("Warning: Expense file for group " + group.getGroupName() + " not found.");
+            return new ArrayList<>(); 
         }
         try {
             return mapper.readValue(file, mapper.getTypeFactory().constructCollectionType(List.class, Expense.class));
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error: Failed to load expenses for group " + group.getGroupName() + ". " + e.getMessage());
             return new ArrayList<>();
         }
     }
@@ -106,7 +107,6 @@ public class ExpenseService {
             }
             mapper.writeValue(file, expenses);
         } catch (IOException e) {
-            e.printStackTrace();
             throw new IllegalArgumentException("Failed to save expenses for group: " + group.getGroupName(), e);
         }
     }

@@ -84,11 +84,9 @@ public class UserController {
             return ResponseEntity.ok().build();
         } catch (IllegalArgumentException e) {
             System.err.println("IllegalArgumentException: " + e.getMessage());
-            e.printStackTrace();
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
             System.err.println("Exception: " + e.getMessage());
-            e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
     }
