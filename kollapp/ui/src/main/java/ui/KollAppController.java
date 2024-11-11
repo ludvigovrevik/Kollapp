@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import api.ToDoListApiHandler;
+import api.UserApiHandler;
 import api.GroupApiHandler;
 import core.Task;
 import core.ToDoList;

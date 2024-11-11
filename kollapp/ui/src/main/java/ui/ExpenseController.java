@@ -1,6 +1,5 @@
 package ui;
 
-import api.ExpenseApiHandler;
 import core.Expense;
 import core.User;
 import core.UserGroup;
@@ -12,6 +11,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.List;
+
+import api.ExpenseApiHandler;
 
 public class ExpenseController {
 

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" 
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
@@ -13,12 +14,30 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
+    <properties>
+        <!-- Define base directories for platform-specific JavaFX -->
+        <javafx.platform.base>${project.basedir}/../../javafx-dependencies</javafx.platform.base>
+        
+        <!-- Platform-specific paths -->
+        <javafx.jmods.path.windows>${javafx.platform.base}/windows/javafx-jmods-17.0.13</javafx.jmods.path.windows>
+        <javafx.jmods.path.mac>${javafx.platform.base}/mac/javafx-jmods-17.0.13</javafx.jmods.path.mac>
+        <javafx.jmods.path.linux>${javafx.platform.base}/linux/javafx-jmods-17.0.13</javafx.jmods.path.linux>
+    </properties>
+
     <dependencies>
         <!-- Dependency on core module -->
         <dependency>
             <groupId>gr2409</groupId>
             <artifactId>core</artifactId>
             <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>gr2409</groupId>
+            <artifactId>api</artifactId>
+            <version>${project.version}</version>
+            <classifier>spring-boot</classifier>
+            <scope>test</scope>
         </dependency>
 
         <!-- Dependency on persistence module -->
@@ -31,14 +50,29 @@
         <!-- JavaFX dependencies -->
         <dependency>
             <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
+            <artifactId>javafx-base</artifactId>
+            <version>${javafx.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
+            <version>${javafx.version}</version>
         </dependency>
 
-        <!-- JUnit dependencies -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+
+        <!-- Testing dependencies -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -56,17 +90,18 @@
         </dependency>
 
         <!-- TestFX dependencies -->
-		<dependency>
-			<groupId>org.testfx</groupId>
-			<artifactId>testfx-core</artifactId>
-			<version>4.0.16-alpha</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.testfx</groupId>
-			<artifactId>testfx-junit5</artifactId>
-			<version>4.0.16-alpha</version>
-			<scope>test</scope>
+        <dependency>
+            <groupId>org.testfx</groupId>
+            <artifactId>testfx-core</artifactId>
+            <version>4.0.16-alpha</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testfx</groupId>
+            <artifactId>testfx-junit5</artifactId>
+            <version>4.0.16-alpha</version>
+            <scope>test</scope>
         </dependency>
         
         <!--Monocle-->
@@ -88,28 +123,22 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <!-- Version will be inherited from the parent POM -->
         </dependency>
 
-        <!-- Jackson Core -->
+        <!-- Jackson Dependencies -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.14.0</version>
         </dependency>
 
-        <!-- Jackson Databind -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.14.0</version>
         </dependency>
 
-        <!-- Jackson Datatype JSR310 (Java Time Module) -->
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>2.14.0</version>
         </dependency>
     </dependencies>
 
@@ -124,21 +153,25 @@
                     <reuseForks>false</reuseForks>
                     <argLine>
                         @{jaCoCoArgLine}
+                        --add-reads ui=ALL-UNNAMED
                         --add-opens ui/ui=ALL-UNNAMED
                         --add-opens javafx.graphics/com.sun.glass.ui=ALL-UNNAMED
-                        <!-- This line removes warnings about not opening javafx.applications, but increases runtime -->
                         --add-opens javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
-
+                        --add-opens javafx.base/com.sun.javafx.collections=ALL-UNNAMED
                         --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
                         --add-exports javafx.graphics/com.sun.glass.ui=ALL-UNNAMED
                         --add-exports javafx.graphics/com.sun.javafx.util=ALL-UNNAMED
                         --add-exports javafx.base/com.sun.javafx.logging=ALL-UNNAMED
+                        --add-opens core/core=ALL-UNNAMED
                     </argLine>
-                    <skipTests>${skipTests}</skipTests> <!-- Skip all tests if 'skipTests' is true -->
-                    <excludes>
-                        <!-- Exclude UI tests if 'uiTestExcludePattern' is set -->
-                        <exclude>${uiTestExcludePattern}</exclude>
-                    </excludes>
+                    <skipTests>${skipTests}</skipTests>
+                    <systemPropertyVariables>
+                        <testfx.robot>glass</testfx.robot>
+                        <testfx.headless>true</testfx.headless>
+                        <glass.platform>Monocle</glass.platform>
+                        <monocle.platform>Headless</monocle.platform>
+                        <prism.order>sw</prism.order>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
 
@@ -150,15 +183,183 @@
                 </configuration>
             </plugin>
 
-            <!-- JavaFX Maven Plugin -->
             <plugin>
-                <groupId>org.openjfx</groupId>
-                <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.8</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.0</version>
                 <configuration>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>ui.KollApp</mainClass>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/spring.handlers</resource>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/spring.schemas</resource>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/spring.factories</resource>
+                                </transformer>
+                            </transformers>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                            <artifactSet>
+                                <includes>
+                                    <include>org.openjfx:*</include>
+                                    <include>*:*</include>
+                                </includes>
+                            </artifactSet>
+                            <outputFile>${project.build.directory}/ui-full.jar</outputFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.panteleyev</groupId>
+                <artifactId>jpackage-maven-plugin</artifactId>
+                <version>1.4.0</version>
+                <configuration>
+                    <name>KollApp</name>
+                    <appVersion>1.0.0</appVersion>
+                    <vendor>gr2409</vendor>
+                    <destination>target/dist</destination>
+                    <mainJar>ui-full.jar</mainJar>
                     <mainClass>ui.KollApp</mainClass>
+                    <input>${project.build.directory}</input>
+                    
+                    <modulePaths>
+                        <modulePath>${javafx.jmods.path}</modulePath>
+                        <modulePath>${java.home}/jmods</modulePath>
+                    </modulePaths>
+
+                    <addModules>
+                        <addModule>javafx.controls</addModule>
+                        <addModule>javafx.fxml</addModule>
+                        <addModule>javafx.graphics</addModule>
+                        <addModule>javafx.base</addModule>
+                        <addModule>java.sql</addModule>
+                        <addModule>java.naming</addModule>
+                        <addModule>java.xml</addModule>
+                        <addModule>jdk.unsupported</addModule>
+                        <addModule>java.net.http</addModule>
+                    </addModules>
+                    
+                    <javaOptions>
+                        <option>--add-opens</option>
+                        <option>javafx.graphics/com.sun.javafx.application=ALL-UNNAMED</option>
+                        <option>--add-opens</option>
+                        <option>javafx.controls/com.sun.javafx.scene.control=ALL-UNNAMED</option>
+                        <option>--add-opens</option>
+                        <option>javafx.graphics/com.sun.javafx.stage=ALL-UNNAMED</option>
+                        <option>--add-opens</option>
+                        <option>javafx.base/com.sun.javafx.collections=ALL-UNNAMED</option>
+                    </javaOptions>
+
+                    <verbose>true</verbose>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <!-- Windows profile -->
+        <profile>
+            <id>windows</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                </os>
+            </activation>
+            <properties>
+                <javafx.jmods.path>${javafx.jmods.path.windows}</javafx.jmods.path>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.panteleyev</groupId>
+                        <artifactId>jpackage-maven-plugin</artifactId>
+                        <configuration>
+                            <type>EXE</type>
+                            <winMenu>true</winMenu>
+                            <winDirChooser>true</winDirChooser>
+                            <winShortcut>true</winShortcut>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- macOS profile -->
+        <profile>
+            <id>mac</id>
+            <activation>
+                <os>
+                    <family>mac</family>
+                </os>
+            </activation>
+            <properties>
+                <javafx.jmods.path>${javafx.jmods.path.mac}</javafx.jmods.path>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.panteleyev</groupId>
+                        <artifactId>jpackage-maven-plugin</artifactId>
+                        <configuration>
+                            <type>DMG</type>
+                            <macPackageIdentifier>com.gr2409.kollapp</macPackageIdentifier>
+                            <macPackageName>KollApp</macPackageName>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Linux profile -->
+        <profile>
+            <id>linux</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                    <name>linux</name>
+                </os>
+            </activation>
+            <properties>
+                <javafx.jmods.path>${javafx.jmods.path.linux}</javafx.jmods.path>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.panteleyev</groupId>
+                        <artifactId>jpackage-maven-plugin</artifactId>
+                        <configuration>
+                            <type>DEB</type>
+                            <linuxPackageName>kollapp</linuxPackageName>
+                            <linuxMenuGroup>Development</linuxMenuGroup>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

@@ -40,8 +40,8 @@ public class GroupService {
     @Autowired
     public GroupService() {
         this(
-            Paths.get("..", "persistence", "src", "main", "java", "persistence", "groups").toAbsolutePath().normalize(),
-            Paths.get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists").toAbsolutePath().normalize(),
+                Paths.get("..", "persistence", "src", "main", "java", "persistence", "groups").toAbsolutePath().normalize(),
+                Paths.get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists").toAbsolutePath().normalize(),
             new UserService()
         );
     }

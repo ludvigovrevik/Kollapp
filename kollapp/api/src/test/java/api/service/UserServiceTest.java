@@ -25,42 +25,26 @@ import org.junit.jupiter.api.io.TempDir;
  */
 @Tag("unit")
 public class UserServiceTest {
-
-    private UserService userService;
-    private User user;
-    private String originalUserPath;
-
     @TempDir
     Path tempDir;
-
+    
     private Path userPath;
+    private UserService userService;
+    private User user;
 
-    /**
-     * Sets up the test environment by initializing paths and creating necessary directories.
-     */
     @BeforeEach
     public void setUp() throws IOException {
+        // Create users directory in temp directory
         this.userPath = tempDir.resolve("users");
-
         Files.createDirectories(userPath);
 
+        // Initialize service with test directory
         this.userService = new UserService();
-        // Store the original path
-        originalUserPath = (String) ReflectionTestUtils.getField(userService, "userPath");
-        // Set the temporary directory for testing
         ReflectionTestUtils.setField(userService, "userPath", userPath.toString() + File.separator);
 
+        // Create test user
         user = new User("testUser1", "password123");
-        userService.saveUser(user);   // Ensure that this saves to the correct path
-    }
-
-    /**
-     * Cleans up the test environment by restoring original path.
-     */
-    @AfterEach
-    public void tearDown() throws IOException {
-        // Restore the original path
-        ReflectionTestUtils.setField(userService, "userPath", originalUserPath);
+        userService.saveUser(user);
     }
 
     /**
