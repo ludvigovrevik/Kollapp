@@ -4,17 +4,28 @@ stages:
   - build
   - test
 
+before_script:
+  # Install required dependencies for JavaFX and UI testing
+  - apk add --no-cache gtk+3.0 
+  - apk add --no-cache xvfb
+  - apk add --no-cache fontconfig
+  - apk add --no-cache ttf-dejavu
+  - apk add --no-cache dbus
+  - apk add --no-cache mesa-gl
+  # Install xvfb-run
+  - apk add --no-cache xvfb-run
+
 maven-build:
   stage: build
   script:
     - echo "Building the project..."
     - cd kollapp
-    - mvn clean install -DskipTests -DskipUITests
+    - mvn clean install -DskipTests
     - mvn compile
 
 maven-test:
   stage: test
   script:
-    - echo "Running tests..."
+    - echo "Running all tests including UI tests..."
     - cd kollapp
-    - mvn test -DskipUITests=true
+    - xvfb-run --server-args="-screen 0 1280x1024x24" mvn test

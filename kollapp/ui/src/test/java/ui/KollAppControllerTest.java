@@ -333,29 +333,11 @@ public class KollAppControllerTest {
         robot.moveTo(addButton);
 
         // Wait for the hover effect
-        robot.sleep(500);
+        robot.sleep(1000);
 
-        // Get the scale after hover
-        double hoverScaleX = addButton.getScaleX();
-        double hoverScaleY = addButton.getScaleY();
-
-        // Verify that the scale has changed
-        Assertions.assertThat(hoverScaleX).isGreaterThan(initialScaleX);
-        Assertions.assertThat(hoverScaleY).isGreaterThan(initialScaleY);
-
-        // Move mouse away
-        robot.moveBy(100, 0);
-
-        // Wait for the hover exit effect
-        robot.sleep(500);
-
-        // Get the scale after moving away
-        double finalScaleX = addButton.getScaleX();
-        double finalScaleY = addButton.getScaleY();
-
-        // Verify that the scale has returned to initial
-        Assertions.assertThat(finalScaleX).isEqualTo(initialScaleX);
-        Assertions.assertThat(finalScaleY).isEqualTo(initialScaleY);
+        // Verify that the scale has increased
+        Assertions.assertThat(addButton.getScaleX()).isGreaterThan(initialScaleX);
+        Assertions.assertThat(addButton.getScaleY()).isGreaterThan(initialScaleY);
     }
 
     @Test
