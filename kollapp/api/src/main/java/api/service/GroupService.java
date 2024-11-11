@@ -59,7 +59,7 @@ public class GroupService {
     public GroupService(Path groupPath, Path groupToDoListPath, UserService userService) {
         this.groupPath = groupPath;
         this.groupToDoListPath = groupToDoListPath;
-        this.userService = userService;
+        this.userService = new UserService(Paths.get(userService.getUserPath()));
         this.mapper = new ObjectMapper();
         this.mapper.registerModule(new JavaTimeModule());
     }

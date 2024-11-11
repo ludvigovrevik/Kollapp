@@ -215,4 +215,9 @@ public class UserService {
         File file = new File(userPath + username + ".json");
         return file.exists();
     }
+
+    public String getUserPath() {
+        return this.userPath;
+    }
+    
 }
