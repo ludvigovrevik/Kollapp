@@ -33,7 +33,7 @@ import ui.api.UserApiHandler;
  */
 @ExtendWith(ApplicationExtension.class)
 @Tag("ui")
-public class AddUserToGroupControllerIT {
+public class AddUserToGroupControllerTest {
 
     private AddUserToGroupController controller;
     private UserApiHandler mockUserApiHandler;

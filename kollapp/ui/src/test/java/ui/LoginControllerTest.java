@@ -29,7 +29,7 @@ import javafx.stage.Stage;
  */
 @ExtendWith(ApplicationExtension.class)
 @Tag("ui")
-public class LoginControllerIT {
+public class LoginControllerTest {
     
     private UserApiHandler mockUserHandler;
 

@@ -34,7 +34,7 @@ import javafx.stage.Stage;
  */
 @ExtendWith(ApplicationExtension.class)
 @Tag("ui")
-public class AddNewTaskControllerIT {
+public class AddNewTaskControllerTest {
 
     private ToDoList mockToDoList;
     private KollAppController mockKollAppController;
