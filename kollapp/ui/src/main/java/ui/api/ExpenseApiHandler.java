@@ -29,7 +29,7 @@ public class ExpenseApiHandler {
         this.objectMapper = new ObjectMapper();
         this.objectMapper.registerModule(new JavaTimeModule());
     }
-
+    
     protected HttpClient createHttpClient() {
         return HttpClient.newHttpClient();
     }

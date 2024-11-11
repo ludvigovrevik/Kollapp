@@ -84,6 +84,10 @@ public class Message implements Serializable {
         return timestamp;
     }
 
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

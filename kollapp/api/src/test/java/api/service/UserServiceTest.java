@@ -170,4 +170,105 @@ public class UserServiceTest {
 
         assertFalse(userService.userExists("nonExistingUser"));
     }
+
+    @Test
+    @DisplayName("Test assign group to user and update user")
+    @Tag("update")
+    void testAssignGroupToUser() throws IOException {
+        // Assign a group to the user
+        String groupName = "testGroup";
+        userService.assignGroupToUser(user.getUsername(), groupName);
+        
+        // Retrieve the updated user and verify the group was added
+        Optional<User> updatedUserOpt = userService.getUser(user.getUsername());
+        assertTrue(updatedUserOpt.isPresent());
+        User updatedUser = updatedUserOpt.get();
+        assertTrue(updatedUser.getUserGroups().contains(groupName));
+        
+        // Test assigning group to non-existent user
+        String nonExistentUser = "nonExistentUser";
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> userService.assignGroupToUser(nonExistentUser, groupName)
+        );
+        assertEquals("User not found", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Test removing a user")
+    @Tag("remove")
+    void testRemoveUser() throws IOException {
+        // Verify user exists before removal
+        assertTrue(userService.userExists(user.getUsername()));
+        
+        // Remove the user
+        userService.removeUser(user.getUsername());
+        
+        // Verify user no longer exists
+        assertFalse(userService.userExists(user.getUsername()));
+        
+        // Verify user file is actually deleted
+        Path userFilePath = userPath.resolve(user.getUsername() + ".json");
+        assertFalse(Files.exists(userFilePath));
+        
+        // Test removing non-existent user (should not throw exception)
+        assertDoesNotThrow(() -> userService.removeUser("nonExistentUser"));
+    }
+
+    @Test
+    @DisplayName("Test multiple group assignments and edge cases")
+    @Tag("groups")
+    void testMultipleGroupAssignments() throws IOException {
+        // Assign multiple groups
+        String[] groupNames = {"group1", "group2", "group3"};
+        
+        for (String groupName : groupNames) {
+            userService.assignGroupToUser(user.getUsername(), groupName);
+        }
+        
+        // Verify all groups were assigned
+        Optional<User> updatedUserOpt = userService.getUser(user.getUsername());
+        assertTrue(updatedUserOpt.isPresent());
+        User updatedUser = updatedUserOpt.get();
+        
+        for (String groupName : groupNames) {
+            assertTrue(updatedUser.getUserGroups().contains(groupName));
+        }
+        
+        // Verify assigning same group twice doesn't create duplicate
+        userService.assignGroupToUser(user.getUsername(), groupNames[0]);
+        updatedUserOpt = userService.getUser(user.getUsername());
+        assertTrue(updatedUserOpt.isPresent());
+        assertEquals(3, updatedUserOpt.get().getUserGroups().size());
+        
+        // Test with null group name
+        assertThrows(IllegalArgumentException.class, 
+            () -> userService.assignGroupToUser(user.getUsername(), null));
+    }
+
+    @Test
+    @DisplayName("Test constructor with custom path")
+    @Tag("constructor")
+    void testCustomPathConstructor() throws Exception {
+        // Create a new temporary directory for this test
+        Path customPath = tempDir.resolve("customUsers");
+        Files.createDirectories(customPath);
+        
+        // Create service with custom path
+        UserService customUserService = new UserService(customPath);
+        
+        // Test the service by saving and retrieving a user
+        User testUser = new User("customUser", "password123");
+        customUserService.saveUser(testUser);
+        
+        // Verify user file was created in correct location
+        Path userFilePath = customPath.resolve(testUser.getUsername() + ".json");
+        assertTrue(Files.exists(userFilePath));
+        
+        // Verify we can retrieve the user
+        assertTrue(customUserService.userExists(testUser.getUsername()));
+        Optional<User> loadedUser = customUserService.loadUser(testUser.getUsername(), "password123");
+        assertTrue(loadedUser.isPresent());
+        assertEquals(testUser.getUsername(), loadedUser.get().getUsername());
+    }
 }

@@ -59,7 +59,8 @@ public class AddUserToGroupController {
         groupsListView.getItems().setAll(groups);
     }
 
-
+    // Modified handleAddUserToGroup method in your UI controller
+    @FXML
     public void handleAddUserToGroup() {
         String username = usernameField.getText();
         String selectedGroup = groupsListView.getSelectionModel().getSelectedItem();
@@ -70,9 +71,10 @@ public class AddUserToGroupController {
         }
 
         try {
-            // Check if user exists
-            if (!userApiHandler.userExists(username)) {
-                setFeedback("User does not exist.", true);
+            // Validate the group assignment
+            String validationError = groupApiHandler.validateGroupAssignment(username, selectedGroup);
+            if (validationError != null) {
+                setFeedback(validationError, true);
                 return;
             }
 

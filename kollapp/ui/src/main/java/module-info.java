@@ -12,4 +12,5 @@ module ui {
     opens ui to javafx.graphics, javafx.fxml, api;
 
     exports ui;
+    exports api;
 }

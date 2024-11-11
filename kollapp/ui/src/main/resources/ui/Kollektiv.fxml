@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="565.0" prefWidth="804.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.KollAppController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="565.0" prefWidth="804.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.KollAppController">
    <children>
       <Label fx:id="currentlyViewingPath" layoutX="245.0" layoutY="440.0" prefHeight="28.0" prefWidth="317.0" text="" textFill="#7aadff">
          <font>
@@ -53,12 +53,12 @@
               <TableColumn fx:id="checkBoxColumn" prefWidth="28.51043701171875" resizable="false" sortable="false" text="✓" />
           </columns>
       </TableView>
-      <Label fx:id="completedLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="654.0" layoutY="453.0" prefHeight="26.0" prefWidth="125.0" style="-fx-background-color: #7aadff; -fx-background-radius: 10;" styleClass="completedTask-label" stylesheets="@css/styles.css" text="Completed tasks" textFill="WHITE">
+      <Label fx:id="completedLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="654.0" layoutY="453.0" prefHeight="26.0" prefWidth="125.0" style="-fx-background-color: #7aadff; -fx-background-radius: 10;" styleClass="completedTask-label" stylesheets="@css/styles.css" text="Completed Tasks" textFill="WHITE">
          <font>
             <Font name="Microsoft Sans Serif" size="13.0" />
          </font>
       </Label>
-      <Button layoutX="11.0" layoutY="520.0" mnemonicParsing="false" onAction="#logOut" prefHeight="28.0" prefWidth="79.0" styleClass="signOut-label" stylesheets="@css/styles.css" text="Sign out" />
+      <Button fx:id="logoutButton" layoutX="11.0" layoutY="520.0" mnemonicParsing="false" onAction="#logOut" prefHeight="28.0" prefWidth="79.0" styleClass="signOut-label" stylesheets="@css/styles.css" text="Sign out" />
       <Pane fx:id= "groupOptionsPane" layoutX="11.0" layoutY="416.0" prefHeight="88.0" prefWidth="207.0" style="-fx-background-color: #e8e8e8; -fx-background-radius: 10;">
          <children> 
             <Button fx:id="openExpenseButton" layoutX="9.0" layoutY="51.0" mnemonicParsing="false" onAction="#showExpense" prefHeight="26.0" prefWidth="187.0" styleClass="openExpense-label" stylesheets="@css/styles.css" text="Show expenses" textFill="WHITE" />

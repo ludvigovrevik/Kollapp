@@ -5,7 +5,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
-
+import api.ToDoListApiHandler;
+import api.GroupApiHandler;
 import core.Task;
 import core.ToDoList;
 import core.User;
@@ -102,7 +103,7 @@ public class KollAppController {
     public void setUser(User user) {
         this.user = user;
         personal.setOnMouseClicked(event -> handleGroupClick(this.user.getUsername()));
-        currentlyViewingPath.setText("Currently Viewing: " + user.getUsername() + " → My Pending Tasks");
+        currentlyViewingPath.setText("Currently Viewing: " + user.getUsername() + " → Pending Tasks");
     }
 
     /**
@@ -437,9 +438,9 @@ public class KollAppController {
                     Task task = getTableView().getItems().get(getIndex());
     
                     // Set CheckBox state and action
-                    removeCheckBox.setSelected(false); // Unchecked by default
+                    removeCheckBox.setSelected(true); // Checked by default
                     removeCheckBox.setOnAction(event -> {
-                        if (removeCheckBox.isSelected()) {
+                        if (!removeCheckBox.isSelected()) {
                             // Remove task from ToDoList
                             toDoList.removeTask(task);
     
