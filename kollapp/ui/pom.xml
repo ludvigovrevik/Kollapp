@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" 
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
@@ -49,14 +50,29 @@
         <!-- JavaFX dependencies -->
         <dependency>
             <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
+            <artifactId>javafx-base</artifactId>
+            <version>${javafx.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
+            <version>${javafx.version}</version>
         </dependency>
 
-        <!-- JUnit dependencies -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+
+        <!-- Testing dependencies -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -74,18 +90,18 @@
         </dependency>
 
         <!-- TestFX dependencies -->
-		<dependency>
-			<groupId>org.testfx</groupId>
-			<artifactId>testfx-core</artifactId>
-			<version>4.0.16-alpha</version>
-			<scope>test</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.testfx</groupId>
+            <artifactId>testfx-core</artifactId>
+            <version>4.0.16-alpha</version>
+            <scope>test</scope>
+        </dependency>
 
-		<dependency>
-			<groupId>org.testfx</groupId>
-			<artifactId>testfx-junit5</artifactId>
-			<version>4.0.16-alpha</version>
-			<scope>test</scope>
+        <dependency>
+            <groupId>org.testfx</groupId>
+            <artifactId>testfx-junit5</artifactId>
+            <version>4.0.16-alpha</version>
+            <scope>test</scope>
         </dependency>
         
         <!--Monocle-->
@@ -109,54 +125,20 @@
             <artifactId>mockito-core</artifactId>
         </dependency>
 
-        <!-- Jackson Core -->
+        <!-- Jackson Dependencies -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
         </dependency>
 
-        <!-- Jackson Databind: Core Jackson library for converting Java objects to/from JSON format -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
 
-        <!-- Jackson Datatype JSR310: Adds support for Java 8 Date and Time API types (e.g., LocalDate) when using Jackson -->
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-        </dependency>
-
-        <!-- JavaFX Base: Provides the base components of JavaFX for creating desktop applications -->
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-base</artifactId>
-            <version>${javafx.version}</version>
-            <classifier>win</classifier> <!-- Specifies Windows-specific binaries -->
-        </dependency>
-
-        <!-- JavaFX Controls: Includes JavaFX UI controls (e.g., buttons, text fields) for building the application's user interface -->
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>${javafx.version}</version>
-            <classifier>win</classifier> <!-- Specifies Windows-specific binaries -->
-        </dependency>
-
-        <!-- JavaFX FXML: Provides FXML support for JavaFX, allowing UI structure to be defined in XML -->
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
-            <version>${javafx.version}</version>
-            <classifier>win</classifier> <!-- Specifies Windows-specific binaries -->
-        </dependency>
-
-        <!-- JavaFX Graphics: Contains the core graphics components for JavaFX, such as rendering graphics and handling media -->
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-graphics</artifactId>
-            <version>${javafx.version}</version>
-            <classifier>win</classifier> <!-- Specifies Windows-specific binaries -->
         </dependency>
     </dependencies>
 
@@ -183,9 +165,13 @@
                         --add-opens core/core=ALL-UNNAMED
                     </argLine>
                     <skipTests>${skipTests}</skipTests>
-                    <excludes>
-                        <exclude>${uiTestExcludePattern}</exclude>
-                    </excludes>
+                    <systemPropertyVariables>
+                        <testfx.robot>glass</testfx.robot>
+                        <testfx.headless>true</testfx.headless>
+                        <glass.platform>Monocle</glass.platform>
+                        <monocle.platform>Headless</monocle.platform>
+                        <prism.order>sw</prism.order>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
 
@@ -198,7 +184,6 @@
             </plugin>
 
             <plugin>
-                <!-- Create fat JAR with all dependencies -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.5.0</version>
@@ -250,7 +235,6 @@
             </plugin>
 
             <plugin>
-                <!-- Create jpackage installer -->
                 <groupId>org.panteleyev</groupId>
                 <artifactId>jpackage-maven-plugin</artifactId>
                 <version>1.4.0</version>
@@ -263,13 +247,11 @@
                     <mainClass>ui.KollApp</mainClass>
                     <input>${project.build.directory}</input>
                     
-                    <!-- Module configuration -->
                     <modulePaths>
                         <modulePath>${javafx.jmods.path}</modulePath>
                         <modulePath>${java.home}/jmods</modulePath>
                     </modulePaths>
 
-                    <!-- Specify which modules to add -->
                     <addModules>
                         <addModule>javafx.controls</addModule>
                         <addModule>javafx.fxml</addModule>
@@ -282,7 +264,6 @@
                         <addModule>java.net.http</addModule>
                     </addModules>
                     
-                    <!-- JavaFX configuration -->
                     <javaOptions>
                         <option>--add-opens</option>
                         <option>javafx.graphics/com.sun.javafx.application=ALL-UNNAMED</option>
@@ -294,53 +275,11 @@
                         <option>javafx.base/com.sun.javafx.collections=ALL-UNNAMED</option>
                     </javaOptions>
 
-                    <!-- Enable verbose output for debugging -->
                     <verbose>true</verbose>
                 </configuration>
             </plugin>
 
             <plugin>
-                <!-- Maven Failsafe Plugin: Used for running integration tests that end with *IT.java -->
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.1.2</version>
-                <configuration>
-                    <includes>
-                        <include>**/*IT.java</include>
-                    </includes>
-                    <argLine>
-                        @{jaCoCoArgLine}
-                        --add-modules javafx.controls,javafx.fxml
-                        --add-opens javafx.graphics/com.sun.javafx.application=ALL-UNNAMED 
-                        --add-opens javafx.controls/com.sun.javafx.scene.control=ALL-UNNAMED 
-                        --add-opens javafx.graphics/com.sun.javafx.stage=ALL-UNNAMED
-                        --add-opens javafx.base/com.sun.javafx.collections=ALL-UNNAMED
-                        --add-opens javafx.graphics/com.sun.glass.ui=ALL-UNNAMED
-                        --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
-                        --add-exports javafx.graphics/com.sun.glass.ui=ALL-UNNAMED
-                        --add-exports javafx.graphics/com.sun.javafx.util=ALL-UNNAMED
-                        --add-exports javafx.base/com.sun.javafx.logging=ALL-UNNAMED
-                    </argLine>
-                    <systemPropertyVariables>
-                        <testfx.robot>glass</testfx.robot>
-                        <testfx.headless>true</testfx.headless>
-                        <glass.platform>Monocle</glass.platform>
-                        <monocle.platform>Headless</monocle.platform>
-                        <prism.order>sw</prism.order>
-                    </systemPropertyVariables>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <!-- Exec Maven Plugin: Manages starting and stopping the API during integration testing -->
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.1.0</version>
@@ -369,15 +308,10 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <executable>cmd</executable>
+                            <executable>sh</executable>
                             <arguments>
-                                <argument>/c</argument>
-                                <argument>wmic</argument>
-                                <argument>process</argument>
-                                <argument>where</argument>
-                                <argument>"commandline like '%api-${project.version}-spring-boot.jar%'"</argument>
-                                <argument>call</argument>
-                                <argument>terminate</argument>
+                                <argument>-c</argument>
+                                <argument>pkill -f "api-${project.version}-spring-boot.jar"</argument>
                             </arguments>
                             <successCodes>
                                 <successCode>0</successCode>
@@ -390,7 +324,6 @@
             </plugin>
 
             <plugin>
-                <!-- Maven Antrun Plugin: Waits for the API to start before proceeding with integration tests -->
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>3.1.0</version>
                 <executions>
@@ -416,11 +349,13 @@
     </build>
 
     <profiles>
-        <!-- Windows-specific profile -->
+        <!-- Windows profile -->
         <profile>
-            <id>package-windows</id>
+            <id>windows</id>
             <activation>
-                <os><family>windows</family></os>
+                <os>
+                    <family>windows</family>
+                </os>
             </activation>
             <properties>
                 <javafx.jmods.path>${javafx.jmods.path.windows}</javafx.jmods.path>
@@ -441,11 +376,13 @@
             </build>
         </profile>
 
-        <!-- macOS-specific profile -->
+        <!-- macOS profile -->
         <profile>
-            <id>package-mac</id>
+            <id>mac</id>
             <activation>
-                <os><family>mac</family></os>
+                <os>
+                    <family>mac</family>
+                </os>
             </activation>
             <properties>
                 <javafx.jmods.path>${javafx.jmods.path.mac}</javafx.jmods.path>
@@ -465,11 +402,14 @@
             </build>
         </profile>
 
-        <!-- Linux-specific profile -->
+        <!-- Linux profile -->
         <profile>
-            <id>package-linux</id>
+            <id>linux</id>
             <activation>
-                <os><family>unix</family></os>
+                <os>
+                    <family>unix</family>
+                    <name>linux</name>
+                </os>
             </activation>
             <properties>
                 <javafx.jmods.path>${javafx.jmods.path.linux}</javafx.jmods.path>
