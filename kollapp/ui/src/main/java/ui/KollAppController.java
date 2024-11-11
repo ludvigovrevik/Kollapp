@@ -162,7 +162,12 @@ public class KollAppController {
      * @param user The user whose to-do list is to be displayed
      */
     public void initializeToDoList(User user) {
-        this.toDoList = toDoListApiHandler.loadToDoList(user);
+        Optional<ToDoList> loadedList = toDoListApiHandler.loadToDoList(user);
+        if (loadedList.isPresent()) {
+            this.toDoList = loadedList.get();
+        } else {
+            this.toDoList = new ToDoList();
+        }
         this.user = user;
         updateTableView();
     }
@@ -475,7 +480,7 @@ public class KollAppController {
     public void changeCurrentTaskView(String taskOwner) {
         if (taskOwner.equals(this.user.getUsername())) {
             groupInView = null;
-            this.toDoList = toDoListApiHandler.loadToDoList(this.user);
+            this.toDoList = toDoListApiHandler.loadToDoList(this.user).get();
         } else {
             Optional<UserGroup> groupOptional = groupApiHandler.getGroup(taskOwner);
 

@@ -136,8 +136,8 @@ public class GroupChatControllerTest {
             WaitForAsyncUtils.waitForFxEvents();
 
         } catch (Exception e) {
-            e.printStackTrace();
             fail("Failed to start application: " + e.getMessage());
+            throw new RuntimeException("Application start failed", e); 
         }
     }
 

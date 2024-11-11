@@ -86,11 +86,9 @@ public class AddNewTaskController {
             if (groupInView != null) {
                 // Add task to the group's to-do list
                 toDoListApiHandler.updateGroupToDoList(groupInView, toDoList);
-                System.out.println("Updated to-do list for group: " + groupInView.getGroupName());
             } else {
                 // Add task to the user's personal to-do list
                 toDoListApiHandler.updateToDoList(user, toDoList);
-                System.out.println("Updated to-do list for user: " + user.getUsername());
             }
             kollAppController.updateTableView();
 

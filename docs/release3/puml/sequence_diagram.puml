@@ -1,83 +1,28 @@
-@startuml KollApp Improved Architecture Diagram
+@startuml
+actor User
 
-skinparam linetype ortho
-skinparam packageStyle rectangle
-skinparam defaultTextAlignment center
+participant "UI Layer" as UI
+participant "Controllers" as Controllers
+participant "Client API Handlers" as APIHandlers
+participant "Server API Controller" as APIController
+participant "Service Layer" as Services
+participant "Persistence Layer" as Persistence
+participant "Core Layer" as Core
 
-left to right direction
 
-folder "UI Layer" {
-    folder "UI Controllers" {
-        class AddNewExpenseController
-        class AddNewTaskController
-        class AddUserToGroupController
-        class ExpenseController_UI
-        class GroupChatController_UI
-        class KollAppController
-        class LoginController
-        class RegisterController
-        class RegisterGroupController
-    }
+User -> UI : Interacts with UI
+UI -> Controllers : Handle user requests
+Controllers -> APIHandlers : Business logic requests
+APIHandlers -> APIController : HTTP Requests
+APIController -> Services : Invoke business logic
+Persistence --> Services : Read data
+Services <- Core : Use classes and logic
+Services -> Persistence : Create/Update/Delete data
+Services --> APIController : Business logic result
+APIHandlers <-- APIController : HTTP Response
+APIHandlers --> Controllers : Business logic result
 
-    folder "API Handlers" {
-        class ExpenseApiHandler
-        class GroupApiHandler
-        class GroupChatApiHandler
-        class ToDoListApiHandler
-        class UserApiHandler
-    }
-}
-
-' Centralized Core Layer
-folder "Core Layer" {
-    class Expense
-    class GroupChat
-    class Message
-    class Settlement
-    class Task
-    class ToDoList
-    class User
-    class UserGroup
-}
-
-' Server API on the right
-folder "Server API" {
-    folder "API Controller Layer" {
-        class ExpenseController
-        class GroupChatController
-        class GroupController
-        class ToDoListController
-        class UserController
-    }
-
-    folder "Service Layer" {
-        class ExpenseService
-        class GroupChatService
-        class GroupService
-        class ToDoListService
-        class UserService
-    }
-
-    folder "Persistence Layer" {
-        class ExpensesPersistence
-        class GroupChatPersistence
-        class GroupExpensesPersistence
-        class GroupsPersistence
-        class GroupToDoListsPersistence
-        class ToDoListsPersistence
-        class UsersPersistence
-    }
-}
-
-' Define relationships with clear directions to avoid arrow crossing
-"UI Controllers" --> "API Handlers" : Interacts with
-"API Handlers" -down-> "API Controller Layer" : HTTP Requests
-"API Controller Layer" -left-> "Service Layer" : Delegates Logic
-"Service Layer" -down-> "Persistence Layer" : Adjusts JSON Files
-
-' Core Layer connections positioned centrally
-"UI Controllers" -right-> "Core Layer" : Uses Model
-"Service Layer" -left-> "Core Layer" : Uses Model
-"Persistence Layer" -up-> "Core Layer" : Stores JSON Files
+Controllers --> UI : Update UI
+UI --> User : Display results
 
 @enduml

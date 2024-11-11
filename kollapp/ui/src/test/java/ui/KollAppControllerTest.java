@@ -19,8 +19,11 @@ import org.testfx.assertions.api.Assertions;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
+import api.GroupChatApiHandler;
 import api.GroupApiHandler;
 import api.ToDoListApiHandler;
+import core.GroupChat;
+import core.Message;
 import core.Task;
 import core.ToDoList;
 import core.User;
@@ -45,7 +48,7 @@ import javafx.stage.Window;
 @Tag("ui")
 public class KollAppControllerTest {
 
-     // Headless mode is enabled
+    // Headless mode is enabled
     static private boolean headless = true;
 
     /**
@@ -60,7 +63,6 @@ public class KollAppControllerTest {
     static void setupHeadlessMode() {
         if(headless){
             System.setProperty("testfx.headless", "true");
-
             System.setProperty("java.awt.headless", "true");
             System.setProperty("prism.order", "sw");
             System.setProperty("prism.text", "t2k");
@@ -94,7 +96,7 @@ public class KollAppControllerTest {
         ToDoListApiHandler mockApiHandler = mock(ToDoListApiHandler.class);
         ToDoList toDoList = new ToDoList();
         toDoList.addTask(new Task("Test Task", LocalDate.now(), "Test Description", "High"));
-        when(mockApiHandler.loadToDoList(any(User.class))).thenReturn(toDoList);
+        when(mockApiHandler.loadToDoList(any(User.class))).thenReturn(Optional.of(toDoList));
 
         // Mock the GroupApiHandler
         GroupApiHandler mockGroupApiHandler = mock(GroupApiHandler.class);
@@ -125,7 +127,6 @@ public class KollAppControllerTest {
         stage.setScene(new Scene(root));
         stage.show();
     }
-
 
     /**
      * Verifies that the "+" button is present and has the correct text.
@@ -456,5 +457,4 @@ public class KollAppControllerTest {
         // Verify the task is removed
         Assertions.assertThat(tableView.getItems()).hasSize(0);
     }
-    
 }

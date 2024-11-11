@@ -6,10 +6,7 @@ import core.ToDoList;
 import core.User;
 import core.UserGroup;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.File;
 import java.io.IOException;
@@ -152,25 +149,26 @@ public class GroupService {
     }
 
     public String validateGroupAssignment(String username, String groupName) {
-    // Validate if user exists
-    if (!userService.userExists(username)) {
-        return "User does not exist";
-    }
+        // Validate if user exists
+        if (!userService.userExists(username)) {
+            return "User does not exist";
+        }
 
-    // Validate if group exists
-    if (!groupExists(groupName)) {
-        return "Group does not exist";
-    }
+        // Validate if group exists
+        if (!groupExists(groupName)) {
+            return "Group does not exist";
+        }
 
-    // Get the group
-    UserGroup userGroup = getGroup(groupName)
-            .orElseThrow(() -> new IllegalArgumentException("Group not found: " + groupName));
+        // Get the group
+        UserGroup userGroup = getGroup(groupName)
+                .orElseThrow(() -> new IllegalArgumentException("Group not found: " + groupName));
 
-    // Check if user is already in the group
-    if (userGroup.getUsers().contains(username)) {
-        return "User is already a member of this group";
-    }
+        // Check if user is already in the group
+        if (userGroup.getUsers().contains(username)) {
+            return "User is already a member of this group";
+        }
 
-    return null; // null indicates no validation errors
+        // No error message
+        return "";
     }   
 }

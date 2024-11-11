@@ -1,0 +1,129 @@
+@startuml KollApp Core Layer Class Diagram
+
+skinparam linetype ortho
+skinparam packageStyle rectangle
+skinparam defaultTextAlignment center
+
+left to right direction
+
+class Expense {
+    -description: String
+    -amount: double
+    -paidBy: String
+    -participants: List<String>
+    -settlements: List<Settlement>
+    +Expense()
+    +Expense(description: String, amount: double, paidBy: String, participants: List<String>)
+    +getDescription(): String
+    +setDescription(description: String)
+    +getAmount(): double
+    +setAmount(amount: double)
+    +getPaidBy(): String
+    +setPaidBy(paidBy: String)
+    +getParticipants(): List<String>
+    +setParticipants(participants: List<String>)
+    +getSettlements(): List<Settlement>
+    +setSettlements(settlements: List<Settlement>)
+    +getSharePerPerson(): double
+    +isFullySettled(): boolean
+    +settleParticipant(username: String)
+    +hasParticipantSettled(username: String): boolean
+}
+
+class GroupChat {
+    -messages: List<Message>
+    +GroupChat()
+    +getMessages(): List<Message>
+    +addMessage(message: Message)
+}
+
+class Message {
+    -author: String
+    -text: String
+    -timestamp: LocalDateTime
+    +Message()
+    +Message(author: String, text: String)
+    +getAuthor(): String
+    +setAuthor(author: String)
+    +getText(): String
+    +setText(text: String)
+    +getTimestamp(): LocalDateTime
+    +setTimestamp(timestamp: LocalDateTime)
+}
+
+class Settlement {
+    -username: String
+    -isSettled: boolean
+    +Settlement()
+    +Settlement(username: String, isSettled: boolean)
+    +getUsername(): String
+    +setUsername(username: String)
+    +isSettled(): boolean
+    +setSettled(settled: boolean)
+}
+
+class Task {
+    -taskName: String
+    -isCompleted: boolean
+    -dateTime: LocalDate
+    -description: String
+    -priority: String
+    +Task()
+    +Task(taskName: String, dateTime: LocalDate, description: String, priority: String)
+    +Task(taskName: String)
+    +getTaskName(): String
+    +setTaskName(taskName: String)
+    +getDateTime(): LocalDate
+    +isCompleted(): boolean
+    +setCompleted(completed: boolean)
+    +getDescription(): String
+    +setDescription(description: String)
+    +getPriority(): String
+    +setPriority(priority: String)
+}
+
+class ToDoList {
+    -tasks: List<Task>
+    +ToDoList()
+    +ToDoList(toDoList: ToDoList)
+    +addTask(newTask: Task)
+    +getTasks(): List<Task>
+    +removeTask(task: Task)
+}
+
+class User {
+    -username: String
+    -hashedPassword: String
+    -userGroups: List<String>
+    +User()
+    +User(username: String, hashedPassword: String)
+    +getUsername(): String
+    +getHashedPassword(): String
+    +getUserGroups(): List<String>
+    +addUserGroup(userGroup: String)
+    +setUsername(username: String)
+}
+
+class UserGroup {
+    -groupName: String
+    -users: List<String>
+    +UserGroup()
+    +UserGroup(groupName: String)
+    +getGroupName(): String
+    +setGroupName(groupName: String)
+    +getUsers(): List<String>
+    +setUsers(users: List<String>)
+    +addUser(username: String)
+    +removeUser(username: String)
+    +containsUser(username: String): boolean
+}
+
+' Define Relationships
+Expense --> Settlement : Contains
+GroupChat --> Message : Contains
+ToDoList --> Task : Contains
+User --> UserGroup : Associated with
+UserGroup --> User : Contains users
+Message --> User : Author is
+
+@enduml
