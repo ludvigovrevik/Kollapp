@@ -24,7 +24,7 @@ In this release, we have implemented several new features and enhanced the UI fr
 
 ### 🔐 Password Hashing
 
-- Implemented password hashing for user accounts to enhance security. User passwords are now stored as hashed values instead of plain string in `kollapp/persistence/src/main/java/persistence/users`.
+- Implemented password hashing for user accounts to enhance security. User passwords are now stored as hashed values instead of plain string in `kollapp/persistence/src/main/java/persistence/users`
 
 ### 🔐 Logout Functionality
 
@@ -47,6 +47,10 @@ In this release, we have implemented several new features and enhanced the UI fr
 - Created class, package and sequence diagrams for the final iteration of the project.
 - Created two new user stories for group chat and shared expense functionality.
 - Updated existing mark down files to reflect the final release.
+
+### 🚀 Shippable Product
+
+- Created a **[Shippable Product](docs/release3/create_shippable_product.md)** for **KollApp**
   
 ---
 
