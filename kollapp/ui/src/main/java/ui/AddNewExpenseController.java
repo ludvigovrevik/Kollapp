@@ -6,10 +6,11 @@ import core.UserGroup;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import ui.api.ExpenseApiHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import api.ExpenseApiHandler;
 
 public class AddNewExpenseController {
 

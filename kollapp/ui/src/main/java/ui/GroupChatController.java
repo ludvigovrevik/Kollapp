@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
+import api.GroupChatApiHandler;
 import core.GroupChat;
 import core.Message;
 import core.User;
@@ -12,7 +13,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
-import ui.api.GroupChatApiHandler;
 
 /**
  * Controller class for handling the group chat UI.

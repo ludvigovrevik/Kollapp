@@ -16,6 +16,7 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.util.WaitForAsyncUtils;
 
+import api.GroupChatApiHandler;
 import core.GroupChat;
 import core.Message;
 import core.User;
@@ -26,7 +27,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import ui.api.GroupChatApiHandler;
 
 /**
  * Test class for GroupChatController.

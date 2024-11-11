@@ -2,9 +2,10 @@ package api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
+import api.GroupChatApiHandler;
 import core.GroupChat;
 import core.Message;
-import ui.api.GroupChatApiHandler;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,9 +1,10 @@
 package api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import api.ExpenseApiHandler;
 import core.Expense;
 import core.UserGroup;
-import ui.api.ExpenseApiHandler;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

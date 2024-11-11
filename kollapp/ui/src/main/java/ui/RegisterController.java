@@ -2,8 +2,8 @@ package ui;
 
 import java.io.IOException;
 
-import ui.api.ToDoListApiHandler;
-import ui.api.UserApiHandler;
+import api.ToDoListApiHandler;
+import api.UserApiHandler;
 import core.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

@@ -16,14 +16,14 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
+import api.GroupApiHandler;
+import api.UserApiHandler;
 import core.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import ui.api.GroupApiHandler;
-import ui.api.UserApiHandler;
 
 /**
  * Unit tests for the AddUserToGroupController class.

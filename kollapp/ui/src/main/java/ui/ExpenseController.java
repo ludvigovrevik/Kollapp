@@ -9,9 +9,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import ui.api.ExpenseApiHandler;
 
 import java.util.List;
+
+import api.ExpenseApiHandler;
 
 public class ExpenseController {
 

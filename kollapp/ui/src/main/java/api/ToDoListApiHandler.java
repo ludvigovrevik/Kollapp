@@ -1,4 +1,4 @@
-package ui.api;
+package api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import core.ToDoList;

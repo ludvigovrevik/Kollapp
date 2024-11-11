@@ -2,6 +2,7 @@ package ui;
 
 import java.time.LocalDate;
 
+import api.ToDoListApiHandler;
 import core.Task;
 import core.ToDoList;
 import core.User;
@@ -15,7 +16,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import ui.api.ToDoListApiHandler;
 
 /**
  * Controller class for managing the addition of new tasks to a to-do list.

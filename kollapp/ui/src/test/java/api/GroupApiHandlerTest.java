@@ -1,8 +1,9 @@
 package api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import api.GroupApiHandler;
 import core.UserGroup;
-import ui.api.GroupApiHandler;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

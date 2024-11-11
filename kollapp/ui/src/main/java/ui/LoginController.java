@@ -2,6 +2,7 @@ package ui;
 
 import java.io.IOException;
 
+import api.UserApiHandler;
 import core.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,7 +14,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import ui.api.UserApiHandler;
 
 /**
  * Controller class for handling user login and navigation to other scenes.
