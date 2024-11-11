@@ -162,7 +162,12 @@ public class KollAppController {
      * @param user The user whose to-do list is to be displayed
      */
     public void initializeToDoList(User user) {
-        this.toDoList = toDoListApiHandler.loadToDoList(user).get();
+        Optional<ToDoList> loadedList = toDoListApiHandler.loadToDoList(user);
+        if (loadedList.isPresent()) {
+            this.toDoList = loadedList.get();
+        } else {
+            this.toDoList = new ToDoList();
+        }
         this.user = user;
         updateTableView();
     }
