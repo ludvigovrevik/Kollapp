@@ -179,7 +179,6 @@
                         --add-exports javafx.graphics/com.sun.javafx.util=ALL-UNNAMED
                         --add-exports javafx.base/com.sun.javafx.logging=ALL-UNNAMED
                         --add-opens core/core=ALL-UNNAMED
-                        --add-opens persistence/persistence=ALL-UNNAMED
                     </argLine>
                     <skipTests>${skipTests}</skipTests>
                     <excludes>

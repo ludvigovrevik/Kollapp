@@ -303,7 +303,6 @@
     <modules>
         <module>api</module>
         <module>core</module>
-        <module>persistence</module>
         <module>ui</module>
         <module>report-aggregate</module>
     </modules>
