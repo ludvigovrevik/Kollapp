@@ -50,7 +50,7 @@ public class UserGroup implements Serializable {
      * @return a list of users
      */
     public List<String> getUsers() {
-        return new ArrayList<>(users); // Return a copy to avoid external modification
+        return new ArrayList<>(users);
     }
 
     /**
@@ -59,7 +59,7 @@ public class UserGroup implements Serializable {
      * @param users the list of user names to be set
      */
     public void setUsers(List<String> users) {
-        this.users = users;
+        this.users = new ArrayList<>(users);
     }
 
     /**
