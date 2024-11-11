@@ -1,0 +1,28 @@
+@startuml
+actor User
+
+participant "UI Layer" as UI
+participant "Controllers" as Controllers
+participant "Client API Handlers" as APIHandlers
+participant "Server API Controller" as APIController
+participant "Service Layer" as Services
+participant "Persistence Layer" as Persistence
+participant "Core Layer" as Core
+
+
+User -> UI : Interacts with UI
+UI -> Controllers : Handle user requests
+Controllers -> APIHandlers : Business logic requests
+APIHandlers -> APIController : HTTP Requests
+APIController -> Services : Invoke business logic
+Persistence --> Services : Read data
+Services <- Core : Use classes and logic
+Services -> Persistence : Create/Update/Delete data
+Services --> APIController : Business logic result
+APIHandlers <-- APIController : HTTP Response
+APIHandlers --> Controllers : Business logic result
+
+Controllers --> UI : Update UI
+UI --> User : Display results
+
+@enduml
