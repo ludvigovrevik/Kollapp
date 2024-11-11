@@ -41,7 +41,7 @@ By following this architecture, **KollApp** ensures a maintainable, scalable, an
 ### 4. API Module 🌐
 
 - **Path**: `gr2409/kollapp/api`
-- **Description**: Provides RESTful web services for the application. This module handles the communication between the client and the server.
+- **Description**: Provides REST web services for the application. This module handles the communication between the client and the server.
 - **Dependencies**:
   - **Spring Boot**: For building the backend services.
   - **JUnit 5**: For writing and running unit tests.
