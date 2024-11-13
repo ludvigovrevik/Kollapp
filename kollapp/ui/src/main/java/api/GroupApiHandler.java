@@ -148,6 +148,8 @@ public class GroupApiHandler {
                         + URLEncoder.encode(username, StandardCharsets.UTF_8)
                         + "&groupName=" + URLEncoder.encode(groupName, StandardCharsets.UTF_8);
     
+        System.out.println("Validating group assignment - URL: " + url);
+        
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .GET()
@@ -155,13 +157,18 @@ public class GroupApiHandler {
     
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println("Validation response code: " + response.statusCode());
+            System.out.println("Validation response body: " + response.body());
+            
             if (response.statusCode() == 200) {
-                return null; // No validation errors
+                return null;
             } else {
-                return response.body(); // Return the error message
+                return response.body();
             }
         } catch (IOException | InterruptedException e) {
-            return "An error occurred while validating group assignment: " + e.getMessage();
+            String error = "An error occurred while validating group assignment: " + e.getMessage();
+            System.out.println(error);
+            return error;
         }
     }
 

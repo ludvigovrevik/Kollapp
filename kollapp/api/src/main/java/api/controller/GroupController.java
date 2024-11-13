@@ -88,10 +88,10 @@ public class GroupController {
             @RequestParam String groupName) {
         try {
             String validationError = groupService.validateGroupAssignment(username, groupName);
-            if (validationError != null) {
-                return ResponseEntity.badRequest().body(validationError);
+            if (validationError == null) {
+                return ResponseEntity.ok().build();
             }
-            return ResponseEntity.ok().build();
+            return ResponseEntity.badRequest().body(validationError);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("An error occurred during validation");
         }
