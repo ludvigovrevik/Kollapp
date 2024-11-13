@@ -33,7 +33,8 @@ public class GroupApiHandler {
      * @return An Optional containing the UserGroup if found; otherwise, Optional.empty().
      */
     public Optional<UserGroup> getGroup(String groupName) {
-        String url = "http://localhost:8080/api/v1/groups/" + groupName;
+        String encodedGroupName = URLEncoder.encode(groupName, StandardCharsets.UTF_8);
+        String url = "http://localhost:8080/api/v1/groups/" + encodedGroupName;
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .GET()
@@ -61,7 +62,7 @@ public class GroupApiHandler {
      * @return true if the operation was successful; false otherwise.
      */
     public boolean createGroup(String username, String groupName) {
-        // Encode the path variables to ensure the URL is valid
+        groupName = sanitizeInput(groupName);
         String encodedUsername = URLEncoder.encode(username, StandardCharsets.UTF_8);
         String encodedGroupName = URLEncoder.encode(groupName, StandardCharsets.UTF_8);
         
@@ -98,8 +99,6 @@ public class GroupApiHandler {
      */
     public boolean assignUserToGroup(String username, String groupName) {
         String url = "http://localhost:8080/api/v1/groups/" + groupName + "/assignUser";
-        
-        // Encode the form data
         String formData = "username=" + URLEncoder.encode(username, StandardCharsets.UTF_8);
     
         HttpRequest request = HttpRequest.newBuilder()
@@ -129,7 +128,8 @@ public class GroupApiHandler {
      * @return true if the group exists; false otherwise.
      */
     public boolean groupExists(String groupName) {
-        String url = "http://localhost:8080/api/v1/groups/exists/" + groupName;
+        String encodedGroupName = URLEncoder.encode(groupName, StandardCharsets.UTF_8);
+        String url = "http://localhost:8080/api/v1/groups/exists/" + encodedGroupName;
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .GET()
@@ -163,5 +163,16 @@ public class GroupApiHandler {
         } catch (IOException | InterruptedException e) {
             return "An error occurred while validating group assignment: " + e.getMessage();
         }
+    }
+
+    /**
+     * Sanitizes the input string by trimming leading and trailing whitespace.
+     *
+     * @param input the input string to be sanitized
+     * @return the sanitized string with leading and trailing whitespace removed,
+     *         or the original input if it is null
+     */
+    private String sanitizeInput(String input) {
+        return input != null ? input.trim() : input;
     }
 }

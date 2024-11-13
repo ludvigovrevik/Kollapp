@@ -30,6 +30,7 @@ public class UserApiHandler {
      * @return true if the user exists; false otherwise.
      */
     public boolean userExists(String username) {
+        username = sanitizeInput(username);
         String url = "http://localhost:8080/api/v1/users/exists/" + username;
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
@@ -204,5 +205,16 @@ public class UserApiHandler {
             System.out.println("An error occurred assigning group to user: " + e.getMessage());
             return false;
         }
+    }
+
+    /**
+     * Sanitizes the input string by trimming leading and trailing whitespace.
+     *
+     * @param input the input string to be sanitized
+     * @return the sanitized string with leading and trailing whitespace removed,
+     *         or the original input if it is null
+     */
+    private String sanitizeInput(String input) {
+        return input != null ? input.trim() : input;
     }
 }
