@@ -7,6 +7,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -50,7 +51,7 @@ public class UserApiHandler {
         }
     }
 
-    public User loadUser(String username, String password) {
+    public Optional<User> loadUser(String username, String password) {
         String url = "http://localhost:8080/api/v1/users/login";
         String formData = "username=" + URLEncoder.encode(username, StandardCharsets.UTF_8) +
                   "&password=" + URLEncoder.encode(password, StandardCharsets.UTF_8);
@@ -64,14 +65,14 @@ public class UserApiHandler {
             if (response.statusCode() == 200) {
                 String responseBody = response.body();
                 ObjectMapper objectMapper = new ObjectMapper();
-                return objectMapper.readValue(responseBody, User.class);
+                return Optional.of(objectMapper.readValue(responseBody, User.class));
             } else {
                 System.err.println("Error: " + response.statusCode() + " - " + response.body());
-                return null;
+                return Optional.empty();
             }
         } catch (IOException | InterruptedException e) {
             System.out.println("An error occurred while retrieving user data: " + e.getMessage());
-            return null;
+            return Optional.empty();
         }
     }
 

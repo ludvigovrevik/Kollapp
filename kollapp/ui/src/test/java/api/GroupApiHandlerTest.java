@@ -6,6 +6,8 @@ import api.GroupApiHandler;
 import core.UserGroup;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -21,6 +23,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
+/**
+ * Unit tests for the {@link GroupApiHandler} class.
+ */
 class GroupApiHandlerTest {
 
     @Mock
@@ -33,11 +38,11 @@ class GroupApiHandlerTest {
     private ObjectMapper objectMapper;
 
     @BeforeEach
-    void setUp() {
+    @DisplayName("Set up mocks and initialize GroupApiHandler")
+    private void setUp() {
         MockitoAnnotations.openMocks(this);
         objectMapper = new ObjectMapper();
         
-        // Create a subclass of GroupApiHandler to inject mocked HttpClient
         groupApiHandler = new GroupApiHandler() {
             @Override
             protected HttpClient createHttpClient() {
@@ -47,8 +52,9 @@ class GroupApiHandlerTest {
     }
 
     @Test
-    void getGroup_Success() throws IOException, InterruptedException {
-        // Arrange
+    @DisplayName("Get group - Success scenario")
+    @Tag("getGroup")
+    public void getGroup_Success() throws IOException, InterruptedException {
         UserGroup testGroup = new UserGroup("TestGroup");
         String jsonResponse = objectMapper.writeValueAsString(testGroup);
         
@@ -57,174 +63,161 @@ class GroupApiHandlerTest {
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))
             .thenReturn(mockResponse);
 
-        // Act
         Optional<UserGroup> result = groupApiHandler.getGroup("TestGroup");
 
-        // Assert
         assertTrue(result.isPresent());
         assertEquals("TestGroup", result.get().getGroupName());
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 
     @Test
-    void getGroup_NotFound() throws IOException, InterruptedException {
-        // Arrange
+    @DisplayName("Get group - Not Found")
+    @Tag("getGroup")
+    public void getGroup_NotFound() throws IOException, InterruptedException {
         when(mockResponse.statusCode()).thenReturn(404);
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))
             .thenReturn(mockResponse);
 
-        // Act
         Optional<UserGroup> result = groupApiHandler.getGroup("NonExistentGroup");
 
-        // Assert
         assertTrue(result.isEmpty());
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 
     @Test
-    void getGroup_Exception() throws IOException, InterruptedException {
-        // Arrange
+    @DisplayName("Get group - Exception handling")
+    @Tag("getGroup")
+    public void getGroup_Exception() throws IOException, InterruptedException {
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))
             .thenThrow(new IOException("Network error"));
 
-        // Act
         Optional<UserGroup> result = groupApiHandler.getGroup("TestGroup");
 
-        // Assert
         assertTrue(result.isEmpty());
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 
     @Test
-    void createGroup_Success() throws IOException, InterruptedException {
-        // Arrange
+    @DisplayName("Create group - Success scenario")
+    @Tag("createGroup")
+    public void createGroup_Success() throws IOException, InterruptedException {
         when(mockResponse.statusCode()).thenReturn(201);
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))
             .thenReturn(mockResponse);
 
-        // Act
         boolean result = groupApiHandler.createGroup("testUser", "TestGroup");
 
-        // Assert
         assertTrue(result);
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 
     @Test
-    void createGroup_Failure() throws IOException, InterruptedException {
-        // Arrange
+    @DisplayName("Create group - Failure scenario")
+    @Tag("createGroup")
+    public void createGroup_Failure() throws IOException, InterruptedException {
         when(mockResponse.statusCode()).thenReturn(400);
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))
             .thenReturn(mockResponse);
 
-        // Act
         boolean result = groupApiHandler.createGroup("testUser", "TestGroup");
 
-        // Assert
         assertFalse(result);
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 
     @Test
-    void createGroup_Exception() throws IOException, InterruptedException {
-        // Arrange
+    @DisplayName("Create group - Exception handling")
+    @Tag("createGroup")
+    public void createGroup_Exception() throws IOException, InterruptedException {
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))
             .thenThrow(new IOException("Network error"));
 
-        // Act
         boolean result = groupApiHandler.createGroup("testUser", "TestGroup");
 
-        // Assert
         assertFalse(result);
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 
     @Test
-    void assignUserToGroup_Success() throws IOException, InterruptedException {
-        // Arrange
+    @DisplayName("Assign user to group - Success scenario")
+    @Tag("assignUserToGroup")
+    public void assignUserToGroup_Success() throws IOException, InterruptedException {
         when(mockResponse.statusCode()).thenReturn(200);
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))
             .thenReturn(mockResponse);
 
-        // Act
         boolean result = groupApiHandler.assignUserToGroup("testUser", "TestGroup");
 
-        // Assert
         assertTrue(result);
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 
     @Test
-    void assignUserToGroup_Failure() throws IOException, InterruptedException {
-        // Arrange
+    @DisplayName("Assign user to group - Failure scenario")
+    @Tag("assignUserToGroup")
+    public void assignUserToGroup_Failure() throws IOException, InterruptedException {
         when(mockResponse.statusCode()).thenReturn(400);
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))
             .thenReturn(mockResponse);
 
-        // Act
         boolean result = groupApiHandler.assignUserToGroup("testUser", "TestGroup");
 
-        // Assert
         assertFalse(result);
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 
     @Test
-    void assignUserToGroup_Exception() throws IOException, InterruptedException {
-        // Arrange
+    @DisplayName("Assign user to group - Exception handling")
+    @Tag("assignUserToGroup")
+    public void assignUserToGroup_Exception() throws IOException, InterruptedException {
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))
             .thenThrow(new IOException("Network error"));
 
-        // Act
         boolean result = groupApiHandler.assignUserToGroup("testUser", "TestGroup");
 
-        // Assert
         assertFalse(result);
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 
     @Test
-    void groupExists_True() throws IOException, InterruptedException {
-        // Arrange
+    @DisplayName("Group exists - True case")
+    @Tag("groupExists")
+    public void groupExists_True() throws IOException, InterruptedException {
         when(mockResponse.statusCode()).thenReturn(200);
         when(mockResponse.body()).thenReturn("true");
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))
             .thenReturn(mockResponse);
 
-        // Act
         boolean result = groupApiHandler.groupExists("TestGroup");
 
-        // Assert
         assertTrue(result);
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 
     @Test
-    void groupExists_False() throws IOException, InterruptedException {
-        // Arrange
+    @DisplayName("Group exists - False case")
+    @Tag("groupExists")
+    public void groupExists_False() throws IOException, InterruptedException {
         when(mockResponse.statusCode()).thenReturn(200);
         when(mockResponse.body()).thenReturn("false");
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))
             .thenReturn(mockResponse);
 
-        // Act
         boolean result = groupApiHandler.groupExists("NonExistentGroup");
 
-        // Assert
         assertFalse(result);
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 
     @Test
-    void groupExists_Exception() throws IOException, InterruptedException {
-        // Arrange
+    @DisplayName("Group exists - Exception handling")
+    @Tag("groupExists")
+    public void groupExists_Exception() throws IOException, InterruptedException {
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))
             .thenThrow(new IOException("Network error"));
 
-        // Act
         boolean result = groupApiHandler.groupExists("TestGroup");
 
-        // Assert
         assertFalse(result);
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }

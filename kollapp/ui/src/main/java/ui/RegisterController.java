@@ -51,20 +51,27 @@ public class RegisterController {
         String username = usernameField.getText();
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
-        
-        if (!userApiHandler.userExists(username) && userApiHandler.confirmNewValidUser(username, password, confirmPassword)) {
-            User user = new User(username, password);
-            try {
-                userApiHandler.saveUser(user); // Save user to JSON file
-                ToDoListApiHandler handler = new ToDoListApiHandler();
-                handler.assignToDoList(user); // Assign ToDo-list to JSON file
-    
-                switchToKollektivScene(event, user); // Switch to main screen
-            } catch (IllegalArgumentException e) {
-                errorMessage.setText("User creation failed: " + e.getMessage());
-            } 
-        } else {
-            errorMessage.setText(userApiHandler.getUserValidationErrorMessage(username, password, confirmPassword));
+        if (username.contains(" ")) {
+            errorMessage.setText("Username cannot contain spaces.");
+            return;
+        }
+        try {
+            if (!userApiHandler.userExists(username) && userApiHandler.confirmNewValidUser(username, password, confirmPassword)) {
+                User user = new User(username, password);
+                try {
+                    userApiHandler.saveUser(user);
+                    ToDoListApiHandler handler = new ToDoListApiHandler();
+                    handler.assignToDoList(user);
+                    
+                    switchToKollektivScene(event, user);
+                } catch (IllegalArgumentException e) {
+                    errorMessage.setText("User creation failed: " + e.getMessage());
+                } 
+            } else {
+                errorMessage.setText(userApiHandler.getUserValidationErrorMessage(username, password, confirmPassword));
+            }
+        } catch (Exception e) {
+            errorMessage.setText("Failed to register user");
         }
     }
 

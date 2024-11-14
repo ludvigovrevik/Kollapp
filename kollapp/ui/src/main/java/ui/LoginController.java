@@ -1,6 +1,7 @@
 package ui;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import api.UserApiHandler;
 import core.User;
@@ -34,7 +35,7 @@ public class LoginController {
     private UserApiHandler userApiHandler = new UserApiHandler();
 
     // Setter for injecting a mock during testing
-    public void setUserApiHandler(UserApiHandler userApiHandler) {
+    protected void setUserApiHandler(UserApiHandler userApiHandler) {
         this.userApiHandler = userApiHandler;
     }
 
@@ -50,20 +51,20 @@ public class LoginController {
         String username = usernameField.getText();
         String password = passwordField.getText();
         
-        if (username == null || username.trim().isEmpty()) {
+        if (username.trim().isEmpty()) {
             loginErrorMessage.setText("Username cannot be empty.");
             return;
         }
         
-        if (password == null || password.isEmpty()) {
+        if (password.isEmpty()) {
             loginErrorMessage.setText("Password cannot be empty.");
             return;
         }
 
         if (userApiHandler.userExists(username)) {
-            User user = userApiHandler.loadUser(username, password);
-            if (user != null) {
-                loadKollektivScene(user);
+            Optional<User> user = userApiHandler.loadUser(username, password);
+            if (user.isPresent()) {
+                loadKollektivScene(user.get());
             } else {
                 loginErrorMessage.setText("Incorrect password. Please try again.");
             }

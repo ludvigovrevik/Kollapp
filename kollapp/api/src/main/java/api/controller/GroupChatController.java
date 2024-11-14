@@ -1,13 +1,19 @@
 package api.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import api.service.GroupChatService;
-import core.Message;
-import core.GroupChat;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import api.service.GroupChatService;
+import core.GroupChat;
+import core.Message;
 
 @RestController
 @RequestMapping("/api/v1/groupchats")

@@ -54,7 +54,7 @@ public class ToDoListService {
         }
         this.toDoListPath = toDoListPath;
         this.groupToDoListPath = groupToDoListPath;
-        this.userService = userService;
+        this.userService = new UserService(Paths.get(userService.getUserPath()));
         this.mapper = new ObjectMapper();
         this.mapper.registerModule(new JavaTimeModule());
     }

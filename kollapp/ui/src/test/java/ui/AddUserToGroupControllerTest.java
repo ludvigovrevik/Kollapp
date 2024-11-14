@@ -9,7 +9,6 @@ import java.util.Arrays;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
@@ -26,10 +25,9 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 /**
- * Unit tests for the AddUserToGroupController class.
+ * Unit tests for the {@link AddUserToGroupController} class.
  */
 @ExtendWith(ApplicationExtension.class)
-@Tag("ui")
 public class AddUserToGroupControllerTest {
 
     private AddUserToGroupController controller;

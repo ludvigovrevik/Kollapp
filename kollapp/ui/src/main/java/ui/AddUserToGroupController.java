@@ -33,11 +33,11 @@ public class AddUserToGroupController {
         this.groupApiHandler = new GroupApiHandler();
     }
 
-    public void setUserApiHandler(UserApiHandler userApiHandler) {
+    protected void setUserApiHandler(UserApiHandler userApiHandler) {
         this.userApiHandler = userApiHandler;
     }
 
-    public void setGroupApiHandler(GroupApiHandler groupApiHandler) {
+    protected void setGroupApiHandler(GroupApiHandler groupApiHandler) {
         this.groupApiHandler = groupApiHandler;
     }
 

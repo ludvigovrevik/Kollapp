@@ -14,7 +14,7 @@ public class Expense implements Serializable {
     private double amount;
     private String paidBy;
     private List<String> participants;
-    private List<Settlement> settlements; // Updated field
+    private List<Settlement> settlements;
 
     // Default constructor
     public Expense() {
@@ -74,14 +74,11 @@ public class Expense implements Serializable {
      * @return a list of participants
      */
     public List<String> getParticipants() {
-        if (participants == null) {
-            participants = new ArrayList<>();
-        }
-        return participants;
+        return participants == null ? new ArrayList<>() : new ArrayList<>(participants);
     }
 
     public void setParticipants(List<String> participants) {
-        this.participants = participants;
+        this.participants = new ArrayList<>(participants);
     }
     
     /**
@@ -105,11 +102,11 @@ public class Expense implements Serializable {
                 }
             }
         }
-        return settlements;
+        return new ArrayList<>(settlements);
     }
 
     public void setSettlements(List<Settlement> settlements) {
-        this.settlements = settlements;
+        this.settlements = new ArrayList<>(settlements);
     }
 
     // Method to calculate share per person

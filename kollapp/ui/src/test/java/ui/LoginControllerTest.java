@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,45 +27,35 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 /**
- * Unit tests for the LoginController class.
+ * Unit tests for the {@link LoginController} class.
  */
 @ExtendWith(ApplicationExtension.class)
-@Tag("ui")
 public class LoginControllerTest {
     
     private UserApiHandler mockUserHandler;
 
-     // Headless mode is enabled
-     static private boolean headless = true;
+    // Headless mode is enabled
+    private static final boolean headless = true;
 
-     /**
-      * Sets up the environment for headless mode if the 'headless' flag is true.
-      * This method configures various system properties required for running
-      * JavaFX tests in a headless environment.
-      * 
-      * Properties set:
-      * - testfx.headless: Enables TestFX headless mode.
-      */
-     @BeforeAll
-     static void setupHeadlessMode() {
-         if(headless){
-             System.setProperty("testfx.headless", "true");
- 
-             System.setProperty("java.awt.headless", "true");
-             System.setProperty("prism.order", "sw");
-             System.setProperty("prism.text", "t2k");
-             System.setProperty("testfx.robot", "glass");
-         }
-     }
+    /**
+     * Sets up the environment for headless mode if the 'headless' flag is true.
+     */
+    @BeforeAll
+    private static void setupHeadlessMode() {
+        if (headless) {
+            System.setProperty("testfx.headless", "true");
+            System.setProperty("java.awt.headless", "true");
+            System.setProperty("prism.order", "sw");
+            System.setProperty("prism.text", "t2k");
+            System.setProperty("testfx.robot", "glass");
+        }
+    }
 
     /**
      * Sets up the test environment by loading the LoginScreen.fxml and initializing the controller.
-     *
-     * @param stage the primary stage for JavaFX tests
-     * @throws Exception if FXML loading fails
      */
     @Start
-    public void start(Stage stage) throws Exception {
+    private void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/LoginScreen.fxml"));
         Parent root = loader.load();
         LoginController controller = loader.getController();
@@ -80,17 +72,15 @@ public class LoginControllerTest {
 
     /**
      * Tests a successful login scenario where the user enters correct credentials.
-     *
-     * @param robot the FxRobot instance for simulating user interactions
      */
     @Test
     @DisplayName("Test successful login")
     @Tag("login")
-    void testSuccessfulLogin(FxRobot robot) {
+    public void testSuccessfulLogin(FxRobot robot) {
         User TestUserDoNotDelete = new User("TestUserDoNotDelete", "password");
 
         when(mockUserHandler.userExists("TestUserDoNotDelete")).thenReturn(true);
-        when(mockUserHandler.loadUser("TestUserDoNotDelete", "password")).thenReturn(TestUserDoNotDelete);
+        when(mockUserHandler.loadUser("TestUserDoNotDelete", "password")).thenReturn(Optional.of(TestUserDoNotDelete));
 
         robot.clickOn("#usernameField").write("TestUserDoNotDelete");
         robot.clickOn("#passwordField").write("password");
@@ -102,15 +92,13 @@ public class LoginControllerTest {
 
     /**
      * Tests the scenario where the user enters an incorrect password.
-     *
-     * @param robot the FxRobot instance for simulating user interactions
      */
     @Test
     @DisplayName("Test login with incorrect password")
     @Tag("login")
-    void testLoginIncorrectPassword(FxRobot robot) {
+    public void testLoginIncorrectPassword(FxRobot robot) {
         when(mockUserHandler.userExists("TestUserDoNotDelete")).thenReturn(true);
-        when(mockUserHandler.loadUser("TestUserDoNotDelete", "wrongPassword")).thenReturn(null);
+        when(mockUserHandler.loadUser("TestUserDoNotDelete", "wrongPassword")).thenReturn(Optional.empty());
 
         robot.clickOn("#usernameField").write("TestUserDoNotDelete");
         robot.clickOn("#passwordField").write("wrongPassword");
@@ -125,13 +113,11 @@ public class LoginControllerTest {
 
     /**
      * Tests the scenario where the user tries to log in with a non-existent username.
-     *
-     * @param robot the FxRobot instance for simulating user interactions
      */
     @Test
     @DisplayName("Test login with non-existent user")
     @Tag("login")
-    void testLoginUserDoesNotExist(FxRobot robot) {
+    public void testLoginUserDoesNotExist(FxRobot robot) {
         when(mockUserHandler.userExists("nonTestUserDoNotDelete")).thenReturn(false);
 
         robot.clickOn("#usernameField").write("nonTestUserDoNotDelete");
@@ -146,13 +132,11 @@ public class LoginControllerTest {
 
     /**
      * Tests the navigation from the login screen to the register screen.
-     *
-     * @param robot the FxRobot instance for simulating user interactions
      */
     @Test
     @DisplayName("Test navigation to register screen")
     @Tag("navigation")
-    void testNavigateToRegisterScreen(FxRobot robot) {
+    public void testNavigateToRegisterScreen(FxRobot robot) {
         robot.clickOn("#registerButton");
 
         Button navigateToLoginScreenButton = robot.lookup("#navigateToLoginScreenButton").queryAs(Button.class);
