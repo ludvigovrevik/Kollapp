@@ -4,9 +4,20 @@ Welcome to **KollApp**, a Java application developed as part of the course **IT1
 
 ---
 
-## **🚀 Quick Start with Eclipse Che**
+## 🚀 Quick Start with Eclipse Che
 
-[Click here to open this project in Eclipse Che](https://che.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2024/gr2409/gr2409?new)
+For an example use of **KollApp**, check out these accounts:
+
+| Username | Password |
+|----------|----------|
+| kien     | 12341234 |
+| thomas   | 12341234 |
+| sang     | 12341234 |
+| ludvig   | 12341234 |
+
+Feel free to register a new account if you'd like to explore on your own!
+
+[Open this project in Eclipse Che](https://che.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2024/gr2409/gr2409?new)
 
 ---
 
@@ -14,7 +25,8 @@ Welcome to **KollApp**, a Java application developed as part of the course **IT1
 
 **KollApp** aims to help roommates coordinate and manage household tasks, such as cleaning, dishwashing, grocery shopping, and other shared responsibilities. It enhances communication and ensures that tasks are fairly distributed and completed on time.
 
-📖 **For a detailed description of the purpose and intended functionality, visit [Purpose and Functionality](docs/purpose.md)**
+📖 For a detailed description of the purpose and intended functionality, visit **[Purpose and Functionality](docs/purpose.md)**
+📖 To view examples of use cases for KollApp, visit **[Gallery](./docs/release3/gallery.md)**. **Highly Recommended!**
 
 ---
 
@@ -72,7 +84,7 @@ To build and run **KollApp**, make sure you have the following installed:
 
 The **KollApp** application relies on a set of essential dependencies for its functionality:
 
-- **JavaFX** (version 17.0.12): Provides the graphical user interface. For additional JavaFX modules, visit [Gluon’s JavaFX page](https://gluonhq.com/products/javafx/) for downloads.
+- **JavaFX** (version 17.0.12): Provides the graphical user interface. For additional JavaFX modules, visit **[Gluon’s JavaFX page](https://gluonhq.com/products/javafx/)** for downloads.
 - **JUnit 5** (version 5.10.0): Used for unit testing across all modules to ensure code quality and reliability.
 - **Mockito** (version 5.0.0): Facilitates mock testing, helping to simulate dependencies in test environments.
 - **TestFX** (version 4.0.16-alpha): Specifically for testing JavaFX applications to maintain a consistent user experience.
@@ -142,8 +154,9 @@ Maintaining a high standard of code reliability and performance is essential to 
 
 ## 📚 Suggested Reading
 
-- 📖 **[User Stories Overview](/docs/user_stories.md)**: Understand the core user stories that guide development across releases. **Highly Recommended**
-- 📖 **[Gallery](./docs/release3/gallery.md)
+- 📖 **[User Stories Overview](/docs/user_stories.md)**: Understand the core user stories that guide development across releases. **Highly Recommended!**
+- 📖 **[Purpose and Functionality](docs/purpose.md)**: For a detailed description of the purpose and intended functionality of **KollApp**.
+- 📖 **[Gallery](./docs/release3/gallery.md)**: See examples of use cases for **KollApp**. **Highly Recommended!**
 
 | **Release 1** | **Release 2** | **Release 3** |
 |----------------------------------|----------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
