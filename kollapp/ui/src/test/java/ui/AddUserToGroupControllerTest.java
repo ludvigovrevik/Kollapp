@@ -220,6 +220,6 @@ public class AddUserToGroupControllerTest {
 
         Label feedbackLabel = robot.lookup("#feedbackLabel").queryAs(Label.class);
         assertNotNull(feedbackLabel);
-        assertEquals("Failed to add user to group.", feedbackLabel.getText());
+        assertEquals("Failed to add user to group: API Error", feedbackLabel.getText());
     }
 }

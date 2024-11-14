@@ -27,13 +27,19 @@ public class GroupApiHandler {
     }
 
     /**
+     * Helper method to properly encode URL path segments, ensuring spaces are encoded as %20
+     */
+    private String encodePathSegment(String segment) {
+        return URLEncoder.encode(segment, StandardCharsets.UTF_8)
+                        .replace("+", "%20");
+    }
+
+    /**
      * Retrieves a UserGroup from the API.
-     *
-     * @param groupName The name of the group to retrieve.
-     * @return An Optional containing the UserGroup if found; otherwise, Optional.empty().
      */
     public Optional<UserGroup> getGroup(String groupName) {
-        String url = "http://localhost:8080/api/v1/groups/" + groupName;
+        String encodedGroupName = encodePathSegment(groupName);
+        String url = "http://localhost:8080/api/v1/groups/" + encodedGroupName;
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .GET()
@@ -55,18 +61,13 @@ public class GroupApiHandler {
 
     /**
      * Creates a UserGroup by making an HTTP POST request to the API.
-     *
-     * @param username  The username of the user who creates the group.
-     * @param groupName The name of the group to be created.
-     * @return true if the operation was successful; false otherwise.
      */
     public boolean createGroup(String username, String groupName) {
-        // Encode the path variables to ensure the URL is valid
-        String encodedUsername = URLEncoder.encode(username, StandardCharsets.UTF_8);
-        String encodedGroupName = URLEncoder.encode(groupName, StandardCharsets.UTF_8);
-        
-        String url = String.format("http://localhost:8080/api/v1/groups/%s/%s", 
-                                    encodedUsername, encodedGroupName);
+        groupName = sanitizeInput(groupName);
+
+        String url = String.format("http://localhost:8080/api/v1/groups/%s/%s",
+            encodePathSegment(username),
+            encodePathSegment(groupName));
     
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
@@ -91,16 +92,11 @@ public class GroupApiHandler {
 
     /**
      * Assigns a user to a group by making an HTTP POST request to the API.
-     *
-     * @param username  The username of the user to assign.
-     * @param groupName The name of the group.
-     * @return true if the operation was successful; false otherwise.
      */
     public boolean assignUserToGroup(String username, String groupName) {
-        String url = "http://localhost:8080/api/v1/groups/" + groupName + "/assignUser";
-        
-        // Encode the form data
-        String formData = "username=" + URLEncoder.encode(username, StandardCharsets.UTF_8);
+        String encodedGroupName = encodePathSegment(groupName);
+        String url = "http://localhost:8080/api/v1/groups/" + encodedGroupName + "/assignUser";
+        String formData = "username=" + encodePathSegment(username);
     
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
@@ -111,7 +107,6 @@ public class GroupApiHandler {
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     
-            // Log response code for debugging
             System.out.println("Response status code: " + response.statusCode());
             System.out.println("Response body: " + response.body());
     
@@ -124,12 +119,10 @@ public class GroupApiHandler {
 
     /**
      * Checks if a group exists by making an HTTP GET request to the API.
-     *
-     * @param groupName The name of the group to check.
-     * @return true if the group exists; false otherwise.
      */
     public boolean groupExists(String groupName) {
-        String url = "http://localhost:8080/api/v1/groups/exists/" + groupName;
+        String encodedGroupName = encodePathSegment(groupName);
+        String url = "http://localhost:8080/api/v1/groups/exists/" + encodedGroupName;
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .GET()
@@ -144,10 +137,12 @@ public class GroupApiHandler {
     }
 
     public String validateGroupAssignment(String username, String groupName) {
-        String url = "http://localhost:8080/api/v1/groups/validate-assignment?username=" 
-                        + URLEncoder.encode(username, StandardCharsets.UTF_8)
-                        + "&groupName=" + URLEncoder.encode(groupName, StandardCharsets.UTF_8);
+        String url = String.format("http://localhost:8080/api/v1/groups/validate-assignment?username=%s&groupName=%s",
+            encodePathSegment(username),
+            encodePathSegment(groupName));
     
+        System.out.println("Validating group assignment - URL: " + url);
+        
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .GET()
@@ -155,13 +150,22 @@ public class GroupApiHandler {
     
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println("Validation response code: " + response.statusCode());
+            System.out.println("Validation response body: " + response.body());
+            
             if (response.statusCode() == 200) {
-                return null; // No validation errors
+                return null;
             } else {
-                return response.body(); // Return the error message
+                return response.body();
             }
         } catch (IOException | InterruptedException e) {
-            return "An error occurred while validating group assignment: " + e.getMessage();
+            String error = "An error occurred while validating group assignment: " + e.getMessage();
+            System.out.println(error);
+            return error;
         }
+    }
+
+    private String sanitizeInput(String input) {
+        return input != null ? input.trim() : input;
     }
 }

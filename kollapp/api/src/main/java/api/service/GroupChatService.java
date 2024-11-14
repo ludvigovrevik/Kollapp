@@ -23,7 +23,7 @@ public class GroupChatService {
 
     public GroupChatService() {
         this(
-            Paths.get("..", "persistence", "src", "main", "java",
+                Paths.get("..", "persistence", "src", "main", "java",
                     "persistence", "groupchat").toAbsolutePath().normalize()
         );
     }

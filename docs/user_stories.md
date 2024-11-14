@@ -17,14 +17,14 @@ As a user, I want to be able to register and log in to **KollApp**  so that I ca
 - I can register a new user with a unique username and password.
 - I can log in with my username and password.
 - I receive an error message if the username is already taken or if the password does not meet the requirements.
-- I can log out of the application **[WIP! For release 3]**.
+- I can log out of the application.
 
 ### Important to be able to do
 
 - Register a new user
 - Log in with username and password.
 - Receive error messages for registration or login.
-- Log out of the application **[WIP! For release 3]**.
+- Log out of the application.
 
 ---
 
@@ -40,14 +40,13 @@ As a resident in a shared house/group I want to be able to see and manage shared
 
 - I can see a list of all shared tasks.
 - I can assign tasks with deadlines and priority.
-- I can assign tasks to specific users within the same household/group **[WIP! For release 3]**.
+- I can assign tasks to specific users within the same household/group.
 - I can see who has completed their tasks and which tasks are still waiting for completion.
 
 ### Important to be able to do
 
 - Add tasks specifying their task name, description, deadline and priority.
 - Complete tasks.
-- Change the detailed information of each task **[WIP! For release 3]**
 
 ---
 
@@ -87,7 +86,46 @@ As a user I want to be able to create and manage groups so that I can collaborat
 - Add new personal tasks.
 - View a list of personal tasks.
 - Complete tasks.
-- Edit personal tasks **[WIP! For release 3]**
+
+---
+
+## User Story 5 [US-5]: Group Chat 💬
+
+### Why?
+
+- To facilitate communication and collaboration among group members.
+
+As a user I want to be able to chat with other members of my group so that we can discuss tasks and activities.
+
+### Criteria
+
+- I can send and receive messages in a group chat.
+- I can see a history of messages in the group chat.
+
+### Important to be able to do
+
+- Send messages in a group chat.
+- View message history in a group chat.
+
+---
+
+## User Story 6 [US-6]: Shared Expense Management 💰
+
+### Why?
+
+- To manage and track shared expenses within a group.
+
+As a user I want to be able to add and track shared expenses so that we can keep track of who owes what.
+
+### Criteria
+
+- I can add a new shared expense with details like amount and description.
+- I can see a summary of all shared expenses and balances.
+
+### Important to be able to do
+
+- Add new shared expenses.
+- View a summary of shared expenses and balances.
 
 ---
 

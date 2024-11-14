@@ -18,15 +18,15 @@
             <Font size="12.0" />
          </font></Label>
        
-                        <Button fx:id="addButton" layoutX="655.0" layoutY="493.0" mnemonicParsing="false" onAction="#showDialog" prefHeight="41.0" prefWidth="123.0" style="-fx-background-color: #27AE60; -fx-background-radius: 10;" text="+ Add task" textFill="WHITE">
+                        <Button fx:id="addButton" layoutX="655.0" layoutY="493.0" mnemonicParsing="false" onAction="#showDialog" prefHeight="41.0" prefWidth="123.0" style="-fx-font-size: 16; -fx-background-color: #27AE60; -fx-background-radius: 10;" text="+ Add task" textFill="WHITE">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
       <Pane layoutX="13.0" layoutY="15.0" prefHeight="369.0" prefWidth="206.0" style="-fx-background-color: #e8e8e8; -fx-background-radius: 10; -fx-border-radius: 10;">
          <children>
-            <Button fx:id="addUserToGroupButton" layoutX="103.0" layoutY="328.0" mnemonicParsing="false" onAction="#openAddUserToGroupWindow" prefHeight="28.0" prefWidth="90.0" styleClass="addMember-label" stylesheets="@css/styles.css" text="Add member" />
-            <Button fx:id="createGroupButton" layoutX="14.0" layoutY="328.0" mnemonicParsing="false" onAction="#openRegisterGroupWindow" prefHeight="28.0" prefWidth="81.0" styleClass="addGroup-label" stylesheets="@css/styles.css" text="New group" />
+            <Button fx:id="addUserToGroupButton" layoutX="103.0" layoutY="328.0" mnemonicParsing="false" onAction="#openAddUserToGroupWindow" prefHeight="28.0" prefWidth="90.0" styleClass="addMember-label" stylesheets="@css/styles.css" text="Add member" style="-fx-font-size: 10;" />
+            <Button fx:id="createGroupButton" layoutX="14.0" layoutY="328.0" mnemonicParsing="false" onAction="#openRegisterGroupWindow" prefHeight="28.0" prefWidth="81.0" styleClass="addGroup-label" stylesheets="@css/styles.css" text="New group" style="-fx-font-size: 10;" />
             <Pane layoutX="13.0" layoutY="85.0" prefHeight="230.0" prefWidth="178.0" style="-fx-background-color: #D9D9D9; -fx-background-radius: 10;">
                <children>
                   <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutY="-1.0" prefHeight="231.0" prefWidth="178.0" style="-fx-background-radius: 20; -fx-border-radius: 10;" stylesheets="@css/styles.css" vbarPolicy="NEVER">

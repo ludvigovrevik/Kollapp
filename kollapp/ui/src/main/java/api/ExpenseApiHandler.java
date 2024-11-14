@@ -36,6 +36,14 @@ public class ExpenseApiHandler {
     }
 
     /**
+     * Helper method to properly encode URL path segments, ensuring spaces are encoded as %20
+     */
+    private String encodePathSegment(String segment) {
+        return URLEncoder.encode(segment, StandardCharsets.UTF_8)
+                        .replace("+", "%20");
+    }
+
+    /**
      * Loads the expenses for a given user group from the server.
      *
      * @param group the user group whose expenses are to be loaded
@@ -74,7 +82,9 @@ public class ExpenseApiHandler {
      * @return true if the update was successful (HTTP status code 200), false otherwise
      */
     public boolean updateGroupExpenses(UserGroup group, List<Expense> expenses) {
-        String url = baseUrl + "/groups/" + URLEncoder.encode(group.getGroupName(), StandardCharsets.UTF_8);
+        String encodedGroupName = encodePathSegment(group.getGroupName());
+        String url = baseUrl + "/groups/" + encodedGroupName;
+        
         try {
             String jsonBody = objectMapper.writeValueAsString(expenses);
             HttpRequest request = HttpRequest.newBuilder()

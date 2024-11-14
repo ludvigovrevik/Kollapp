@@ -5,8 +5,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
-import api.ToDoListApiHandler;
+
 import api.GroupApiHandler;
+import api.ToDoListApiHandler;
 import core.Task;
 import core.ToDoList;
 import core.User;
@@ -133,13 +134,13 @@ public class KollAppController {
      */
     @FXML
     private void handleAddButtonHover() {
-        addButton.setStyle("-fx-background-color: #19743F; -fx-background-radius: 10; -fx-cursor: hand;");
+        addButton.setStyle("-fx-font-size: 17; -fx-background-color: #19743F; -fx-background-radius: 10; -fx-cursor: hand;");
         animateButton(addButton, 1.05);
     }
 
     @FXML
     private void handleAddButtonHoverExit() {
-        addButton.setStyle("-fx-background-color: #27AE60; -fx-background-radius: 10;");
+        addButton.setStyle("-fx-font-size: 16; -fx-background-color: #27AE60; -fx-background-radius: 10;");
         animateButton(addButton, 1.0);
     }
 

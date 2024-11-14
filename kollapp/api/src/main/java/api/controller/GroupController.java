@@ -64,11 +64,9 @@ public class GroupController {
             return ResponseEntity.ok().build();
         } catch (IllegalArgumentException e) {
             System.err.println("IllegalArgumentException: " + e.getMessage());
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } catch (Exception e) {
             System.err.println("Exception: " + e.getMessage());
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -90,10 +88,10 @@ public class GroupController {
             @RequestParam String groupName) {
         try {
             String validationError = groupService.validateGroupAssignment(username, groupName);
-            if (validationError != null) {
-                return ResponseEntity.badRequest().body(validationError);
+            if (validationError == null) {
+                return ResponseEntity.ok().build();
             }
-            return ResponseEntity.ok().build();
+            return ResponseEntity.badRequest().body(validationError);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("An error occurred during validation");
         }

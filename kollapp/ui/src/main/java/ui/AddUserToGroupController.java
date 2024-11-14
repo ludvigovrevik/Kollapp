@@ -59,7 +59,6 @@ public class AddUserToGroupController {
         groupsListView.getItems().setAll(groups);
     }
 
-    // Modified handleAddUserToGroup method in your UI controller
     @FXML
     public void handleAddUserToGroup() {
         String username = usernameField.getText();
@@ -73,8 +72,9 @@ public class AddUserToGroupController {
         try {
             // Validate the group assignment
             String validationError = groupApiHandler.validateGroupAssignment(username, selectedGroup);
-            if (validationError != null) {
+            if (validationError != null && !validationError.isEmpty()) {  // Check for both null and empty
                 setFeedback(validationError, true);
+                System.out.println("Validation failed: " + validationError);
                 return;
             }
 
@@ -87,7 +87,9 @@ public class AddUserToGroupController {
                 setFeedback("Failed to add user to group.", true);
             }
         } catch (Exception e) {
-            setFeedback("Failed to add user to group.", true);
+            String errorMessage = "Failed to add user to group: " + e.getMessage();
+            setFeedback(errorMessage, true);
+            System.out.println(errorMessage);
         }
     }
 

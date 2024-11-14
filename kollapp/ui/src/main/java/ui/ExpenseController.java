@@ -1,6 +1,5 @@
 package ui;
 
-import api.ExpenseApiHandler;
 import core.Expense;
 import core.User;
 import core.UserGroup;
@@ -13,6 +12,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.List;
 import java.util.Optional;
+
+import api.ExpenseApiHandler;
 
 public class ExpenseController {
 
@@ -197,7 +198,8 @@ public class ExpenseController {
             loadExpenses();
 
         } catch (java.io.IOException e) {
-            e.printStackTrace();
+            System.err.println("Error: Unable to open the 'Add New Expense' window. Please try again.");
+            System.err.println("Details: " + e.getMessage());
         }
     }
 }

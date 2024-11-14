@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -98,6 +99,26 @@ public class GroupServiceTest {
     }
 
     @Test
+    @DisplayName("Test getGroup throws IllegalArgumentException when file is corrupted")
+    @Tag("group")
+    void testGetGroupThrowsExceptionWithCorruptFile() throws IOException {
+        String groupName = "corruptGroup";
+        Path groupFilePath = groupPath.resolve(groupName + ".json");
+        
+        // Create a corrupted JSON file
+        Files.write(groupFilePath, "{ this is not valid JSON }".getBytes());
+        
+        // Verify that the expected exception is thrown
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> groupService.getGroup(groupName)
+        );
+        
+        // Verify the exception message starts with "Error reading the group file"
+        assertTrue(exception.getMessage().startsWith("Error reading the group file"));
+    }
+
+    @Test
     @DisplayName("Test assigning a user to a group")
     @Tag("group")
     void testAssignUserToGroup() throws IOException {
@@ -179,60 +200,98 @@ public class GroupServiceTest {
     }
 
     @Test
-    @DisplayName("Test validateGroupAssignment when user does not exist")
-    @Tag("group")
-    void testValidateGroupAssignmentUserDoesNotExist() {
-        String username = "nonExistentUser";
+    @DisplayName("Test default constructor initialization")
+    @Tag("constructor")
+    void testDefaultConstructor() throws IOException {
+        // Create an instance using the default constructor
+        GroupService service = new GroupService();
+        
+        // Create a user using the default paths that the default constructor uses
+        Path defaultUserPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "users")
+                .toAbsolutePath()
+                .normalize();
+                
+        Path defaultGroupPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "groups")
+                .toAbsolutePath()
+                .normalize();
+                
+        Path defaultGroupToDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists")
+                .toAbsolutePath()
+                .normalize();
+        
+        // Create the necessary directories if they don't exist
+        Files.createDirectories(defaultUserPath);
+        Files.createDirectories(defaultGroupPath);
+        Files.createDirectories(defaultGroupToDoListPath);
+        
+        // Create and save a user in the default location
+        User defaultUser = new User("defaultTestUser", "password123");
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.writeValue(defaultUserPath.resolve(defaultUser.getUsername() + ".json").toFile(), defaultUser);
+        
+        try {
+            // Use the service with the newly created user
+            String groupName = "testGroup";
+            service.createGroup(defaultUser.getUsername(), groupName);
+            
+            // Verify the group was created in the default location
+            Path expectedGroupPath = defaultGroupPath.resolve(groupName + ".json");
+            assertTrue(expectedGroupPath.toFile().exists());
+        } finally {
+            // Clean up - delete all created files
+            Files.deleteIfExists(defaultUserPath.resolve(defaultUser.getUsername() + ".json"));
+            Files.deleteIfExists(defaultGroupPath.resolve("testGroup.json"));
+            Files.deleteIfExists(defaultGroupToDoListPath.resolve("testGroup.json"));
+        }
+    }
+
+    @Test
+    @DisplayName("Test validateGroupAssignment with non-existent user")
+    @Tag("validation")
+    void testValidateGroupAssignmentNonExistentUser() {
         String groupName = "testGroup";
-
-        // Ensure group exists
+        
+        // Create a group first
         groupService.createGroup(user.getUsername(), groupName);
-
-        String result = groupService.validateGroupAssignment(username, groupName);
-
+        
+        // Test with non-existent user
+        String result = groupService.validateGroupAssignment("nonExistentUser", groupName);
         assertEquals("User does not exist", result);
     }
 
     @Test
-    @DisplayName("Test validateGroupAssignment when group does not exist")
-    @Tag("group")
-    void testValidateGroupAssignmentGroupDoesNotExist() {
-        String username = user.getUsername();
-        String groupName = "nonExistentGroup";
-
-        String result = groupService.validateGroupAssignment(username, groupName);
-
+    @DisplayName("Test validateGroupAssignment with non-existent group")
+    @Tag("validation")
+    void testValidateGroupAssignmentNonExistentGroup() {
+        String result = groupService.validateGroupAssignment(user.getUsername(), "nonExistentGroup");
         assertEquals("Group does not exist", result);
     }
 
     @Test
-    @DisplayName("Test validateGroupAssignment when user is already in the group")
-    @Tag("group")
+    @DisplayName("Test validateGroupAssignment with user already in group")
+    @Tag("validation")
     void testValidateGroupAssignmentUserAlreadyInGroup() {
-        String username = user.getUsername();
         String groupName = "testGroup";
-
-        // Create group and assign user to it
-        groupService.createGroup(username, groupName);
-
-        String result = groupService.validateGroupAssignment(username, groupName);
-
+        
+        // Create a group with user1
+        groupService.createGroup(user.getUsername(), groupName);
+        
+        // Try to validate assignment for the same user
+        String result = groupService.validateGroupAssignment(user.getUsername(), groupName);
         assertEquals("User is already a member of this group", result);
     }
 
     @Test
-    @DisplayName("Test validateGroupAssignment when validation passes")
-    @Tag("group")
-    void testValidateGroupAssignmentValid() {
-        String username = user2.getUsername();
+    @DisplayName("Test validateGroupAssignment with valid new assignment")
+    @Tag("validation")
+    void testValidateGroupAssignmentValidAssignment() {
         String groupName = "testGroup";
-
-        // Create group
+        
+        // Create a group with user1
         groupService.createGroup(user.getUsername(), groupName);
-
-        // Validate group assignment for a user not already in the group
-        String result = groupService.validateGroupAssignment(username, groupName);
-
+        
+        // Validate assignment for user2 (who isn't in the group yet)
+        String result = groupService.validateGroupAssignment(user2.getUsername(), groupName);
         assertEquals("", result);
     }
 }

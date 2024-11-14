@@ -29,7 +29,6 @@ public class ExpenseController {
             List<Expense> expenses = expenseService.loadGroupExpenses(groupName);
             return ResponseEntity.ok(expenses);
         } catch (IllegalArgumentException e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -43,13 +42,12 @@ public class ExpenseController {
      *         or status 400 (Bad Request) if there is an IllegalArgumentException
      */
     @PutMapping("/groups/{groupName}")
-    public ResponseEntity<Void> updateGroupExpenses(@PathVariable String groupName, @RequestBody List<Expense> expenses) {
+    public ResponseEntity<String> updateGroupExpenses(@PathVariable String groupName, @RequestBody List<Expense> expenses) {
         try {
             expenseService.updateGroupExpenses(groupName, expenses);
             return ResponseEntity.ok().build();
         } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }

@@ -2,6 +2,7 @@ package ui;
 
 import java.time.LocalDate;
 
+import api.ToDoListApiHandler;
 import core.Task;
 import core.ToDoList;
 import core.User;
@@ -15,8 +16,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
-import api.ToDoListApiHandler;
 
 /**
  * Controller class for managing the addition of new tasks to a to-do list.
@@ -86,11 +85,9 @@ public class AddNewTaskController {
             if (groupInView != null) {
                 // Add task to the group's to-do list
                 toDoListApiHandler.updateGroupToDoList(groupInView, toDoList);
-                System.out.println("Updated to-do list for group: " + groupInView.getGroupName());
             } else {
                 // Add task to the user's personal to-do list
                 toDoListApiHandler.updateToDoList(user, toDoList);
-                System.out.println("Updated to-do list for user: " + user.getUsername());
             }
             kollAppController.updateTableView();
 

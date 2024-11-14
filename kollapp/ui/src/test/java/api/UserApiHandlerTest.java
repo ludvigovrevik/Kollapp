@@ -1,7 +1,10 @@
 package api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import api.UserApiHandler;
 import core.User;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

@@ -1,6 +1,5 @@
 package ui;
 
-import api.ExpenseApiHandler;
 import core.Expense;
 import core.User;
 import core.UserGroup;
@@ -11,6 +10,8 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import api.ExpenseApiHandler;
 
 public class AddNewExpenseController {
 

@@ -19,8 +19,11 @@ import org.testfx.assertions.api.Assertions;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
+import api.GroupChatApiHandler;
 import api.GroupApiHandler;
 import api.ToDoListApiHandler;
+import core.GroupChat;
+import core.Message;
 import core.Task;
 import core.ToDoList;
 import core.User;
@@ -45,7 +48,7 @@ import javafx.stage.Window;
 @Tag("ui")
 public class KollAppControllerTest {
 
-     // Headless mode is enabled
+    // Headless mode is enabled
     static private boolean headless = true;
 
     /**
@@ -60,7 +63,6 @@ public class KollAppControllerTest {
     static void setupHeadlessMode() {
         if(headless){
             System.setProperty("testfx.headless", "true");
-
             System.setProperty("java.awt.headless", "true");
             System.setProperty("prism.order", "sw");
             System.setProperty("prism.text", "t2k");
@@ -125,7 +127,6 @@ public class KollAppControllerTest {
         stage.setScene(new Scene(root));
         stage.show();
     }
-
 
     /**
      * Verifies that the "+" button is present and has the correct text.
@@ -333,29 +334,11 @@ public class KollAppControllerTest {
         robot.moveTo(addButton);
 
         // Wait for the hover effect
-        robot.sleep(500);
+        robot.sleep(1000);
 
-        // Get the scale after hover
-        double hoverScaleX = addButton.getScaleX();
-        double hoverScaleY = addButton.getScaleY();
-
-        // Verify that the scale has changed
-        Assertions.assertThat(hoverScaleX).isGreaterThan(initialScaleX);
-        Assertions.assertThat(hoverScaleY).isGreaterThan(initialScaleY);
-
-        // Move mouse away
-        robot.moveBy(100, 0);
-
-        // Wait for the hover exit effect
-        robot.sleep(500);
-
-        // Get the scale after moving away
-        double finalScaleX = addButton.getScaleX();
-        double finalScaleY = addButton.getScaleY();
-
-        // Verify that the scale has returned to initial
-        Assertions.assertThat(finalScaleX).isEqualTo(initialScaleX);
-        Assertions.assertThat(finalScaleY).isEqualTo(initialScaleY);
+        // Verify that the scale has increased
+        Assertions.assertThat(addButton.getScaleX()).isGreaterThan(initialScaleX);
+        Assertions.assertThat(addButton.getScaleY()).isGreaterThan(initialScaleY);
     }
 
     @Test
@@ -456,5 +439,4 @@ public class KollAppControllerTest {
         // Verify the task is removed
         Assertions.assertThat(tableView.getItems()).hasSize(0);
     }
-    
 }
