@@ -168,6 +168,7 @@ Maintaining a high standard of code reliability and performance is essential to 
 |  | 📖 **[JSON Save Format Specifications](/docs/release2/json_format.md)** | 📖 **[JSON Save Format Specifications](docs/release3/json_format.md)** |
 |  | 📖 **[Module Structure & Dependencies](docs/release2/module_structure_and_dependencies.md)** | 📖 **[Module Structure & Dependencies](docs/release3/module_structure_and_dependencies.md)** |
 |  | 📖 **[AI Usage Declaration](docs/release2/ai_declaration.md)** | 📖 **[AI Usage Declaration](docs/release3/ai_declaration.md)** |
+|  |  | 📖 **[Development Practices & Code Quality](docs/release3/development_practices_and_code_quality.md)** |
 |  |  | 📖 **[Contribution Guidelines](docs/release3/contribution.md)** |
 |  |  | 📖 **[Sustainability Reflection on KollApp](docs/release3/sustainability.md)** |
 |  |  | 📖 **[Creating a Shippable Product](docs/release3/create_shippable_product.md)** |

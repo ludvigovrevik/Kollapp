@@ -20,7 +20,7 @@ We used Git for version control, ensuring that all changes were tracked and coul
 
 ### Collaboration with Teaching Assistant
 
-Our close collaboration with our teaching assistant, Ådne Børresen, remained invaluable in Release 3. We consulted with Ådne to clarify best practices for secure data handling, especially regarding new group chat functionalities. This feedback was crucial, as it helped us catch and address potential issues before they could impact the project.
+Our close collaboration with our teaching assistant, Ådne Børresen, remained invaluable in Release 3. We consulted with Ådne to clarify best practices for secure data handling, especially regarding our new features for release 3. The feedbacks from Ådne was helpful, as it helped us catch and address potential security issues before they could impact the project.
 
 ---
 
@@ -54,6 +54,10 @@ We used GitLab's issue tracking system to manage tasks, bugs, and feature reques
 
 Extensive unit tests were written using JUnit 5 to ensure that individual components worked as expected. This helped catch bugs early and provided a safety net for refactoring.
 
+### Integration Testing
+
+Integration tests were conducted to verify that different components of the application worked together correctly. This ensured that the system as a whole functioned as intended. We also used Postman to test the API during development, which helped us identify and fix issues early in the process.
+
 ### Code Coverage
 
 We used JaCoCo to measure code coverage and ensure that our tests covered a significant portion of the codebase. This helped identify untested areas and improve overall test coverage.
@@ -61,6 +65,22 @@ We used JaCoCo to measure code coverage and ensure that our tests covered a sign
 ### Static Code Analysis
 
 Tools like Checkstyle and SpotBugs were used to analyze the code for potential issues and enforce coding standards. This helped maintain a high level of code quality and catch potential bugs early.
+
+### Mock Testing
+
+Mockito was used for creating mock objects in tests, allowing us to isolate components and test them independently. This helped ensure that our tests were reliable and focused on specific functionalities.
+
+### UI Testing
+
+TestFX was used for testing JavaFX applications in a headless environment, ensuring that the user interface behaved as expected. This helped maintain a consistent user experience and catch UI-related issues early.
+
+### Readable Assertions
+
+Hamcrest was used to make assertions more readable and expressive, improving the clarity of our tests.
+
+### Test Execution
+
+The Maven Surefire Plugin was used to run the tests defined in the project, ensuring that all tests were executed consistently.
 
 ---
 
