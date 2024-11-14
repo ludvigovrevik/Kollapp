@@ -1,11 +1,13 @@
-
 # KollApp REST API Documentation
 
 ## Introduction
+
 This document provides details on the REST endpoints available in the KollApp application, including request and response formats, HTTP status codes, and general usage.
 
 ## Running the Application
+
 To start the Spring Boot application:
+
 ```sh
 cd kollapp
 mvn spring-boot:run -pl api
