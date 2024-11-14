@@ -56,10 +56,8 @@ public class ToDoListApiHandler {
             if (response.statusCode() == 200) {
                 return Optional.of(objectMapper.readValue(response.body(), ToDoList.class));
             } else {
-                System.err.println("Failed to load to-do list. Status code: " + response.statusCode());
                 return Optional.empty();
             }
-            return Optional.empty();
         } catch (IOException | InterruptedException e) {
             return Optional.empty();
         }
@@ -134,9 +132,7 @@ public class ToDoListApiHandler {
                 System.err.println("Failed to load group to-do list. Status code: " + response.statusCode());
                 return Optional.empty();
             }
-            return null;
         } catch (IOException | InterruptedException e) {
-            System.err.println("An error occurred while loading group to-do list: " + e.getMessage());
             return Optional.empty();
         }
     }
