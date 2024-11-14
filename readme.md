@@ -161,14 +161,13 @@ Maintaining a high standard of code reliability and performance is essential to 
 | **Release 1** | **Release 2** | **Release 3** |
 |----------------------------------|----------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
 | 📖 **[Release 1 Updates](docs/release1/release1_updates.md)** | 📖 **[Release 2 Updates](docs/release2/release2_updates.md)** | 📖 **[Release 3 Updates](/docs/release3/release3_updates.md)** |
-| 📖 **[AI Tools Guide](docs/release1/ai-tools.md)** | 📖 **[Development Practices & Code Quality](/docs/release2/development_practices_and_code_quality.md)** | 📖 **[Project Challenges and Lessons Learned](docs/release3/challenges.md)** |
+| 📖 **[AI Tools Guide](docs/release1/ai-tools.md)** | 📖 **[Development Practices & Code Quality](/docs/release2/development_practices_and_code_quality.md)** | 📖 **[Development Practices & Code Quality](docs/release3/development_practices_and_code_quality.md)** |
 | 📖 **[Gallery](docs/release1/gallery.md)** | 📖 **[Gallery](docs/release2/gallery.md)** | 📖 **[Gallery](docs/release3/gallery.md)** |
 |  | 📖 **[Testing & Code Quality Standards](docs/release2/testing_and_code_quality.md)** | 📖 **[Testing & Code Quality Standards](docs/release3/testing_and_code_quality.md)** |
 |  | 📖 **[Project Architecture Diagrams](docs/release2/architecture_diagrams.md)** | 📖 **[Project Architecture Diagrams](docs/release3/architecture_diagrams.md)** |
 |  | 📖 **[JSON Save Format Specifications](/docs/release2/json_format.md)** | 📖 **[JSON Save Format Specifications](docs/release3/json_format.md)** |
 |  | 📖 **[Module Structure & Dependencies](docs/release2/module_structure_and_dependencies.md)** | 📖 **[Module Structure & Dependencies](docs/release3/module_structure_and_dependencies.md)** |
 |  | 📖 **[AI Usage Declaration](docs/release2/ai_declaration.md)** | 📖 **[AI Usage Declaration](docs/release3/ai_declaration.md)** |
-|  |  | 📖 **[Development Practices & Code Quality](docs/release3/development_practices_and_code_quality.md)** |
 |  |  | 📖 **[Contribution Guidelines](docs/release3/contribution.md)** |
 |  |  | 📖 **[Sustainability Reflection on KollApp](docs/release3/sustainability.md)** |
 |  |  | 📖 **[Creating a Shippable Product](docs/release3/create_shippable_product.md)** |
