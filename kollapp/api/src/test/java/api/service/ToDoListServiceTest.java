@@ -244,7 +244,7 @@ public class ToDoListServiceTest {
     @Test
     @DisplayName("Test constructor initializes properly")
     @Tag("constructor")
-    void testConstructorInitialization() throws IOException {
+    public void testConstructorInitialization() throws IOException {
         // Delete directories if they exist
         if (Files.exists(testToDoListFolderPath)) {
             deleteDirectory(testToDoListFolderPath);
@@ -275,7 +275,7 @@ public class ToDoListServiceTest {
     @Test
     @DisplayName("Test assignToDoList throws exception for non-existent user")
     @Tag("assign")
-    void testAssignToDoListNonExistentUser() {
+    public void testAssignToDoListNonExistentUser() {
         String nonExistentUsername = "nonExistentUser";
         
         IllegalArgumentException exception = assertThrows(
@@ -293,7 +293,7 @@ public class ToDoListServiceTest {
     @Test
     @DisplayName("Test loadToDoList throws exception for non-existent user")
     @Tag("load")
-    void testLoadToDoListNonExistentUser() {
+    public void testLoadToDoListNonExistentUser() {
         String nonExistentUsername = "nonExistentUser";
         
         IllegalArgumentException exception = assertThrows(
@@ -307,7 +307,7 @@ public class ToDoListServiceTest {
     @Test
     @DisplayName("Test updateToDoList throws exception for non-existent user")
     @Tag("update")
-    void testUpdateToDoListNonExistentUser() {
+    public void testUpdateToDoListNonExistentUser() {
         String nonExistentUsername = "nonExistentUser";
         ToDoList toDoList = new ToDoList();
         toDoList.addTask(new Task("Test Task"));
@@ -319,7 +319,6 @@ public class ToDoListServiceTest {
         
         assertEquals("User not found: " + nonExistentUsername, exception.getMessage());
         
-        // Verify no file was created
         Path todoListFile = testToDoListFolderPath.resolve(nonExistentUsername + ".json");
         assertFalse(Files.exists(todoListFile));
     }
@@ -327,7 +326,7 @@ public class ToDoListServiceTest {
     @Test
     @DisplayName("Test constructor with null paths")
     @Tag("constructor")
-    void testConstructorWithNullPaths() {
+    public void testConstructorWithNullPaths() {
         assertThrows(NullPointerException.class, 
             () -> new ToDoListService(null, groupTestFolderPath, userService));
             
@@ -338,8 +337,7 @@ public class ToDoListServiceTest {
     @Test
     @DisplayName("Test default constructor initialization")
     @Tag("constructor")
-    void testDefaultConstructor() throws IOException {
-        // Define default paths
+    public void testDefaultConstructor() throws IOException {
         Path defaultToDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "todolists")
                 .toAbsolutePath().normalize();
         Path defaultGroupToDoListPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "grouptodolists")
@@ -347,27 +345,22 @@ public class ToDoListServiceTest {
         Path defaultUserPath = Paths.get("..", "persistence", "src", "main", "java", "persistence", "users")
                 .toAbsolutePath().normalize();
                 
-        // Create directories if they don't exist
         Files.createDirectories(defaultToDoListPath);
         Files.createDirectories(defaultGroupToDoListPath);
         Files.createDirectories(defaultUserPath);
         
-        // Define test user file paths
         String testUsername = "defaultTestUser";
         Path userFile = defaultUserPath.resolve(testUsername + ".json");
         Path todoListFile = defaultToDoListPath.resolve(testUsername + ".json");
         
         try {
-            // Save a test user in the default location
             User testUser = new User(testUsername, "password");
             ObjectMapper mapper = new ObjectMapper();
             mapper.registerModule(new JavaTimeModule());
             mapper.writeValue(userFile.toFile(), testUser);
             
-            // Create service with default constructor
             ToDoListService defaultService = new ToDoListService();
             
-            // Verify the service is functional
             assertDoesNotThrow(() -> {
                 defaultService.assignToDoList(testUser.getUsername());
             });
@@ -375,7 +368,6 @@ public class ToDoListServiceTest {
             assertTrue(Files.exists(todoListFile));
             
         } finally {
-            // Clean up only the test files, not the directories
             if (Files.exists(userFile)) {
                 Files.delete(userFile);
             }

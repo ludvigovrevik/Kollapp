@@ -14,6 +14,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -22,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import core.Expense;
 
+@Tag("service")
 class ExpenseServiceTest {
 
     private ExpenseService expenseService;
@@ -31,36 +34,31 @@ class ExpenseServiceTest {
     Path tempDir;
 
     @BeforeEach
-    void setUp() {
+    @DisplayName("Set up temporary directory and initialize ExpenseService")
+    private void setUp() {
         expenseService = new ExpenseService();
-        // Store the original path
         originalGroupExpensePath = (String) ReflectionTestUtils.getField(expenseService, "groupExpensePath");
-        // Set the temporary directory for testing
         ReflectionTestUtils.setField(expenseService, "groupExpensePath", tempDir.toString() + File.separator);
     }
 
     @AfterEach
-    void tearDown() throws IOException {
-        // Restore the original path
+    @DisplayName("Restore original path after tests")
+    public void tearDown() throws IOException {
         ReflectionTestUtils.setField(expenseService, "groupExpensePath", originalGroupExpensePath);
     }
 
     @Test
-    void loadGroupExpenses_WhenFileDoesNotExist_ReturnsEmptyList() {
-        // Arrange
+    @DisplayName("Test loading group expenses when file does not exist returns empty list")
+    public void loadGroupExpenses_WhenFileDoesNotExist_ReturnsEmptyList() {
         String groupName = "nonexistentGroup";
-
-        // Act
         List<Expense> result = expenseService.loadGroupExpenses(groupName);
-
-        // Assert
         assertNotNull(result);
         assertTrue(result.isEmpty());
     }
 
     @Test
-    void loadGroupExpenses_WhenFileExists_ReturnsExpenseList() throws IOException {
-        // Arrange
+    @DisplayName("Test loading group expenses when file exists returns expense list")
+    public void loadGroupExpenses_WhenFileExists_ReturnsExpenseList() throws IOException {
         String groupName = "testGroup";
         List<String> participants = Arrays.asList("user1", "user2");
         List<Expense> expectedExpenses = Arrays.asList(
@@ -68,15 +66,12 @@ class ExpenseServiceTest {
             createTestExpense("Test Expense 2", 200.0, "user2", participants)
         );
 
-        // Create and write to test file
         ObjectMapper mapper = new ObjectMapper();
         File testFile = new File(tempDir.toString(), groupName + ".json");
         mapper.writeValue(testFile, expectedExpenses);
 
-        // Act
         List<Expense> result = expenseService.loadGroupExpenses(groupName);
 
-        // Assert
         assertNotNull(result);
         assertEquals(2, result.size());
         assertEquals("Test Expense 1", result.get(0).getDescription());
@@ -86,22 +81,17 @@ class ExpenseServiceTest {
     }
 
     @Test
-    void updateGroupExpenses_Successfully_SavesExpenses() throws IOException {
-        // Arrange
+    @DisplayName("Test successful saving of group expenses")
+    public void updateGroupExpenses_Successfully_SavesExpenses() throws IOException {
         String groupName = "testGroup";
         List<String> participants = Arrays.asList("user1", "user2");
-        List<Expense> expenses = Arrays.asList(
-            createTestExpense("Test Expense", 150.0, "user1", participants)
-        );
+        List<Expense> expenses = Arrays.asList(createTestExpense("Test Expense", 150.0, "user1", participants));
 
-        // Act
         expenseService.updateGroupExpenses(groupName, expenses);
 
-        // Assert
         File savedFile = new File(tempDir.toString(), groupName + ".json");
         assertTrue(savedFile.exists());
-        
-        // Verify content
+
         ObjectMapper mapper = new ObjectMapper();
         List<Expense> savedExpenses = mapper.readValue(savedFile, 
             mapper.getTypeFactory().constructCollectionType(List.class, Expense.class));
@@ -110,19 +100,15 @@ class ExpenseServiceTest {
     }
 
     @Test
-    void updateGroupExpenses_AndLoadGroupExpenses_WorksTogether() {
-        // Arrange
+    @DisplayName("Test update and load group expenses integration")
+    public void updateGroupExpenses_AndLoadGroupExpenses_WorksTogether() {
         String groupName = "testGroup";
         List<String> participants = Arrays.asList("user1", "user2");
-        List<Expense> originalExpenses = Arrays.asList(
-            createTestExpense("Test Expense", 150.0, "user1", participants)
-        );
+        List<Expense> originalExpenses = Arrays.asList(createTestExpense("Test Expense", 150.0, "user1", participants));
 
-        // Act
         expenseService.updateGroupExpenses(groupName, originalExpenses);
         List<Expense> loadedExpenses = expenseService.loadGroupExpenses(groupName);
 
-        // Assert
         assertNotNull(loadedExpenses);
         assertEquals(1, loadedExpenses.size());
         assertEquals("Test Expense", loadedExpenses.get(0).getDescription());
@@ -131,41 +117,34 @@ class ExpenseServiceTest {
     }
 
     @Test
-    void updateGroupExpenses_WithNullGroup_ThrowsException() {
-        // Arrange
+    @DisplayName("Test update group expenses with null group name throws exception")
+    public void updateGroupExpenses_WithNullGroup_ThrowsException() {
         String groupName = null;
         List<Expense> expenses = new ArrayList<>();
-
-        // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
             () -> expenseService.updateGroupExpenses(groupName, expenses));
         assertEquals("Group name cannot be null", exception.getMessage());
     }
 
     @Test
-    void updateGroupExpenses_WithNullExpenses_ThrowsException() {
-        // Arrange
+    @DisplayName("Test update group expenses with null expenses list throws exception")
+    public void updateGroupExpenses_WithNullExpenses_ThrowsException() {
         String groupName = "testGroup";
         List<Expense> expenses = null;
-
-        // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
             () -> expenseService.updateGroupExpenses(groupName, expenses));
         assertEquals("Expenses list cannot be null", exception.getMessage());
     }
 
     @Test
-    void loadGroupExpenses_WithNullGroup_ThrowsException() {
-        // Arrange
+    @DisplayName("Test load group expenses with null group name throws exception")
+    public void loadGroupExpenses_WithNullGroup_ThrowsException() {
         String groupName = null;
-
-        // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
             () -> expenseService.loadGroupExpenses(groupName));
         assertEquals("Group name cannot be null", exception.getMessage());
     }
 
-    // Helper method to create test expenses
     private Expense createTestExpense(String description, double amount, String paidBy, List<String> participants) {
         Expense expense = new Expense();
         expense.setDescription(description);
