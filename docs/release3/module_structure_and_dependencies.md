@@ -58,4 +58,4 @@ The **KollApp** project is organized into the following modules:
 
 ---
 
-📖 Return to the **[Main README](../../README.md)** for additional information and project overview.
+📖 Return to the **[Main README](../../readme.md)** for additional information and project overview.

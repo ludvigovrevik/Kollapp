@@ -12,6 +12,10 @@ Here are some screenshots showcasing the features and user interface of **KollAp
 
 ![Dashboard](docs/release3/img)
 
+## Add Task
+
+![Add Task](docs/release3/img)
+
 ## Group Chat
 
 ![Group Chat](docs/release3/img)
@@ -19,10 +23,6 @@ Here are some screenshots showcasing the features and user interface of **KollAp
 ## Shared Expense Management
 
 ![Shared Expense Management](docs/release3/img)
-
-## Add Task
-
-![Add Task](docs/release3/img)
 
 ---
 
