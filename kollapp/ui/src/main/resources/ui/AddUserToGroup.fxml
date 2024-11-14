@@ -7,7 +7,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="365.0" prefWidth="600.0" stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.AddUserToGroupController">
+<AnchorPane prefHeight="365.0" prefWidth="600.0" stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.AddUserToGroupController">
     <children>
         <ScrollPane layoutX="20.0" layoutY="32.0" prefHeight="250.0" prefWidth="560.0" style="-fx-background-radius: 10; -fx-border-radius: 10;">
             <content>

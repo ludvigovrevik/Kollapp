@@ -1,4 +1,4 @@
-@startuml KollApp Improved Architecture Diagram
+@startuml package_diagram
 
 skinparam linetype ortho
 skinparam packageStyle rectangle
@@ -6,9 +6,9 @@ skinparam defaultTextAlignment center
 
 left to right direction
 
-folder "UI Layer" {
+folder "UI" {
     
-    folder "Controllers" {
+    folder "UI Controller" {
         class AddNewExpenseController
         class AddNewTaskController
         class AddUserToGroupController
@@ -19,7 +19,7 @@ folder "UI Layer" {
         class RegisterController
         class RegisterGroupController
     }
-    folder "API Handlers" {
+    folder "Client" {
         class ExpenseApiHandler
         class GroupApiHandler
         class GroupChatApiHandler
@@ -28,7 +28,7 @@ folder "UI Layer" {
     }  
 }
 
-folder "Core Layer" {
+folder "Core" {
     class Expense
     class GroupChat
     class Message
@@ -39,8 +39,8 @@ folder "Core Layer" {
     class UserGroup
 }
 
-folder "Server API" {
-    folder "API Controller Layer" {
+folder "API" {
+    folder "Controller" {
         class ExpenseController
         class GroupChatController
         class GroupController
@@ -48,7 +48,7 @@ folder "Server API" {
         class UserController
     }
 
-    folder "Service Layer" {
+    folder "Service" {
         class ExpenseService
         class GroupChatService
         class GroupService
@@ -56,17 +56,17 @@ folder "Server API" {
         class UserService
     }
 
-    folder "Persistence Layer" {
+    folder "Persistence" {
     }
 }
 
-"Controllers" -down-> "API Handlers" : Interacts with
-"API Handlers" -down-> "API Controller Layer" : HTTP Requests
-"API Controller Layer" -left-> "Service Layer" : Delegates Logic
-"Service Layer" -down-> "Persistence Layer" : Manages Data
+"Client" -down-> "Controller" : HTTP Requests
+"UI Controller" -down-> "Client" : Delegate Logic
+"Controller" -down-> "Service" : Delegates Logic
+"Service" -down-> "Persistence" : Mannage Data
 
-"Controllers" -right-> "Core Layer" : Uses Model
-"Service Layer" -left-> "Core Layer" : Uses Model
-"Persistence Layer" -up-> "Core Layer" : Stores JSON Data
+"Service" -down-> "Core" : Uses Model
+"Controller" -down-> "Core" : Uses Model
+
 
 @enduml

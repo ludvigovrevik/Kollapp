@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="367.0" prefWidth="652.0" stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.ExpenseController">
+<AnchorPane prefHeight="367.0" prefWidth="652.0" stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.ExpenseController">
     <children>
         <TableView fx:id="expenseTableView" layoutX="14.0" layoutY="14.0" prefHeight="300.0" prefWidth="621.0" style="-fx-background-radius: 10; -fx-border-radius: 10 0 10 0; -fx-padding: 10px;">
             <columns>

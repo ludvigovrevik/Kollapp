@@ -22,7 +22,7 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.util.WaitForAsyncUtils;
 
-import api.ExpenseApiHandler;
+import client.ExpenseApiHandler;
 import core.Expense;
 import core.User;
 import core.UserGroup;

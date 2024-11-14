@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.GroupChatController" stylesheets="@css/styles.css">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.GroupChatController" stylesheets="@css/styles.css">
     <children>
         <ScrollPane fx:id="viewMessagePane" fitToWidth="true" layoutX="20.0" layoutY="20.0" prefHeight="300.0" prefWidth="560.0" style="-fx-background-radius: 10; -fx-border-radius: 10;">
             <content>

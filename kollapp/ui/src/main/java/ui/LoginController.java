@@ -3,7 +3,7 @@ package ui;
 import java.io.IOException;
 import java.util.Optional;
 
-import api.UserApiHandler;
+import client.UserApiHandler;
 import core.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

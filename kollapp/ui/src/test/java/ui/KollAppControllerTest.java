@@ -19,8 +19,8 @@ import org.testfx.assertions.api.Assertions;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
-import api.GroupApiHandler;
-import api.ToDoListApiHandler;
+import client.GroupApiHandler;
+import client.ToDoListApiHandler;
 import core.Task;
 import core.ToDoList;
 import core.User;

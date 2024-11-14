@@ -1,9 +1,9 @@
-package api;
+package client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import api.GroupChatApiHandler;
+import client.GroupChatApiHandler;
 import core.GroupChat;
 import core.Message;
 

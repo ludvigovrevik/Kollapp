@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import api.ExpenseApiHandler;
+import client.ExpenseApiHandler;
 
 public class AddNewExpenseController {
 

@@ -1,8 +1,8 @@
 package ui;
 
-import api.GroupApiHandler;
-import api.GroupChatApiHandler;
-import api.UserApiHandler;
+import client.GroupApiHandler;
+import client.GroupChatApiHandler;
+import client.UserApiHandler;
 import core.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

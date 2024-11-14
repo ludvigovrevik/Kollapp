@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="200.0" prefWidth="416.0" stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.AddNewExpenseController">
+<AnchorPane prefHeight="200.0" prefWidth="416.0" stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.AddNewExpenseController">
     <children>
         <Label layoutX="28.0" layoutY="33.0" prefHeight="17.0" prefWidth="105.0" text="Expense Name" />
         <TextField fx:id="expenseNameField" layoutX="143.0" layoutY="29.0" prefHeight="37.0" prefWidth="230.0" />

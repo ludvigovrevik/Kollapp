@@ -2,8 +2,8 @@ package ui;
 
 import java.util.List;
 
-import api.GroupApiHandler;
-import api.UserApiHandler;
+import client.GroupApiHandler;
+import client.UserApiHandler;
 import core.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

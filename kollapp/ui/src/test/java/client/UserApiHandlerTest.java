@@ -1,8 +1,8 @@
-package api;
+package client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import api.UserApiHandler;
+import client.UserApiHandler;
 import core.User;
 
 import org.junit.jupiter.api.BeforeEach;

@@ -16,7 +16,7 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.util.WaitForAsyncUtils;
 
-import api.GroupChatApiHandler;
+import client.GroupChatApiHandler;
 import core.GroupChat;
 import core.Message;
 import core.User;

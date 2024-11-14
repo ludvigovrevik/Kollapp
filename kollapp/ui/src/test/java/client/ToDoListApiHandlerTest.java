@@ -1,9 +1,9 @@
-package api;
+package client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import api.ToDoListApiHandler;
+import client.ToDoListApiHandler;
 import core.ToDoList;
 import core.User;
 import core.UserGroup;
