@@ -7,18 +7,18 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.RegisterController" stylesheets="@css/styles.css">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="380.0" stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.RegisterController">
    <children>
-      <TextField fx:id="usernameField" layoutX="262.0" layoutY="180.0" prefHeight="26.0" prefWidth="242.0" promptText="Enter your username" />
-      <PasswordField fx:id="passwordField" layoutX="262.0" layoutY="239.0" prefHeight="26.0" prefWidth="242.0" promptText="Enter your password" />
-      <PasswordField fx:id="confirmPasswordField" layoutX="262.0" layoutY="300.0" prefHeight="26.0" prefWidth="242.0" promptText="Retype your password" />
-      <Label layoutX="262.0" layoutY="162.0" text="Username" />
-      <Label layoutX="262.0" layoutY="220.0" text="Password" />
-      <Label layoutX="262.0" layoutY="282.0" text="Confirm Password" />
-      <Button fx:id="navigateToLoginScreenButton" layoutX="394.0" layoutY="344.0" mnemonicParsing="false" onAction="#navigateToLoginScreen" prefHeight="26.0" prefWidth="109.0" styleClass="back-button" text="Back" />
-      <Button fx:id="registerButton" layoutX="262.0" layoutY="344.0" mnemonicParsing="false" onAction="#registerUser" prefHeight="26.0" prefWidth="110.0" styleClass="register-button" text="Register" />
-      <Label fx:id="errorMessage" layoutX="260.0" layoutY="390.0" style="-fx-font-size: 16; -fx-text-fill: red;" />
-      <Label layoutX="328.0" layoutY="105.0" prefHeight="42.0" prefWidth="110.0" style="-fx-font-weight: bold;" text="Register">
+      <TextField fx:id="usernameField" layoutX="70.0" layoutY="175.0" prefHeight="26.0" prefWidth="242.0" promptText="Enter your username" />
+      <PasswordField fx:id="passwordField" layoutX="70.0" layoutY="246.0" prefHeight="26.0" prefWidth="242.0" promptText="Enter your password" />
+      <PasswordField fx:id="confirmPasswordField" layoutX="70.0" layoutY="320.0" prefHeight="26.0" prefWidth="242.0" promptText="Retype your password" />
+      <Label layoutX="70.0" layoutY="157.0" text="Username" />
+      <Label layoutX="70.0" layoutY="227.0" text="Password" />
+      <Label layoutX="70.0" layoutY="303.0" text="Confirm Password" />
+      <Button fx:id="navigateToLoginScreenButton" layoutX="202.0" layoutY="378.0" mnemonicParsing="false" onAction="#navigateToLoginScreen" prefHeight="26.0" prefWidth="109.0" styleClass="back-button" text="Back" />
+      <Button fx:id="registerButton" layoutX="70.0" layoutY="378.0" mnemonicParsing="false" onAction="#registerUser" prefHeight="26.0" prefWidth="110.0" styleClass="register-button" text="Register" />
+      <Label fx:id="errorMessage" layoutX="70.0" layoutY="415.0" prefHeight="20.0" prefWidth="242.0" style="-fx-font-size: 16; -fx-text-fill: red;" />
+      <Label alignment="CENTER" layoutX="93.0" layoutY="98.0" prefHeight="42.0" prefWidth="197.0" style="-fx-font-weight: bold;" text="Register">
          <font>
             <Font name="SansSerif Bold" size="26.0" />
          </font>

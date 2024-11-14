@@ -9,7 +9,7 @@
     <children>
         <Label layoutX="25.0" layoutY="30.0" text="Group Name" />
         <TextField fx:id="groupNameField" layoutX="125.0" layoutY="26.0" prefHeight="25.0" prefWidth="300.0" promptText="Enter group name" />
-        <Button fx:id="createGroupButton" layoutX="125.0" layoutY="67.0" mnemonicParsing="false" onAction="#createGroup" prefHeight="25.0" prefWidth="300.0" styleClass="createGroup-label" text="Create Group" />
+        <Button fx:id="createGroupButton" layoutX="125.0" layoutY="72.0" mnemonicParsing="false" onAction="#createGroup" prefHeight="25.0" prefWidth="300.0" styleClass="createGroup-label" text="Create Group" />
         <Label fx:id="errorLabel" layoutX="125.0" layoutY="103.0" prefHeight="25.0" prefWidth="300.0" textAlignment="CENTER" textFill="RED" />
     </children>
 </AnchorPane>

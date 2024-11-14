@@ -14,8 +14,8 @@
                 <ListView fx:id="groupsListView" prefHeight="250.0" prefWidth="560.0" />
             </content>
         </ScrollPane>
-        <TextField fx:id="usernameField" layoutX="20.0" layoutY="305.0" prefHeight="25.0" prefWidth="420.0" promptText="Add user to group" />
-        <Button fx:id="addUserButton" layoutX="450.0" layoutY="305.0" mnemonicParsing="false" onAction="#handleAddUserToGroup" prefHeight="25.0" prefWidth="130.0" styleClass="addUser-label" text="Add User" />
+        <TextField fx:id="usernameField" layoutX="20.0" layoutY="293.0" prefHeight="25.0" prefWidth="420.0" promptText="Add user to group" />
+        <Button fx:id="addUserButton" layoutX="450.0" layoutY="299.0" mnemonicParsing="false" onAction="#handleAddUserToGroup" prefHeight="25.0" prefWidth="130.0" styleClass="addUser-label" text="Add User" />
         <Label fx:id="feedbackLabel" layoutX="20.0" layoutY="330.0" prefHeight="28.0" prefWidth="560.0" textAlignment="CENTER" textFill="RED" />
       <Label layoutX="20.0" layoutY="14.0" prefHeight="17.0" prefWidth="95.0" text="Your groups" />
     </children>

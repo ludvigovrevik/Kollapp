@@ -160,12 +160,6 @@
     -fx-background-color: #1F618D; 
 }
 
-.text-field, .password-field {
-    -fx-background-radius: 10;
-    -fx-border-radius: 10;
-    -fx-padding: 10px;
-}
-
 .register-button {
     -fx-background-color: #27AE60; 
     -fx-text-fill: #FFFFFF; 
