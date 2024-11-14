@@ -30,18 +30,16 @@ The **KollApp** project is organized into the following modules:
 ### 3. Persistence Module 💾
 
 - **Path**: `gr2409/kollapp/persistence`
-- **Description**: Manages the storage and retrieval of data. This module handles the persistence of application data to various storage systems.
+- **Description**: Manages the storage and retrieval of data by storing it in JSON files. This module ensures that user data, to-do lists, group information, and other relevant data are saved efficiently.
 - **Dependencies**:
   - **JUnit 5**: For writing and running unit tests.
   - **Mockito**: For creating mock objects in tests.
   - **Jackson**: For JSON processing.
 
-By following this architecture, **KollApp** ensures a maintainable, scalable, and robust application structure.
-
 ### 4. API Module 🌐
 
 - **Path**: `gr2409/kollapp/api`
-- **Description**: Provides REST web services for the application. This module handles the communication between the client and the server.
+- **Description**: Provides REST web services for the application. This module handles the communication between the client and the server and writes JSON files to the persistence module.
 - **Dependencies**:
   - **Spring Boot**: For building the backend services.
   - **JUnit 5**: For writing and running unit tests.

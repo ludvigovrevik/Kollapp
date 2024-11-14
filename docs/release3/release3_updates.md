@@ -50,7 +50,7 @@ In this release, we have implemented several new features and enhanced the UI fr
 
 ### 🚀 Shippable Product
 
-- Created a **[Shippable Product](docs/release3/create_shippable_product.md)** for **KollApp**
+- Created a **[Shippable Product](create_shippable_product.md)** for **KollApp**
   
 ---
 

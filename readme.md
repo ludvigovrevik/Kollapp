@@ -45,7 +45,7 @@ The **KollApp** project is organized into several modules, each with a specific 
 
 **3. Persistence Module 📂**
   `gr2409/kollapp/persistence`  
-  Manages the storage and retrieval of data.
+  Manages the storage of data.
 
 **4. API Module 📂**
   `gr2409/kollapp/api`  
@@ -112,6 +112,8 @@ Alternatively, to build and launch **KollApp** without script, follow these step
 
    **3. Run Springboot 🌱**
 
+  To start the backend services of **KollApp**, you need to run the Spring Boot application. This will initialize the REST API and other backend functionalities.
+
   ```sh
   cd api
   mvn spring-boot:run
@@ -140,11 +142,19 @@ Maintaining a high standard of code reliability and performance is essential to 
 
 ## 📚 Suggested Reading
 
-- 📖 **[Release 2](/docs/release2/release2_updates.md)**: For detailed information on major updates.
-- 📖 **[Release 3](/docs/release2/release2_updates.md)**: For detailed information on major updates for the final iteration of **KollApp**.
-- 📖 **[Development Practices and Tools](/docs/release2/development_practices_and_code_quality.md)**: For detailed information on our work habits, workflow, and code quality practices (Release 2).
-- 📖 **[Testing and Code Quality](docs/release3/testing_and_code_quality.md)**: For a detailed guide on how to run tests and use tools like JaCoCo, SpotBugs and Checkstyle.
-- 📖 **[Project Architecture Diagrams](docs/release3/architecture_diagrams.md)**: For an overview showcasing different diagrams of the project's architecture.
-- 📖 **[User Stories](/docs/user_stories.md)**: For an overview of user stories.
-- 📖 **[JSON Save Format](/docs/release3/json_format.md)**: For more details about our implementation of JSON.
-- 📖 **[AI declaration](/docs/release3/ai_declaration.md)**: For an overview about AI tools utilized in the project.
+- 📖 **[User Stories](/docs/user_stories.md)**: For an overview of user stories. VIKTIG
+
+| Release 1                                                    | Release 2                                                                                                | Release 3                                                                                     |
+|--------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
+| 📖 **[Release 1 Updates](docs/release1/release1_updates.md)** | 📖 **[Release 2 Updates](docs/release2/release2_updates.md)**                                             | 📖 **[Release 3 Updates](/docs/release3/release3_updates.md)**                                 |
+| 📖 **[AI-Tools](docs/release1/ai-tools.md)**                  | 📖 **[Development Practices and Code Quality](/docs/release2/development_practices_and_code_quality.md)** | 📖 **[Challenges](docs/release3/challenges.md)**                                               |
+|                                                              | 📖 **[Testing and Code Quality](docs/release2/testing_and_code_quality.md)**                              | 📖 **[Contribution](docs/release3/contribution.md)**                                           |
+|                                                              | 📖 **[Project Architecture Diagrams](docs/release2/architecture_diagrams.md)**                            | 📖 **[Sustainability](docs/release3/sustainability.md)**                                       |
+|                                                              | 📖 **[JSON Save Format](/docs/release2/json_format.md)**                                                  | 📖 **[Create Shippable Product](docs/release3/create_shippable_product.md)**                   |
+|                                                              | 📖 **[Module Structure and Dependencies](docs/release2/module_structure_and_dependencies.md)**            | 📖 **[Module Structure and Dependencies](docs/release3/module_structure_and_dependencies.md)** |
+|                                                              | 📖 **[Architecture Diagrams](docs/release2/architecture_diagrams.md)**                                    | 📖 **[REST Service Documentation](docs/release3/rest_service.md)**                             |
+|                                                              | 📖 **[AI-Declaration](docs/release2/ai_declaration.md)**                                                  |                                                                                               |
+|                                                              |                                                                                                          | 📖 **[JSON Save Format](docs/release3/json_format.md)**                                        |
+|                                                              |                                                                                                          | 📖 **[AI Declaration](docs/release3/ai_declaration.md)**                                       |
+|                                                              |                                                                                                          | 📖 **[Testing and Code Quality](docs/release3/testing_and_code_quality.md)**                   |
+|                                                              |                                                                                                          | 📖 **[Architecture Diagrams](docs/release3/architecture_diagrams.md)**                         |
