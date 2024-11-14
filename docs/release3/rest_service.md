@@ -152,3 +152,8 @@ mvn spring-boot:run -pl api
   - **Description:** Assigns a user to a specific group.
   - **Request Params:** `groupName` (String)
   - **Response:** `200 OK` on success, `400 BAD_REQUEST` or `500 INTERNAL_SERVER_ERROR` on error.
+
+---
+
+📖 Return to the **[Main README](../../readme.md)** for additional information and project overview.
+

@@ -79,6 +79,7 @@ The **KollApp** application relies on the following dependencies:
 - **Jackson** (version 2.18.0-rc1) for JSON processing.
 - **Spring Boot** (version 2.7.3) for building the backend services.
 - **Maven** (version 3.9.9) for project management and build automation.
+- jlink & jpackage (sjekke etterpå)
 
 Ensure Maven is installed and properly configured to handle these dependencies.
 
@@ -97,20 +98,20 @@ Ensure Maven is installed and properly configured to handle these dependencies.
 Alternatively, to build and launch **KollApp** without script, follow these steps:
 
 **1. Navigating to Project Directory 🛠️**
-   Before running the commands, navigate to the `kollapp` directory:
+  Before running the commands, navigate to the `kollapp` directory:
 
    ```sh
    cd kollapp
    ```
 
 **2. Build the Project and Install Dependencies 📦**
-    To clean the project and install all required dependencies, run:
+  To clean the project and install all required dependencies, run:
 
    ```sh
    mvn clean install
    ```
 
-   **3. Run Springboot 🌱**
+**3. Run Springboot 🌱**
 
   To start the backend services of **KollApp**, you need to run the Spring Boot application. This will initialize the REST API and other backend functionalities.
 
@@ -120,7 +121,7 @@ Alternatively, to build and launch **KollApp** without script, follow these step
   ```
 
 **4. Run the Application ▶️**
-    After running Springboot, launch `kollapp` with the following command:
+  After running Springboot, launch `kollapp` with the following command:
 
    ```sh
    cd ..
@@ -128,7 +129,7 @@ Alternatively, to build and launch **KollApp** without script, follow these step
    mvn javafx:run
    ```
 
- 📖 For a detailed guide on how to create a shippable product, visit **[Create Shippable Product](docs/release3/create_shippable_product.md)**
+ 📖 For a detailed guide on how to create a shippable product, visit **[Creating a Shippable Product](docs/release3/create_shippable_product.md)**
 
   ---
 
@@ -142,19 +143,18 @@ Maintaining a high standard of code reliability and performance is essential to 
 
 ## 📚 Suggested Reading
 
-- 📖 **[User Stories](/docs/user_stories.md)**: For an overview of user stories. VIKTIG
+- 📖 **[User Stories Overview](/docs/user_stories.md)**: Understand the core user stories that guide development across releases. **Highly Recommended**
 
-| Release 1                                                    | Release 2                                                                                                | Release 3                                                                                     |
-|--------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
-| 📖 **[Release 1 Updates](docs/release1/release1_updates.md)** | 📖 **[Release 2 Updates](docs/release2/release2_updates.md)**                                             | 📖 **[Release 3 Updates](/docs/release3/release3_updates.md)**                                 |
-| 📖 **[AI-Tools](docs/release1/ai-tools.md)**                  | 📖 **[Development Practices and Code Quality](/docs/release2/development_practices_and_code_quality.md)** | 📖 **[Challenges](docs/release3/challenges.md)**                                               |
-|                                                              | 📖 **[Testing and Code Quality](docs/release2/testing_and_code_quality.md)**                              | 📖 **[Contribution](docs/release3/contribution.md)**                                           |
-|                                                              | 📖 **[Project Architecture Diagrams](docs/release2/architecture_diagrams.md)**                            | 📖 **[Sustainability](docs/release3/sustainability.md)**                                       |
-|                                                              | 📖 **[JSON Save Format](/docs/release2/json_format.md)**                                                  | 📖 **[Create Shippable Product](docs/release3/create_shippable_product.md)**                   |
-|                                                              | 📖 **[Module Structure and Dependencies](docs/release2/module_structure_and_dependencies.md)**            | 📖 **[Module Structure and Dependencies](docs/release3/module_structure_and_dependencies.md)** |
-|                                                              | 📖 **[Architecture Diagrams](docs/release2/architecture_diagrams.md)**                                    | 📖 **[REST Service Documentation](docs/release3/rest_service.md)**                             |
-|                                                              | 📖 **[AI-Declaration](docs/release2/ai_declaration.md)**                                                  |                                                                                               |
-|                                                              |                                                                                                          | 📖 **[JSON Save Format](docs/release3/json_format.md)**                                        |
-|                                                              |                                                                                                          | 📖 **[AI Declaration](docs/release3/ai_declaration.md)**                                       |
-|                                                              |                                                                                                          | 📖 **[Testing and Code Quality](docs/release3/testing_and_code_quality.md)**                   |
-|                                                              |                                                                                                          | 📖 **[Architecture Diagrams](docs/release3/architecture_diagrams.md)**                         |
+| **Release 1** | **Release 2** | **Release 3** |
+|----------------------------------|----------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
+| 📖 **[Release 1 Updates](docs/release1/release1_updates.md)** | 📖 **[Release 2 Updates](docs/release2/release2_updates.md)** | 📖 **[Release 3 Updates](/docs/release3/release3_updates.md)** |
+| 📖 **[AI Tools Guide](docs/release1/ai-tools.md)** | 📖 **[Development Practices & Code Quality](/docs/release2/development_practices_and_code_quality.md)** | 📖 **[Project Challenges and Lessons Learned](docs/release3/challenges.md)** |
+|  | 📖 **[Testing & Code Quality Standards](docs/release2/testing_and_code_quality.md)** | 📖 **[Testing & Code Quality Standards](docs/release3/testing_and_code_quality.md)** |
+|  | 📖 **[Project Architecture Diagrams](docs/release2/architecture_diagrams.md)** | 📖 **[Project Architecture Diagrams](docs/release3/architecture_diagrams.md)** |
+|  | 📖 **[JSON Save Format Specifications](/docs/release2/json_format.md)** | 📖 **[JSON Save Format Specifications](docs/release3/json_format.md)** |
+|  | 📖 **[Module Structure & Dependencies](docs/release2/module_structure_and_dependencies.md)** | 📖 **[Module Structure & Dependencies](docs/release3/module_structure_and_dependencies.md)** |
+|  | 📖 **[AI Usage Declaration](docs/release2/ai_declaration.md)** | 📖 **[AI Usage Declaration](docs/release3/ai_declaration.md)** |
+|  |  | 📖 **[Contribution Guidelines](docs/release3/contribution.md)** |
+|  |  | 📖 **[Sustainability Reflection on KollApp](docs/release3/sustainability.md)** |
+|  |  | 📖 **[Creating a Shippable Product](docs/release3/create_shippable_product.md)** |
+|  |  | 📖 **[REST Service Documentation](docs/release3/rest_service.md)** |
