@@ -3,6 +3,8 @@ package api.controller;
 import api.service.ToDoListService;
 import core.ToDoList;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,6 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
+@Tag("controller")
 class ToDoListControllerTest {
 
     @Mock
@@ -32,19 +35,20 @@ class ToDoListControllerTest {
     private ObjectMapper objectMapper;
 
     @BeforeEach
-    void setUp() {
+    @DisplayName("Initialize MockMvc and ObjectMapper before each test")
+    private void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(toDoListController).build();
         objectMapper = new ObjectMapper();
     }
 
     @Test
-    void loadToDoList_Success() throws Exception {
-        // Arrange
+    @DisplayName("Test successful loading of user's ToDoList")
+    @Tag("load-todolist")
+    public void loadToDoList_Success() throws Exception {
         String username = "testUser";
         ToDoList toDoList = new ToDoList();
         when(toDoListService.loadToDoList(anyString())).thenReturn(toDoList);
 
-        // Act & Assert
         mockMvc.perform(get("/api/v1/todolists/{username}", username))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
@@ -53,13 +57,12 @@ class ToDoListControllerTest {
     }
 
     @Test
-    void loadToDoList_NotFound() throws Exception {
-        // Arrange
+    @DisplayName("Test loading ToDoList when user not found")
+    @Tag("load-todolist")
+    public void loadToDoList_NotFound() throws Exception {
         String username = "testUser";
-        when(toDoListService.loadToDoList(anyString()))
-            .thenThrow(new IllegalArgumentException());
+        when(toDoListService.loadToDoList(anyString())).thenThrow(new IllegalArgumentException());
 
-        // Act & Assert
         mockMvc.perform(get("/api/v1/todolists/{username}", username))
             .andExpect(status().isNotFound());
 
@@ -67,12 +70,12 @@ class ToDoListControllerTest {
     }
 
     @Test
-    void assignToDoList_Success() throws Exception {
-        // Arrange
+    @DisplayName("Test successful assignment of ToDoList to user")
+    @Tag("assign-todolist")
+    public void assignToDoList_Success() throws Exception {
         String username = "testUser";
         doNothing().when(toDoListService).assignToDoList(anyString());
 
-        // Act & Assert
         mockMvc.perform(post("/api/v1/todolists/{username}", username))
             .andExpect(status().isCreated());
 
@@ -80,13 +83,12 @@ class ToDoListControllerTest {
     }
 
     @Test
-    void assignToDoList_BadRequest() throws Exception {
-        // Arrange
+    @DisplayName("Test ToDoList assignment with bad request")
+    @Tag("assign-todolist")
+    public void assignToDoList_BadRequest() throws Exception {
         String username = "testUser";
-        doThrow(new IllegalArgumentException())
-            .when(toDoListService).assignToDoList(anyString());
+        doThrow(new IllegalArgumentException()).when(toDoListService).assignToDoList(anyString());
 
-        // Act & Assert
         mockMvc.perform(post("/api/v1/todolists/{username}", username))
             .andExpect(status().isBadRequest());
 
@@ -94,13 +96,13 @@ class ToDoListControllerTest {
     }
 
     @Test
-    void updateToDoList_Success() throws Exception {
-        // Arrange
+    @DisplayName("Test successful update of user's ToDoList")
+    @Tag("update-todolist")
+    public void updateToDoList_Success() throws Exception {
         String username = "testUser";
         ToDoList toDoList = new ToDoList();
         doNothing().when(toDoListService).updateToDoList(anyString(), any(ToDoList.class));
 
-        // Act & Assert
         mockMvc.perform(put("/api/v1/todolists/{username}", username)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(toDoList)))
@@ -110,14 +112,13 @@ class ToDoListControllerTest {
     }
 
     @Test
-    void updateToDoList_BadRequest() throws Exception {
-        // Arrange
+    @DisplayName("Test update of ToDoList with bad request")
+    @Tag("update-todolist")
+    public void updateToDoList_BadRequest() throws Exception {
         String username = "testUser";
         ToDoList toDoList = new ToDoList();
-        doThrow(new IllegalArgumentException())
-            .when(toDoListService).updateToDoList(anyString(), any(ToDoList.class));
+        doThrow(new IllegalArgumentException()).when(toDoListService).updateToDoList(anyString(), any(ToDoList.class));
 
-        // Act & Assert
         mockMvc.perform(put("/api/v1/todolists/{username}", username)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(toDoList)))
@@ -127,13 +128,13 @@ class ToDoListControllerTest {
     }
 
     @Test
-    void loadGroupToDoList_Success() throws Exception {
-        // Arrange
+    @DisplayName("Test successful loading of group's ToDoList")
+    @Tag("load-group-todolist")
+    public void loadGroupToDoList_Success() throws Exception {
         String groupName = "testGroup";
         ToDoList toDoList = new ToDoList();
         when(toDoListService.loadGroupToDoList(anyString())).thenReturn(toDoList);
 
-        // Act & Assert
         mockMvc.perform(get("/api/v1/todolists/groups/{groupName}", groupName))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
@@ -142,13 +143,12 @@ class ToDoListControllerTest {
     }
 
     @Test
-    void loadGroupToDoList_NotFound() throws Exception {
-        // Arrange
+    @DisplayName("Test loading group's ToDoList when group not found")
+    @Tag("load-group-todolist")
+    public void loadGroupToDoList_NotFound() throws Exception {
         String groupName = "testGroup";
-        when(toDoListService.loadGroupToDoList(anyString()))
-            .thenThrow(new IllegalArgumentException());
+        when(toDoListService.loadGroupToDoList(anyString())).thenThrow(new IllegalArgumentException());
 
-        // Act & Assert
         mockMvc.perform(get("/api/v1/todolists/groups/{groupName}", groupName))
             .andExpect(status().isNotFound());
 
@@ -156,13 +156,13 @@ class ToDoListControllerTest {
     }
 
     @Test
-    void updateGroupToDoList_Success() throws Exception {
-        // Arrange
+    @DisplayName("Test successful update of group's ToDoList")
+    @Tag("update-group-todolist")
+    public void updateGroupToDoList_Success() throws Exception {
         String groupName = "testGroup";
         ToDoList toDoList = new ToDoList();
         doNothing().when(toDoListService).updateGroupToDoList(anyString(), any(ToDoList.class));
 
-        // Act & Assert
         mockMvc.perform(put("/api/v1/todolists/groups/{groupName}", groupName)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(toDoList)))
@@ -172,14 +172,13 @@ class ToDoListControllerTest {
     }
 
     @Test
-    void updateGroupToDoList_BadRequest() throws Exception {
-        // Arrange
+    @DisplayName("Test update of group's ToDoList with bad request")
+    @Tag("update-group-todolist")
+    public void updateGroupToDoList_BadRequest() throws Exception {
         String groupName = "testGroup";
         ToDoList toDoList = new ToDoList();
-        doThrow(new IllegalArgumentException())
-            .when(toDoListService).updateGroupToDoList(anyString(), any(ToDoList.class));
+        doThrow(new IllegalArgumentException()).when(toDoListService).updateGroupToDoList(anyString(), any(ToDoList.class));
 
-        // Act & Assert
         mockMvc.perform(put("/api/v1/todolists/groups/{groupName}", groupName)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(toDoList)))
