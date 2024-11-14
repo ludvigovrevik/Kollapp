@@ -14,6 +14,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -29,6 +31,7 @@ import api.service.GroupChatService;
 import core.GroupChat;
 import core.Message;
 
+@Tag("controller")
 public class GroupChatControllerTest {
 
     private MockMvc mockMvc;
@@ -42,6 +45,7 @@ public class GroupChatControllerTest {
     private ObjectMapper objectMapper;
 
     @BeforeEach
+    @DisplayName("Initialize MockMvc and ObjectMapper before each test")
     public void setup() {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(groupChatController).build();
@@ -50,6 +54,8 @@ public class GroupChatControllerTest {
     }
 
     @Test
+    @DisplayName("Test successful group chat creation")
+    @Tag("create-group")
     public void createGroupChat_Success() throws Exception {
         String groupName = "testGroup";
 
@@ -59,6 +65,8 @@ public class GroupChatControllerTest {
     }
 
     @Test
+    @DisplayName("Test group chat creation failure due to existing group")
+    @Tag("create-group")
     public void createGroupChat_Failure() throws Exception {
         String groupName = "testGroup";
         doThrow(new IllegalArgumentException("Group already exists"))
@@ -70,6 +78,8 @@ public class GroupChatControllerTest {
     }
 
     @Test
+    @DisplayName("Test successful retrieval of group chat")
+    @Tag("get-group")
     public void getGroupChat_Success() throws Exception {
         String groupName = "testGroup";
         GroupChat groupChat = new GroupChat();
@@ -88,6 +98,8 @@ public class GroupChatControllerTest {
     }
 
     @Test
+    @DisplayName("Test group chat retrieval failure due to non-existent group")
+    @Tag("get-group")
     public void getGroupChat_NotFound() throws Exception {
         String groupName = "nonExistentGroup";
         when(groupChatService.getGroupChat(groupName))
@@ -98,6 +110,8 @@ public class GroupChatControllerTest {
     }
 
     @Test
+    @DisplayName("Test successful message sending in group chat")
+    @Tag("send-message")
     public void sendMessage_Success() throws Exception {
         String groupName = "testGroup";
         Message message = new Message();
@@ -112,6 +126,8 @@ public class GroupChatControllerTest {
     }
 
     @Test
+    @DisplayName("Test message sending failure due to non-existent group")
+    @Tag("send-message")
     public void sendMessage_Failure() throws Exception {
         String groupName = "testGroup";
         Message message = new Message();
@@ -129,6 +145,8 @@ public class GroupChatControllerTest {
     }
 
     @Test
+    @DisplayName("Test successful retrieval of messages in group chat")
+    @Tag("get-messages")
     public void getMessages_Success() throws Exception {
         String groupName = "testGroup";
         Message message1 = new Message();
@@ -151,6 +169,8 @@ public class GroupChatControllerTest {
     }
 
     @Test
+    @DisplayName("Test message retrieval failure due to non-existent group")
+    @Tag("get-messages")
     public void getMessages_NotFound() throws Exception {
         String groupName = "nonExistentGroup";
         when(groupChatService.getMessages(groupName))
@@ -161,6 +181,8 @@ public class GroupChatControllerTest {
     }
 
     @Test
+    @DisplayName("Test message sending failure with null text")
+    @Tag("send-message")
     public void sendMessage_NullText() throws Exception {
         String groupName = "testGroup";
         Message message = new Message();

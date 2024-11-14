@@ -203,7 +203,6 @@ public class GroupChatServiceTest {
 @   DisplayName("Test constructor with default path")
     @Tag("constructor")
     void testDefaultConstructor() throws IOException {
-        // Create required default directory
         Path defaultPath = Paths.get("..", "persistence", "src", "main", "java", 
                 "persistence", "groupchat").toAbsolutePath().normalize();
         Files.createDirectories(defaultPath);
@@ -212,14 +211,10 @@ public class GroupChatServiceTest {
         Path userFile = defaultPath.resolve(groupName + ".json");
         
         try {
-            // Create service with default constructor
             GroupChatService defaultService = new GroupChatService();
-            
-            // Test functionality
             
             defaultService.createGroupChat(groupName);
             
-            // Verify file was created in default location
             assertTrue(Files.exists(defaultPath.resolve(groupName + ".json")));
             
         } finally {
@@ -240,7 +235,6 @@ public class GroupChatServiceTest {
         Message message = new Message("testUser", "Test message");
         groupChatService.sendMessage(groupName, message);
         
-        // Read the file directly to verify persistence
         Path groupChatFilePath = groupChatTestFolderPath.resolve(groupName + ".json");
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());

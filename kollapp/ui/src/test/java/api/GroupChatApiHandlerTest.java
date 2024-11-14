@@ -8,6 +8,8 @@ import core.GroupChat;
 import core.Message;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -25,6 +27,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
+/**
+ * Unit tests for the {@link GroupChatApiHandler} class.
+ */
 class GroupChatApiHandlerTest {
 
     @Mock
@@ -42,19 +47,17 @@ class GroupChatApiHandlerTest {
     private Message testMessage;
 
     @BeforeEach
-    void setUp() {
+    @DisplayName("Set up mocks and initialize GroupChatApiHandler")
+    private void setUp() {
         MockitoAnnotations.openMocks(this);
         
-        // Initialize ObjectMapper with JavaTimeModule
         objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         
-        // Create test data
         testGroupChat = new GroupChat();
         testMessage = new Message("testUser", "Test message");
         testGroupChat.addMessage(testMessage);
         
-        // Create a subclass of GroupChatApiHandler to inject mocked HttpClient
         groupChatApiHandler = new GroupChatApiHandler() {
             @Override
             protected HttpClient createHttpClient() {
@@ -64,62 +67,58 @@ class GroupChatApiHandlerTest {
     }
 
     @Test
-    void createGroupChat_Success() throws IOException, InterruptedException {
-        // Arrange
+    @DisplayName("Create group chat - Success scenario")
+    @Tag("createGroupChat")
+    public void createGroupChat_Success() throws IOException, InterruptedException {
         when(mockStringResponse.statusCode()).thenReturn(201);
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))
             .thenReturn(mockStringResponse);
 
-        // Act
         boolean result = groupChatApiHandler.createGroupChat("TestGroup");
 
-        // Assert
         assertTrue(result);
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 
     @Test
-    void createGroupChat_Failure() throws IOException, InterruptedException {
-        // Arrange
+    @DisplayName("Create group chat - Failure scenario")
+    @Tag("createGroupChat")
+    public void createGroupChat_Failure() throws IOException, InterruptedException {
         when(mockStringResponse.statusCode()).thenReturn(400);
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))
             .thenReturn(mockStringResponse);
 
-        // Act
         boolean result = groupChatApiHandler.createGroupChat("TestGroup");
 
-        // Assert
         assertFalse(result);
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 
     @Test
-    void createGroupChat_Exception() throws IOException, InterruptedException {
-        // Arrange
+    @DisplayName("Create group chat - Exception handling")
+    @Tag("createGroupChat")
+    public void createGroupChat_Exception() throws IOException, InterruptedException {
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))
             .thenThrow(new IOException("Network error"));
 
-        // Act
         boolean result = groupChatApiHandler.createGroupChat("TestGroup");
 
-        // Assert
         assertFalse(result);
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 
     @Test
-    void getGroupChat_Success() throws IOException, InterruptedException {
-        // Arrange
+    @DisplayName("Get group chat - Success scenario")
+    @Tag("getGroupChat")
+    public void getGroupChat_Success() throws IOException, InterruptedException {
         String jsonResponse = objectMapper.writeValueAsString(testGroupChat);
         when(mockStringResponse.statusCode()).thenReturn(200);
         when(mockStringResponse.body()).thenReturn(jsonResponse);
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))
             .thenReturn(mockStringResponse);
 
-        // Act
         Optional<GroupChat> result = groupChatApiHandler.getGroupChat("TestGroup");
 
-        // Assert
         assertTrue(result.isPresent());
         assertFalse(result.get().getMessages().isEmpty());
         assertEquals(testMessage.getText(), result.get().getMessages().get(0).getText());
@@ -128,55 +127,53 @@ class GroupChatApiHandlerTest {
     }
 
     @Test
-    void getGroupChat_NotFound() throws IOException, InterruptedException {
-        // Arrange
+    @DisplayName("Get group chat - Not Found")
+    @Tag("getGroupChat")
+    public void getGroupChat_NotFound() throws IOException, InterruptedException {
         when(mockStringResponse.statusCode()).thenReturn(404);
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))
             .thenReturn(mockStringResponse);
 
-        // Act
         Optional<GroupChat> result = groupChatApiHandler.getGroupChat("NonExistentGroup");
 
-        // Assert
         assertTrue(result.isEmpty());
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 
     @Test
-    void sendMessage_Success() throws IOException, InterruptedException {
-        // Arrange
+    @DisplayName("Send message - Success scenario")
+    @Tag("sendMessage")
+    public void sendMessage_Success() throws IOException, InterruptedException {
         Message message = new Message("testUser", "Test message");
         when(mockStringResponse.statusCode()).thenReturn(201);
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))
             .thenReturn(mockStringResponse);
 
-        // Act
         boolean result = groupChatApiHandler.sendMessage("TestGroup", message);
 
-        // Assert
         assertTrue(result);
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 
     @Test
-    void sendMessage_Failure() throws IOException, InterruptedException {
-        // Arrange
+    @DisplayName("Send message - Failure scenario")
+    @Tag("sendMessage")
+    public void sendMessage_Failure() throws IOException, InterruptedException {
         Message message = new Message("testUser", "Test message");
         when(mockStringResponse.statusCode()).thenReturn(400);
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))
             .thenReturn(mockStringResponse);
 
-        // Act
         boolean result = groupChatApiHandler.sendMessage("TestGroup", message);
 
-        // Assert
         assertFalse(result);
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 
     @Test
-    void getMessages_Success() throws IOException, InterruptedException {
-        // Arrange
+    @DisplayName("Get messages - Success scenario")
+    @Tag("getMessages")
+    public void getMessages_Success() throws IOException, InterruptedException {
         List<Message> messages = Arrays.asList(testMessage);
         String jsonResponse = objectMapper.writeValueAsString(messages);
         when(mockStringResponse.statusCode()).thenReturn(200);
@@ -184,10 +181,8 @@ class GroupChatApiHandlerTest {
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))
             .thenReturn(mockStringResponse);
 
-        // Act
         Optional<List<Message>> result = groupChatApiHandler.getMessages("TestGroup");
 
-        // Assert
         assertTrue(result.isPresent());
         assertEquals(1, result.get().size());
         assertEquals(testMessage.getText(), result.get().get(0).getText());
@@ -196,60 +191,56 @@ class GroupChatApiHandlerTest {
     }
 
     @Test
-    void getMessages_NotFound() throws IOException, InterruptedException {
-        // Arrange
+    @DisplayName("Get messages - Not Found")
+    @Tag("getMessages")
+    public void getMessages_NotFound() throws IOException, InterruptedException {
         when(mockStringResponse.statusCode()).thenReturn(404);
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))
             .thenReturn(mockStringResponse);
 
-        // Act
         Optional<List<Message>> result = groupChatApiHandler.getMessages("NonExistentGroup");
 
-        // Assert
         assertTrue(result.isEmpty());
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 
     @Test
-    void groupChatExists_True() throws IOException, InterruptedException {
-        // Arrange
+    @DisplayName("Group chat exists - True case")
+    @Tag("groupChatExists")
+    public void groupChatExists_True() throws IOException, InterruptedException {
         when(mockVoidResponse.statusCode()).thenReturn(200);
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.discarding())))
             .thenReturn(mockVoidResponse);
 
-        // Act
         boolean result = groupChatApiHandler.groupChatExists("TestGroup");
 
-        // Assert
         assertTrue(result);
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.discarding()));
     }
 
     @Test
-    void groupChatExists_False() throws IOException, InterruptedException {
-        // Arrange
+    @DisplayName("Group chat exists - False case")
+    @Tag("groupChatExists")
+    public void groupChatExists_False() throws IOException, InterruptedException {
         when(mockVoidResponse.statusCode()).thenReturn(404);
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.discarding())))
             .thenReturn(mockVoidResponse);
 
-        // Act
         boolean result = groupChatApiHandler.groupChatExists("NonExistentGroup");
 
-        // Assert
         assertFalse(result);
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.discarding()));
     }
 
     @Test
-    void groupChatExists_Exception() throws IOException, InterruptedException {
-        // Arrange
+    @DisplayName("Group chat exists - Exception handling")
+    @Tag("groupChatExists")
+    public void groupChatExists_Exception() throws IOException, InterruptedException {
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.discarding())))
             .thenThrow(new IOException("Network error"));
 
-        // Act
         boolean result = groupChatApiHandler.groupChatExists("TestGroup");
 
-        // Assert
         assertFalse(result);
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.discarding()));
     }
