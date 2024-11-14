@@ -50,7 +50,7 @@ In this release, we have implemented several new features and enhanced the UI fr
 
 ### 🚀 Shippable Product
 
-- Created a **[Shippable Product](docs/release3/create_shippable_product.md)** for **KollApp**
+- Created a **[Shippable Product](create_shippable_product.md)** for **KollApp**
   
 ---
 
@@ -58,7 +58,7 @@ In this release, we have implemented several new features and enhanced the UI fr
 
 ### 🛠️ Task Update Functionality
 
-- Initially planned to reintroduce task update functionality from Release 1, but this feature was more challenging than expected and has been scrapped.
+- Initially planned to reintroduce task update functionality from Release 1.
 
 ### 📅 Calendar Integration
 
@@ -69,8 +69,11 @@ In this release, we have implemented several new features and enhanced the UI fr
 ## 📚 Suggested Reading
 
 - 📖 **[Main README](../../readme.md)**: For an overview of the project, including system requirements and setup instructions.
-- 📖 **[Development Practices and Tools](docs/release2/development_practices_and_code_quality.md)**: For detailed information on our work habits, workflow, and code quality practices.
-- 📖 **[Testing and Code Quality](docs/release2/testing_and_code_quality.md)**: For a detailed guide on how to run tests and use tools like JaCoCo, SpotBugs, and Checkstyle.
-- 📖 **[Project Architecture Diagrams](docs/release2/architecture_diagrams.md)**: For an overview showcasing different diagrams of the project's architecture.
-- 📖 **[User Stories](docs/user_stories.md)**: For an updated overview of user stories.
-- 📖 **[JSON Save Format](docs/release2/json_format.md)**: For more details about our implementation of JSON.
+- 📖 **[Testing and Code Quality](testing_and_code_quality.md)**: For a detailed guide on how to run tests and use tools like JaCoCo, SpotBugs, and Checkstyle.
+- 📖 **[Project Architecture Diagrams](architecture_diagrams.md)**: For an overview showcasing different diagrams of the project's architecture.
+- 📖 **[User Stories](../user_stories.md)**: For an updated overview of user stories.
+- 📖 **[JSON Save Format](json_format.md)**: For more details about our implementation of JSON.
+
+---
+
+📖 Return to the **[Main README](../../readme.md)** for additional information and project overview.

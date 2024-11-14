@@ -19,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -34,6 +35,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -127,6 +129,32 @@ public class KollAppController {
         groupOptionsPane.setVisible(false);
         groupOptionsLabel.setVisible(false);
         openExpenseButton.setVisible(false);
+
+        // Make columns not editable, not reorderable, not resizable, and not sortable
+        taskNameColumn.setEditable(false);
+        taskNameColumn.setReorderable(false);
+        taskNameColumn.setResizable(false);
+        taskNameColumn.setSortable(false);
+
+        descriptionColumn.setEditable(false);
+        descriptionColumn.setReorderable(false);
+        descriptionColumn.setResizable(false);
+        descriptionColumn.setSortable(false);
+
+        dateColumn.setEditable(false);
+        dateColumn.setReorderable(false);
+        dateColumn.setResizable(false);
+        dateColumn.setSortable(false);
+
+        priorityColumn.setEditable(false);
+        priorityColumn.setReorderable(false);
+        priorityColumn.setResizable(false);
+        priorityColumn.setSortable(false);
+
+        checkBoxColumn.setEditable(false);
+        checkBoxColumn.setReorderable(false);
+        checkBoxColumn.setResizable(false);
+        checkBoxColumn.setSortable(false);
     }
 
     /**
@@ -404,6 +432,13 @@ public class KollAppController {
             Stage stage = new Stage();
             stage.setTitle("Login");
             stage.setScene(new Scene(root));
+
+            // Center the stage on the screen
+            stage.setOnShown(e -> {
+                Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+                stage.setX((screenBounds.getWidth() - stage.getWidth()) / 2);
+                stage.setY((screenBounds.getHeight() - stage.getHeight()) / 2);
+            });
 
             stage.show();
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();

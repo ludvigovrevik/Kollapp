@@ -25,8 +25,8 @@
       </Button>
       <Pane layoutX="13.0" layoutY="15.0" prefHeight="369.0" prefWidth="206.0" style="-fx-background-color: #e8e8e8; -fx-background-radius: 10; -fx-border-radius: 10;">
          <children>
-            <Button fx:id="addUserToGroupButton" layoutX="103.0" layoutY="328.0" mnemonicParsing="false" onAction="#openAddUserToGroupWindow" prefHeight="28.0" prefWidth="90.0" styleClass="addMember-label" stylesheets="@css/styles.css" text="Add member" style="-fx-font-size: 10;" />
-            <Button fx:id="createGroupButton" layoutX="14.0" layoutY="328.0" mnemonicParsing="false" onAction="#openRegisterGroupWindow" prefHeight="28.0" prefWidth="81.0" styleClass="addGroup-label" stylesheets="@css/styles.css" text="New group" style="-fx-font-size: 10;" />
+            <Button fx:id="addUserToGroupButton" layoutX="103.0" layoutY="328.0" mnemonicParsing="false" onAction="#openAddUserToGroupWindow" prefHeight="28.0" prefWidth="90.0" style="-fx-font-size: 10;" styleClass="addMember-label" stylesheets="@css/styles.css" text="Add member" />
+            <Button fx:id="createGroupButton" layoutX="14.0" layoutY="328.0" mnemonicParsing="false" onAction="#openRegisterGroupWindow" prefHeight="28.0" prefWidth="81.0" style="-fx-font-size: 10;" styleClass="addGroup-label" stylesheets="@css/styles.css" text="New group" />
             <Pane layoutX="13.0" layoutY="85.0" prefHeight="230.0" prefWidth="178.0" style="-fx-background-color: #D9D9D9; -fx-background-radius: 10;">
                <children>
                   <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutY="-1.0" prefHeight="231.0" prefWidth="178.0" style="-fx-background-radius: 20; -fx-border-radius: 10;" stylesheets="@css/styles.css" vbarPolicy="NEVER">
@@ -44,13 +44,13 @@
             <Text fill="#333333" layoutX="21.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your groups" />
          </children>
       </Pane>
-      <TableView fx:id="tableView" layoutX="232.0" layoutY="11.0" prefHeight="442.0" prefWidth="558.0" style="-fx-background-radius: 10; -fx-border-radius: 10 0 10 0; -fx-padding: 10px;" stylesheets="@css/styles.css">
+      <TableView fx:id="tableView" editable="true" layoutX="232.0" layoutY="11.0" prefHeight="442.0" prefWidth="558.0" style="-fx-background-radius: 10; -fx-border-radius: 10 0 10 0; -fx-padding: 10px;" stylesheets="@css/styles.css">
           <columns>
-              <TableColumn fx:id="taskNameColumn" prefWidth="112.50839233398438" resizable="false" text="Task" />
-              <TableColumn fx:id="dateColumn" prefWidth="94.09359741210938" resizable="false" text="Date" />
-              <TableColumn fx:id="descriptionColumn" prefWidth="177.90640258789062" resizable="false" text="Description" />
-              <TableColumn fx:id="priorityColumn" prefWidth="123.48956298828125" resizable="false" text="Priority" />
-              <TableColumn fx:id="checkBoxColumn" prefWidth="28.51043701171875" resizable="false" sortable="false" text="✓" />
+              <TableColumn fx:id="taskNameColumn" editable="false" prefWidth="112.50839233398438" resizable="false" sortable="false" text="Task" />
+              <TableColumn fx:id="dateColumn" editable="false" prefWidth="94.09359741210938" resizable="false" sortable="false" text="Date" />
+              <TableColumn fx:id="descriptionColumn" editable="false" prefWidth="177.90640258789062" resizable="false" sortable="false" text="Description" />
+              <TableColumn fx:id="priorityColumn" editable="false" prefWidth="123.48956298828125" resizable="false" sortable="false" text="Priority" />
+              <TableColumn fx:id="checkBoxColumn" editable="false" prefWidth="28.51043701171875" resizable="false" sortable="false" text="✓" />
           </columns>
       </TableView>
       <Label fx:id="completedLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="654.0" layoutY="453.0" prefHeight="26.0" prefWidth="125.0" style="-fx-background-color: #7aadff; -fx-background-radius: 10;" styleClass="completedTask-label" stylesheets="@css/styles.css" text="Completed Tasks" textFill="WHITE">
@@ -59,11 +59,11 @@
          </font>
       </Label>
       <Button fx:id="logoutButton" layoutX="11.0" layoutY="520.0" mnemonicParsing="false" onAction="#logOut" prefHeight="28.0" prefWidth="79.0" styleClass="signOut-label" stylesheets="@css/styles.css" text="Sign out" />
-      <Pane fx:id= "groupOptionsPane" layoutX="11.0" layoutY="416.0" prefHeight="88.0" prefWidth="207.0" style="-fx-background-color: #e8e8e8; -fx-background-radius: 10;">
+      <Pane fx:id="groupOptionsPane" layoutX="11.0" layoutY="416.0" prefHeight="88.0" prefWidth="207.0" style="-fx-background-color: #e8e8e8; -fx-background-radius: 10;">
          <children> 
             <Button fx:id="openExpenseButton" layoutX="9.0" layoutY="51.0" mnemonicParsing="false" onAction="#showExpense" prefHeight="26.0" prefWidth="187.0" styleClass="openExpense-label" stylesheets="@css/styles.css" text="Show expenses" textFill="WHITE" />
             <Button fx:id="groupChatButton" layoutX="9.0" layoutY="12.0" mnemonicParsing="false" onAction="#showGroupChat" prefHeight="26.0" prefWidth="188.0" styleClass="groupChat-label" stylesheets="@css/styles.css" text="Open chat" textFill="WHITE" />
-            <Label fx:id= "groupOptionsLabel" layoutX="6.0" layoutY="-20.0" text="Group Options" textFill="#333333" />
+            <Label fx:id="groupOptionsLabel" layoutX="6.0" layoutY="-20.0" text="Group Options" textFill="#333333" />
          </children>
       </Pane>
    </children>

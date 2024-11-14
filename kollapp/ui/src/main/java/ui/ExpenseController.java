@@ -97,6 +97,23 @@ public class ExpenseController {
             }
         });
 
+        // Make columns not editable, not reorderable, and not resizable
+        descriptionColumn.setEditable(false);
+        descriptionColumn.setReorderable(false);
+        descriptionColumn.setResizable(false);
+        amountColumn.setEditable(false);
+        amountColumn.setReorderable(false);
+        amountColumn.setResizable(false);
+        paidByColumn.setEditable(false);
+        paidByColumn.setReorderable(false);
+        paidByColumn.setResizable(false);
+        sharePerPersonColumn.setEditable(false);
+        sharePerPersonColumn.setReorderable(false);
+        sharePerPersonColumn.setResizable(false);
+        statusColumn.setEditable(false);
+        statusColumn.setReorderable(false);
+        statusColumn.setResizable(false);
+
         // Load expenses and populate table
         loadExpenses();
     }

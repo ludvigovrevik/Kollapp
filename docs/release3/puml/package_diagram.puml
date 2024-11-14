@@ -1,4 +1,4 @@
-@startuml KollApp Package Diagram
+@startuml package_diagram
 
 skinparam linetype ortho
 skinparam packageStyle rectangle

@@ -9,3 +9,7 @@ Usage in the Project: ChatGPT was used to help refine and make GitLab issues mor
 Description: GitHub Copilot is an AI-powered code assistant developed by GitHub, capable of suggesting code completions and generating entire code blocks based on context.
 
 Usage in the Project: GitHub Copilot was utilized to automatically generate Javadocs for the codebase, helping to document the project more efficiently by suggesting relevant descriptions and documentation for the Java methods and classes used in the code.
+
+---
+
+📖 Return to the **[Main README](../../readme.md)** for additional information and project overview.

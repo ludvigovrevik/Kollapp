@@ -1,4 +1,4 @@
-@startuml KollApp Sequence Diagram
+@startuml sequence_diagram
 
 actor User
 
