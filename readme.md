@@ -70,20 +70,19 @@ To build and run **KollApp**, make sure you have the following installed:
 
 ## **📦 Dependencies**
 
-The **KollApp** application relies on the following dependencies:
+The **KollApp** application relies on a set of essential dependencies for its functionality:
 
-- **JavaFX** (version 17.0.12) for building the user interface.
-- **JUnit 5** (version 5.10.0) for writing and running unit tests.
-- **Mockito** (version 5.0.0) for creating mock objects in tests.
-- **TestFX** (version 4.0.16-alpha) for testing JavaFX applications.
-- **Jackson** (version 2.18.0-rc1) for JSON processing.
-- **Spring Boot** (version 2.7.3) for building the backend services.
-- **Maven** (version 3.9.9) for project management and build automation.
-- jlink & jpackage (sjekke etterpå)
+- **JavaFX** (version 17.0.12): Provides the graphical user interface. For additional JavaFX modules, visit [Gluon’s JavaFX page](https://gluonhq.com/products/javafx/) for downloads.
+- **JUnit 5** (version 5.10.0): Used for unit testing across all modules to ensure code quality and reliability.
+- **Mockito** (version 5.0.0): Facilitates mock testing, helping to simulate dependencies in test environments.
+- **TestFX** (version 4.0.16-alpha): Specifically for testing JavaFX applications to maintain a consistent user experience.
+- **Jackson** (version 2.18.0-rc1): Manages JSON data processing, essential for data storage and retrieval in JSON format.
+- **Spring Boot** (version 2.7.3): Powers the backend REST services, allowing client-server communication.
+- **Maven** (version 3.9.9): Manages project dependencies, builds, and plugin integrations.
 
-Ensure Maven is installed and properly configured to handle these dependencies.
+These dependencies provide a stable foundation for development, ensuring both functionality and maintainability. For a complete list and version details, refer to the **[pom.xml](kollapp/pom.xml)** file.
 
-📖 Full dependency details are available in the **[pom.xml](kollapp/pom.xml)** file.
+📖 For an in-depth look at the modules and their dependencies, visit **[Module Structure and Dependencies](docs/release3/module_structure_and_dependencies.md)**
 
 ---
 
