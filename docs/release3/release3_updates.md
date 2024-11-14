@@ -58,7 +58,7 @@ In this release, we have implemented several new features and enhanced the UI fr
 
 ### 🛠️ Task Update Functionality
 
-- Initially planned to reintroduce task update functionality from Release 1, but this feature was more challenging than expected and has been scrapped.
+- Initially planned to reintroduce task update functionality from Release 1.
 
 ### 📅 Calendar Integration
 
