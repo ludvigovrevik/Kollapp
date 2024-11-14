@@ -54,7 +54,9 @@ public class GroupChatApiHandler {
      */
     public boolean createGroupChat(String groupName) {
         try {
-            String url = baseUrl + groupName;
+            String encodedGroupName = encodePathSegment(groupName);
+            String url = baseUrl + encodedGroupName;
+            
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
                     .POST(HttpRequest.BodyPublishers.noBody())
@@ -84,9 +86,8 @@ public class GroupChatApiHandler {
      */
     public Optional<GroupChat> getGroupChat(String groupName) {
         try {
-            String encodedGroupName = URLEncoder.encode(groupName, StandardCharsets.UTF_8);
+            String encodedGroupName = encodePathSegment(groupName);
             String url = baseUrl + encodedGroupName;
-            System.out.println(url);
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
@@ -119,7 +120,7 @@ public class GroupChatApiHandler {
      */
     public boolean sendMessage(String groupName, Message message) {
         try {
-            String encodedGroupName = URLEncoder.encode(groupName, StandardCharsets.UTF_8);
+            String encodedGroupName = encodePathSegment(groupName);
             String url = baseUrl + encodedGroupName + "/messages";
 
             String requestBody = objectMapper.writeValueAsString(message);
@@ -154,7 +155,7 @@ public class GroupChatApiHandler {
      */
     public Optional<List<Message>> getMessages(String groupName) {
         try {
-            String encodedGroupName = URLEncoder.encode(groupName, StandardCharsets.UTF_8);
+            String encodedGroupName = encodePathSegment(groupName);
             String url = baseUrl + encodedGroupName + "/messages";
 
             HttpRequest request = HttpRequest.newBuilder()
@@ -187,7 +188,7 @@ public class GroupChatApiHandler {
      */
     public boolean groupChatExists(String groupName) {
         try {
-            String encodedGroupName = URLEncoder.encode(groupName, StandardCharsets.UTF_8);
+            String encodedGroupName = encodePathSegment(groupName);
             String url = baseUrl + encodedGroupName;
 
             HttpRequest request = HttpRequest.newBuilder()
@@ -203,4 +204,11 @@ public class GroupChatApiHandler {
             return false;
         }
     }
+
+    private String encodePathSegment(String segment) {
+        // This will encode spaces as %20 instead of +
+        return URLEncoder.encode(segment, StandardCharsets.UTF_8)
+                        .replace("+", "%20");
+    }
+
 }

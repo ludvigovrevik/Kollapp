@@ -14,8 +14,8 @@
       <PasswordField fx:id="confirmPasswordField" layoutX="262.0" layoutY="300.0" prefHeight="26.0" prefWidth="242.0" />
       <Label layoutX="262.0" layoutY="220.0" text="Type password" />
       <Label layoutX="262.0" layoutY="282.0" text="Retype Password" />
-      <Button fx:id="navigateToLoginScreenButton" layoutX="394.0" layoutY="344.0" mnemonicParsing="false" onAction="#navigateToLoginScreen" prefHeight="26.0" prefWidth="109.0" stylesheets="@css/styles.css" text="Back" />
       <Button fx:id="registerButton" layoutX="262.0" layoutY="344.0" mnemonicParsing="false" onAction="#registerUser" prefHeight="26.0" prefWidth="110.0" stylesheets="@css/styles.css" text="Register" />
+      <Button fx:id="navigateToLoginScreenButton" layoutX="394.0" layoutY="344.0" mnemonicParsing="false" onAction="#navigateToLoginScreen" prefHeight="26.0" prefWidth="109.0" stylesheets="@css/styles.css" text="Back" />
       <Label layoutX="260.0" layoutY="162.0" text="Username" />
       <Label fx:id="errorMessage" layoutX="260.0" layoutY="390.0" style="-fx-font-size: 16; -fx-text-fill: red;" />
       <Label layoutX="328.0" layoutY="105.0" prefHeight="42.0" prefWidth="110.0" style="-fx-font-weight: bold;" text="Register">
