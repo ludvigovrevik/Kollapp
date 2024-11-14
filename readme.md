@@ -156,12 +156,13 @@ Maintaining a high standard of code reliability and performance is essential to 
 
 - 📖 **[User Stories Overview](/docs/user_stories.md)**: Understand the core user stories that guide development across releases. **Highly Recommended!**
 - 📖 **[Purpose and Functionality](docs/purpose.md)**: For a detailed description of the purpose and intended functionality of **KollApp**.
-- 📖 **[Gallery](./docs/release3/gallery.md)**: See examples of use cases for **KollApp**. **Highly Recommended!**
+- 📖 **[Gallery](./docs/release3/gallery.md)**: See examples of use cases for **KollApp** (RELEASE 3). **Highly Recommended!**
 
 | **Release 1** | **Release 2** | **Release 3** |
 |----------------------------------|----------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
 | 📖 **[Release 1 Updates](docs/release1/release1_updates.md)** | 📖 **[Release 2 Updates](docs/release2/release2_updates.md)** | 📖 **[Release 3 Updates](/docs/release3/release3_updates.md)** |
 | 📖 **[AI Tools Guide](docs/release1/ai-tools.md)** | 📖 **[Development Practices & Code Quality](/docs/release2/development_practices_and_code_quality.md)** | 📖 **[Project Challenges and Lessons Learned](docs/release3/challenges.md)** |
+| 📖 **[Gallery](docs/release1/gallery.md)** | 📖 **[Gallery](docs/release2/gallery.md)** | 📖 **[Gallery](docs/release3/gallery.md)** |
 |  | 📖 **[Testing & Code Quality Standards](docs/release2/testing_and_code_quality.md)** | 📖 **[Testing & Code Quality Standards](docs/release3/testing_and_code_quality.md)** |
 |  | 📖 **[Project Architecture Diagrams](docs/release2/architecture_diagrams.md)** | 📖 **[Project Architecture Diagrams](docs/release3/architecture_diagrams.md)** |
 |  | 📖 **[JSON Save Format Specifications](/docs/release2/json_format.md)** | 📖 **[JSON Save Format Specifications](docs/release3/json_format.md)** |

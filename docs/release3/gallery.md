@@ -1,4 +1,4 @@
-# 📸 Gallery
+# 📸 Gallery for Release 3
 
 Welcome to the **KollApp** gallery! Here, you can explore various screenshots that showcase the features and user interface of **KollApp**. These images provide a visual overview of the application's design and functionality.
 
