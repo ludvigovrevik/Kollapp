@@ -54,10 +54,10 @@ public class ToDoListApiHandler {
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
-                ToDoList toDoList = objectMapper.readValue(response.body(), ToDoList.class);
-                return Optional.of(toDoList);
+                return Optional.of(objectMapper.readValue(response.body(), ToDoList.class));
+            } else {
+                return Optional.empty();
             }
-            return Optional.empty();
         } catch (IOException | InterruptedException e) {
             return Optional.empty();
         }
@@ -118,8 +118,8 @@ public class ToDoListApiHandler {
      * @param userGroup the user group whose to-do list is to be loaded
      * @return the ToDoList object if successful, null otherwise
      */
-    public ToDoList loadGroupToDoList(UserGroup userGroup) {
-        String url = baseUrl + "/groups/" + encodePathSegment(userGroup.getGroupName());
+    public Optional<ToDoList> loadGroupToDoList(UserGroup userGroup) {
+        String url = baseUrl + "/groups/" + URLEncoder.encode(userGroup.getGroupName(), StandardCharsets.UTF_8);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .GET()
@@ -127,11 +127,13 @@ public class ToDoListApiHandler {
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
-                return objectMapper.readValue(response.body(), ToDoList.class);
+                return Optional.of(objectMapper.readValue(response.body(), ToDoList.class));
+            } else {
+                System.err.println("Failed to load group to-do list. Status code: " + response.statusCode());
+                return Optional.empty();
             }
-            return null;
         } catch (IOException | InterruptedException e) {
-            return null;
+            return Optional.empty();
         }
     }
 

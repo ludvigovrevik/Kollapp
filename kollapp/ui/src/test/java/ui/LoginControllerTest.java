@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -78,7 +80,7 @@ public class LoginControllerTest {
         User TestUserDoNotDelete = new User("TestUserDoNotDelete", "password");
 
         when(mockUserHandler.userExists("TestUserDoNotDelete")).thenReturn(true);
-        when(mockUserHandler.loadUser("TestUserDoNotDelete", "password")).thenReturn(TestUserDoNotDelete);
+        when(mockUserHandler.loadUser("TestUserDoNotDelete", "password")).thenReturn(Optional.of(TestUserDoNotDelete));
 
         robot.clickOn("#usernameField").write("TestUserDoNotDelete");
         robot.clickOn("#passwordField").write("password");
@@ -96,7 +98,7 @@ public class LoginControllerTest {
     @Tag("login")
     public void testLoginIncorrectPassword(FxRobot robot) {
         when(mockUserHandler.userExists("TestUserDoNotDelete")).thenReturn(true);
-        when(mockUserHandler.loadUser("TestUserDoNotDelete", "wrongPassword")).thenReturn(null);
+        when(mockUserHandler.loadUser("TestUserDoNotDelete", "wrongPassword")).thenReturn(Optional.empty());
 
         robot.clickOn("#usernameField").write("TestUserDoNotDelete");
         robot.clickOn("#passwordField").write("wrongPassword");

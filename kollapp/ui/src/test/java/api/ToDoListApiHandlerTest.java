@@ -76,7 +76,8 @@ class ToDoListApiHandlerTest {
 
         Optional<ToDoList> result = toDoListApiHandler.loadToDoList(testUser);
 
-        assertNotNull(result);
+        // Assert
+        assertTrue(result.isPresent());
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 
@@ -90,7 +91,8 @@ class ToDoListApiHandlerTest {
 
         Optional<ToDoList> result = toDoListApiHandler.loadToDoList(testUser);
 
-        assertEquals(Optional.empty(), result);
+        // Assert
+        assertTrue(result.isEmpty());
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 
@@ -103,7 +105,8 @@ class ToDoListApiHandlerTest {
 
         Optional<ToDoList> result = toDoListApiHandler.loadToDoList(testUser);
 
-        assertEquals(Optional.empty(), result);
+        // Assert
+        assertTrue(result.isEmpty());
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 
@@ -195,9 +198,11 @@ class ToDoListApiHandlerTest {
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))
             .thenReturn(mockResponse);
 
-        ToDoList result = toDoListApiHandler.loadGroupToDoList(testGroup);
+        // Act
+        Optional<ToDoList> result = toDoListApiHandler.loadGroupToDoList(testGroup);
 
-        assertNotNull(result);
+        // Assert
+        assertTrue(result.isPresent());
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 
@@ -209,9 +214,11 @@ class ToDoListApiHandlerTest {
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))
             .thenReturn(mockResponse);
 
-        ToDoList result = toDoListApiHandler.loadGroupToDoList(testGroup);
+        // Act
+        Optional<ToDoList> result = toDoListApiHandler.loadGroupToDoList(testGroup);
 
-        assertNull(result);
+        // Assert
+        assertTrue(result.isEmpty());
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 
@@ -222,9 +229,11 @@ class ToDoListApiHandlerTest {
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))
             .thenThrow(new IOException("Network error"));
 
-        ToDoList result = toDoListApiHandler.loadGroupToDoList(testGroup);
+        // Act
+        Optional<ToDoList> result = toDoListApiHandler.loadGroupToDoList(testGroup);
 
-        assertNull(result);
+        // Assert
+        assertTrue(result.isEmpty());
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 

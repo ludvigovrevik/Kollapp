@@ -145,7 +145,7 @@ public class UserService {
         if (password.length() < 6) {
             return "Password must be at least 6 characters long";
         }
-        return null;
+        return "";
     }
 
     /**
@@ -215,4 +215,9 @@ public class UserService {
         File file = new File(userPath + username + ".json");
         return file.exists();
     }
+
+    public String getUserPath() {
+        return this.userPath;
+    }
+    
 }

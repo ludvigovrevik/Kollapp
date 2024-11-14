@@ -9,6 +9,7 @@ import static org.mockito.Mockito.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -89,7 +90,7 @@ public class AddNewExpenseControllerTest {
     @Tag("expense")
     public void testSuccessfulExpenseAddition(FxRobot robot) {
         List<Expense> existingExpenses = new ArrayList<>();
-        when(mockExpenseHandler.loadGroupExpenses(any(UserGroup.class))).thenReturn(existingExpenses);
+        when(mockExpenseHandler.loadGroupExpenses(any(UserGroup.class))).thenReturn(Optional.of(existingExpenses));
         when(mockExpenseHandler.updateGroupExpenses(any(UserGroup.class), any())).thenReturn(true);
 
         robot.clickOn("#expenseNameField").write("Dinner");
@@ -127,7 +128,7 @@ public class AddNewExpenseControllerTest {
     @Tag("expense")
     public void testExpenseAdditionFailure(FxRobot robot) {
         List<Expense> existingExpenses = new ArrayList<>();
-        when(mockExpenseHandler.loadGroupExpenses(testGroup)).thenReturn(existingExpenses);
+        when(mockExpenseHandler.loadGroupExpenses(testGroup)).thenReturn(Optional.of(existingExpenses));
         when(mockExpenseHandler.updateGroupExpenses(any(UserGroup.class), any())).thenReturn(false);
 
         robot.clickOn("#expenseNameField").write("Dinner");
@@ -143,8 +144,9 @@ public class AddNewExpenseControllerTest {
     @Test
     @DisplayName("Test null existing expenses handling")
     @Tag("expense")
-    public void testNullExistingExpenses(FxRobot robot) {
-        when(mockExpenseHandler.loadGroupExpenses(testGroup)).thenReturn(null);
+    void testNullExistingExpenses(FxRobot robot) {
+        // Mock null existing expenses
+        when(mockExpenseHandler.loadGroupExpenses(testGroup)).thenReturn(Optional.empty());
         when(mockExpenseHandler.updateGroupExpenses(any(UserGroup.class), any())).thenReturn(true);
 
         robot.clickOn("#expenseNameField").write("Dinner");
@@ -168,7 +170,7 @@ public class AddNewExpenseControllerTest {
     @Tag("expense")
     public void testExpenseAdditionWithParticipants(FxRobot robot) {
         List<Expense> existingExpenses = new ArrayList<>();
-        when(mockExpenseHandler.loadGroupExpenses(testGroup)).thenReturn(existingExpenses);
+        when(mockExpenseHandler.loadGroupExpenses(testGroup)).thenReturn(Optional.of(existingExpenses));
         when(mockExpenseHandler.updateGroupExpenses(any(UserGroup.class), any())).thenReturn(true);
 
         robot.clickOn("#expenseNameField").write("Group Dinner");

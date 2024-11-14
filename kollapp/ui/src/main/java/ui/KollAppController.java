@@ -163,9 +163,9 @@ public class KollAppController {
      * @param user The user whose to-do list is to be displayed
      */
     public void initializeToDoList(User user) {
-        Optional<ToDoList> loadedList = toDoListApiHandler.loadToDoList(user);
-        if (loadedList.isPresent()) {
-            this.toDoList = loadedList.get();
+        Optional<ToDoList> toDoList = toDoListApiHandler.loadToDoList(user);
+        if (toDoList.isPresent()) {
+            this.toDoList = toDoList.get();
         } else {
             this.toDoList = new ToDoList();
         }
@@ -481,7 +481,13 @@ public class KollAppController {
     public void changeCurrentTaskView(String taskOwner) {
         if (taskOwner.equals(this.user.getUsername())) {
             groupInView = null;
-            this.toDoList = toDoListApiHandler.loadToDoList(this.user).get();
+
+            Optional<ToDoList> toDoList = toDoListApiHandler.loadToDoList(this.user);
+            if (toDoList.isPresent()) {
+                this.toDoList = toDoList.get();
+            } else {
+                this.toDoList = new ToDoList(); 
+            }
         } else {
             Optional<UserGroup> groupOptional = groupApiHandler.getGroup(taskOwner);
 
@@ -490,7 +496,7 @@ public class KollAppController {
                 this.groupNameChat = group.getGroupName();
                 groupInView = group;
                 try {
-                    this.toDoList = toDoListApiHandler.loadGroupToDoList(group);
+                    this.toDoList = toDoListApiHandler.loadGroupToDoList(group).get();
                 } catch (IllegalArgumentException e) {
                     System.out.println("Error loading group tasks: " + e.getMessage());
                 }

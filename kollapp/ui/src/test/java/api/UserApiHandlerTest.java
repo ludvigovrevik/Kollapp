@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -104,7 +105,8 @@ class UserApiHandlerTest {
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))
             .thenReturn(mockResponse);
 
-        User result = userApiHandler.loadUser("testUser", "password");
+        // Act
+        User result = userApiHandler.loadUser("testUser", "password").get();
 
         assertNotNull(result);
         assertEquals("testUser", result.getUsername());
@@ -118,9 +120,11 @@ class UserApiHandlerTest {
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))
             .thenReturn(mockResponse);
 
-        User result = userApiHandler.loadUser("testUser", "wrongPassword");
+        // Act
+        Optional<User> result = userApiHandler.loadUser("testUser", "wrongPassword");
 
-        assertNull(result);
+        // Assert
+        assertEquals(Optional.empty(), result);
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 

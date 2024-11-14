@@ -13,6 +13,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Optional;
 
 public class ExpenseApiHandler {
     private final HttpClient httpClient;
@@ -48,10 +49,8 @@ public class ExpenseApiHandler {
      * @param group the user group whose expenses are to be loaded
      * @return a list of expenses for the specified group, or null if no expenses are found or an error occurs
      */
-    public List<Expense> loadGroupExpenses(UserGroup group) {
-        String encodedGroupName = encodePathSegment(group.getGroupName());
-        String url = baseUrl + "/groups/" + encodedGroupName;
-        
+    public Optional<List<Expense>> loadGroupExpenses(UserGroup group) {
+        String url = baseUrl + "/groups/" + URLEncoder.encode(group.getGroupName(), StandardCharsets.UTF_8);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .GET()
@@ -61,17 +60,17 @@ public class ExpenseApiHandler {
             if (response.statusCode() == 200) {
                 List<Expense> expenses = objectMapper.readValue(response.body(),
                         objectMapper.getTypeFactory().constructCollectionType(List.class, Expense.class));
-                return expenses;
+                return Optional.of(expenses);
             } else if (response.statusCode() == 404) {
-                // Return empty list if no expenses found
-                return null;
+                System.err.println("List not found. Status code: " + response.statusCode());
+                return Optional.empty();
             } else {
                 System.err.println("Failed to load group expenses. Status code: " + response.statusCode());
-                return null;
+                return Optional.empty();
             }
         } catch (IOException | InterruptedException e) {
             System.err.println("An error occurred while loading group expenses: " + e.getMessage());
-            return null;
+            return Optional.empty();
         }
     }
 
