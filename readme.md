@@ -144,6 +144,7 @@ Maintaining a high standard of code reliability and performance is essential to 
 ## 📚 Suggested Reading
 
 - 📖 **[User Stories Overview](/docs/user_stories.md)**: Understand the core user stories that guide development across releases. **Highly Recommended**
+- 📖 **[Gallery](./docs/release3/gallery.md)
 
 | **Release 1** | **Release 2** | **Release 3** |
 |----------------------------------|----------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
