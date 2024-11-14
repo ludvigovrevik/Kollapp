@@ -1,27 +1,37 @@
-@startuml
+@startuml KollApp Sequence Diagram
+
 actor User
 
-participant "UI Layer" as UI
-participant "Controllers" as Controllers
-participant "Client API Handlers" as APIHandlers
-participant "Server API Controller" as APIController
-participant "Service Layer" as Services
-participant "Persistence Layer" as Persistence
-participant "Core Layer" as Core
+' Group components into folders to match the architecture structure
+box "UI" #LightBlue
+    participant "UI" as UI
+    participant "Controller" as Controllers
+    participant "Client" as APIHandlers
+end box
 
+box "Rest Server" #LightYellow
+    participant "Controller" as APIController
+    participant "Service" as Services
+    participant "Persistence" as Persistence
+end box
 
+box "Core" #LightCoral
+    participant "Core" as Core
+end box
+
+' Define interactions between components
 User -> UI : Interacts with UI
 UI -> Controllers : Handle user requests
-Controllers -> APIHandlers : Business logic requests
-APIHandlers -> APIController : HTTP Requests
-APIController -> Services : Invoke business logic
-Persistence --> Services : Read data
-Services <- Core : Use classes and logic
-Services -> Persistence : Create/Update/Delete data
-Services --> APIController : Business logic result
-APIHandlers <-- APIController : HTTP Response
-APIHandlers --> Controllers : Business logic result
+Controllers -> APIHandlers : Delegate logic requests
+APIHandlers -> APIController : Send HTTP Requests
+APIController -> Services : Call business logic
+Services -> Core : Access core classes and logic
+Services -> Persistence : Read/Write data
+Persistence -> Services : Return data results
 
+Services --> APIController : Return business logic result
+APIController --> APIHandlers : HTTP Response
+APIHandlers --> Controllers : Return business logic result
 Controllers --> UI : Update UI
 UI --> User : Display results
 
