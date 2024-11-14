@@ -127,6 +127,32 @@ public class KollAppController {
         groupOptionsPane.setVisible(false);
         groupOptionsLabel.setVisible(false);
         openExpenseButton.setVisible(false);
+
+        // Make columns not editable, not reorderable, not resizable, and not sortable
+        taskNameColumn.setEditable(false);
+        taskNameColumn.setReorderable(false);
+        taskNameColumn.setResizable(false);
+        taskNameColumn.setSortable(false);
+
+        descriptionColumn.setEditable(false);
+        descriptionColumn.setReorderable(false);
+        descriptionColumn.setResizable(false);
+        descriptionColumn.setSortable(false);
+
+        dateColumn.setEditable(false);
+        dateColumn.setReorderable(false);
+        dateColumn.setResizable(false);
+        dateColumn.setSortable(false);
+
+        priorityColumn.setEditable(false);
+        priorityColumn.setReorderable(false);
+        priorityColumn.setResizable(false);
+        priorityColumn.setSortable(false);
+
+        checkBoxColumn.setEditable(false);
+        checkBoxColumn.setReorderable(false);
+        checkBoxColumn.setResizable(false);
+        checkBoxColumn.setSortable(false);
     }
 
     /**
