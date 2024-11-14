@@ -29,7 +29,7 @@ The **KollApp** project is organized into the following modules:
 - **Description**: Contains the user interface components built with JavaFX.
 - **Dependencies**:
   - **JavaFX**: [`org.openjfx:javafx-base`](https://openjfx.io/), [`org.openjfx:javafx-controls`](https://openjfx.io/), [`org.openjfx:javafx-fxml`](https://openjfx.io/), [`org.openjfx:javafx-graphics`](https://openjfx.io/) for building the UI.
-    - **Important Note**: JavaFX dependencies are included, but if you are using an operating system that does not bundle JavaFX by default, you may need to download the JavaFX modules (jmods) manually. Visit [Gluon’s JavaFX page](https://gluonhq.com/products/javafx/) to download these modules as needed.
+    - **Important Note**: JavaFX dependencies are included, but if you are using an operating system that does not bundle JavaFX by default, you may need to download the JavaFX modules (jmods) manually. Visit **[Gluon’s JavaFX page](https://gluonhq.com/products/javafx/)** to download these modules as needed.
   - **JUnit 5**: For unit testing.
   - **TestFX**: [`org.testfx:testfx-core`](https://testfx.github.io/TestFX/), [`org.testfx:testfx-junit5`](https://testfx.github.io/TestFX/), [`org.testfx:openjfx-monocle`](https://testfx.github.io/TestFX/) (for headless testing) to test JavaFX applications.
   - **Mockito**: For mocking objects in UI tests.
