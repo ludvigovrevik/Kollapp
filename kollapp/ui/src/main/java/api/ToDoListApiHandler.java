@@ -13,6 +13,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
+
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
@@ -25,7 +27,7 @@ public class ToDoListApiHandler {
         this.httpClient = createHttpClient();
         this.objectMapper = new ObjectMapper();
         this.objectMapper.registerModule(new JavaTimeModule());
-        this.objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS); // Optional
+        this.objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS); 
     }
 
     protected HttpClient createHttpClient() {
@@ -38,7 +40,7 @@ public class ToDoListApiHandler {
      * @param user the user whose to-do list is to be loaded
      * @return the ToDoList object if successful, null otherwise
      */
-    public ToDoList loadToDoList(User user) {
+    public Optional<ToDoList> loadToDoList(User user) {
         String url = baseUrl + "/" + URLEncoder.encode(user.getUsername(), StandardCharsets.UTF_8);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
@@ -51,15 +53,15 @@ public class ToDoListApiHandler {
             System.out.println("Response body: " + response.body()); // Add this for better debugging
         
             if (response.statusCode() == 200) {
-                return objectMapper.readValue(response.body(), ToDoList.class);
+                return Optional.of(objectMapper.readValue(response.body(), ToDoList.class));
             } else {
                 System.err.println("Failed to load to-do list. Status code: " + response.statusCode());
-                return null;
+                return Optional.empty();
             }
         } catch (IOException | InterruptedException e) {
             System.err.println("An error occurred while loading the to-do list: " + e.getMessage());
             e.printStackTrace();
-            return null;
+            return Optional.empty();
         }
     }
 
@@ -133,7 +135,7 @@ public class ToDoListApiHandler {
      * @param userGroup the user group whose to-do list is to be loaded
      * @return the ToDoList object if successful, null otherwise
      */
-    public ToDoList loadGroupToDoList(UserGroup userGroup) {
+    public Optional<ToDoList> loadGroupToDoList(UserGroup userGroup) {
         String url = baseUrl + "/groups/" + URLEncoder.encode(userGroup.getGroupName(), StandardCharsets.UTF_8);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
@@ -142,14 +144,14 @@ public class ToDoListApiHandler {
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
-                return objectMapper.readValue(response.body(), ToDoList.class);
+                return Optional.of(objectMapper.readValue(response.body(), ToDoList.class));
             } else {
                 System.err.println("Failed to load group to-do list. Status code: " + response.statusCode());
-                return null;
+                return Optional.empty();
             }
         } catch (IOException | InterruptedException e) {
             System.err.println("An error occurred while loading group to-do list: " + e.getMessage());
-            return null;
+            return Optional.empty();
         }
     }
 

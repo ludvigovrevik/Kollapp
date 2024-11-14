@@ -60,7 +60,7 @@ public class RegisterGroupController {
      *
      * @param kollAppController The mocked KollAppController
      */
-    public void setKollAppController(KollAppController kollAppController) {
+    protected void setKollAppController(KollAppController kollAppController) {
         this.kollAppController = kollAppController;
     }
 
@@ -69,7 +69,7 @@ public class RegisterGroupController {
      *
      * @param groupApiHandler The mocked GroupApiHandler
      */
-    public void setGroupApiHandler(GroupApiHandler groupApiHandler) {
+    protected void setGroupApiHandler(GroupApiHandler groupApiHandler) {
         this.groupApiHandler = groupApiHandler;
     }
 
@@ -78,7 +78,7 @@ public class RegisterGroupController {
      *
      * @param userApiHandler The mocked UserApiHandler
      */
-    public void setUserApiHandler(UserApiHandler userApiHandler) {
+    protected void setUserApiHandler(UserApiHandler userApiHandler) {
         this.userApiHandler = userApiHandler;
     }
 
@@ -160,6 +160,6 @@ public class RegisterGroupController {
         if (groupApiHandler.groupExists(groupName)) {
             return "Group already exists";
         }
-        return null;
+        return "";
     }
 }

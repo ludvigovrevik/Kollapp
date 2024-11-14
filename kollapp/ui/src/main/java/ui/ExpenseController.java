@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ExpenseController {
 
@@ -44,7 +45,7 @@ public class ExpenseController {
         this.expenseApiHandler = new ExpenseApiHandler();
     }
 
-    public void setExpenseApiHandler(ExpenseApiHandler expenseApiHandler) {
+    protected void setExpenseApiHandler(ExpenseApiHandler expenseApiHandler) {
         this.expenseApiHandler = expenseApiHandler;
     }
     /**
@@ -107,9 +108,9 @@ public class ExpenseController {
      * If no expenses are loaded, clears the expenses list and updates the total amount owed.
      */
     private void loadExpenses() {
-        List<Expense> loadedExpenses = expenseApiHandler.loadGroupExpenses(groupInView);
-        if (loadedExpenses != null) {
-            expenses.setAll(loadedExpenses);
+        Optional<List<Expense>> loadedExpenses = expenseApiHandler.loadGroupExpenses(groupInView);
+        if (loadedExpenses.isPresent()) {
+            expenses.setAll(loadedExpenses.get());
             expenseTableView.setItems(expenses);
             refreshTable();
             updateTotalOwed();

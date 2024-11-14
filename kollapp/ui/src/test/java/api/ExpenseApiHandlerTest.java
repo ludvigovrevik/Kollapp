@@ -14,6 +14,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -65,11 +66,11 @@ class ExpenseApiHandlerTest {
             .thenReturn(mockResponse);
 
         // Act
-        List<Expense> result = expenseApiHandler.loadGroupExpenses(testGroup);
+        Optional<List<Expense>> result = expenseApiHandler.loadGroupExpenses(testGroup);
 
         // Assert
-        assertNotNull(result);
-        assertEquals(testExpenses.size(), result.size());
+        assertTrue(result.isPresent());
+        assertEquals(testExpenses.size(), result.get().size());
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 
@@ -81,10 +82,10 @@ class ExpenseApiHandlerTest {
             .thenReturn(mockResponse);
 
         // Act
-        List<Expense> result = expenseApiHandler.loadGroupExpenses(testGroup);
+        Optional<List<Expense>> result = expenseApiHandler.loadGroupExpenses(testGroup);
 
         // Assert
-        assertNull(result);
+        assertTrue(result.isEmpty());
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 
@@ -96,10 +97,10 @@ class ExpenseApiHandlerTest {
             .thenReturn(mockResponse);
 
         // Act
-        List<Expense> result = expenseApiHandler.loadGroupExpenses(testGroup);
+        Optional<List<Expense>> result = expenseApiHandler.loadGroupExpenses(testGroup);
 
         // Assert
-        assertNull(result);
+        assertTrue(result.isEmpty());
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 
@@ -110,10 +111,10 @@ class ExpenseApiHandlerTest {
             .thenThrow(new IOException("Network error"));
 
         // Act
-        List<Expense> result = expenseApiHandler.loadGroupExpenses(testGroup);
+        Optional<List<Expense>> result = expenseApiHandler.loadGroupExpenses(testGroup);
 
         // Assert
-        assertNull(result);
+        assertTrue(result.isEmpty());
         verify(mockHttpClient).send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()));
     }
 

@@ -171,6 +171,6 @@ public class GroupService {
         return "User is already a member of this group";
     }
 
-    return null; // null indicates no validation errors
+    return "";
     }   
 }

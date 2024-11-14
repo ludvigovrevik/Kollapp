@@ -94,13 +94,13 @@ public class KollAppControllerTest {
         ToDoListApiHandler mockApiHandler = mock(ToDoListApiHandler.class);
         ToDoList toDoList = new ToDoList();
         toDoList.addTask(new Task("Test Task", LocalDate.now(), "Test Description", "High"));
-        when(mockApiHandler.loadToDoList(any(User.class))).thenReturn(toDoList);
+        when(mockApiHandler.loadToDoList(any(User.class))).thenReturn(Optional.of(toDoList));
 
         // Mock the GroupApiHandler
         GroupApiHandler mockGroupApiHandler = mock(GroupApiHandler.class);
         UserGroup testGroup = new UserGroup("TestGroup");
         when(mockGroupApiHandler.getGroup("TestGroup")).thenReturn(Optional.of(testGroup));
-        when(mockApiHandler.loadGroupToDoList(testGroup)).thenReturn(new ToDoList());
+        when(mockApiHandler.loadGroupToDoList(testGroup)).thenReturn(Optional.of(new ToDoList()));
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Kollektiv.fxml"));
         Parent root = loader.load();

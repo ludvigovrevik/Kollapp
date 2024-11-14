@@ -7,6 +7,7 @@ import static org.mockito.Mockito.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -83,7 +84,7 @@ public class ExpenseControllerTest {
         controller.setExpenseApiHandler(mockExpenseHandler);
         
         // Set up initial mock behavior
-        when(mockExpenseHandler.loadGroupExpenses(any(UserGroup.class))).thenReturn(testExpenses);
+        when(mockExpenseHandler.loadGroupExpenses(any(UserGroup.class))).thenReturn(Optional.of(testExpenses));
         when(mockExpenseHandler.updateGroupExpenses(any(UserGroup.class), any())).thenReturn(true);
         
         // Initialize the controller
@@ -119,7 +120,7 @@ public class ExpenseControllerTest {
     public void setUp() {
         // Reset mocks and set up default behavior
         reset(mockExpenseHandler);
-        when(mockExpenseHandler.loadGroupExpenses(any(UserGroup.class))).thenReturn(testExpenses);
+        when(mockExpenseHandler.loadGroupExpenses(any(UserGroup.class))).thenReturn(Optional.of(testExpenses));
         when(mockExpenseHandler.updateGroupExpenses(any(UserGroup.class), any())).thenReturn(true);
     }
 
@@ -152,7 +153,7 @@ public class ExpenseControllerTest {
     @DisplayName("Test expense load failure")
     void testExpenseLoadFailure(FxRobot robot) {
         // Mock null return for loadGroupExpenses
-        when(mockExpenseHandler.loadGroupExpenses(any(UserGroup.class))).thenReturn(null);
+        when(mockExpenseHandler.loadGroupExpenses(any(UserGroup.class))).thenReturn(Optional.empty());
         
         // Trigger reload on JavaFX thread
         Platform.runLater(() -> {

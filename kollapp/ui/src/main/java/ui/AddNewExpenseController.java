@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class AddNewExpenseController {
 
@@ -28,7 +29,7 @@ public class AddNewExpenseController {
         this.expenseApiHandler = new ExpenseApiHandler(); // default constructor
     }
     
-    public void setExpenseApiHandler(ExpenseApiHandler expenseApiHandler) {
+    protected void setExpenseApiHandler(ExpenseApiHandler expenseApiHandler) {
         this.expenseApiHandler = expenseApiHandler;
     }
     /**
@@ -89,15 +90,15 @@ public class AddNewExpenseController {
         Expense newExpense = new Expense(description, amount, currentUser.getUsername(), participants);
 
         // Load existing expenses
-        List<Expense> expenses = expenseApiHandler.loadGroupExpenses(groupInView);
-        if (expenses == null) {
-            expenses = new ArrayList<>();
+        Optional<List<Expense>> expenses = expenseApiHandler.loadGroupExpenses(groupInView);
+        if (expenses.isEmpty()) {
+            expenses = Optional.of(new ArrayList<>());
         }
 
-        expenses.add(newExpense);
+        expenses.get().add(newExpense);
 
         // Update expenses
-        boolean success = expenseApiHandler.updateGroupExpenses(groupInView, expenses);
+        boolean success = expenseApiHandler.updateGroupExpenses(groupInView, expenses.get());
         if (success) {
             // Close the window
             Stage stage = (Stage) expenseNameField.getScene().getWindow();

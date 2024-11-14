@@ -32,7 +32,7 @@ public class GroupChatController {
     private GroupChatApiHandler groupChatApiHandler;
     private String groupName; 
 
-    public void setGroupChatApiHandler(GroupChatApiHandler groupChatApiHandler) {
+    protected void setGroupChatApiHandler(GroupChatApiHandler groupChatApiHandler) {
         this.groupChatApiHandler = groupChatApiHandler;
     }
 

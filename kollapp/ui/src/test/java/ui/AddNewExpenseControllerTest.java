@@ -7,6 +7,7 @@ import static org.mockito.Mockito.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -92,7 +93,7 @@ public class AddNewExpenseControllerTest {
     void testSuccessfulExpenseAddition(FxRobot robot) {
         // Mock successful expense update
         List<Expense> existingExpenses = new ArrayList<>();
-        when(mockExpenseHandler.loadGroupExpenses(any(UserGroup.class))).thenReturn(existingExpenses);
+        when(mockExpenseHandler.loadGroupExpenses(any(UserGroup.class))).thenReturn(Optional.of(existingExpenses));
         when(mockExpenseHandler.updateGroupExpenses(any(UserGroup.class), any())).thenReturn(true);
 
         // Fill in expense details
@@ -137,7 +138,7 @@ public class AddNewExpenseControllerTest {
     void testExpenseAdditionFailure(FxRobot robot) {
         // Mock failed expense update
         List<Expense> existingExpenses = new ArrayList<>();
-        when(mockExpenseHandler.loadGroupExpenses(testGroup)).thenReturn(existingExpenses);
+        when(mockExpenseHandler.loadGroupExpenses(testGroup)).thenReturn(Optional.of(existingExpenses));
         when(mockExpenseHandler.updateGroupExpenses(any(UserGroup.class), any())).thenReturn(false);
 
         // Fill in expense details
@@ -158,7 +159,7 @@ public class AddNewExpenseControllerTest {
     @Tag("expense")
     void testNullExistingExpenses(FxRobot robot) {
         // Mock null existing expenses
-        when(mockExpenseHandler.loadGroupExpenses(testGroup)).thenReturn(null);
+        when(mockExpenseHandler.loadGroupExpenses(testGroup)).thenReturn(Optional.empty());
         when(mockExpenseHandler.updateGroupExpenses(any(UserGroup.class), any())).thenReturn(true);
 
         // Fill in expense details
@@ -186,7 +187,7 @@ public class AddNewExpenseControllerTest {
     void testExpenseAdditionWithParticipants(FxRobot robot) {
         // Mock successful expense update
         List<Expense> existingExpenses = new ArrayList<>();
-        when(mockExpenseHandler.loadGroupExpenses(testGroup)).thenReturn(existingExpenses);
+        when(mockExpenseHandler.loadGroupExpenses(testGroup)).thenReturn(Optional.of(existingExpenses));
         when(mockExpenseHandler.updateGroupExpenses(any(UserGroup.class), any())).thenReturn(true);
 
         // Fill in expense details

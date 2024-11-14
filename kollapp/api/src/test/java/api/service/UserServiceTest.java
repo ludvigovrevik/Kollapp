@@ -117,7 +117,7 @@ public class UserServiceTest {
         String confirmPassword = "password123";
 
         assertFalse(userService.userExists(username));
-        assertNull(userService.getUserValidationErrorMessage(username, password, confirmPassword));
+        assertEquals("", userService.getUserValidationErrorMessage(username, password, confirmPassword));
 
         userService.saveUser(new User(username, password));
         assertEquals("User already exists",

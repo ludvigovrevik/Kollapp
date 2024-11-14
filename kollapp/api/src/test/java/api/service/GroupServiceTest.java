@@ -177,4 +177,62 @@ public class GroupServiceTest {
         assertTrue(group.getUsers().contains(username));
         assertEquals(1, group.getUsers().size());
     }
+
+    @Test
+    @DisplayName("Test validateGroupAssignment when user does not exist")
+    @Tag("group")
+    void testValidateGroupAssignmentUserDoesNotExist() {
+        String username = "nonExistentUser";
+        String groupName = "testGroup";
+
+        // Ensure group exists
+        groupService.createGroup(user.getUsername(), groupName);
+
+        String result = groupService.validateGroupAssignment(username, groupName);
+
+        assertEquals("User does not exist", result);
+    }
+
+    @Test
+    @DisplayName("Test validateGroupAssignment when group does not exist")
+    @Tag("group")
+    void testValidateGroupAssignmentGroupDoesNotExist() {
+        String username = user.getUsername();
+        String groupName = "nonExistentGroup";
+
+        String result = groupService.validateGroupAssignment(username, groupName);
+
+        assertEquals("Group does not exist", result);
+    }
+
+    @Test
+    @DisplayName("Test validateGroupAssignment when user is already in the group")
+    @Tag("group")
+    void testValidateGroupAssignmentUserAlreadyInGroup() {
+        String username = user.getUsername();
+        String groupName = "testGroup";
+
+        // Create group and assign user to it
+        groupService.createGroup(username, groupName);
+
+        String result = groupService.validateGroupAssignment(username, groupName);
+
+        assertEquals("User is already a member of this group", result);
+    }
+
+    @Test
+    @DisplayName("Test validateGroupAssignment when validation passes")
+    @Tag("group")
+    void testValidateGroupAssignmentValid() {
+        String username = user2.getUsername();
+        String groupName = "testGroup";
+
+        // Create group
+        groupService.createGroup(user.getUsername(), groupName);
+
+        // Validate group assignment for a user not already in the group
+        String result = groupService.validateGroupAssignment(username, groupName);
+
+        assertEquals("", result);
+    }
 }
