@@ -6,8 +6,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
-import api.GroupApiHandler;
-import api.ToDoListApiHandler;
+import client.GroupApiHandler;
+import client.ToDoListApiHandler;
 import core.Task;
 import core.ToDoList;
 import core.User;

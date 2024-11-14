@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
-import api.GroupChatApiHandler;
+import client.GroupChatApiHandler;
 import core.GroupChat;
 import core.Message;
 import core.User;

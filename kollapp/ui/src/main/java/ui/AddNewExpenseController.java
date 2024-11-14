@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 
-import api.ExpenseApiHandler;
+import client.ExpenseApiHandler;
 
 public class AddNewExpenseController {
 

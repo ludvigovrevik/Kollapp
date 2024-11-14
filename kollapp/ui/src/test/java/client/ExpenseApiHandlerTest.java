@@ -1,8 +1,8 @@
-package api;
+package client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import api.ExpenseApiHandler;
+import client.ExpenseApiHandler;
 import core.Expense;
 import core.UserGroup;
 

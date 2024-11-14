@@ -12,7 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.List;
 
-import api.ExpenseApiHandler;
+import client.ExpenseApiHandler;
 
 public class ExpenseController {
 

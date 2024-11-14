@@ -8,9 +8,9 @@ module ui {
     requires transitive com.fasterxml.jackson.databind;
     requires transitive com.fasterxml.jackson.datatype.jsr310;
 
-    opens api to com.fasterxml.jackson.databind;
+    opens client to com.fasterxml.jackson.databind;
     opens ui to javafx.graphics, javafx.fxml, api;
 
     exports ui;
-    exports api;
+    exports client;
 }
