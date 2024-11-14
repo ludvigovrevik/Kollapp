@@ -1,4 +1,5 @@
-@startuml
+@startuml KollApp Sequence Diagram
+
 actor User
 
 participant "UI Layer" as UI

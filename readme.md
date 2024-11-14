@@ -4,9 +4,20 @@ Welcome to **KollApp**, a Java application developed as part of the course **IT1
 
 ---
 
-## **🚀 Quick Start with Eclipse Che**
+## 🚀 Quick Start with Eclipse Che
 
-[Click here to open this project in Eclipse Che](https://che.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2024/gr2409/gr2409?new)
+For an example use of **KollApp**, check out these accounts:
+
+| Username | Password |
+|----------|----------|
+| kien     | 12341234 |
+| thomas   | 12341234 |
+| sang     | 12341234 |
+| ludvig   | 12341234 |
+
+Feel free to register a new account if you'd like to explore on your own!
+
+[Open this project in Eclipse Che](https://che.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2024/gr2409/gr2409?new)
 
 ---
 
@@ -14,7 +25,8 @@ Welcome to **KollApp**, a Java application developed as part of the course **IT1
 
 **KollApp** aims to help roommates coordinate and manage household tasks, such as cleaning, dishwashing, grocery shopping, and other shared responsibilities. It enhances communication and ensures that tasks are fairly distributed and completed on time.
 
-📖 **For a detailed description of the purpose and intended functionality, visit [Purpose and Functionality](docs/purpose.md)**
+📖 For a detailed description of the purpose and intended functionality, visit **[Purpose and Functionality](docs/purpose.md)**
+📖 To view examples of use cases for KollApp, visit **[Gallery](./docs/release3/gallery.md)**. **Highly Recommended!**
 
 ---
 
@@ -45,7 +57,7 @@ The **KollApp** project is organized into several modules, each with a specific 
 
 **3. Persistence Module 📂**
   `gr2409/kollapp/persistence`  
-  Manages the storage and retrieval of data.
+  Manages the storage of data.
 
 **4. API Module 📂**
   `gr2409/kollapp/api`  
@@ -70,19 +82,19 @@ To build and run **KollApp**, make sure you have the following installed:
 
 ## **📦 Dependencies**
 
-The **KollApp** application relies on the following dependencies:
+The **KollApp** application relies on a set of essential dependencies for its functionality:
 
-- **JavaFX** (version 17.0.12) for building the user interface.
-- **JUnit 5** (version 5.10.0) for writing and running unit tests.
-- **Mockito** (version 5.0.0) for creating mock objects in tests.
-- **TestFX** (version 4.0.16-alpha) for testing JavaFX applications.
-- **Jackson** (version 2.18.0-rc1) for JSON processing.
-- **Spring Boot** (version 2.7.3) for building the backend services.
-- **Maven** (version 3.9.9) for project management and build automation.
+- **JavaFX** (version 17.0.12): Provides the graphical user interface. For additional JavaFX modules, visit **[Gluon’s JavaFX page](https://gluonhq.com/products/javafx/)** for downloads.
+- **JUnit 5** (version 5.10.0): Used for unit testing across all modules to ensure code quality and reliability.
+- **Mockito** (version 5.0.0): Facilitates mock testing, helping to simulate dependencies in test environments.
+- **TestFX** (version 4.0.16-alpha): Specifically for testing JavaFX applications to maintain a consistent user experience.
+- **Jackson** (version 2.18.0-rc1): Manages JSON data processing, essential for data storage and retrieval in JSON format.
+- **Spring Boot** (version 2.7.3): Powers the backend REST services, allowing client-server communication.
+- **Maven** (version 3.9.9): Manages project dependencies, builds, and plugin integrations.
 
-Ensure Maven is installed and properly configured to handle these dependencies.
+These dependencies provide a stable foundation for development, ensuring both functionality and maintainability. For a complete list and version details, refer to the **[pom.xml](kollapp/pom.xml)** file.
 
-📖 Full dependency details are available in the **[pom.xml](kollapp/pom.xml)** file.
+📖 For an in-depth look at the modules and their dependencies, visit **[Module Structure and Dependencies](docs/release3/module_structure_and_dependencies.md)**
 
 ---
 
@@ -97,20 +109,22 @@ Ensure Maven is installed and properly configured to handle these dependencies.
 Alternatively, to build and launch **KollApp** without script, follow these steps:
 
 **1. Navigating to Project Directory 🛠️**
-   Before running the commands, navigate to the `kollapp` directory:
+  Before running the commands, navigate to the `kollapp` directory:
 
    ```sh
    cd kollapp
    ```
 
 **2. Build the Project and Install Dependencies 📦**
-    To clean the project and install all required dependencies, run:
+  To clean the project and install all required dependencies, run:
 
    ```sh
    mvn clean install
    ```
 
-   **3. Run Springboot 🌱**
+**3. Run Springboot 🌱**
+
+  To start the backend services of **KollApp**, you need to run the Spring Boot application. This will initialize the REST API and other backend functionalities.
 
   ```sh
   cd api
@@ -118,7 +132,7 @@ Alternatively, to build and launch **KollApp** without script, follow these step
   ```
 
 **4. Run the Application ▶️**
-    After running Springboot, launch `kollapp` with the following command:
+  After running Springboot, launch `kollapp` with the following command:
 
    ```sh
    cd ..
@@ -126,7 +140,7 @@ Alternatively, to build and launch **KollApp** without script, follow these step
    mvn javafx:run
    ```
 
- 📖 For a detailed guide on how to create a shippable product, visit **[Create Shippable Product](docs/release3/create_shippable_product.md)**
+ 📖 For a detailed guide on how to create a shippable product, visit **[Creating a Shippable Product](docs/release3/create_shippable_product.md)**
 
   ---
 
@@ -140,11 +154,21 @@ Maintaining a high standard of code reliability and performance is essential to 
 
 ## 📚 Suggested Reading
 
-- 📖 **[Release 2](/docs/release2/release2_updates.md)**: For detailed information on major updates.
-- 📖 **[Release 3](/docs/release2/release2_updates.md)**: For detailed information on major updates for the final iteration of **KollApp**.
-- 📖 **[Development Practices and Tools](/docs/release2/development_practices_and_code_quality.md)**: For detailed information on our work habits, workflow, and code quality practices (Release 2).
-- 📖 **[Testing and Code Quality](docs/release3/testing_and_code_quality.md)**: For a detailed guide on how to run tests and use tools like JaCoCo, SpotBugs and Checkstyle.
-- 📖 **[Project Architecture Diagrams](docs/release3/architecture_diagrams.md)**: For an overview showcasing different diagrams of the project's architecture.
-- 📖 **[User Stories](/docs/user_stories.md)**: For an overview of user stories.
-- 📖 **[JSON Save Format](/docs/release3/json_format.md)**: For more details about our implementation of JSON.
-- 📖 **[AI declaration](/docs/release3/ai_declaration.md)**: For an overview about AI tools utilized in the project.
+- 📖 **[User Stories Overview](/docs/user_stories.md)**: Understand the core user stories that guide development across releases. **Highly Recommended!**
+- 📖 **[Purpose and Functionality](docs/purpose.md)**: For a detailed description of the purpose and intended functionality of **KollApp**.
+- 📖 **[Gallery](./docs/release3/gallery.md)**: See examples of use cases for **KollApp** (RELEASE 3). **Highly Recommended!**
+
+| **Release 1** | **Release 2** | **Release 3** |
+|----------------------------------|----------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
+| 📖 **[Release 1 Updates](docs/release1/release1_updates.md)** | 📖 **[Release 2 Updates](docs/release2/release2_updates.md)** | 📖 **[Release 3 Updates](/docs/release3/release3_updates.md)** |
+| 📖 **[AI Tools Guide](docs/release1/ai-tools.md)** | 📖 **[Development Practices & Code Quality](/docs/release2/development_practices_and_code_quality.md)** | 📖 **[Development Practices & Code Quality](docs/release3/development_practices_and_code_quality.md)** |
+| 📖 **[Gallery](docs/release1/gallery.md)** | 📖 **[Gallery](docs/release2/gallery.md)** | 📖 **[Gallery](docs/release3/gallery.md)** |
+|  | 📖 **[Testing & Code Quality Standards](docs/release2/testing_and_code_quality.md)** | 📖 **[Testing & Code Quality Standards](docs/release3/testing_and_code_quality.md)** |
+|  | 📖 **[Project Architecture Diagrams](docs/release2/architecture_diagrams.md)** | 📖 **[Project Architecture Diagrams](docs/release3/architecture_diagrams.md)** |
+|  | 📖 **[JSON Save Format Specifications](/docs/release2/json_format.md)** | 📖 **[JSON Save Format Specifications](docs/release3/json_format.md)** |
+|  | 📖 **[Module Structure & Dependencies](docs/release2/module_structure_and_dependencies.md)** | 📖 **[Module Structure & Dependencies](docs/release3/module_structure_and_dependencies.md)** |
+|  | 📖 **[AI Usage Declaration](docs/release2/ai_declaration.md)** | 📖 **[AI Usage Declaration](docs/release3/ai_declaration.md)** |
+|  |  | 📖 **[Contribution Guidelines](docs/release3/contribution.md)** |
+|  |  | 📖 **[Sustainability Reflection on KollApp](docs/release3/sustainability.md)** |
+|  |  | 📖 **[Creating a Shippable Product](docs/release3/create_shippable_product.md)** |
+|  |  | 📖 **[REST Service Documentation](docs/release3/rest_service.md)** |

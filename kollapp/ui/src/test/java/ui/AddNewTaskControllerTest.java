@@ -97,7 +97,7 @@ public class AddNewTaskControllerTest {
         });
 
 
-        robot.clickOn("Add task");
+        robot.clickOn("Add Task");
 
         ArgumentCaptor<Task> taskCaptor = ArgumentCaptor.forClass(Task.class);
         verify(mockToDoList).addTask(taskCaptor.capture());
@@ -126,7 +126,7 @@ public class AddNewTaskControllerTest {
             datePicker.setValue(LocalDate.now());
         });
 
-        robot.clickOn("Add task");
+        robot.clickOn("Add Task");
 
         verify(mockToDoList, never()).addTask(any(Task.class));
 

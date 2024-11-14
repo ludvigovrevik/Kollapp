@@ -60,13 +60,11 @@ folder "Server API" {
     }
 }
 
-' Define relationships with clear directions to avoid arrow crossing
 "Controllers" -down-> "API Handlers" : Interacts with
 "API Handlers" -down-> "API Controller Layer" : HTTP Requests
 "API Controller Layer" -left-> "Service Layer" : Delegates Logic
 "Service Layer" -down-> "Persistence Layer" : Manages Data
 
-' Core Layer connections positioned centrally
 "Controllers" -right-> "Core Layer" : Uses Model
 "Service Layer" -left-> "Core Layer" : Uses Model
 "Persistence Layer" -up-> "Core Layer" : Stores JSON Data

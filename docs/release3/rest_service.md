@@ -1,11 +1,13 @@
-
 # KollApp REST API Documentation
 
 ## Introduction
+
 This document provides details on the REST endpoints available in the KollApp application, including request and response formats, HTTP status codes, and general usage.
 
 ## Running the Application
+
 To start the Spring Boot application:
+
 ```sh
 cd kollapp
 mvn spring-boot:run -pl api
@@ -150,3 +152,8 @@ mvn spring-boot:run -pl api
   - **Description:** Assigns a user to a specific group.
   - **Request Params:** `groupName` (String)
   - **Response:** `200 OK` on success, `400 BAD_REQUEST` or `500 INTERNAL_SERVER_ERROR` on error.
+
+---
+
+📖 Return to the **[Main README](../../readme.md)** for additional information and project overview.
+

@@ -73,10 +73,115 @@
     -fx-background-color: transparent;
 }
 
-
-
 .table-row-cell {
     -fx-background-radius: 5%;
     -fx-border-radius: 5%;
     background-color: #7aadff;
+}
+
+.addExpense-label {
+    -fx-background-color: #27AE60; 
+    -fx-text-fill: #FFFFFF; 
+    -fx-background-radius: 10; 
+}
+
+.addExpense-label:hover {
+    -fx-background-color: #156134; 
+}
+
+.addExpense-label {
+    -fx-background-color: #27AE60; 
+    -fx-text-fill: #FFFFFF; 
+    -fx-background-radius: 10; 
+}
+
+.addExpense-label:hover {
+    -fx-background-color: #156134; 
+}
+
+.sendMessage-label {
+    -fx-background-color: #27AE60; 
+    -fx-text-fill: #FFFFFF; 
+    -fx-background-radius: 10; 
+}
+
+.sendMessage-label:hover {
+    -fx-background-color: #156134; 
+}
+
+.addTask-label {
+    -fx-background-color: #27AE60; 
+    -fx-text-fill: #FFFFFF; 
+    -fx-background-radius: 10; 
+}
+
+.addTask-label:hover {
+    -fx-background-color: #156134; 
+}
+
+.addUser-label {
+    -fx-background-color: #27AE60; 
+    -fx-text-fill: #FFFFFF; 
+    -fx-background-radius: 10; 
+}
+
+.addUser-label:hover {
+    -fx-background-color: #156134; 
+}
+
+.createGroup-label {
+    -fx-background-color: #27AE60; 
+    -fx-text-fill: #FFFFFF; 
+    -fx-background-radius: 10; 
+}
+
+.createGroup-label:hover {
+    -fx-background-color: #156134; 
+}
+
+
+.login-button {
+    -fx-background-color: #27AE60; 
+    -fx-text-fill: #FFFFFF; 
+    -fx-background-radius: 10; 
+}
+
+.login-button:hover {
+    -fx-background-color: #156134; 
+}
+
+.register-button {
+    -fx-background-color: #3498DB; 
+    -fx-text-fill: #FFFFFF; 
+    -fx-background-radius: 10; 
+}
+
+.register-button:hover {
+    -fx-background-color: #1F618D; 
+}
+
+.register-button {
+    -fx-background-color: #27AE60; 
+    -fx-text-fill: #FFFFFF; 
+    -fx-background-radius: 10; 
+}
+
+.register-button:hover {
+    -fx-background-color: #156134; 
+}
+
+.back-button {
+    -fx-background-color: #3498DB; 
+    -fx-text-fill: #FFFFFF; 
+    -fx-background-radius: 10; 
+}
+
+.back-button:hover {
+    -fx-background-color: #1F618D; 
+}
+
+.text-field, .password-field {
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-padding: 10px;
 }

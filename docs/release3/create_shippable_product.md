@@ -32,9 +32,9 @@ You can also find the installation packages here
 
 | Operating System |      |
 |------------------|------|
-| Windows          | LINK |
-| Mac              | LINK |
-| Linux            | LINK |
+| Windows          | [Download KollApp 1.0.0 for Windows](docs/release3/executable_files_shippable_product/windows/KollApp-1.0.0.exe) |
+| Mac              | [Download KollApp 1.0.0 for Mac](docs/release3/executable_files_shippable_product/mac/KollApp-1.0.0.dmg) |
+| Linux            | [Download KollApp 1.0.0 for Linux](docs/release3/executable_files_shippable_product/KollApp-1.0.0.deb) |
 
 ---
 

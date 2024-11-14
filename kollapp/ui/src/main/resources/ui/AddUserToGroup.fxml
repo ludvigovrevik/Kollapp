@@ -5,18 +5,18 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="298.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.AddUserToGroupController">
-   <children>
-      <ScrollPane layoutX="38.0" layoutY="55.0" prefHeight="185.0" prefWidth="378.0">
-         <content>
-            <ListView fx:id="groupsListView" prefHeight="183.0" prefWidth="376.0" />
-         </content>
-      </ScrollPane>
-      <TextField fx:id="usernameField" layoutX="38.0" layoutY="250.0" prefHeight="25.0" prefWidth="247.0" promptText="Add user to group" />
-      <Button fx:id="addUserButton" layoutX="301.0" layoutY="250.0" mnemonicParsing="false" onAction="#handleAddUserToGroup" prefHeight="25.0" prefWidth="116.0" stylesheets="@css/styles.css" text="Add user" />
-      <Label layoutX="45.0" layoutY="26.0" prefWidth="72.0" text="Your groups" style="-fx-font-size: 10;" />
-      <Label fx:id="feedbackLabel" layoutX="217.0" layoutY="21.0" prefHeight="28.0" prefWidth="200.0" textAlignment="RIGHT" textFill="RED" />
-   </children>
-</Pane>
+<AnchorPane prefHeight="365.0" prefWidth="600.0" stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.AddUserToGroupController">
+    <children>
+        <ScrollPane layoutX="20.0" layoutY="32.0" prefHeight="250.0" prefWidth="560.0" style="-fx-background-radius: 10; -fx-border-radius: 10;">
+            <content>
+                <ListView fx:id="groupsListView" prefHeight="250.0" prefWidth="560.0" />
+            </content>
+        </ScrollPane>
+        <TextField fx:id="usernameField" layoutX="20.0" layoutY="293.0" prefHeight="25.0" prefWidth="420.0" promptText="Add user to group" />
+        <Button fx:id="addUserButton" layoutX="450.0" layoutY="299.0" mnemonicParsing="false" onAction="#handleAddUserToGroup" prefHeight="25.0" prefWidth="130.0" styleClass="addUser-label" text="Add User" />
+        <Label fx:id="feedbackLabel" layoutX="20.0" layoutY="330.0" prefHeight="28.0" prefWidth="560.0" textAlignment="CENTER" textFill="RED" />
+      <Label layoutX="20.0" layoutY="14.0" prefHeight="17.0" prefWidth="95.0" text="Your groups" />
+    </children>
+</AnchorPane>
