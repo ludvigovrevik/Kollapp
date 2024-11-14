@@ -7,16 +7,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.RegisterController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.RegisterController" stylesheets="@css/styles.css">
    <children>
-      <TextField fx:id="usernameField" layoutX="262.0" layoutY="180.0" prefHeight="26.0" prefWidth="242.0" />
-      <PasswordField fx:id="passwordField" layoutX="262.0" layoutY="239.0" prefHeight="26.0" prefWidth="242.0" />
-      <PasswordField fx:id="confirmPasswordField" layoutX="262.0" layoutY="300.0" prefHeight="26.0" prefWidth="242.0" />
-      <Label layoutX="262.0" layoutY="220.0" text="Type password" />
-      <Label layoutX="262.0" layoutY="282.0" text="Retype Password" />
-      <Button fx:id="navigateToLoginScreenButton" layoutX="394.0" layoutY="344.0" mnemonicParsing="false" onAction="#navigateToLoginScreen" prefHeight="26.0" prefWidth="109.0" stylesheets="@css/styles.css" text="Back" />
-      <Button fx:id="registerButton" layoutX="262.0" layoutY="344.0" mnemonicParsing="false" onAction="#registerUser" prefHeight="26.0" prefWidth="110.0" stylesheets="@css/styles.css" text="Register" />
-      <Label layoutX="260.0" layoutY="162.0" text="Username" />
+      <TextField fx:id="usernameField" layoutX="262.0" layoutY="180.0" prefHeight="26.0" prefWidth="242.0" promptText="Enter your username" />
+      <PasswordField fx:id="passwordField" layoutX="262.0" layoutY="239.0" prefHeight="26.0" prefWidth="242.0" promptText="Enter your password" />
+      <PasswordField fx:id="confirmPasswordField" layoutX="262.0" layoutY="300.0" prefHeight="26.0" prefWidth="242.0" promptText="Retype your password" />
+      <Label layoutX="262.0" layoutY="162.0" text="Username" />
+      <Label layoutX="262.0" layoutY="220.0" text="Password" />
+      <Label layoutX="262.0" layoutY="282.0" text="Confirm Password" />
+      <Button fx:id="navigateToLoginScreenButton" layoutX="394.0" layoutY="344.0" mnemonicParsing="false" onAction="#navigateToLoginScreen" prefHeight="26.0" prefWidth="109.0" styleClass="back-button" text="Back" />
+      <Button fx:id="registerButton" layoutX="262.0" layoutY="344.0" mnemonicParsing="false" onAction="#registerUser" prefHeight="26.0" prefWidth="110.0" styleClass="register-button" text="Register" />
       <Label fx:id="errorMessage" layoutX="260.0" layoutY="390.0" style="-fx-font-size: 16; -fx-text-fill: red;" />
       <Label layoutX="328.0" layoutY="105.0" prefHeight="42.0" prefWidth="110.0" style="-fx-font-weight: bold;" text="Register">
          <font>
