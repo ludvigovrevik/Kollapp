@@ -26,16 +26,18 @@ import api.ExpenseApiHandler;
 import core.Expense;
 import core.User;
 import core.UserGroup;
-import javafx.scene.control.TableView;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 
+/**
+ * Unit tests for the {@link ExpenseController} class.
+ */
 @ExtendWith(ApplicationExtension.class)
-@Tag("ui")
 public class ExpenseControllerTest {
     
     @Mock
@@ -47,11 +49,11 @@ public class ExpenseControllerTest {
     private Stage stage;
 
     // Headless mode configuration
-    static private boolean headless = true;
+    private static final boolean headless = true;
 
     @BeforeAll
-    static void setupHeadlessMode() {
-        if(headless) {
+    private static void setupHeadlessMode() {
+        if (headless) {
             System.setProperty("testfx.headless", "true");
             System.setProperty("java.awt.headless", "true");
             System.setProperty("prism.order", "sw");
@@ -61,7 +63,7 @@ public class ExpenseControllerTest {
     }
 
     @Start
-    public void start(Stage stage) throws Exception {
+    private void start(Stage stage) throws Exception {
         this.stage = stage;
         MockitoAnnotations.openMocks(this);
 
@@ -117,7 +119,7 @@ public class ExpenseControllerTest {
     }
 
     @BeforeEach
-    public void setUp() {
+    private void setUp() {
         // Reset mocks and set up default behavior
         reset(mockExpenseHandler);
         when(mockExpenseHandler.loadGroupExpenses(any(UserGroup.class))).thenReturn(Optional.of(testExpenses));
@@ -126,7 +128,8 @@ public class ExpenseControllerTest {
 
     @Test
     @DisplayName("Test expense table initialization")
-    void testExpenseTableInitialization(FxRobot robot) {
+    @Tag("expense")
+    public void testExpenseTableInitialization(FxRobot robot) {
         TableView<Expense> expenseTable = robot.lookup("#expenseTableView").queryAs(TableView.class);
         
         // Verify table is populated
@@ -141,7 +144,8 @@ public class ExpenseControllerTest {
 
     @Test
     @DisplayName("Test total owed calculation")
-    void testTotalOwedCalculation(FxRobot robot) {
+    @Tag("expense")
+    public void testTotalOwedCalculation(FxRobot robot) {
         Label totalOwedLabel = robot.lookup("#totalOwedLabel").queryAs(Label.class);
         
         // Only expense2 (Groceries) is unsettled and owed by testUser
@@ -164,15 +168,14 @@ public class ExpenseControllerTest {
         TableView<Expense> expenseTable = robot.lookup("#expenseTableView").queryAs(TableView.class);
         Label totalOwedLabel = robot.lookup("#totalOwedLabel").queryAs(Label.class);
         
-        // Verify table is empty
         assertEquals(0, expenseTable.getItems().size());
-        // Verify total owed is zero
         assertEquals("Total Owed: $0.00", totalOwedLabel.getText());
     }
 
     @Test
     @DisplayName("Test status column display")
-    void testStatusColumnDisplay(FxRobot robot) {
+    @Tag("expense")
+    public void testStatusColumnDisplay(FxRobot robot) {
         WaitForAsyncUtils.waitForFxEvents();
         
         // Verify status text for different expense types
@@ -183,14 +186,11 @@ public class ExpenseControllerTest {
 
     @Test
     @DisplayName("Test add new expense button opens modal")
-    void testAddNewExpenseButton(FxRobot robot) {
-        // Click add expense button
+    @Tag("expense")
+    public void testAddNewExpenseButton(FxRobot robot) {
         robot.clickOn("#addExpenseButton");
-        
-        // Wait for modal to open
         WaitForAsyncUtils.waitForFxEvents();
         
-        // Verify new window is opened
         assertTrue(robot.lookup("#expenseNameField").tryQuery().isPresent());
     }
 }

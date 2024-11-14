@@ -3,6 +3,8 @@ package api.controller;
 import api.service.ExpenseService;
 import core.Expense;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,6 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
+@Tag("controller")
 class ExpenseControllerTest {
 
     @Mock
@@ -36,32 +39,24 @@ class ExpenseControllerTest {
     private ObjectMapper objectMapper;
 
     @BeforeEach
-    void setUp() {
+    @DisplayName("Initialize MockMvc and ObjectMapper before each test")
+    private void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(expenseController).build();
         objectMapper = new ObjectMapper();
     }
 
     @Test
-    void loadGroupExpenses_Success() throws Exception {
-        // Arrange
+    @DisplayName("Test successful retrieval of group expenses")
+    @Tag("load-expenses")
+    public void loadGroupExpenses_Success() throws Exception {
         String groupName = "testGroup";
         List<String> participants = Arrays.asList("user1", "user2", "user3");
-        Expense expense1 = new Expense();
-        expense1.setDescription("Test Expense 1");
-        expense1.setAmount(100.0);
-        expense1.setPaidBy("user1");
-        expense1.setParticipants(new ArrayList<>(participants));
-
-        Expense expense2 = new Expense();
-        expense2.setDescription("Test Expense 2");
-        expense2.setAmount(200.0);
-        expense2.setPaidBy("user2");
-        expense2.setParticipants(new ArrayList<>(participants));
-
+        Expense expense1 = new Expense("Test Expense 1", 100.0, "user1", new ArrayList<>(participants));
+        Expense expense2 = new Expense("Test Expense 2", 200.0, "user2", new ArrayList<>(participants));
         List<Expense> expenses = Arrays.asList(expense1, expense2);
+
         when(expenseService.loadGroupExpenses(anyString())).thenReturn(expenses);
 
-        // Act & Assert
         mockMvc.perform(get("/api/v1/expenses/groups/{groupName}", groupName))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -76,13 +71,13 @@ class ExpenseControllerTest {
     }
 
     @Test
-    void loadGroupExpenses_WhenServiceThrowsException() throws Exception {
-        // Arrange
+    @DisplayName("Test retrieval of group expenses when service throws exception")
+    @Tag("load-expenses")
+    public void loadGroupExpenses_WhenServiceThrowsException() throws Exception {
         String groupName = "testGroup";
         when(expenseService.loadGroupExpenses(anyString()))
             .thenThrow(new IllegalArgumentException("Group not found"));
 
-        // Act & Assert
         mockMvc.perform(get("/api/v1/expenses/groups/{groupName}", groupName))
             .andExpect(status().isInternalServerError());
 
@@ -90,22 +85,16 @@ class ExpenseControllerTest {
     }
 
     @Test
-    void updateGroupExpenses_Success() throws Exception {
-        // Arrange
+    @DisplayName("Test successful update of group expenses")
+    @Tag("update-expenses")
+    public void updateGroupExpenses_Success() throws Exception {
         String groupName = "testGroup";
         List<String> participants = Arrays.asList("user1", "user2", "user3");
-        Expense expense = new Expense();
-        expense.setDescription("Test Expense");
-        expense.setAmount(100.0);
-        expense.setPaidBy("user1");
-        expense.setParticipants(new ArrayList<>(participants));
-
+        Expense expense = new Expense("Test Expense", 100.0, "user1", new ArrayList<>(participants));
         List<Expense> expenses = Arrays.asList(expense);
 
-        // Don't verify exact arguments, just verify the method was called
         doNothing().when(expenseService).updateGroupExpenses(anyString(), anyList());
 
-        // Act & Assert
         mockMvc.perform(put("/api/v1/expenses/groups/{groupName}", groupName)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(expenses)))
@@ -115,23 +104,17 @@ class ExpenseControllerTest {
     }
 
     @Test
-    void updateGroupExpenses_WhenServiceThrowsException() throws Exception {
-        // Arrange
+    @DisplayName("Test update of group expenses when service throws exception")
+    @Tag("update-expenses")
+    public void updateGroupExpenses_WhenServiceThrowsException() throws Exception {
         String groupName = "testGroup";
         List<String> participants = Arrays.asList("user1", "user2");
-        Expense expense = new Expense();
-        expense.setDescription("Test Expense");
-        expense.setAmount(100.0);
-        expense.setPaidBy("user1");
-        expense.setParticipants(new ArrayList<>(participants));
-
+        Expense expense = new Expense("Test Expense", 100.0, "user1", new ArrayList<>(participants));
         List<Expense> expenses = Arrays.asList(expense);
 
-        // Use anyString() and anyList() for more flexible argument matching
         doThrow(new IllegalArgumentException("Invalid expenses"))
             .when(expenseService).updateGroupExpenses(anyString(), anyList());
 
-        // Act & Assert
         mockMvc.perform(put("/api/v1/expenses/groups/{groupName}", groupName)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(expenses)))
@@ -141,12 +124,12 @@ class ExpenseControllerTest {
     }
 
     @Test
-    void updateGroupExpenses_WithInvalidJson() throws Exception {
-        // Arrange
+    @DisplayName("Test update of group expenses with invalid JSON")
+    @Tag("update-expenses")
+    public void updateGroupExpenses_WithInvalidJson() throws Exception {
         String groupName = "testGroup";
         String invalidJson = "invalid json";
 
-        // Act & Assert
         mockMvc.perform(put("/api/v1/expenses/groups/{groupName}", groupName)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(invalidJson))

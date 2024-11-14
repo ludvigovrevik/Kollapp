@@ -30,31 +30,24 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 /**
- * Unit tests for the AddNewTaskController class.
+ * Unit tests for the {@link AddNewTaskController} class.
  */
 @ExtendWith(ApplicationExtension.class)
-@Tag("ui")
 public class AddNewTaskControllerTest {
 
     private ToDoList mockToDoList;
     private KollAppController mockKollAppController;
 
-    // Headless mode is enabled
-    static private boolean headless = true;
+    private static boolean headless = true;
 
+    
     /**
-     * Sets up the environment for headless mode if the 'headless' flag is true.
-     * This method configures various system properties required for running
-     * JavaFX tests in a headless environment.
-     * 
-     * Properties set:
-     * - testfx.headless: Enables TestFX headless mode.
+     * Sets up the headless mode for testing if the headless flag is set to true.
      */
     @BeforeAll
-    static void setupHeadlessMode() {
+    private static void setupHeadlessMode() {
         if(headless){
             System.setProperty("testfx.headless", "true");
-
             System.setProperty("java.awt.headless", "true");
             System.setProperty("prism.order", "sw");
             System.setProperty("prism.text", "t2k");
@@ -92,7 +85,7 @@ public class AddNewTaskControllerTest {
     @Test
     @DisplayName("Test adding a new task successfully")
     @Tag("task")
-    void testAddNewTask_Success(FxRobot robot) {
+    public void testAddNewTask_Success(FxRobot robot) {
         robot.clickOn("#taskNameField").write("Test Task");
         robot.clickOn("#taskDescriptionField").write("This is a test description.");
         robot.clickOn("#priorityField").clickOn("High");
@@ -114,8 +107,6 @@ public class AddNewTaskControllerTest {
         assertEquals("This is a test description.", addedTask.getDescription());
         assertEquals("High", addedTask.getPriority());
         assertEquals(fixedDate, addedTask.getDateTime());
-
-        // verify(mockKollAppController).updateGrid();
     }
 
     /**
@@ -126,7 +117,7 @@ public class AddNewTaskControllerTest {
     @Test
     @DisplayName("Test adding a task with an empty task name")
     @Tag("task")
-    void testAddNewTask_EmptyTaskName(FxRobot robot) {
+    public void testAddNewTask_EmptyTaskName(FxRobot robot) {
         robot.clickOn("#taskDescriptionField").write("Description without task name.");
         robot.clickOn("#priorityField").clickOn("Medium");
 
@@ -138,7 +129,6 @@ public class AddNewTaskControllerTest {
         robot.clickOn("Add task");
 
         verify(mockToDoList, never()).addTask(any(Task.class));
-        // verify(mockKollAppController, never()).updateGrid();
 
         Label errorLabel = robot.lookup("#errorLabel").queryAs(Label.class);
         assertNotNull(errorLabel, "Error label not found!");

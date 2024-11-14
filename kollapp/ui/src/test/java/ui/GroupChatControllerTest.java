@@ -29,21 +29,19 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
- * Test class for GroupChatController.
+ * Unit tests for the {@link GroupChatController} class.
  */
 @ExtendWith(ApplicationExtension.class)
-@Tag("ui")
 public class GroupChatControllerTest {
     
     private GroupChatController controller;
     private User testUser;
     private String testGroupName;
-    private Stage stage;
     private GroupChat groupChat;
     private List<Message> testMessages;
     private TestGroupChatApiHandler testApiHandler;
 
-    static private boolean headless = true;
+    private static final boolean headless = true;
 
     // Test implementation of GroupChatApiHandler
     private class TestGroupChatApiHandler extends GroupChatApiHandler {
@@ -64,15 +62,14 @@ public class GroupChatControllerTest {
             groupChat.addMessage(message);
             return true;
         }
-
-        public void setShouldReturnEmpty(boolean shouldReturnEmpty) {
-            this.shouldReturnEmpty = shouldReturnEmpty;
-        }
     }
 
+    /**
+     * Sets up the headless mode for testing if the 'headless' flag is true.
+     */
     @BeforeAll
-    static void setupHeadlessMode() {
-        if(headless) {
+    private static void setupHeadlessMode() {
+        if (headless) {
             System.setProperty("testfx.headless", "true");
             System.setProperty("java.awt.headless", "true");
             System.setProperty("prism.order", "sw");
@@ -81,6 +78,14 @@ public class GroupChatControllerTest {
         }
     }
 
+    /**
+     * Creates a list of test messages.
+     *
+     * This method generates a list of Message objects with predefined content
+     * for testing purposes. The list contains three messages from different users.
+     *
+     * @return a list of Message objects containing test messages
+     */
     private List<Message> createTestMessages() {
         List<Message> messages = new ArrayList<>();
         messages.add(new Message("user1", "Message 1"));
@@ -109,30 +114,19 @@ public class GroupChatControllerTest {
     @Start
     private void start(Stage stage) {
         try {
-            this.stage = stage;
-
-            // Initialize test data
             initializeTestData();
 
-            // Load FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/GroupChatScreen.fxml"));
             Parent root = loader.load();
 
-            // Get the controller instance created by FXMLLoader
             controller = loader.getController();
-
-            // Inject test API handler using the setter
             controller.setGroupChatApiHandler(testApiHandler);
 
-            // Set up scene
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
 
-            // Initialize controller
             Platform.runLater(() -> controller.initializeGroupChatWindow(testUser, testGroupName));
-
-            // Wait for all events to process
             WaitForAsyncUtils.waitForFxEvents();
 
         } catch (Exception e) {
@@ -143,7 +137,8 @@ public class GroupChatControllerTest {
 
     @Test
     @DisplayName("Test send message functionality")
-    void testSendMessage(FxRobot robot) {
+    @Tag("chat")
+    public void testSendMessage(FxRobot robot) {
         WaitForAsyncUtils.waitForFxEvents();
 
         int initialCount = groupChat.getMessages().size();
@@ -176,5 +171,4 @@ public class GroupChatControllerTest {
         assertTrue(lastMessageArea.getText().contains("Test message"), "UI should display 'Test message'");
         assertTrue(lastMessageArea.getText().contains(testUser.getUsername()), "UI should display the test user's username");
     }
-    
 }

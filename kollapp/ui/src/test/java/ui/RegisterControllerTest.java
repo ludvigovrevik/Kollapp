@@ -28,11 +28,10 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 /**
- * Unit tests for the RegisterController class.
+ * Unit tests for the {@link RegisterController} class.
  */
 @ExtendWith(ApplicationExtension.class)
-@Tag("ui")
-class RegisterControllerTest extends ApplicationTest {
+public class RegisterControllerTest extends ApplicationTest {
 
     private TextField usernameField;
     private PasswordField passwordField;
@@ -46,11 +45,9 @@ class RegisterControllerTest extends ApplicationTest {
 
     /**
      * Sets up the environment for headless mode if the 'headless' flag is true.
-     * This method configures various system properties required for running
-     * JavaFX tests in a headless environment.
      */
     @BeforeAll
-    static void setupHeadlessMode() {
+    private static void setupHeadlessMode() {
         if (headless) {
             System.setProperty("testfx.headless", "true");
             System.setProperty("java.awt.headless", "true");
@@ -62,22 +59,15 @@ class RegisterControllerTest extends ApplicationTest {
 
     /**
      * Sets up the test environment by loading the RegisterScreen.fxml, initializing the scene, and injecting the mocked UserApiHandler.
-     *
-     * @param stage the primary stage for JavaFX tests
-     * @throws Exception if FXML loading fails
      */
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/RegisterScreen.fxml"));
         Parent root = loader.load();
 
-        // Get the controller instance
         controller = loader.getController();
 
-        // Initialize the mocked UserApiHandler
         userHandlerMock = Mockito.mock(UserApiHandler.class);
-
-        // Inject the mocked UserApiHandler into the controller
         injectMockedUserApiHandler();
 
         stage.setScene(new Scene(root));
@@ -101,14 +91,11 @@ class RegisterControllerTest extends ApplicationTest {
 
     /**
      * Tests the successful registration of a user with valid input.
-     *
-     * @param robot the FxRobot instance for simulating user interactions
      */
     @Test
     @DisplayName("Test successful user registration")
     @Tag("register")
-    void testRegisterUser_Success(FxRobot robot) {
-        // Set up the mocked behavior
+    public void testRegisterUser_Success(FxRobot robot) {
         when(userHandlerMock.userExists("newUser")).thenReturn(false);
         when(userHandlerMock.confirmNewValidUser("newUser", "password", "password")).thenReturn(true);
 
@@ -123,14 +110,11 @@ class RegisterControllerTest extends ApplicationTest {
 
     /**
      * Tests user registration with mismatched passwords.
-     *
-     * @param robot the FxRobot instance for simulating user interactions
      */
     @Test
     @DisplayName("Test user registration with password mismatch")
     @Tag("register")
-    void testRegisterUser_PasswordMismatch(FxRobot robot) {
-        // Set up the mocked behavior
+    public void testRegisterUser_PasswordMismatch(FxRobot robot) {
         when(userHandlerMock.userExists("testUser")).thenReturn(false);
         when(userHandlerMock.confirmNewValidUser("testUser", "password", "mismatch")).thenReturn(false);
         when(userHandlerMock.getUserValidationErrorMessage("testUser", "password", "mismatch")).thenReturn("Passwords do not match.");
@@ -146,13 +130,11 @@ class RegisterControllerTest extends ApplicationTest {
 
     /**
      * Tests navigation from the register screen to the login screen.
-     *
-     * @param robot the FxRobot instance for simulating user interactions
      */
     @Test
     @DisplayName("Test navigation to login screen")
     @Tag("navigation")
-    void testNavigateToLoginScreen(FxRobot robot) {
+    public void testNavigateToLoginScreen(FxRobot robot) {
         robot.clickOn("#navigateToLoginScreenButton");
 
         Button loginButton = robot.lookup("#loginButton").queryAs(Button.class);
@@ -164,7 +146,7 @@ class RegisterControllerTest extends ApplicationTest {
      */
     @AfterEach
     @DisplayName("Remove test user after each test")
-    void removeUser() {
+    public void removeUser() {
         userApiHandler.removeUser("newUser");
     }
 }

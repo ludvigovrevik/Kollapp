@@ -14,6 +14,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.framework.junit5.ApplicationExtension;
@@ -21,7 +23,6 @@ import org.testfx.framework.junit5.Start;
 import org.testfx.util.WaitForAsyncUtils;
 
 import api.GroupApiHandler;
-import api.GroupChatApiHandler;
 import api.UserApiHandler;
 import core.User;
 import javafx.application.Platform;
@@ -33,22 +34,28 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * Unit tests for the {@link RegisterGroupController} class.
+ */
 @ExtendWith(ApplicationExtension.class)
+@Tag("ui")
 class RegisterGroupControllerTest {
-    
+
     private RegisterGroupController controller;
     private GroupApiHandler mockGroupApiHandler;
     private UserApiHandler mockUserApiHandler;
-    private GroupChatApiHandler mockGroupChatHandler;
     private KollAppController mockKollAppController;
     private User mockUser;
-    private Stage stage;
     private TextField groupNameField;
     private Label errorLabel;
     private static final boolean headless = true;
 
+    /**
+     * Sets up headless mode for TestFX tests if enabled.
+     * This allows tests to run in environments without a GUI.
+     */
     @BeforeAll
-    static void setupHeadlessMode() {
+    private static void setupHeadlessMode() {
         if (headless) {
             System.setProperty("testfx.headless", "true");
             System.setProperty("java.awt.headless", "true");
@@ -56,29 +63,33 @@ class RegisterGroupControllerTest {
             System.setProperty("prism.text", "t2k");
             System.setProperty("testfx.robot", "glass");
         }
-        
     }
 
+    /**
+     * Initializes the test environment by loading the RegisterGroup.fxml
+     * and setting up the controller.
+     *
+     * @param stage the primary stage for JavaFX tests
+     * @throws Exception if FXML loading fails
+     */
     @Start
     private void start(Stage stage) throws Exception {
-        this.stage = stage;
-        
         URL fxmlUrl = getClass().getResource("/ui/RegisterGroup.fxml");
         assertNotNull(fxmlUrl, "FXML file not found!");
-        
+
         FXMLLoader loader = new FXMLLoader(fxmlUrl);
         Parent root = loader.load();
-        
+
         controller = loader.getController();
         assertNotNull(controller, "Controller not initialized!");
-        
+
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
 
         groupNameField = (TextField) scene.lookup("#groupNameField");
         errorLabel = (Label) scene.lookup("#errorLabel");
-        
+
         assertNotNull(groupNameField, "Group name field not found!");
         assertNotNull(errorLabel, "Error label not found!");
 
@@ -86,21 +97,17 @@ class RegisterGroupControllerTest {
     }
 
     @BeforeEach
-    void setUp() {
-        // Create fresh mocks
+    private void setUp() {
         mockGroupApiHandler = mock(GroupApiHandler.class);
         mockUserApiHandler = mock(UserApiHandler.class);
-        mockGroupChatHandler = mock(GroupChatApiHandler.class);
         mockKollAppController = mock(KollAppController.class);
         mockUser = mock(User.class);
 
-        // Setup default mock behavior
         when(mockUser.getUsername()).thenReturn("testUser");
         when(mockGroupApiHandler.groupExists(anyString())).thenReturn(false);
         when(mockGroupApiHandler.createGroup(anyString(), anyString())).thenReturn(true);
         when(mockUserApiHandler.assignGroupToUser(anyString(), anyString())).thenReturn(true);
 
-        // Initialize controller with mocks
         Platform.runLater(() -> {
             controller.initialize(mockUser, mockKollAppController);
             controller.setGroupApiHandler(mockGroupApiHandler);
@@ -108,7 +115,7 @@ class RegisterGroupControllerTest {
             groupNameField.setText("");
             errorLabel.setText("");
         });
-        
+
         WaitForAsyncUtils.waitForFxEvents();
     }
 
@@ -121,85 +128,79 @@ class RegisterGroupControllerTest {
     }
 
     @Test
-    void testCreateGroup_Success() {
-        // Arrange
+    @DisplayName("Test successful group creation")
+    @Tag("group")
+    public void testCreateGroup_Success() {
         String groupName = "NewGroup";
         List<String> mockGroups = new ArrayList<>(List.of("Group1", "Group2"));
         when(mockUser.getUserGroups()).thenReturn(mockGroups);
 
-        // Act
         setGroupNameAndCreateGroup(groupName);
         mockGroups.add(groupName);
 
-        // Assert
         verify(mockGroupApiHandler).createGroup("testUser", groupName);
         verify(mockUserApiHandler).assignGroupToUser("testUser", groupName);
         verify(mockKollAppController).populateGroupView(mockGroups);
     }
 
     @Test
-    void testCreateGroup_EmptyGroupName() {
-        // Act
+    @DisplayName("Test empty group name validation")
+    @Tag("group")
+    public void testCreateGroup_EmptyGroupName() {
         setGroupNameAndCreateGroup("");
 
-        // Assert
         assertEquals("Group Name cannot be empty", errorLabel.getText());
         verify(mockGroupApiHandler, never()).createGroup(anyString(), anyString());
     }
 
     @Test
-    void testCreateGroup_AlreadyExists() {
-        // Arrange
+    @DisplayName("Test group already exists validation")
+    @Tag("group")
+    public void testCreateGroup_AlreadyExists() {
         String groupName = "ExistingGroup";
         when(mockGroupApiHandler.groupExists(groupName)).thenReturn(true);
 
-        // Act
         setGroupNameAndCreateGroup(groupName);
 
-        // Assert
         assertEquals("Group already exists", errorLabel.getText());
         verify(mockGroupApiHandler, never()).createGroup(anyString(), anyString());
     }
 
     @Test
-    void testCreateGroup_ExceptionDuringCreation() {
-        // Arrange
+    @DisplayName("Test handling of exception during group creation")
+    @Tag("group")
+    public void testCreateGroup_ExceptionDuringCreation() {
         String groupName = "ExceptionGroup";
-        when(mockGroupApiHandler.createGroup("testUser", groupName))
-            .thenThrow(new RuntimeException("Creation failed"));
+        when(mockGroupApiHandler.createGroup("testUser", groupName)).thenThrow(new RuntimeException("Creation failed"));
 
-        // Act
         setGroupNameAndCreateGroup(groupName);
 
-        // Assert
         assertEquals("An unexpected error occurred. Please try again.", errorLabel.getText());
         verify(mockGroupApiHandler).createGroup("testUser", groupName);
     }
 
     @Test
-    void testCreateGroup_CreationFails() {
-        // Arrange
+    @DisplayName("Test handling of failed group creation")
+    @Tag("group")
+    public void testCreateGroup_CreationFails() {
         String groupName = "FailedGroup";
         when(mockGroupApiHandler.createGroup("testUser", groupName)).thenReturn(false);
 
-        // Act
         setGroupNameAndCreateGroup(groupName);
 
-        // Assert
         assertEquals("Failed to create group. Please try again.", errorLabel.getText());
         verify(mockGroupApiHandler).createGroup("testUser", groupName);
     }
 
     @Test
-    void testCreateGroup_UserAssignmentFails() {
-        // Arrange
+    @DisplayName("Test handling of failed user assignment to group")
+    @Tag("group")
+    public void testCreateGroup_UserAssignmentFails() {
         String groupName = "UnassignedGroup";
         when(mockUserApiHandler.assignGroupToUser("testUser", groupName)).thenReturn(false);
 
-        // Act
         setGroupNameAndCreateGroup(groupName);
 
-        // Assert
         assertEquals("Failed to assign user to group. Please try again.", errorLabel.getText());
         verify(mockGroupApiHandler).createGroup("testUser", groupName);
     }

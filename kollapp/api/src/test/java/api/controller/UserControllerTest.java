@@ -3,6 +3,8 @@ package api.controller;
 import api.service.UserService;
 import core.User;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,6 +24,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
+@Tag("controller")
 class UserControllerTest {
 
     @Mock
@@ -34,19 +37,20 @@ class UserControllerTest {
     private ObjectMapper objectMapper;
 
     @BeforeEach
-    void setUp() {
+    @DisplayName("Initialize MockMvc and ObjectMapper before each test")
+    private void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
         objectMapper = new ObjectMapper();
     }
 
     @Test
-    void saveUser_Success() throws Exception {
-        // Arrange
+    @DisplayName("Test successful user save")
+    @Tag("save-user")
+    public void saveUser_Success() throws Exception {
         User user = new User();
         user.setUsername("testUser");
         doNothing().when(userService).saveUser(any(User.class));
 
-        // Act & Assert
         mockMvc.perform(post("/api/v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(user)))
@@ -56,14 +60,13 @@ class UserControllerTest {
     }
 
     @Test
-    void saveUser_BadRequest() throws Exception {
-        // Arrange
+    @DisplayName("Test user save with bad request")
+    @Tag("save-user")
+    public void saveUser_BadRequest() throws Exception {
         User user = new User();
         user.setUsername("testUser");
-        doThrow(new IllegalArgumentException())
-            .when(userService).saveUser(any(User.class));
+        doThrow(new IllegalArgumentException()).when(userService).saveUser(any(User.class));
 
-        // Act & Assert
         mockMvc.perform(post("/api/v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(user)))
@@ -73,14 +76,13 @@ class UserControllerTest {
     }
 
     @Test
-    void saveUser_InternalServerError() throws Exception {
-        // Arrange
+    @DisplayName("Test user save with internal server error")
+    @Tag("save-user")
+    public void saveUser_InternalServerError() throws Exception {
         User user = new User();
         user.setUsername("testUser");
-        doThrow(new RuntimeException())
-            .when(userService).saveUser(any(User.class));
+        doThrow(new RuntimeException()).when(userService).saveUser(any(User.class));
 
-        // Act & Assert
         mockMvc.perform(post("/api/v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(user)))
@@ -90,12 +92,12 @@ class UserControllerTest {
     }
 
     @Test
-    void removeUser_Success() throws Exception {
-        // Arrange
+    @DisplayName("Test successful user removal")
+    @Tag("remove-user")
+    public void removeUser_Success() throws Exception {
         String username = "testUser";
         doNothing().when(userService).removeUser(anyString());
 
-        // Act & Assert
         mockMvc.perform(delete("/api/v1/users/{username}", username))
             .andExpect(status().isOk());
 
@@ -103,13 +105,12 @@ class UserControllerTest {
     }
 
     @Test
-    void removeUser_BadRequest() throws Exception {
-        // Arrange
+    @DisplayName("Test user removal with bad request")
+    @Tag("remove-user")
+    public void removeUser_BadRequest() throws Exception {
         String username = "testUser";
-        doThrow(new IllegalArgumentException())
-            .when(userService).removeUser(anyString());
+        doThrow(new IllegalArgumentException()).when(userService).removeUser(anyString());
 
-        // Act & Assert
         mockMvc.perform(delete("/api/v1/users/{username}", username))
             .andExpect(status().isBadRequest());
 
@@ -117,12 +118,12 @@ class UserControllerTest {
     }
 
     @Test
-    void userExists_ReturnsTrue() throws Exception {
-        // Arrange
+    @DisplayName("Test if user exists and returns true")
+    @Tag("user-exists")
+    public void userExists_ReturnsTrue() throws Exception {
         String username = "testUser";
         when(userService.userExists(username)).thenReturn(true);
 
-        // Act & Assert
         mockMvc.perform(get("/api/v1/users/exists/{username}", username))
             .andExpect(status().isOk())
             .andExpect(content().string("true"));
@@ -131,12 +132,12 @@ class UserControllerTest {
     }
 
     @Test
-    void userExists_ReturnsFalse() throws Exception {
-        // Arrange
+    @DisplayName("Test if user exists and returns false")
+    @Tag("user-exists")
+    public void userExists_ReturnsFalse() throws Exception {
         String username = "testUser";
         when(userService.userExists(username)).thenReturn(false);
 
-        // Act & Assert
         mockMvc.perform(get("/api/v1/users/exists/{username}", username))
             .andExpect(status().isOk())
             .andExpect(content().string("false"));
@@ -145,7 +146,9 @@ class UserControllerTest {
     }
 
     @Test
-    void userExists_BadRequest() throws Exception {
+    @DisplayName("Test user exists check with bad request")
+    @Tag("user-exists")
+    public void userExists_BadRequest() throws Exception {
         String username = "testUser";
         when(userService.userExists(username)).thenThrow(new IllegalArgumentException("Invalid username"));
 
@@ -154,7 +157,9 @@ class UserControllerTest {
     }
 
     @Test
-    void userExists_InternalServerError() throws Exception {
+    @DisplayName("Test user exists check with internal server error")
+    @Tag("user-exists")
+    public void userExists_InternalServerError() throws Exception {
         String username = "testUser";
         when(userService.userExists(username)).thenThrow(new RuntimeException());
 
@@ -163,15 +168,15 @@ class UserControllerTest {
     }
 
     @Test
-    void loadUser_Success() throws Exception {
-        // Arrange
+    @DisplayName("Test successful user load for login")
+    @Tag("load-user")
+    public void loadUser_Success() throws Exception {
         String username = "testUser";
         String password = "password";
         User user = new User();
         user.setUsername(username);
         when(userService.loadUser(anyString(), anyString())).thenReturn(Optional.of(user));
 
-        // Act & Assert
         mockMvc.perform(post("/api/v1/users/login")
                 .param("username", username)
                 .param("password", password))
@@ -182,13 +187,13 @@ class UserControllerTest {
     }
 
     @Test
-    void loadUser_Unauthorized() throws Exception {
-        // Arrange
+    @DisplayName("Test unauthorized user load for login")
+    @Tag("load-user")
+    public void loadUser_Unauthorized() throws Exception {
         String username = "testUser";
         String password = "password";
         when(userService.loadUser(anyString(), anyString())).thenReturn(Optional.empty());
 
-        // Act & Assert
         mockMvc.perform(post("/api/v1/users/login")
                 .param("username", username)
                 .param("password", password))
@@ -198,14 +203,14 @@ class UserControllerTest {
     }
 
     @Test
-    void confirmNewValidUser_Success() throws Exception {
-        // Arrange
+    @DisplayName("Test successful new user validation confirmation")
+    @Tag("validate-user")
+    public void confirmNewValidUser_Success() throws Exception {
         String username = "testUser";
         String password = "password";
         String confirmPassword = "password";
         when(userService.confirmNewValidUser(anyString(), anyString(), anyString())).thenReturn(true);
 
-        // Act & Assert
         mockMvc.perform(post("/api/v1/users/validate")
                 .param("username", username)
                 .param("password", password)
@@ -217,8 +222,9 @@ class UserControllerTest {
     }
 
     @Test
-    void getUserValidationErrorMessage() throws Exception {
-        // Arrange
+    @DisplayName("Test user validation error message retrieval")
+    @Tag("validate-user")
+    public void getUserValidationErrorMessage() throws Exception {
         String username = "testUser";
         String password = "password";
         String confirmPassword = "different";
@@ -226,7 +232,6 @@ class UserControllerTest {
         when(userService.getUserValidationErrorMessage(anyString(), anyString(), anyString()))
             .thenReturn(errorMessage);
 
-        // Act & Assert
         mockMvc.perform(post("/api/v1/users/validate/message")
                 .param("username", username)
                 .param("password", password)
@@ -238,13 +243,13 @@ class UserControllerTest {
     }
 
     @Test
-    void assignGroupToUser_Success() throws Exception {
-        // Arrange
+    @DisplayName("Test successful group assignment to user")
+    @Tag("assign-group")
+    public void assignGroupToUser_Success() throws Exception {
         String username = "testUser";
         String groupName = "testGroup";
         doNothing().when(userService).assignGroupToUser(anyString(), anyString());
 
-        // Act & Assert
         mockMvc.perform(post("/api/v1/users/{username}/assignGroup", username)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("groupName", groupName))
@@ -254,14 +259,13 @@ class UserControllerTest {
     }
 
     @Test
-    void assignGroupToUser_BadRequest() throws Exception {
-        // Arrange
+    @DisplayName("Test group assignment to user with bad request")
+    @Tag("assign-group")
+    public void assignGroupToUser_BadRequest() throws Exception {
         String username = "testUser";
         String groupName = "testGroup";
-        doThrow(new IllegalArgumentException())
-            .when(userService).assignGroupToUser(anyString(), anyString());
+        doThrow(new IllegalArgumentException()).when(userService).assignGroupToUser(anyString(), anyString());
 
-        // Act & Assert
         mockMvc.perform(post("/api/v1/users/{username}/assignGroup", username)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("groupName", groupName))
@@ -271,14 +275,13 @@ class UserControllerTest {
     }
 
     @Test
-    void assignGroupToUser_InternalServerError() throws Exception {
-        // Arrange
+    @DisplayName("Test group assignment to user with internal server error")
+    @Tag("assign-group")
+    public void assignGroupToUser_InternalServerError() throws Exception {
         String username = "testUser";
         String groupName = "testGroup";
-        doThrow(new RuntimeException())
-            .when(userService).assignGroupToUser(anyString(), anyString());
+        doThrow(new RuntimeException()).when(userService).assignGroupToUser(anyString(), anyString());
 
-        // Act & Assert
         mockMvc.perform(post("/api/v1/users/{username}/assignGroup", username)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("groupName", groupName))
