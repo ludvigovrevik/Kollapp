@@ -1,3 +1,5 @@
+
+https://github.com/user-attachments/assets/241cc32b-db80-4bad-8aa1-49975d7f8fd8
 # **🏠 KollApp: Manage Shared Living Efficiently 💻**
 
 Welcome to **KollApp**, a Java application developed as part of the course **IT1901 - Informatikk Prosjektarbeid I**. This app is designed to help roomates efficiently manage and share household tasks in a shared living space. Let's make communal living stress-free!
